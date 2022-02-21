@@ -234,111 +234,140 @@ extern "C" {
     pub static g_param_spec_types: *const ffi::GType;
 }
 
+trait ParamSpecOffset {
+    const OFFSET: usize;
+}
+
+// Can't use get_type here as this is not a boxed type but another fundamental type
+wrapper! {
+    #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct SharedParamSpec<T: 'static>(Shared<T>);
+
+    match fn {
+        ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut T,
+        unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
+    }
+}
+
+impl<T: 'static> StaticType for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    fn static_type() -> Type {
+        unsafe { from_glib(*g_param_spec_types.add(Self::OFFSET)) }
+    }
+}
+
+#[doc(hidden)]
+impl<T> crate::value::ValueType for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    type Type = SharedParamSpec<T>;
+}
+
+#[doc(hidden)]
+impl<T> crate::value::ValueTypeOptional for SharedParamSpec<T> where
+    SharedParamSpec<T>: ParamSpecOffset
+{
+}
+
+#[doc(hidden)]
+unsafe impl<'a, T> crate::value::FromValue<'a> for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    type Checker = crate::value::GenericValueTypeOrNoneChecker<Self>;
+
+    unsafe fn from_value(value: &'a crate::Value) -> Self {
+        let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
+        assert!(!ptr.is_null());
+        from_glib_full(ptr as *mut T)
+    }
+}
+
+#[doc(hidden)]
+impl<T> crate::value::ToValue for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    fn to_value(&self) -> crate::Value {
+        unsafe {
+            let mut value = crate::Value::from_type(SharedParamSpec::<T>::static_type());
+            gobject_ffi::g_value_take_param(
+                value.to_glib_none_mut().0,
+                self.to_glib_full() as *mut _,
+            );
+            value
+        }
+    }
+
+    fn value_type(&self) -> crate::Type {
+        SharedParamSpec::<T>::static_type()
+    }
+}
+
+#[doc(hidden)]
+impl<T> crate::value::ToValueOptional for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    fn to_value_optional(s: Option<&Self>) -> crate::Value {
+        let mut value = crate::Value::for_value_type::<Self>();
+        unsafe {
+            gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.to_glib_full() as *mut _);
+        }
+
+        value
+    }
+}
+
+unsafe impl<T> Send for SharedParamSpec<T> {}
+unsafe impl<T> Sync for SharedParamSpec<T> {}
+
+impl<T> std::ops::Deref for SharedParamSpec<T> {
+    type Target = ParamSpec;
+
+    fn deref(&self) -> &Self::Target {
+        unsafe { &*(self as *const SharedParamSpec<T> as *const ParamSpec) }
+    }
+}
+
+unsafe impl<T> ParamSpecType for SharedParamSpec<T> where
+    SharedParamSpec<T>:
+        FromGlibPtrFull<*mut gobject_ffi::GParamSpec> + FromGlibPtrFull<*mut T> + ParamSpecOffset
+{
+}
+
+impl<T> FromGlibPtrFull<*mut gobject_ffi::GParamSpec> for SharedParamSpec<T>
+where
+    SharedParamSpec<T>: ParamSpecOffset,
+{
+    unsafe fn from_glib_full(ptr: *mut gobject_ffi::GParamSpec) -> Self {
+        from_glib_full(ptr as *mut T)
+    }
+}
+
+impl<T> SharedParamSpec<T> {
+    pub fn upcast(self) -> ParamSpec {
+        unsafe { from_glib_full(self.to_glib_full() as *mut gobject_ffi::GParamSpec) }
+    }
+
+    pub fn upcast_ref(&self) -> &ParamSpec {
+        &*self
+    }
+}
+
+impl<T> AsRef<ParamSpec> for SharedParamSpec<T> {
+    fn as_ref(&self) -> &ParamSpec {
+        &self
+    }
+}
 macro_rules! define_param_spec {
     ($rust_type:ident, $ffi_type:path, $rust_type_offset:expr) => {
-        // Can't use get_type here as this is not a boxed type but another fundamental type
-        wrapper! {
-            #[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-            pub struct $rust_type(Shared<$ffi_type>);
-
-            match fn {
-                ref => |ptr| gobject_ffi::g_param_spec_ref_sink(ptr as *mut gobject_ffi::GParamSpec) as *mut $ffi_type,
-                unref => |ptr| gobject_ffi::g_param_spec_unref(ptr as *mut gobject_ffi::GParamSpec),
-            }
-        }
-
-        impl StaticType for $rust_type {
-            fn static_type() -> Type {
-                unsafe {
-                    from_glib(*g_param_spec_types.add($rust_type_offset))
-                }
-            }
-        }
-
-        #[doc(hidden)]
-        impl crate::value::ValueType for $rust_type {
-            type Type = $rust_type;
-        }
-
-        #[doc(hidden)]
-        impl crate::value::ValueTypeOptional for $rust_type {}
-
-        #[doc(hidden)]
-        unsafe impl<'a> crate::value::FromValue<'a> for $rust_type {
-            type Checker = $crate::value::GenericValueTypeOrNoneChecker<Self>;
-
-            unsafe fn from_value(value: &'a crate::Value) -> Self {
-                let ptr = gobject_ffi::g_value_dup_param(value.to_glib_none().0);
-                assert!(!ptr.is_null());
-                from_glib_full(ptr as *mut $ffi_type)
-            }
-        }
-
-        #[doc(hidden)]
-        impl crate::value::ToValue for $rust_type {
-            fn to_value(&self) -> crate::Value {
-                unsafe {
-                    let mut value = crate::Value::from_type($rust_type::static_type());
-                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, self.to_glib_full() as *mut _);
-                    value
-                }
-            }
-
-            fn value_type(&self) -> crate::Type {
-                $rust_type::static_type()
-            }
-        }
-
-        #[doc(hidden)]
-        impl crate::value::ToValueOptional for $rust_type {
-            fn to_value_optional(s: Option<&Self>) -> crate::Value {
-                let mut value = crate::Value::for_value_type::<Self>();
-                unsafe {
-                    gobject_ffi::g_value_take_param(value.to_glib_none_mut().0, s.to_glib_full() as *mut _);
-                }
-
-                value
-            }
-        }
-
-        unsafe impl Send for $rust_type {}
-        unsafe impl Sync for $rust_type {}
-
-        impl std::ops::Deref for $rust_type {
-            type Target = ParamSpec;
-
-            fn deref(&self) -> &Self::Target {
-                unsafe {
-                    &*(self as *const $rust_type as *const ParamSpec)
-                }
-            }
-        }
-
-        unsafe impl ParamSpecType for $rust_type {}
-
-        #[doc(hidden)]
-        impl FromGlibPtrFull<*mut gobject_ffi::GParamSpec> for $rust_type {
-            unsafe fn from_glib_full(ptr: *mut gobject_ffi::GParamSpec) -> Self {
-                from_glib_full(ptr as *mut $ffi_type)
-            }
-        }
-
-        impl $rust_type {
-            pub fn upcast(self) -> ParamSpec {
-                unsafe {
-                    from_glib_full(self.to_glib_full() as *mut gobject_ffi::GParamSpec)
-                }
-            }
-
-            pub fn upcast_ref(&self) -> &ParamSpec {
-                &*self
-            }
-        }
-
-        impl AsRef<ParamSpec> for $rust_type {
-            fn as_ref(&self) -> &ParamSpec {
-                &self
-            }
+        pub type $rust_type = SharedParamSpec<$ffi_type>;
+        impl ParamSpecOffset for $rust_type {
+            const OFFSET: usize = $rust_type_offset;
         }
     };
 }
