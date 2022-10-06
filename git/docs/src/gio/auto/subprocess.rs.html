@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/subprocess.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>subprocess.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/subprocess.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>subprocess.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -817,747 +812,746 @@
 <span id="739">739</span>
 <span id="740">740</span>
 <span id="741">741</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AsyncResult</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Cancellable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Initable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::InputStream</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::OutputStream</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SubprocessFlags</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::AsyncResult;
+<span class="kw">use </span><span class="kw">crate</span>::Cancellable;
+<span class="kw">use </span><span class="kw">crate</span>::Initable;
+<span class="kw">use </span><span class="kw">crate</span>::InputStream;
+<span class="kw">use </span><span class="kw">crate</span>::OutputStream;
+<span class="kw">use </span><span class="kw">crate</span>::SubprocessFlags;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::pin::Pin;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] allows the creation of and interaction with child</span>
-    <span class="doccomment">/// processes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Processes can be communicated with using standard GIO-style APIs (ie:</span>
-    <span class="doccomment">/// [`InputStream`][crate::InputStream], [`OutputStream`][crate::OutputStream]). There are GIO-style APIs to wait for</span>
-    <span class="doccomment">/// process termination (ie: cancellable and with an asynchronous</span>
-    <span class="doccomment">/// variant).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// There is an API to force a process to terminate, as well as a</span>
-    <span class="doccomment">/// race-free API for sending UNIX signals to a subprocess.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// One major advantage that GIO brings over the core GLib library is</span>
-    <span class="doccomment">/// comprehensive API for asynchronous I/O, such</span>
-    <span class="doccomment">/// [`OutputStreamExt::splice_async()`][crate::prelude::OutputStreamExt::splice_async()]. This makes GSubprocess</span>
-    <span class="doccomment">/// significantly more powerful and flexible than equivalent APIs in</span>
-    <span class="doccomment">/// some other languages such as the `subprocess.py`</span>
-    <span class="doccomment">/// included with Python. For example, using [`Subprocess`][crate::Subprocess] one could</span>
-    <span class="doccomment">/// create two child processes, reading standard output from the first,</span>
-    <span class="doccomment">/// processing it, and writing to the input stream of the second, all</span>
-    <span class="doccomment">/// without blocking the main loop.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A powerful [`communicate()`][Self::communicate()] API is provided similar to the</span>
-    <span class="doccomment">/// ``communicate()`` method of `subprocess.py`. This enables very easy</span>
-    <span class="doccomment">/// interaction with a subprocess that has been opened with pipes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] defaults to tight control over the file descriptors open</span>
-    <span class="doccomment">/// in the child process, avoiding dangling-fd issues that are caused by</span>
-    <span class="doccomment">/// a simple `fork()`/`exec()`. The only open file descriptors in the</span>
-    <span class="doccomment">/// spawned process are ones that were explicitly specified by the</span>
-    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] API (unless [`SubprocessFlags::INHERIT_FDS`][crate::SubprocessFlags::INHERIT_FDS] was</span>
-    <span class="doccomment">/// specified).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] will quickly reap all child processes as they exit,</span>
-    <span class="doccomment">/// avoiding &quot;zombie processes&quot; remaining around for long periods of</span>
-    <span class="doccomment">/// time. [`wait()`][Self::wait()] can be used to wait for this to happen,</span>
-    <span class="doccomment">/// but it will happen even without the call being explicitly made.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// As a matter of principle, [`Subprocess`][crate::Subprocess] has no API that accepts</span>
-    <span class="doccomment">/// shell-style space-separated strings. It will, however, match the</span>
-    <span class="doccomment">/// typical shell behaviour of searching the PATH for executables that do</span>
-    <span class="doccomment">/// not contain a directory separator in their name. By default, the `PATH`</span>
-    <span class="doccomment">/// of the current process is used. You can specify</span>
-    <span class="doccomment">/// [`SubprocessFlags::SEARCH_PATH_FROM_ENVP`][crate::SubprocessFlags::SEARCH_PATH_FROM_ENVP] to use the `PATH` of the</span>
-    <span class="doccomment">/// launcher environment instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] attempts to have a very simple API for most uses (ie:</span>
-    <span class="doccomment">/// spawning a subprocess with arguments and support for most typical</span>
-    <span class="doccomment">/// kinds of input and output redirection). See `g_subprocess_new()`. The</span>
-    <span class="doccomment">/// [`SubprocessLauncher`][crate::SubprocessLauncher] API is provided for more complicated cases</span>
-    <span class="doccomment">/// (advanced types of redirection, environment variable manipulation,</span>
-    <span class="doccomment">/// change of working directory, child setup functions, etc).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A typical use of [`Subprocess`][crate::Subprocess] will involve calling</span>
-    <span class="doccomment">/// `g_subprocess_new()`, followed by [`wait_async()`][Self::wait_async()] or</span>
-    <span class="doccomment">/// [`wait()`][Self::wait()]. After the process exits, the status can be</span>
-    <span class="doccomment">/// checked using functions such as [`has_exited()`][Self::has_exited()] (which</span>
-    <span class="doccomment">/// are similar to the familiar WIFEXITED-style POSIX macros).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`trait@glib::ObjectExt`], [`InitableExt`][trait@crate::prelude::InitableExt]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GSubprocess&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Subprocess</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GSubprocess</span><span class="op">&gt;</span>) @<span class="ident">implements</span> <span class="ident">Initable</span>;
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// [`Subprocess`][crate::Subprocess] allows the creation of and interaction with child
+    /// processes.
+    ///
+    /// Processes can be communicated with using standard GIO-style APIs (ie:
+    /// [`InputStream`][crate::InputStream], [`OutputStream`][crate::OutputStream]). There are GIO-style APIs to wait for
+    /// process termination (ie: cancellable and with an asynchronous
+    /// variant).
+    ///
+    /// There is an API to force a process to terminate, as well as a
+    /// race-free API for sending UNIX signals to a subprocess.
+    ///
+    /// One major advantage that GIO brings over the core GLib library is
+    /// comprehensive API for asynchronous I/O, such
+    /// [`OutputStreamExt::splice_async()`][crate::prelude::OutputStreamExt::splice_async()]. This makes GSubprocess
+    /// significantly more powerful and flexible than equivalent APIs in
+    /// some other languages such as the `subprocess.py`
+    /// included with Python. For example, using [`Subprocess`][crate::Subprocess] one could
+    /// create two child processes, reading standard output from the first,
+    /// processing it, and writing to the input stream of the second, all
+    /// without blocking the main loop.
+    ///
+    /// A powerful [`communicate()`][Self::communicate()] API is provided similar to the
+    /// ``communicate()`` method of `subprocess.py`. This enables very easy
+    /// interaction with a subprocess that has been opened with pipes.
+    ///
+    /// [`Subprocess`][crate::Subprocess] defaults to tight control over the file descriptors open
+    /// in the child process, avoiding dangling-fd issues that are caused by
+    /// a simple `fork()`/`exec()`. The only open file descriptors in the
+    /// spawned process are ones that were explicitly specified by the
+    /// [`Subprocess`][crate::Subprocess] API (unless [`SubprocessFlags::INHERIT_FDS`][crate::SubprocessFlags::INHERIT_FDS] was
+    /// specified).
+    ///
+    /// [`Subprocess`][crate::Subprocess] will quickly reap all child processes as they exit,
+    /// avoiding &quot;zombie processes&quot; remaining around for long periods of
+    /// time. [`wait()`][Self::wait()] can be used to wait for this to happen,
+    /// but it will happen even without the call being explicitly made.
+    ///
+    /// As a matter of principle, [`Subprocess`][crate::Subprocess] has no API that accepts
+    /// shell-style space-separated strings. It will, however, match the
+    /// typical shell behaviour of searching the PATH for executables that do
+    /// not contain a directory separator in their name. By default, the `PATH`
+    /// of the current process is used. You can specify
+    /// [`SubprocessFlags::SEARCH_PATH_FROM_ENVP`][crate::SubprocessFlags::SEARCH_PATH_FROM_ENVP] to use the `PATH` of the
+    /// launcher environment instead.
+    ///
+    /// [`Subprocess`][crate::Subprocess] attempts to have a very simple API for most uses (ie:
+    /// spawning a subprocess with arguments and support for most typical
+    /// kinds of input and output redirection). See `g_subprocess_new()`. The
+    /// [`SubprocessLauncher`][crate::SubprocessLauncher] API is provided for more complicated cases
+    /// (advanced types of redirection, environment variable manipulation,
+    /// change of working directory, child setup functions, etc).
+    ///
+    /// A typical use of [`Subprocess`][crate::Subprocess] will involve calling
+    /// `g_subprocess_new()`, followed by [`wait_async()`][Self::wait_async()] or
+    /// [`wait()`][Self::wait()]. After the process exits, the status can be
+    /// checked using functions such as [`has_exited()`][Self::has_exited()] (which
+    /// are similar to the familiar WIFEXITED-style POSIX macros).
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`], [`InitableExt`][trait@crate::prelude::InitableExt]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GSubprocess&quot;</span>)]
+    </span><span class="kw">pub struct </span>Subprocess(Object&lt;ffi::GSubprocess&gt;) @implements Initable;
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_subprocess_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_subprocess_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Subprocess</span> {
-    <span class="comment">//#[doc(alias = &quot;g_subprocess_new&quot;)]</span>
-    <span class="comment">//pub fn new(flags: SubprocessFlags, error: Option&lt;&amp;mut glib::Error&gt;, argv0: &amp;str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -&gt; Subprocess {</span>
-    <span class="comment">//    unsafe { TODO: call ffi:g_subprocess_new() }</span>
-    <span class="comment">//}</span>
+<span class="kw">impl </span>Subprocess {
+    <span class="comment">//#[doc(alias = &quot;g_subprocess_new&quot;)]
+    //pub fn new(flags: SubprocessFlags, error: Option&lt;&amp;mut glib::Error&gt;, argv0: &amp;str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -&gt; Subprocess {
+    //    unsafe { TODO: call ffi:g_subprocess_new() }
+    //}
 
-    <span class="doccomment">/// Create a new process with the given flags and argument list.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The argument list is expected to be [`None`]-terminated.</span>
-    <span class="doccomment">/// ## `argv`</span>
-    <span class="doccomment">/// commandline arguments for the subprocess</span>
-    <span class="doccomment">/// ## `flags`</span>
-    <span class="doccomment">/// flags that define the behaviour of the subprocess</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A newly created [`Subprocess`][crate::Subprocess], or [`None`] on error (and `error`</span>
-    <span class="doccomment">///  will be set)</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_newv&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">newv</span>(
-        <span class="ident">argv</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">std::ffi::OsStr</span>],
-        <span class="ident">flags</span>: <span class="ident">SubprocessFlags</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Subprocess</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_newv</span>(<span class="ident">argv</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">flags</span>.<span class="ident">into_glib</span>(), <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+    </span><span class="doccomment">/// Create a new process with the given flags and argument list.
+    ///
+    /// The argument list is expected to be [`None`]-terminated.
+    /// ## `argv`
+    /// commandline arguments for the subprocess
+    /// ## `flags`
+    /// flags that define the behaviour of the subprocess
+    ///
+    /// # Returns
+    ///
+    /// A newly created [`Subprocess`][crate::Subprocess], or [`None`] on error (and `error`
+    ///  will be set)
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_newv&quot;</span>)]
+    </span><span class="kw">pub fn </span>newv(
+        argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>std::ffi::OsStr],
+        flags: SubprocessFlags,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Subprocess, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_subprocess_newv(argv.to_glib_none().<span class="number">0</span>, flags.into_glib(), <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Communicate with the subprocess until it terminates, and all input</span>
-    <span class="doccomment">/// and output has been completed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `stdin_buf` is given, the subprocess must have been created with</span>
-    <span class="doccomment">/// [`SubprocessFlags::STDIN_PIPE`][crate::SubprocessFlags::STDIN_PIPE]. The given data is fed to the</span>
-    <span class="doccomment">/// stdin of the subprocess and the pipe is closed (ie: EOF).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// At the same time (as not to cause blocking when dealing with large</span>
-    <span class="doccomment">/// amounts of data), if [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE] or</span>
-    <span class="doccomment">/// [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE] were used, reads from those</span>
-    <span class="doccomment">/// streams. The data that was read is returned in `stdout` and/or</span>
-    <span class="doccomment">/// the `stderr`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the subprocess was created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],</span>
-    <span class="doccomment">/// `stdout_buf` will contain the data read from stdout. Otherwise, for</span>
-    <span class="doccomment">/// subprocesses not created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],</span>
-    <span class="doccomment">/// `stdout_buf` will be set to [`None`]. Similar provisions apply to</span>
-    <span class="doccomment">/// `stderr_buf` and [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// As usual, any output variable may be given as [`None`] to ignore it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If you desire the stdout and stderr data to be interleaved, create</span>
-    <span class="doccomment">/// the subprocess with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE] and</span>
-    <span class="doccomment">/// [`SubprocessFlags::STDERR_MERGE`][crate::SubprocessFlags::STDERR_MERGE]. The merged result will be returned</span>
-    <span class="doccomment">/// in `stdout_buf` and `stderr_buf` will be set to [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In case of any error (including cancellation), [`false`] will be</span>
-    <span class="doccomment">/// returned with `error` set. Some or all of the stdin data may have</span>
-    <span class="doccomment">/// been written. Any stdout or stderr data that has been read will be</span>
-    <span class="doccomment">/// discarded. None of the out variables (aside from `error`) will have</span>
-    <span class="doccomment">/// been set to anything in particular and should not be inspected.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In the case that [`true`] is returned, the subprocess has exited and the</span>
-    <span class="doccomment">/// exit status inspection APIs (eg: [`has_exited()`][Self::has_exited()],</span>
-    <span class="doccomment">/// [`exit_status()`][Self::exit_status()]) may be used.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You should not attempt to use any of the subprocess pipes after</span>
-    <span class="doccomment">/// starting this function, since they may be left in strange states,</span>
-    <span class="doccomment">/// even if the operation was cancelled. You should especially not</span>
-    <span class="doccomment">/// attempt to interact with the pipes while the operation is in progress</span>
-    <span class="doccomment">/// (either from another thread or if using the asynchronous version).</span>
-    <span class="doccomment">/// ## `stdin_buf`</span>
-    <span class="doccomment">/// data to send to the stdin of the subprocess, or [`None`]</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if successful</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `stdout_buf`</span>
-    <span class="doccomment">/// data read from the subprocess stdout</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `stderr_buf`</span>
-    <span class="doccomment">/// data read from the subprocess stderr</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_communicate&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">communicate</span>(
+    <span class="doccomment">/// Communicate with the subprocess until it terminates, and all input
+    /// and output has been completed.
+    ///
+    /// If `stdin_buf` is given, the subprocess must have been created with
+    /// [`SubprocessFlags::STDIN_PIPE`][crate::SubprocessFlags::STDIN_PIPE]. The given data is fed to the
+    /// stdin of the subprocess and the pipe is closed (ie: EOF).
+    ///
+    /// At the same time (as not to cause blocking when dealing with large
+    /// amounts of data), if [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE] or
+    /// [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE] were used, reads from those
+    /// streams. The data that was read is returned in `stdout` and/or
+    /// the `stderr`.
+    ///
+    /// If the subprocess was created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],
+    /// `stdout_buf` will contain the data read from stdout. Otherwise, for
+    /// subprocesses not created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],
+    /// `stdout_buf` will be set to [`None`]. Similar provisions apply to
+    /// `stderr_buf` and [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE].
+    ///
+    /// As usual, any output variable may be given as [`None`] to ignore it.
+    ///
+    /// If you desire the stdout and stderr data to be interleaved, create
+    /// the subprocess with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE] and
+    /// [`SubprocessFlags::STDERR_MERGE`][crate::SubprocessFlags::STDERR_MERGE]. The merged result will be returned
+    /// in `stdout_buf` and `stderr_buf` will be set to [`None`].
+    ///
+    /// In case of any error (including cancellation), [`false`] will be
+    /// returned with `error` set. Some or all of the stdin data may have
+    /// been written. Any stdout or stderr data that has been read will be
+    /// discarded. None of the out variables (aside from `error`) will have
+    /// been set to anything in particular and should not be inspected.
+    ///
+    /// In the case that [`true`] is returned, the subprocess has exited and the
+    /// exit status inspection APIs (eg: [`has_exited()`][Self::has_exited()],
+    /// [`exit_status()`][Self::exit_status()]) may be used.
+    ///
+    /// You should not attempt to use any of the subprocess pipes after
+    /// starting this function, since they may be left in strange states,
+    /// even if the operation was cancelled. You should especially not
+    /// attempt to interact with the pipes while the operation is in progress
+    /// (either from another thread or if using the asynchronous version).
+    /// ## `stdin_buf`
+    /// data to send to the stdin of the subprocess, or [`None`]
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable]
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if successful
+    ///
+    /// ## `stdout_buf`
+    /// data read from the subprocess stdout
+    ///
+    /// ## `stderr_buf`
+    /// data read from the subprocess stderr
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_communicate&quot;</span>)]
+    </span><span class="kw">pub fn </span>communicate(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">stdin_buf</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdout_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stderr_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_communicate</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">stdin_buf</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stdout_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stderr_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_subprocess_communicate(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                stdin_buf.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>stdout_buf,
+                <span class="kw-2">&amp;mut </span>stderr_buf,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">stdout_buf</span>), <span class="ident">from_glib_full</span>(<span class="ident">stderr_buf</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Asynchronous version of [`communicate()`][Self::communicate()]. Complete</span>
-    <span class="doccomment">/// invocation with `g_subprocess_communicate_finish()`.</span>
-    <span class="doccomment">/// ## `stdin_buf`</span>
-    <span class="doccomment">/// Input data, or [`None`]</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// Cancellable</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// Callback</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_communicate_async&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">communicate_async</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// Asynchronous version of [`communicate()`][Self::communicate()]. Complete
+    /// invocation with `g_subprocess_communicate_finish()`.
+    /// ## `stdin_buf`
+    /// Input data, or [`None`]
+    /// ## `cancellable`
+    /// Cancellable
+    /// ## `callback`
+    /// Callback
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_communicate_async&quot;</span>)]
+    </span><span class="kw">pub fn </span>communicate_async&lt;
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">stdin_buf</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">communicate_async_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>communicate_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdout_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stderr_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_communicate_finish</span>(
-                <span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">res</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stdout_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stderr_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_subprocess_communicate_finish(
+                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                res,
+                <span class="kw-2">&amp;mut </span>stdout_buf,
+                <span class="kw-2">&amp;mut </span>stderr_buf,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">stdout_buf</span>), <span class="ident">from_glib_full</span>(<span class="ident">stderr_buf</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">communicate_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_subprocess_communicate_async</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">stdin_buf</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = communicate_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_subprocess_communicate_async(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                stdin_buf.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">communicate_future</span>(
+    <span class="kw">pub fn </span>communicate_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">stdin_buf</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box_</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span>
-                    <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>,
-                <span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">stdin_buf</span> <span class="op">=</span> <span class="ident">stdin_buf</span>.<span class="ident">map</span>(<span class="ident">ToOwned::to_owned</span>);
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
+    ) -&gt; Pin&lt;
+        Box_&lt;
+            <span class="kw">dyn </span>std::future::Future&lt;
+                    Output = <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;,
+                &gt; + <span class="lifetime">&#39;static</span>,
+        &gt;,
+    &gt; {
+        <span class="kw">let </span>stdin_buf = stdin_buf.map(ToOwned::to_owned);
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">communicate_async</span>(
-                    <span class="ident">stdin_buf</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">::std::borrow::Borrow::borrow</span>),
-                    <span class="prelude-val">Some</span>(<span class="ident">cancellable</span>),
-                    <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                        <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.communicate_async(
+                    stdin_buf.as_ref().map(::std::borrow::Borrow::borrow),
+                    <span class="prelude-val">Some</span>(cancellable),
+                    <span class="kw">move </span>|res| {
+                        send.resolve(res);
                     },
                 );
             },
         ))
     }
 
-    <span class="doccomment">/// Like [`communicate()`][Self::communicate()], but validates the output of the</span>
-    <span class="doccomment">/// process as UTF-8, and returns it as a regular NUL terminated string.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On error, `stdout_buf` and `stderr_buf` will be set to undefined values and</span>
-    <span class="doccomment">/// should not be used.</span>
-    <span class="doccomment">/// ## `stdin_buf`</span>
-    <span class="doccomment">/// data to send to the stdin of the subprocess, or [`None`]</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `stdout_buf`</span>
-    <span class="doccomment">/// data read from the subprocess stdout</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `stderr_buf`</span>
-    <span class="doccomment">/// data read from the subprocess stderr</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_communicate_utf8&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">communicate_utf8</span>(
+    <span class="doccomment">/// Like [`communicate()`][Self::communicate()], but validates the output of the
+    /// process as UTF-8, and returns it as a regular NUL terminated string.
+    ///
+    /// On error, `stdout_buf` and `stderr_buf` will be set to undefined values and
+    /// should not be used.
+    /// ## `stdin_buf`
+    /// data to send to the stdin of the subprocess, or [`None`]
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable]
+    ///
+    /// # Returns
+    ///
+    ///
+    /// ## `stdout_buf`
+    /// data read from the subprocess stdout
+    ///
+    /// ## `stderr_buf`
+    /// data read from the subprocess stderr
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_communicate_utf8&quot;</span>)]
+    </span><span class="kw">pub fn </span>communicate_utf8(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">stdin_buf</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stdout_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">stderr_buf</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_communicate_utf8</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">stdin_buf</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stdout_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">stderr_buf</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::GString&gt;, <span class="prelude-ty">Option</span>&lt;glib::GString&gt;), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_subprocess_communicate_utf8(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                stdin_buf.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>stdout_buf,
+                <span class="kw-2">&amp;mut </span>stderr_buf,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">stdout_buf</span>), <span class="ident">from_glib_full</span>(<span class="ident">stderr_buf</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Use an operating-system specific method to attempt an immediate,</span>
-    <span class="doccomment">/// forceful termination of the process. There is no mechanism to</span>
-    <span class="doccomment">/// determine whether or not the request itself was successful;</span>
-    <span class="doccomment">/// however, you can use [`wait()`][Self::wait()] to monitor the status of</span>
-    <span class="doccomment">/// the process after calling this function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On Unix, this function sends `SIGKILL`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_force_exit&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">force_exit</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_subprocess_force_exit</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+    <span class="doccomment">/// Use an operating-system specific method to attempt an immediate,
+    /// forceful termination of the process. There is no mechanism to
+    /// determine whether or not the request itself was successful;
+    /// however, you can use [`wait()`][Self::wait()] to monitor the status of
+    /// the process after calling this function.
+    ///
+    /// On Unix, this function sends `SIGKILL`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_force_exit&quot;</span>)]
+    </span><span class="kw">pub fn </span>force_exit(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_subprocess_force_exit(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Check the exit status of the subprocess, given that it exited</span>
-    <span class="doccomment">/// normally. This is the value passed to the `exit()` system call or the</span>
-    <span class="doccomment">/// return value from main.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the system WEXITSTATUS macro.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] and</span>
-    <span class="doccomment">/// unless [`has_exited()`][Self::has_exited()] returned [`true`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the exit status</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_exit_status&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_exit_status&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">exit_status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::g_subprocess_get_exit_status</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>) }
+    <span class="doccomment">/// Check the exit status of the subprocess, given that it exited
+    /// normally. This is the value passed to the `exit()` system call or the
+    /// return value from main.
+    ///
+    /// This is equivalent to the system WEXITSTATUS macro.
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] and
+    /// unless [`has_exited()`][Self::has_exited()] returned [`true`].
+    ///
+    /// # Returns
+    ///
+    /// the exit status
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_exit_status&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_exit_status&quot;</span>)]
+    </span><span class="kw">pub fn </span>exit_status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_exit_status(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
     }
 
-    <span class="doccomment">/// On UNIX, returns the process ID as a decimal string.</span>
-    <span class="doccomment">/// On Windows, returns the result of GetProcessId() also as a string.</span>
-    <span class="doccomment">/// If the subprocess has terminated, this will return [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the subprocess identifier, or [`None`] if the subprocess</span>
-    <span class="doccomment">///  has terminated</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_identifier&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_identifier&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">identifier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_subprocess_get_identifier</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// On UNIX, returns the process ID as a decimal string.
+    /// On Windows, returns the result of GetProcessId() also as a string.
+    /// If the subprocess has terminated, this will return [`None`].
+    ///
+    /// # Returns
+    ///
+    /// the subprocess identifier, or [`None`] if the subprocess
+    ///  has terminated
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_identifier&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_identifier&quot;</span>)]
+    </span><span class="kw">pub fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_identifier(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Check if the given subprocess exited normally (ie: by way of `exit()`</span>
-    <span class="doccomment">/// or return from `main()`).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the system WIFEXITED macro.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] has</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the case of a normal exit</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_if_exited&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_if_exited&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_exited</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_subprocess_get_if_exited</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Check if the given subprocess exited normally (ie: by way of `exit()`
+    /// or return from `main()`).
+    ///
+    /// This is equivalent to the system WIFEXITED macro.
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] has
+    /// returned.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the case of a normal exit
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_if_exited&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_if_exited&quot;</span>)]
+    </span><span class="kw">pub fn </span>has_exited(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_exited(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Check if the given subprocess terminated in response to a signal.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the system WIFSIGNALED macro.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] has</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the case of termination due to a signal</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_if_signaled&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_if_signaled&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">has_signaled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_subprocess_get_if_signaled</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Check if the given subprocess terminated in response to a signal.
+    ///
+    /// This is equivalent to the system WIFSIGNALED macro.
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] has
+    /// returned.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the case of termination due to a signal
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_if_signaled&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_if_signaled&quot;</span>)]
+    </span><span class="kw">pub fn </span>has_signaled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_signaled(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the raw status code of the process, as from `waitpid()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This value has no particular meaning, but it can be used with the</span>
-    <span class="doccomment">/// macros defined by the system headers such as WIFEXITED. It can also</span>
-    <span class="doccomment">/// be used with `g_spawn_check_wait_status()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is more likely that you want to use [`has_exited()`][Self::has_exited()]</span>
-    <span class="doccomment">/// followed by [`exit_status()`][Self::exit_status()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] has</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the (meaningless) `waitpid()` exit status from the kernel</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_status&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_status&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">status</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::g_subprocess_get_status</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>) }
+    <span class="doccomment">/// Gets the raw status code of the process, as from `waitpid()`.
+    ///
+    /// This value has no particular meaning, but it can be used with the
+    /// macros defined by the system headers such as WIFEXITED. It can also
+    /// be used with `g_spawn_check_wait_status()`.
+    ///
+    /// It is more likely that you want to use [`has_exited()`][Self::has_exited()]
+    /// followed by [`exit_status()`][Self::exit_status()].
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] has
+    /// returned.
+    ///
+    /// # Returns
+    ///
+    /// the (meaningless) `waitpid()` exit status from the kernel
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_status&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_status&quot;</span>)]
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_status(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
     }
 
-    <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stderr output of</span>
-    <span class="doccomment">/// `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The process must have been created with [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE],</span>
-    <span class="doccomment">/// otherwise [`None`] will be returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the stderr pipe</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_stderr_pipe&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_stderr_pipe&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stderr_pipe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InputStream</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_subprocess_get_stderr_pipe</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stderr output of
+    /// `self`.
+    ///
+    /// The process must have been created with [`SubprocessFlags::STDERR_PIPE`][crate::SubprocessFlags::STDERR_PIPE],
+    /// otherwise [`None`] will be returned.
+    ///
+    /// # Returns
+    ///
+    /// the stderr pipe
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_stderr_pipe&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_stderr_pipe&quot;</span>)]
+    </span><span class="kw">pub fn </span>stderr_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;InputStream&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stderr_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the [`OutputStream`][crate::OutputStream] that you can write to in order to give data</span>
-    <span class="doccomment">/// to the stdin of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The process must have been created with [`SubprocessFlags::STDIN_PIPE`][crate::SubprocessFlags::STDIN_PIPE] and</span>
-    <span class="doccomment">/// not [`SubprocessFlags::STDIN_INHERIT`][crate::SubprocessFlags::STDIN_INHERIT], otherwise [`None`] will be returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the stdout pipe</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_stdin_pipe&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_stdin_pipe&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdin_pipe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">OutputStream</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_subprocess_get_stdin_pipe</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Gets the [`OutputStream`][crate::OutputStream] that you can write to in order to give data
+    /// to the stdin of `self`.
+    ///
+    /// The process must have been created with [`SubprocessFlags::STDIN_PIPE`][crate::SubprocessFlags::STDIN_PIPE] and
+    /// not [`SubprocessFlags::STDIN_INHERIT`][crate::SubprocessFlags::STDIN_INHERIT], otherwise [`None`] will be returned.
+    ///
+    /// # Returns
+    ///
+    /// the stdout pipe
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_stdin_pipe&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_stdin_pipe&quot;</span>)]
+    </span><span class="kw">pub fn </span>stdin_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;OutputStream&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdin_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stdout output of</span>
-    <span class="doccomment">/// `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The process must have been created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],</span>
-    <span class="doccomment">/// otherwise [`None`] will be returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the stdout pipe</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_stdout_pipe&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_stdout_pipe&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">stdout_pipe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">InputStream</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_subprocess_get_stdout_pipe</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stdout output of
+    /// `self`.
+    ///
+    /// The process must have been created with [`SubprocessFlags::STDOUT_PIPE`][crate::SubprocessFlags::STDOUT_PIPE],
+    /// otherwise [`None`] will be returned.
+    ///
+    /// # Returns
+    ///
+    /// the stdout pipe
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_stdout_pipe&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_stdout_pipe&quot;</span>)]
+    </span><span class="kw">pub fn </span>stdout_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;InputStream&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdout_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Checks if the process was &quot;successful&quot;. A process is considered</span>
-    <span class="doccomment">/// successful if it exited cleanly with an exit status of 0, either by</span>
-    <span class="doccomment">/// way of the `exit()` system call or return from `main()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] has</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the process exited cleanly with a exit status of 0</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_successful&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_successful&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_successful</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_subprocess_get_successful</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Checks if the process was &quot;successful&quot;. A process is considered
+    /// successful if it exited cleanly with an exit status of 0, either by
+    /// way of the `exit()` system call or return from `main()`.
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] has
+    /// returned.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the process exited cleanly with a exit status of 0
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_successful&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_successful&quot;</span>)]
+    </span><span class="kw">pub fn </span>is_successful(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_successful(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Get the signal number that caused the subprocess to terminate, given</span>
-    <span class="doccomment">/// that it terminated due to a signal.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is equivalent to the system WTERMSIG macro.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function before [`wait()`][Self::wait()] and</span>
-    <span class="doccomment">/// unless [`has_signaled()`][Self::has_signaled()] returned [`true`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the signal causing termination</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_get_term_sig&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_term_sig&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">term_sig</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::g_subprocess_get_term_sig</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>) }
+    <span class="doccomment">/// Get the signal number that caused the subprocess to terminate, given
+    /// that it terminated due to a signal.
+    ///
+    /// This is equivalent to the system WTERMSIG macro.
+    ///
+    /// It is an error to call this function before [`wait()`][Self::wait()] and
+    /// unless [`has_signaled()`][Self::has_signaled()] returned [`true`].
+    ///
+    /// # Returns
+    ///
+    /// the signal causing termination
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_get_term_sig&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_term_sig&quot;</span>)]
+    </span><span class="kw">pub fn </span>term_sig(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_term_sig(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
     }
 
-    <span class="doccomment">/// Sends the UNIX signal `signal_num` to the subprocess, if it is still</span>
-    <span class="doccomment">/// running.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This API is race-free. If the subprocess has terminated, it will not</span>
-    <span class="doccomment">/// be signalled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This API is not available on Windows.</span>
-    <span class="doccomment">/// ## `signal_num`</span>
-    <span class="doccomment">/// the signal number to send</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">not</span>(<span class="ident">windows</span>), <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_send_signal&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_signal</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">signal_num</span>: <span class="ident">i32</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_subprocess_send_signal</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">signal_num</span>);
+    <span class="doccomment">/// Sends the UNIX signal `signal_num` to the subprocess, if it is still
+    /// running.
+    ///
+    /// This API is race-free. If the subprocess has terminated, it will not
+    /// be signalled.
+    ///
+    /// This API is not available on Windows.
+    /// ## `signal_num`
+    /// the signal number to send
+    </span><span class="attribute">#[cfg(any(not(windows), feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(not(windows))))]
+    #[doc(alias = <span class="string">&quot;g_subprocess_send_signal&quot;</span>)]
+    </span><span class="kw">pub fn </span>send_signal(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_num: i32) {
+        <span class="kw">unsafe </span>{
+            ffi::g_subprocess_send_signal(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, signal_num);
         }
     }
 
-    <span class="doccomment">/// Synchronously wait for the subprocess to terminate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// After the process terminates you can query its exit status with</span>
-    <span class="doccomment">/// functions such as [`has_exited()`][Self::has_exited()] and</span>
-    <span class="doccomment">/// [`exit_status()`][Self::exit_status()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function does not fail in the case of the subprocess having</span>
-    <span class="doccomment">/// abnormal termination. See [`wait_check()`][Self::wait_check()] for that.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Cancelling `cancellable` doesn&#39;t kill the subprocess. Call</span>
-    <span class="doccomment">/// [`force_exit()`][Self::force_exit()] if it is desirable.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] on success, [`false`] if `cancellable` was cancelled</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_wait&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_wait</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Synchronously wait for the subprocess to terminate.
+    ///
+    /// After the process terminates you can query its exit status with
+    /// functions such as [`has_exited()`][Self::has_exited()] and
+    /// [`exit_status()`][Self::exit_status()].
+    ///
+    /// This function does not fail in the case of the subprocess having
+    /// abnormal termination. See [`wait_check()`][Self::wait_check()] for that.
+    ///
+    /// Cancelling `cancellable` doesn&#39;t kill the subprocess. Call
+    /// [`force_exit()`][Self::force_exit()] if it is desirable.
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable]
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success, [`false`] if `cancellable` was cancelled
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_wait&quot;</span>)]
+    </span><span class="kw">pub fn </span>wait(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_subprocess_wait(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Wait for the subprocess to terminate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is the asynchronous version of [`wait()`][Self::wait()].</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback` to call when the operation is complete</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_wait_async&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_async</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Wait for the subprocess to terminate.
+    ///
+    /// This is the asynchronous version of [`wait()`][Self::wait()].
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// ## `callback`
+    /// a `GAsyncReadyCallback` to call when the operation is complete
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_wait_async&quot;</span>)]
+    </span><span class="kw">pub fn </span>wait_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">wait_async_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wait_async_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_wait_finish</span>(<span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">res</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_subprocess_wait_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">wait_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_subprocess_wait_async</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = wait_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_subprocess_wait_async(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_future</span>(
+    <span class="kw">pub fn </span>wait_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">wait_async</span>(<span class="prelude-val">Some</span>(<span class="ident">cancellable</span>), <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                    <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.wait_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
+                    send.resolve(res);
                 });
             },
         ))
     }
 
-    <span class="doccomment">/// Combines [`wait()`][Self::wait()] with `g_spawn_check_wait_status()`.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] on success, [`false`] if process exited abnormally, or</span>
-    <span class="doccomment">/// `cancellable` was cancelled</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_wait_check&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_check</span>(
+    <span class="doccomment">/// Combines [`wait()`][Self::wait()] with `g_spawn_check_wait_status()`.
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable]
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success, [`false`] if process exited abnormally, or
+    /// `cancellable` was cancelled
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_wait_check&quot;</span>)]
+    </span><span class="kw">pub fn </span>wait_check(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_wait_check</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_subprocess_wait_check(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Combines [`wait_async()`][Self::wait_async()] with `g_spawn_check_wait_status()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is the asynchronous version of [`wait_check()`][Self::wait_check()].</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback` to call when the operation is complete</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_subprocess_wait_check_async&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_check_async</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Combines [`wait_async()`][Self::wait_async()] with `g_spawn_check_wait_status()`.
+    ///
+    /// This is the asynchronous version of [`wait_check()`][Self::wait_check()].
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// ## `callback`
+    /// a `GAsyncReadyCallback` to call when the operation is complete
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_subprocess_wait_check_async&quot;</span>)]
+    </span><span class="kw">pub fn </span>wait_check_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">wait_check_async_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wait_check_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_subprocess_wait_check_finish</span>(<span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">res</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_subprocess_wait_check_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">wait_check_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_subprocess_wait_check_async</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = wait_check_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_subprocess_wait_check_async(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_check_future</span>(
+    <span class="kw">pub fn </span>wait_check_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">wait_check_async</span>(<span class="prelude-val">Some</span>(<span class="ident">cancellable</span>), <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                    <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.wait_check_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
+                    send.resolve(res);
                 });
             },
         ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Subprocess</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Subprocess&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Subprocess {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;Subprocess&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

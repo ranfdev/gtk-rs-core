@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib_macros/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../glib_macros/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib_macros/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -812,742 +807,913 @@
 <span id="734">734</span>
 <span id="735">735</span>
 <span id="736">736</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+<span id="737">737</span>
+<span id="738">738</span>
+<span id="739">739</span>
+<span id="740">740</span>
+<span id="741">741</span>
+<span id="742">742</span>
+<span id="743">743</span>
+<span id="744">744</span>
+<span id="745">745</span>
+<span id="746">746</span>
+<span id="747">747</span>
+<span id="748">748</span>
+<span id="749">749</span>
+<span id="750">750</span>
+<span id="751">751</span>
+<span id="752">752</span>
+<span id="753">753</span>
+<span id="754">754</span>
+<span id="755">755</span>
+<span id="756">756</span>
+<span id="757">757</span>
+<span id="758">758</span>
+<span id="759">759</span>
+<span id="760">760</span>
+<span id="761">761</span>
+<span id="762">762</span>
+<span id="763">763</span>
+<span id="764">764</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="kw">mod</span> <span class="ident">boxed_derive</span>;
-<span class="kw">mod</span> <span class="ident">clone</span>;
-<span class="kw">mod</span> <span class="ident">closure</span>;
-<span class="kw">mod</span> <span class="ident">downgrade_derive</span>;
-<span class="kw">mod</span> <span class="ident">enum_derive</span>;
-<span class="kw">mod</span> <span class="ident">error_domain_derive</span>;
-<span class="kw">mod</span> <span class="ident">flags_attribute</span>;
-<span class="kw">mod</span> <span class="ident">object_interface_attribute</span>;
-<span class="kw">mod</span> <span class="ident">object_subclass_attribute</span>;
-<span class="kw">mod</span> <span class="ident">shared_boxed_derive</span>;
-<span class="kw">mod</span> <span class="ident">variant_derive</span>;
+</span><span class="kw">mod </span>boxed_derive;
+<span class="kw">mod </span>clone;
+<span class="kw">mod </span>closure;
+<span class="kw">mod </span>downgrade_derive;
+<span class="kw">mod </span>enum_derive;
+<span class="kw">mod </span>error_domain_derive;
+<span class="kw">mod </span>flags_attribute;
+<span class="kw">mod </span>object_interface_attribute;
+<span class="kw">mod </span>object_subclass_attribute;
+<span class="kw">mod </span>shared_boxed_derive;
+<span class="kw">mod </span>variant_derive;
 
-<span class="kw">mod</span> <span class="ident">utils</span>;
+<span class="kw">mod </span>utils;
 
-<span class="kw">use</span> <span class="ident">proc_macro::TokenStream</span>;
-<span class="kw">use</span> <span class="ident">proc_macro_error::proc_macro_error</span>;
-<span class="kw">use</span> <span class="ident">syn</span>::{<span class="ident">parse_macro_input</span>, <span class="ident">DeriveInput</span>, <span class="ident">NestedMeta</span>};
+<span class="kw">use </span>proc_macro::TokenStream;
+<span class="kw">use </span>proc_macro_error::proc_macro_error;
+<span class="kw">use </span>syn::{parse_macro_input, DeriveInput, NestedMeta};
 
-<span class="doccomment">/// Macro for passing variables as strong or weak references into a closure.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This macro can be useful in combination with closures, e.g. signal handlers, to reduce the</span>
-<span class="doccomment">/// boilerplate required for passing strong or weak references into the closure. It will</span>
-<span class="doccomment">/// automatically create the new reference and pass it with the same name into the closure.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If upgrading the weak reference to a strong reference inside the closure is failing, the</span>
-<span class="doccomment">/// closure is immediately returning an optional default return value. If none is provided, `()` is</span>
-<span class="doccomment">/// returned.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// **⚠️ IMPORTANT ⚠️**</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `glib` needs to be in scope, so unless it&#39;s one of the direct crate dependencies, you need to</span>
-<span class="doccomment">/// import it because `clone!` is using it. For example:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// use gtk::glib;</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Debugging</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// In case something goes wrong inside the `clone!` macro, we use the [`g_debug`] macro. Meaning</span>
-<span class="doccomment">/// that if you want to see these debug messages, you&#39;ll have to set the `G_MESSAGES_DEBUG`</span>
-<span class="doccomment">/// environment variable when running your code (either in the code directly or when running the</span>
-<span class="doccomment">/// binary) to either &quot;all&quot; or [`CLONE_MACRO_LOG_DOMAIN`]:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`g_debug`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/macro.g_debug.html</span>
-<span class="doccomment">/// [`CLONE_MACRO_LOG_DOMAIN`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/constant.CLONE_MACRO_LOG_DOMAIN.html</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// use glib::CLONE_MACRO_LOG_DOMAIN;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// std::env::set_var(&quot;G_MESSAGES_DEBUG&quot;, CLONE_MACRO_LOG_DOMAIN);</span>
-<span class="doccomment">/// std::env::set_var(&quot;G_MESSAGES_DEBUG&quot;, &quot;all&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Or:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```bash</span>
-<span class="doccomment">/// $ G_MESSAGES_DEBUG=all ./binary</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Passing a strong reference</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib_macros::clone;</span>
-<span class="doccomment">/// use std::rc::Rc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let v = Rc::new(1);</span>
-<span class="doccomment">/// let closure = clone!(@strong v =&gt; move |x| {</span>
-<span class="doccomment">///     println!(&quot;v: {}, x: {}&quot;, v, x);</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// closure(2);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Passing a weak reference</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib_macros::clone;</span>
-<span class="doccomment">/// use std::rc::Rc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let u = Rc::new(2);</span>
-<span class="doccomment">/// let closure = clone!(@weak u =&gt; move |x| {</span>
-<span class="doccomment">///     println!(&quot;u: {}, x: {}&quot;, u, x);</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// closure(3);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #### Allowing a nullable weak reference</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// In some cases, even if the weak references can&#39;t be retrieved, you might want to still have</span>
-<span class="doccomment">/// your closure called. In this case, you need to use `@weak-allow-none`:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib_macros::clone;</span>
-<span class="doccomment">/// use std::rc::Rc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let closure = {</span>
-<span class="doccomment">///     // This `Rc` won&#39;t be available in the closure because it&#39;s dropped at the end of the</span>
-<span class="doccomment">///     // current block</span>
-<span class="doccomment">///     let u = Rc::new(2);</span>
-<span class="doccomment">///     clone!(@weak-allow-none u =&gt; @default-return false, move |x| {</span>
-<span class="doccomment">///         // We need to use a Debug print for `u` because it&#39;ll be an `Option`.</span>
-<span class="doccomment">///         println!(&quot;u: {:?}, x: {}&quot;, u, x);</span>
-<span class="doccomment">///         true</span>
-<span class="doccomment">///     })</span>
-<span class="doccomment">/// };</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(closure(3), true);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Renaming variables</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib_macros::clone;</span>
-<span class="doccomment">/// use std::rc::Rc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let v = Rc::new(1);</span>
-<span class="doccomment">/// let u = Rc::new(2);</span>
-<span class="doccomment">/// let closure = clone!(@strong v as y, @weak u =&gt; move |x| {</span>
-<span class="doccomment">///     println!(&quot;v as y: {}, u: {}, x: {}&quot;, y, u, x);</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// closure(3);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Providing a default return value if upgrading a weak reference fails</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// You can do it in two different ways:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Either by providing the value yourself using `@default-return`:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib_macros::clone;</span>
-<span class="doccomment">/// use std::rc::Rc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let v = Rc::new(1);</span>
-<span class="doccomment">/// let closure = clone!(@weak v =&gt; @default-return false, move |x| {</span>
-<span class="doccomment">///     println!(&quot;v: {}, x: {}&quot;, v, x);</span>
-<span class="doccomment">///     true</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// // Drop value so that the weak reference can&#39;t be upgraded.</span>
-<span class="doccomment">/// drop(v);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// assert_eq!(closure(2), false);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Or by using `@default-panic` (if the value fails to get upgraded, it&#39;ll panic):</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```should_panic</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// # let v = Rc::new(1);</span>
-<span class="doccomment">/// let closure = clone!(@weak v =&gt; @default-panic, move |x| {</span>
-<span class="doccomment">///     println!(&quot;v: {}, x: {}&quot;, v, x);</span>
-<span class="doccomment">///     true</span>
-<span class="doccomment">/// });</span>
-<span class="doccomment">/// # drop(v);</span>
-<span class="doccomment">/// # assert_eq!(closure(2), false);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Errors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Here is a list of errors you might encounter:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// **Missing `@weak` or `@strong`**:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```compile_fail</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// let v = Rc::new(1);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let closure = clone!(v =&gt; move |x| println!(&quot;v: {}, x: {}&quot;, v, x));</span>
-<span class="doccomment">/// # drop(v);</span>
-<span class="doccomment">/// # closure(2);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// **Passing `self` as an argument**:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```compile_fail</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// #[derive(Debug)]</span>
-<span class="doccomment">/// struct Foo;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// impl Foo {</span>
-<span class="doccomment">///     fn foo(&amp;self) {</span>
-<span class="doccomment">///         let closure = clone!(@strong self =&gt; move |x| {</span>
-<span class="doccomment">///             println!(&quot;self: {:?}&quot;, self);</span>
-<span class="doccomment">///         });</span>
-<span class="doccomment">///         # closure(2);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If you want to use `self` directly, you&#39;ll need to rename it:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// #[derive(Debug)]</span>
-<span class="doccomment">/// struct Foo;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// impl Foo {</span>
-<span class="doccomment">///     fn foo(&amp;self) {</span>
-<span class="doccomment">///         let closure = clone!(@strong self as this =&gt; move |x| {</span>
-<span class="doccomment">///             println!(&quot;self: {:?}&quot;, this);</span>
-<span class="doccomment">///         });</span>
-<span class="doccomment">///         # closure(2);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// **Passing fields directly**</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```compile_fail</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// #[derive(Debug)]</span>
-<span class="doccomment">/// struct Foo {</span>
-<span class="doccomment">///     v: Rc&lt;usize&gt;,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// impl Foo {</span>
-<span class="doccomment">///     fn foo(&amp;self) {</span>
-<span class="doccomment">///         let closure = clone!(@strong self.v =&gt; move |x| {</span>
-<span class="doccomment">///             println!(&quot;self.v: {:?}&quot;, v);</span>
-<span class="doccomment">///         });</span>
-<span class="doccomment">///         # closure(2);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// You can do it by renaming it:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// # use glib;</span>
-<span class="doccomment">/// # use glib_macros::clone;</span>
-<span class="doccomment">/// # use std::rc::Rc;</span>
-<span class="doccomment">/// # struct Foo {</span>
-<span class="doccomment">/// #     v: Rc&lt;usize&gt;,</span>
-<span class="doccomment">/// # }</span>
-<span class="doccomment">/// impl Foo {</span>
-<span class="doccomment">///     fn foo(&amp;self) {</span>
-<span class="doccomment">///         let closure = clone!(@strong self.v as v =&gt; move |x| {</span>
-<span class="doccomment">///             println!(&quot;self.v: {}&quot;, v);</span>
-<span class="doccomment">///         });</span>
-<span class="doccomment">///         # closure(2);</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone</span>(<span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="ident">clone::clone_inner</span>(<span class="ident">item</span>)
+<span class="doccomment">/// Macro for passing variables as strong or weak references into a closure.
+///
+/// This macro can be useful in combination with closures, e.g. signal handlers, to reduce the
+/// boilerplate required for passing strong or weak references into the closure. It will
+/// automatically create the new reference and pass it with the same name into the closure.
+///
+/// If upgrading the weak reference to a strong reference inside the closure is failing, the
+/// closure is immediately returning an optional default return value. If none is provided, `()` is
+/// returned.
+///
+/// **⚠️ IMPORTANT ⚠️**
+///
+/// `glib` needs to be in scope, so unless it&#39;s one of the direct crate dependencies, you need to
+/// import it because `clone!` is using it. For example:
+///
+/// ```rust,ignore
+/// use gtk::glib;
+/// ```
+///
+/// ### Debugging
+///
+/// In case something goes wrong inside the `clone!` macro, we use the [`g_debug`] macro. Meaning
+/// that if you want to see these debug messages, you&#39;ll have to set the `G_MESSAGES_DEBUG`
+/// environment variable when running your code (either in the code directly or when running the
+/// binary) to either &quot;all&quot; or [`CLONE_MACRO_LOG_DOMAIN`]:
+///
+/// [`g_debug`]: ../glib/macro.g_debug.html
+/// [`CLONE_MACRO_LOG_DOMAIN`]: ../glib/constant.CLONE_MACRO_LOG_DOMAIN.html
+///
+/// ```rust,ignore
+/// use glib::CLONE_MACRO_LOG_DOMAIN;
+///
+/// std::env::set_var(&quot;G_MESSAGES_DEBUG&quot;, CLONE_MACRO_LOG_DOMAIN);
+/// std::env::set_var(&quot;G_MESSAGES_DEBUG&quot;, &quot;all&quot;);
+/// ```
+///
+/// Or:
+///
+/// ```bash
+/// $ G_MESSAGES_DEBUG=all ./binary
+/// ```
+///
+/// ### Passing a strong reference
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+/// use std::rc::Rc;
+///
+/// let v = Rc::new(1);
+/// let closure = clone!(@strong v =&gt; move |x| {
+///     println!(&quot;v: {}, x: {}&quot;, v, x);
+/// });
+///
+/// closure(2);
+/// ```
+///
+/// ### Passing a weak reference
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+/// use std::rc::Rc;
+///
+/// let u = Rc::new(2);
+/// let closure = clone!(@weak u =&gt; move |x| {
+///     println!(&quot;u: {}, x: {}&quot;, u, x);
+/// });
+///
+/// closure(3);
+/// ```
+///
+/// #### Allowing a nullable weak reference
+///
+/// In some cases, even if the weak references can&#39;t be retrieved, you might want to still have
+/// your closure called. In this case, you need to use `@weak-allow-none`:
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+/// use std::rc::Rc;
+///
+/// let closure = {
+///     // This `Rc` won&#39;t be available in the closure because it&#39;s dropped at the end of the
+///     // current block
+///     let u = Rc::new(2);
+///     clone!(@weak-allow-none u =&gt; @default-return false, move |x| {
+///         // We need to use a Debug print for `u` because it&#39;ll be an `Option`.
+///         println!(&quot;u: {:?}, x: {}&quot;, u, x);
+///         true
+///     })
+/// };
+///
+/// assert_eq!(closure(3), true);
+/// ```
+///
+/// ### Renaming variables
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+/// use std::rc::Rc;
+///
+/// let v = Rc::new(1);
+/// let u = Rc::new(2);
+/// let closure = clone!(@strong v as y, @weak u =&gt; move |x| {
+///     println!(&quot;v as y: {}, u: {}, x: {}&quot;, y, u, x);
+/// });
+///
+/// closure(3);
+/// ```
+///
+/// ### Providing a default return value if upgrading a weak reference fails
+///
+/// You can do it in two different ways:
+///
+/// Either by providing the value yourself using `@default-return`:
+///
+/// ```
+/// use glib;
+/// use glib_macros::clone;
+/// use std::rc::Rc;
+///
+/// let v = Rc::new(1);
+/// let closure = clone!(@weak v =&gt; @default-return false, move |x| {
+///     println!(&quot;v: {}, x: {}&quot;, v, x);
+///     true
+/// });
+///
+/// // Drop value so that the weak reference can&#39;t be upgraded.
+/// drop(v);
+///
+/// assert_eq!(closure(2), false);
+/// ```
+///
+/// Or by using `@default-panic` (if the value fails to get upgraded, it&#39;ll panic):
+///
+/// ```should_panic
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// # let v = Rc::new(1);
+/// let closure = clone!(@weak v =&gt; @default-panic, move |x| {
+///     println!(&quot;v: {}, x: {}&quot;, v, x);
+///     true
+/// });
+/// # drop(v);
+/// # assert_eq!(closure(2), false);
+/// ```
+///
+/// ### Errors
+///
+/// Here is a list of errors you might encounter:
+///
+/// **Missing `@weak` or `@strong`**:
+///
+/// ```compile_fail
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// let v = Rc::new(1);
+///
+/// let closure = clone!(v =&gt; move |x| println!(&quot;v: {}, x: {}&quot;, v, x));
+/// # drop(v);
+/// # closure(2);
+/// ```
+///
+/// **Passing `self` as an argument**:
+///
+/// ```compile_fail
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// #[derive(Debug)]
+/// struct Foo;
+///
+/// impl Foo {
+///     fn foo(&amp;self) {
+///         let closure = clone!(@strong self =&gt; move |x| {
+///             println!(&quot;self: {:?}&quot;, self);
+///         });
+///         # closure(2);
+///     }
+/// }
+/// ```
+///
+/// If you want to use `self` directly, you&#39;ll need to rename it:
+///
+/// ```
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// #[derive(Debug)]
+/// struct Foo;
+///
+/// impl Foo {
+///     fn foo(&amp;self) {
+///         let closure = clone!(@strong self as this =&gt; move |x| {
+///             println!(&quot;self: {:?}&quot;, this);
+///         });
+///         # closure(2);
+///     }
+/// }
+/// ```
+///
+/// **Passing fields directly**
+///
+/// ```compile_fail
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// #[derive(Debug)]
+/// struct Foo {
+///     v: Rc&lt;usize&gt;,
+/// }
+///
+/// impl Foo {
+///     fn foo(&amp;self) {
+///         let closure = clone!(@strong self.v =&gt; move |x| {
+///             println!(&quot;self.v: {:?}&quot;, v);
+///         });
+///         # closure(2);
+///     }
+/// }
+/// ```
+///
+/// You can do it by renaming it:
+///
+/// ```
+/// # use glib;
+/// # use glib_macros::clone;
+/// # use std::rc::Rc;
+/// # struct Foo {
+/// #     v: Rc&lt;usize&gt;,
+/// # }
+/// impl Foo {
+///     fn foo(&amp;self) {
+///         let closure = clone!(@strong self.v as v =&gt; move |x| {
+///             println!(&quot;self.v: {}&quot;, v);
+///         });
+///         # closure(2);
+///     }
+/// }
+/// ```
+</span><span class="attribute">#[proc_macro]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>clone(item: TokenStream) -&gt; TokenStream {
+    clone::clone_inner(item)
 }
 
-<span class="doccomment">/// Macro for creating a [`Closure`] object. This is a wrapper around [`Closure::new`] that</span>
-<span class="doccomment">/// automatically type checks its arguments at run-time.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A `Closure` takes [`Value`] objects as inputs and output. This macro will automatically convert</span>
-<span class="doccomment">/// the inputs to Rust types when invoking its callback, and then will convert the output back to a</span>
-<span class="doccomment">/// `Value`. All inputs must implement the [`FromValue`] trait, and outputs must either implement</span>
-<span class="doccomment">/// the [`ToValue`] trait or be the unit type `()`. Type-checking of inputs is done at run-time; if</span>
-<span class="doccomment">/// incorrect types are passed via [`Closure::invoke`] then the closure will panic. Note that when</span>
-<span class="doccomment">/// passing input types derived from [`Object`] or [`Interface`], you must take care to upcast to</span>
-<span class="doccomment">/// the exact object or interface type that is being received.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Similarly to [`clone!`](crate::clone!), this macro can be useful in combination with signal</span>
-<span class="doccomment">/// handlers to reduce boilerplate when passing references. Unique to `Closure` objects is the</span>
-<span class="doccomment">/// ability to watch an object using a the `@watch` directive. Only an [`Object`] value can be</span>
-<span class="doccomment">/// passed to `@watch`, and only one object can be watched per closure. When an object is watched,</span>
-<span class="doccomment">/// a weak reference to the object is held in the closure. When the object is destroyed, the</span>
-<span class="doccomment">/// closure will become invalidated: all signal handlers connected to the closure will become</span>
-<span class="doccomment">/// disconnected, and any calls to [`Closure::invoke`] on the closure will be silently ignored.</span>
-<span class="doccomment">/// Internally, this is accomplished using [`Object::watch_closure`] on the watched object.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The `@weak-allow-none` and `@strong` captures are also supported and behave the same as in</span>
-<span class="doccomment">/// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these</span>
-<span class="doccomment">/// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html</span>
-<span class="doccomment">/// [`Closure::new`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new</span>
-<span class="doccomment">/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local</span>
-<span class="doccomment">/// [`Closure::invoke`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.invoke</span>
-<span class="doccomment">/// [`Value`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/struct.Value.html</span>
-<span class="doccomment">/// [`FromValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.FromValue.html</span>
-<span class="doccomment">/// [`ToValue`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/value/trait.ToValue.html</span>
-<span class="doccomment">/// [`Interface`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Interface.html</span>
-<span class="doccomment">/// [`Object`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/struct.Object.html</span>
-<span class="doccomment">/// [`Object::watch_closure`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/object/trait.ObjectExt.html#tymethod.watch_closure</span>
-<span class="doccomment">/// **⚠️ IMPORTANT ⚠️**</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `glib` needs to be in scope, so unless it&#39;s one of the direct crate dependencies, you need to</span>
-<span class="doccomment">/// import it because `closure!` is using it. For example:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// use gtk::glib;</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Using as a closure object</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib_macros::closure;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let concat_str = closure!(|s: &amp;str| s.to_owned() + &quot; World&quot;);</span>
-<span class="doccomment">/// let result = concat_str.invoke::&lt;String&gt;(&amp;[&amp;&quot;Hello&quot;]);</span>
-<span class="doccomment">/// assert_eq!(result, &quot;Hello World&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Connecting to a signal</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// For wrapping closures that can&#39;t be sent across threads, the</span>
-<span class="doccomment">/// [`closure_local!`](crate::closure_local!) macro can be used. It has the same syntax as</span>
-<span class="doccomment">/// `closure!`, but instead uses [`Closure::new_local`] internally.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib_macros::closure_local;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();</span>
-<span class="doccomment">/// obj.connect_closure(</span>
-<span class="doccomment">///     &quot;notify&quot;, false,</span>
-<span class="doccomment">///     closure_local!(|_obj: glib::Object, pspec: glib::ParamSpec| {</span>
-<span class="doccomment">///         println!(&quot;property notify: {}&quot;, pspec.name());</span>
-<span class="doccomment">///     }));</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Object Watching</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib_macros::closure_local;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let closure = {</span>
-<span class="doccomment">///     let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();</span>
-<span class="doccomment">///     let closure = closure_local!(@watch obj =&gt; move || {</span>
-<span class="doccomment">///         obj.type_().name()</span>
-<span class="doccomment">///     });</span>
-<span class="doccomment">///     assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;GObject&quot;);</span>
-<span class="doccomment">///     closure</span>
-<span class="doccomment">/// };</span>
-<span class="doccomment">/// // `obj` is dropped, closure invalidated so it always does nothing and returns None</span>
-<span class="doccomment">/// closure.invoke::&lt;()&gt;(&amp;[]);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `@watch` has special behavior when connected to a signal:</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib_macros::closure_local;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();</span>
-<span class="doccomment">/// {</span>
-<span class="doccomment">///     let other = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();</span>
-<span class="doccomment">///     obj.connect_closure(</span>
-<span class="doccomment">///         &quot;notify&quot;, false,</span>
-<span class="doccomment">///         closure_local!(@watch other as b =&gt; move |a: glib::Object, pspec: glib::ParamSpec| {</span>
-<span class="doccomment">///             let value = a.property_value(pspec.name());</span>
-<span class="doccomment">///             b.set_property(pspec.name(), &amp;value);</span>
-<span class="doccomment">///         }));</span>
-<span class="doccomment">///     // The signal handler will disconnect automatically at the end of this</span>
-<span class="doccomment">///     // block when `other` is dropped.</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ### Weak and Strong References</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib;</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib_macros::closure;</span>
-<span class="doccomment">/// use std::sync::Arc;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let closure = {</span>
-<span class="doccomment">///     let a = Arc::new(String::from(&quot;Hello&quot;));</span>
-<span class="doccomment">///     let b = Arc::new(String::from(&quot;World&quot;));</span>
-<span class="doccomment">///     let closure = closure!(@strong a, @weak-allow-none b =&gt; move || {</span>
-<span class="doccomment">///         // `a` is Arc&lt;String&gt;, `b` is Option&lt;Arc&lt;String&gt;&gt;</span>
-<span class="doccomment">///         format!(&quot;{} {}&quot;, a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| &quot;Moon&quot;))</span>
-<span class="doccomment">///     });</span>
-<span class="doccomment">///     assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;Hello World&quot;);</span>
-<span class="doccomment">///     closure</span>
-<span class="doccomment">/// };</span>
-<span class="doccomment">/// // `a` still kept alive, `b` is dropped</span>
-<span class="doccomment">/// assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;Hello Moon&quot;);</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">closure</span>(<span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="ident">closure::closure_inner</span>(<span class="ident">item</span>, <span class="string">&quot;new&quot;</span>)
+<span class="doccomment">/// Macro for creating a [`Closure`] object. This is a wrapper around [`Closure::new`] that
+/// automatically type checks its arguments at run-time.
+///
+/// A `Closure` takes [`Value`] objects as inputs and output. This macro will automatically convert
+/// the inputs to Rust types when invoking its callback, and then will convert the output back to a
+/// `Value`. All inputs must implement the [`FromValue`] trait, and outputs must either implement
+/// the [`ToValue`] trait or be the unit type `()`. Type-checking of inputs is done at run-time; if
+/// incorrect types are passed via [`Closure::invoke`] then the closure will panic. Note that when
+/// passing input types derived from [`Object`] or [`Interface`], you must take care to upcast to
+/// the exact object or interface type that is being received.
+///
+/// Similarly to [`clone!`](crate::clone!), this macro can be useful in combination with signal
+/// handlers to reduce boilerplate when passing references. Unique to `Closure` objects is the
+/// ability to watch an object using a the `@watch` directive. Only an [`Object`] value can be
+/// passed to `@watch`, and only one object can be watched per closure. When an object is watched,
+/// a weak reference to the object is held in the closure. When the object is destroyed, the
+/// closure will become invalidated: all signal handlers connected to the closure will become
+/// disconnected, and any calls to [`Closure::invoke`] on the closure will be silently ignored.
+/// Internally, this is accomplished using [`Object::watch_closure`] on the watched object.
+///
+/// The `@weak-allow-none` and `@strong` captures are also supported and behave the same as in
+/// [`clone!`](crate::clone!), as is aliasing captures with the `as` keyword. Notably, these
+/// captures are able to reference `Rc` and `Arc` values in addition to `Object` values.
+///
+/// [`Closure`]: ../glib/closure/struct.Closure.html
+/// [`Closure::new`]: ../glib/closure/struct.Closure.html#method.new
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
+/// [`Closure::invoke`]: ../glib/closure/struct.Closure.html#method.invoke
+/// [`Value`]: ../glib/value/struct.Value.html
+/// [`FromValue`]: ../glib/value/trait.FromValue.html
+/// [`ToValue`]: ../glib/value/trait.ToValue.html
+/// [`Interface`]: ../glib/object/struct.Interface.html
+/// [`Object`]: ../glib/object/struct.Object.html
+/// [`Object::watch_closure`]: ../glib/object/trait.ObjectExt.html#tymethod.watch_closure
+/// **⚠️ IMPORTANT ⚠️**
+///
+/// `glib` needs to be in scope, so unless it&#39;s one of the direct crate dependencies, you need to
+/// import it because `closure!` is using it. For example:
+///
+/// ```rust,ignore
+/// use gtk::glib;
+/// ```
+///
+/// ### Using as a closure object
+///
+/// ```
+/// use glib_macros::closure;
+///
+/// let concat_str = closure!(|s: &amp;str| s.to_owned() + &quot; World&quot;);
+/// let result = concat_str.invoke::&lt;String&gt;(&amp;[&amp;&quot;Hello&quot;]);
+/// assert_eq!(result, &quot;Hello World&quot;);
+/// ```
+///
+/// ### Connecting to a signal
+///
+/// For wrapping closures that can&#39;t be sent across threads, the
+/// [`closure_local!`](crate::closure_local!) macro can be used. It has the same syntax as
+/// `closure!`, but instead uses [`Closure::new_local`] internally.
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();
+/// obj.connect_closure(
+///     &quot;notify&quot;, false,
+///     closure_local!(|_obj: glib::Object, pspec: glib::ParamSpec| {
+///         println!(&quot;property notify: {}&quot;, pspec.name());
+///     }));
+/// ```
+///
+/// ### Object Watching
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let closure = {
+///     let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();
+///     let closure = closure_local!(@watch obj =&gt; move || {
+///         obj.type_().name()
+///     });
+///     assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;GObject&quot;);
+///     closure
+/// };
+/// // `obj` is dropped, closure invalidated so it always does nothing and returns None
+/// closure.invoke::&lt;()&gt;(&amp;[]);
+/// ```
+///
+/// `@watch` has special behavior when connected to a signal:
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure_local;
+///
+/// let obj = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();
+/// {
+///     let other = glib::Object::new::&lt;glib::Object&gt;(&amp;[]).unwrap();
+///     obj.connect_closure(
+///         &quot;notify&quot;, false,
+///         closure_local!(@watch other as b =&gt; move |a: glib::Object, pspec: glib::ParamSpec| {
+///             let value = a.property_value(pspec.name());
+///             b.set_property(pspec.name(), &amp;value);
+///         }));
+///     // The signal handler will disconnect automatically at the end of this
+///     // block when `other` is dropped.
+/// }
+/// ```
+///
+/// ### Weak and Strong References
+///
+/// ```
+/// use glib;
+/// use glib::prelude::*;
+/// use glib_macros::closure;
+/// use std::sync::Arc;
+///
+/// let closure = {
+///     let a = Arc::new(String::from(&quot;Hello&quot;));
+///     let b = Arc::new(String::from(&quot;World&quot;));
+///     let closure = closure!(@strong a, @weak-allow-none b =&gt; move || {
+///         // `a` is Arc&lt;String&gt;, `b` is Option&lt;Arc&lt;String&gt;&gt;
+///         format!(&quot;{} {}&quot;, a, b.as_ref().map(|b| b.as_str()).unwrap_or_else(|| &quot;Moon&quot;))
+///     });
+///     assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;Hello World&quot;);
+///     closure
+/// };
+/// // `a` still kept alive, `b` is dropped
+/// assert_eq!(closure.invoke::&lt;String&gt;(&amp;[]), &quot;Hello Moon&quot;);
+/// ```
+</span><span class="attribute">#[proc_macro]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>closure(item: TokenStream) -&gt; TokenStream {
+    closure::closure_inner(item, <span class="string">&quot;new&quot;</span>)
 }
 
-<span class="doccomment">/// The same as [`closure!`](crate::closure!) but uses [`Closure::new_local`] as a constructor.</span>
-<span class="doccomment">/// This is useful for closures which can&#39;t be sent across threads. See the documentation of</span>
-<span class="doccomment">/// [`closure!`](crate::closure!) for details.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Closure::new_local`]: https://gtk-rs.org/gtk-rs-core/stable/latest/docs/glib/closure/struct.Closure.html#method.new_local</span>
-<span class="attribute">#[<span class="ident">proc_macro</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">closure_local</span>(<span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="ident">closure::closure_inner</span>(<span class="ident">item</span>, <span class="string">&quot;new_local&quot;</span>)
+<span class="doccomment">/// The same as [`closure!`](crate::closure!) but uses [`Closure::new_local`] as a constructor.
+/// This is useful for closures which can&#39;t be sent across threads. See the documentation of
+/// [`closure!`](crate::closure!) for details.
+///
+/// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
+</span><span class="attribute">#[proc_macro]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>closure_local(item: TokenStream) -&gt; TokenStream {
+    closure::closure_inner(item, <span class="string">&quot;new_local&quot;</span>)
 }
 
-<span class="doccomment">/// Derive macro for register a rust enum in the glib type system and derive the</span>
-<span class="doccomment">/// the [`glib::Value`] traits.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib::subclass::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]</span>
-<span class="doccomment">/// #[enum_type(name = &quot;MyEnum&quot;)]</span>
-<span class="doccomment">/// enum MyEnum {</span>
-<span class="doccomment">///     Val,</span>
-<span class="doccomment">///     #[enum_value(name = &quot;My Val&quot;)]</span>
-<span class="doccomment">///     ValWithCustomName,</span>
-<span class="doccomment">///     #[enum_value(name = &quot;My Other Val&quot;, nick = &quot;other&quot;)]</span>
-<span class="doccomment">///     ValWithCustomNameAndNick,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Enum</span>, <span class="ident">attributes</span>(<span class="ident">enum_type</span>, <span class="ident">enum_value</span>))]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">enum_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">enum_derive::impl_enum</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
-    <span class="ident">gen</span>.<span class="ident">into</span>()
+<span class="doccomment">/// Derive macro for register a rust enum in the glib type system and derive the
+/// the [`glib::Value`] traits.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum)]
+/// #[enum_type(name = &quot;MyEnum&quot;)]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = &quot;My Val&quot;)]
+///     ValWithCustomName,
+///     #[enum_value(name = &quot;My Other Val&quot;, nick = &quot;other&quot;)]
+///     ValWithCustomNameAndNick,
+/// }
+/// ```
+///
+/// [`glib::Value`]: ../glib/value/struct.Value.html
+</span><span class="attribute">#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>enum_derive(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>gen = enum_derive::impl_enum(<span class="kw-2">&amp;</span>input);
+    gen.into()
 }
 
-<span class="doccomment">/// Attribute macro for defining flags using the `bitflags` crate.</span>
-<span class="doccomment">/// This macro will also define a `GFlags::type_` function and</span>
-<span class="doccomment">/// the [`glib::Value`] traits.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// The expected `GType` name has to be passed as macro attribute.</span>
-<span class="doccomment">/// The name and nick of each flag can also be optionally defined.</span>
-<span class="doccomment">/// Default name is the flag identifier in CamelCase and default nick</span>
-<span class="doccomment">/// is the identifier in kebab-case.</span>
-<span class="doccomment">/// Combined flags should not be registered with the `GType` system</span>
-<span class="doccomment">/// and so needs to be tagged with the `#[flags_value(skip)]` attribute.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib::subclass::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[glib::flags(name = &quot;MyFlags&quot;)]</span>
-<span class="doccomment">/// enum MyFlags {</span>
-<span class="doccomment">///     #[flags_value(name = &quot;Flag A&quot;, nick = &quot;nick-a&quot;)]</span>
-<span class="doccomment">///     A = 0b00000001,</span>
-<span class="doccomment">///     #[flags_value(name = &quot;Flag B&quot;)]</span>
-<span class="doccomment">///     B = 0b00000010,</span>
-<span class="doccomment">///     #[flags_value(skip)]</span>
-<span class="doccomment">///     AB = Self::A.bits() | Self::B.bits(),</span>
-<span class="doccomment">///     C = 0b00000100,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`glib::Value`]: value/struct.Value.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flags</span>(<span class="ident">attr</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">attr_meta</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">attr</span> <span class="kw">as</span> <span class="ident">NestedMeta</span>);
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">item</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">flags_attribute::impl_flags</span>(<span class="kw-2">&amp;</span><span class="ident">attr_meta</span>, <span class="kw-2">&amp;</span><span class="ident">input</span>);
-    <span class="ident">gen</span>.<span class="ident">into</span>()
+<span class="doccomment">/// Attribute macro for defining flags using the `bitflags` crate.
+/// This macro will also define a `GFlags::type_` function and
+/// the [`glib::Value`] traits.
+///
+/// The expected `GType` name has to be passed as macro attribute.
+/// The name and nick of each flag can also be optionally defined.
+/// Default name is the flag identifier in CamelCase and default nick
+/// is the identifier in kebab-case.
+/// Combined flags should not be registered with the `GType` system
+/// and so needs to be tagged with the `#[flags_value(skip)]` attribute.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[glib::flags(name = &quot;MyFlags&quot;)]
+/// enum MyFlags {
+///     #[flags_value(name = &quot;Flag A&quot;, nick = &quot;nick-a&quot;)]
+///     A = 0b00000001,
+///     #[flags_value(name = &quot;Flag B&quot;)]
+///     B = 0b00000010,
+///     #[flags_value(skip)]
+///     AB = Self::A.bits() | Self::B.bits(),
+///     C = 0b00000100,
+/// }
+/// ```
+///
+/// [`glib::Value`]: ../glib/value/struct.Value.html
+</span><span class="attribute">#[proc_macro_attribute]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>flags(attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>attr_meta = <span class="macro">parse_macro_input!</span>(attr <span class="kw">as </span>NestedMeta);
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(item <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>gen = flags_attribute::impl_flags(<span class="kw-2">&amp;</span>attr_meta, <span class="kw-2">&amp;</span>input);
+    gen.into()
 }
 
-<span class="doccomment">/// Derive macro for defining a GLib error domain and its associated</span>
-<span class="doccomment">/// [`ErrorDomain`] trait.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib::subclass::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Debug, Copy, Clone, glib::ErrorDomain)]</span>
-<span class="doccomment">/// #[error_domain(name = &quot;ExFoo&quot;)]</span>
-<span class="doccomment">/// enum Foo {</span>
-<span class="doccomment">///     Blah,</span>
-<span class="doccomment">///     Baaz,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`ErrorDomain`]: error/trait.ErrorDomain.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">ErrorDomain</span>, <span class="ident">attributes</span>(<span class="ident">error_domain</span>))]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">error_domain_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">error_domain_derive::impl_error_domain</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
-    <span class="ident">gen</span>.<span class="ident">into</span>()
+<span class="doccomment">/// Derive macro for defining a GLib error domain and its associated
+/// [`ErrorDomain`] trait.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Debug, Copy, Clone, glib::ErrorDomain)]
+/// #[error_domain(name = &quot;ExFoo&quot;)]
+/// enum Foo {
+///     Blah,
+///     Baaz,
+/// }
+/// ```
+///
+/// [`ErrorDomain`]: ../glib/error/trait.ErrorDomain.html
+</span><span class="attribute">#[proc_macro_derive(ErrorDomain, attributes(error_domain))]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>error_domain_derive(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>gen = error_domain_derive::impl_error_domain(<span class="kw-2">&amp;</span>input);
+    gen.into()
 }
 
-<span class="doccomment">/// Derive macro for defining a [`BoxedType`]`::type_` function and</span>
-<span class="doccomment">/// the [`glib::Value`] traits.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib::subclass::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]</span>
-<span class="doccomment">/// #[boxed_type(name = &quot;MyBoxed&quot;)]</span>
-<span class="doccomment">/// struct MyBoxed(String);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`BoxedType`]: subclass/boxed/trait.BoxedType.html</span>
-<span class="doccomment">/// [`glib::Value`]: value/struct.Value.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Boxed</span>, <span class="ident">attributes</span>(<span class="ident">boxed_nullable</span>, <span class="ident">boxed_type</span>))]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">boxed_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">boxed_derive::impl_boxed</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
-    <span class="ident">gen</span>.<span class="ident">into</span>()
+<span class="doccomment">/// Derive macro for defining a [`BoxedType`]`::type_` function and
+/// the [`glib::Value`] traits.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::Boxed)]
+/// #[boxed_type(name = &quot;MyBoxed&quot;)]
+/// struct MyBoxed(String);
+/// ```
+///
+/// [`BoxedType`]: ../glib/subclass/boxed/trait.BoxedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
+</span><span class="attribute">#[proc_macro_derive(Boxed, attributes(boxed_type))]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>boxed_derive(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>gen = boxed_derive::impl_boxed(<span class="kw-2">&amp;</span>input);
+    gen.into()
 }
 
-<span class="doccomment">/// Derive macro for defining a [`SharedType`]`::get_type` function and</span>
-<span class="doccomment">/// the [`glib::Value`] traits.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">/// use glib::subclass::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Clone, Debug, PartialEq, Eq)]</span>
-<span class="doccomment">/// struct MySharedInner {</span>
-<span class="doccomment">///   foo: String,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]</span>
-<span class="doccomment">/// #[shared_boxed_type(name = &quot;MySharedBoxed&quot;)]</span>
-<span class="doccomment">/// struct MyShared(std::sync::Arc&lt;MySharedInner&gt;);</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`SharedType`]: subclass/shared/trait.SharedType.html</span>
-<span class="doccomment">/// [`glib::Value`]: value/struct.Value.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">SharedBoxed</span>, <span class="ident">attributes</span>(<span class="ident">shared_boxed_nullable</span>, <span class="ident">shared_boxed_type</span>))]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">shared_boxed_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="kw">let</span> <span class="ident">gen</span> <span class="op">=</span> <span class="ident">shared_boxed_derive::impl_shared_boxed</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>);
-    <span class="ident">gen</span>.<span class="ident">into</span>()
+<span class="doccomment">/// Derive macro for defining a [`SharedType`]`::get_type` function and
+/// the [`glib::Value`] traits.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+/// use glib::subclass::prelude::*;
+///
+/// #[derive(Clone, Debug, PartialEq, Eq)]
+/// struct MySharedInner {
+///   foo: String,
+/// }
+/// #[derive(Clone, Debug, PartialEq, Eq, glib::SharedBoxed)]
+/// #[shared_boxed_type(name = &quot;MySharedBoxed&quot;)]
+/// struct MyShared(std::sync::Arc&lt;MySharedInner&gt;);
+/// ```
+///
+/// [`SharedType`]: ../glib/subclass/shared/trait.SharedType.html
+/// [`glib::Value`]: ../glib/value/struct.Value.html
+</span><span class="attribute">#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_type))]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>shared_boxed_derive(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    <span class="kw">let </span>gen = shared_boxed_derive::impl_shared_boxed(<span class="kw-2">&amp;</span>input);
+    gen.into()
 }
 
-<span class="doccomment">/// Macro for boilerplate of [`ObjectSubclass`] implementations.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This adds implementations for the `type_data()` and `type_()` methods,</span>
-<span class="doccomment">/// which should probably never be defined differently.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It provides default values for the `Instance`, `Class`, and `Interfaces`</span>
-<span class="doccomment">/// type parameters. If these are present, the macro will use the provided value</span>
-<span class="doccomment">/// instead of the default.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Usually the defaults for `Instance` and `Class` will work. `Interfaces` is</span>
-<span class="doccomment">/// necessary for types that implement interfaces.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// type Instance = glib::subclass::simple::InstanceStruct&lt;Self&gt;;</span>
-<span class="doccomment">/// type Class = glib::subclass::simple::ClassStruct&lt;Self&gt;;</span>
-<span class="doccomment">/// type Interfaces = ();</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// If no `new()` or `with_class()` method is provide, the macro adds a `new()`</span>
-<span class="doccomment">/// implementation calling `Default::default()`. So the type needs to implement</span>
-<span class="doccomment">/// `Default`, or this should be overridden.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// fn new() -&gt; Self {</span>
-<span class="doccomment">///     Default::default()</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`ObjectSubclass`]: subclass/types/trait.ObjectSubclass.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">object_subclass</span>(<span class="ident">_attr</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">use</span> <span class="ident">proc_macro_error::abort_call_site</span>;
-    <span class="kw">match</span> <span class="ident">syn::parse</span>::<span class="op">&lt;</span><span class="ident">syn::ItemImpl</span><span class="op">&gt;</span>(<span class="ident">item</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">input</span>) =&gt; <span class="ident">object_subclass_attribute::impl_object_subclass</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>).<span class="ident">into</span>(),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">abort_call_site!</span>(<span class="ident">object_subclass_attribute::WRONG_PLACE_MSG</span>),
+<span class="doccomment">/// Macro for boilerplate of [`ObjectSubclass`] implementations.
+///
+/// This adds implementations for the `type_data()` and `type_()` methods,
+/// which should probably never be defined differently.
+///
+/// It provides default values for the `Instance`, `Class`, and `Interfaces`
+/// type parameters. If these are present, the macro will use the provided value
+/// instead of the default.
+///
+/// Usually the defaults for `Instance` and `Class` will work. `Interfaces` is
+/// necessary for types that implement interfaces.
+///
+/// ```ignore
+/// type Instance = glib::subclass::simple::InstanceStruct&lt;Self&gt;;
+/// type Class = glib::subclass::simple::ClassStruct&lt;Self&gt;;
+/// type Interfaces = ();
+/// ```
+///
+/// If no `new()` or `with_class()` method is provide, the macro adds a `new()`
+/// implementation calling `Default::default()`. So the type needs to implement
+/// `Default`, or this should be overridden.
+///
+/// ```ignore
+/// fn new() -&gt; Self {
+///     Default::default()
+/// }
+/// ```
+///
+/// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
+</span><span class="attribute">#[proc_macro_attribute]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>object_subclass(_attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+    <span class="kw">use </span>proc_macro_error::abort_call_site;
+    <span class="kw">match </span>syn::parse::&lt;syn::ItemImpl&gt;(item) {
+        <span class="prelude-val">Ok</span>(input) =&gt; object_subclass_attribute::impl_object_subclass(<span class="kw-2">&amp;</span>input).into(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">abort_call_site!</span>(object_subclass_attribute::WRONG_PLACE_MSG),
     }
 }
 
-<span class="doccomment">/// Macro for boilerplate of [`ObjectInterface`] implementations.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This adds implementations for the `get_type()` method, which should probably never be defined</span>
-<span class="doccomment">/// differently.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// It provides default values for the `Prerequisites` type parameter. If this present, the macro</span>
-<span class="doccomment">/// will use the provided value instead of the default.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `Prerequisites` is interfaces for types that require a specific base class or interfaces.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```ignore</span>
-<span class="doccomment">/// type Prerequisites = ();</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`ObjectInterface`]: interface/types/trait.ObjectInterface.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_attribute</span>]</span>
-<span class="attribute">#[<span class="ident">proc_macro_error</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">object_interface</span>(<span class="ident">_attr</span>: <span class="ident">TokenStream</span>, <span class="ident">item</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">use</span> <span class="ident">proc_macro_error::abort_call_site</span>;
-    <span class="kw">match</span> <span class="ident">syn::parse</span>::<span class="op">&lt;</span><span class="ident">syn::ItemImpl</span><span class="op">&gt;</span>(<span class="ident">item</span>) {
-        <span class="prelude-val">Ok</span>(<span class="ident">input</span>) =&gt; <span class="ident">object_interface_attribute::impl_object_interface</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>).<span class="ident">into</span>(),
-        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">abort_call_site!</span>(<span class="ident">object_interface_attribute::WRONG_PLACE_MSG</span>),
+<span class="doccomment">/// Macro for boilerplate of [`ObjectInterface`] implementations.
+///
+/// This adds implementations for the `get_type()` method, which should probably never be defined
+/// differently.
+///
+/// It provides default values for the `Prerequisites` type parameter. If this present, the macro
+/// will use the provided value instead of the default.
+///
+/// `Prerequisites` is interfaces for types that require a specific base class or interfaces.
+///
+/// ```ignore
+/// type Prerequisites = ();
+/// ```
+///
+/// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
+</span><span class="attribute">#[proc_macro_attribute]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>object_interface(_attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+    <span class="kw">use </span>proc_macro_error::abort_call_site;
+    <span class="kw">match </span>syn::parse::&lt;syn::ItemImpl&gt;(item) {
+        <span class="prelude-val">Ok</span>(input) =&gt; object_interface_attribute::impl_object_interface(<span class="kw-2">&amp;</span>input).into(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">abort_call_site!</span>(object_interface_attribute::WRONG_PLACE_MSG),
     }
 }
 
-<span class="doccomment">/// Macro for deriving implementations of [`glib::clone::Downgrade`] and</span>
-<span class="doccomment">/// [`glib::clone::Upgrade`] traits and a weak type.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Examples</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## New Type Idiom</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// #[derive(glib::Downgrade)]</span>
-<span class="doccomment">/// pub struct FancyLabel(gtk::Label);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// impl FancyLabel {</span>
-<span class="doccomment">///     pub fn new(label: &amp;str) -&gt; Self {</span>
-<span class="doccomment">///         Self(gtk::LabelBuilder::new().label(label).build())</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">///     pub fn flip(&amp;self) {</span>
-<span class="doccomment">///         self.0.set_angle(180.0 - self.0.angle());</span>
-<span class="doccomment">///     }</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let fancy_label = FancyLabel::new(&quot;Look at me!&quot;);</span>
-<span class="doccomment">/// let button = gtk::ButtonBuilder::new().label(&quot;Click me!&quot;).build();</span>
-<span class="doccomment">/// button.connect_clicked(clone!(@weak fancy_label =&gt; move || fancy_label.flip()));</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## Generic New Type</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// #[derive(glib::Downgrade)]</span>
-<span class="doccomment">/// pub struct TypedEntry&lt;T&gt;(gtk::Entry, std::marker::PhantomData&lt;T&gt;);</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// impl&lt;T: ToString + FromStr&gt; for TypedEntry&lt;T&gt; {</span>
-<span class="doccomment">///     // ...</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## Structures and Enums</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```rust,ignore</span>
-<span class="doccomment">/// #[derive(Clone, glib::Downgrade)]</span>
-<span class="doccomment">/// pub struct ControlButtons {</span>
-<span class="doccomment">///     pub up: gtk::Button,</span>
-<span class="doccomment">///     pub down: gtk::Button,</span>
-<span class="doccomment">///     pub left: gtk::Button,</span>
-<span class="doccomment">///     pub right: gtk::Button,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Clone, glib::Downgrade)]</span>
-<span class="doccomment">/// pub enum DirectionButton {</span>
-<span class="doccomment">///     Left(gtk::Button),</span>
-<span class="doccomment">///     Right(gtk::Button),</span>
-<span class="doccomment">///     Up(gtk::Button),</span>
-<span class="doccomment">///     Down(gtk::Button),</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`glib::clone::Downgrade`]: clone/trait.Downgrade.html</span>
-<span class="doccomment">/// [`glib::clone::Upgrade`]: clone/trait.Upgrade.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Downgrade</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">downgrade</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="ident">downgrade_derive::impl_downgrade</span>(<span class="ident">input</span>)
+<span class="doccomment">/// Macro for deriving implementations of [`glib::clone::Downgrade`] and
+/// [`glib::clone::Upgrade`] traits and a weak type.
+///
+/// # Examples
+///
+/// ## New Type Idiom
+///
+/// ```rust,ignore
+/// #[derive(glib::Downgrade)]
+/// pub struct FancyLabel(gtk::Label);
+///
+/// impl FancyLabel {
+///     pub fn new(label: &amp;str) -&gt; Self {
+///         Self(gtk::LabelBuilder::new().label(label).build())
+///     }
+///
+///     pub fn flip(&amp;self) {
+///         self.0.set_angle(180.0 - self.0.angle());
+///     }
+/// }
+///
+/// let fancy_label = FancyLabel::new(&quot;Look at me!&quot;);
+/// let button = gtk::ButtonBuilder::new().label(&quot;Click me!&quot;).build();
+/// button.connect_clicked(clone!(@weak fancy_label =&gt; move || fancy_label.flip()));
+/// ```
+///
+/// ## Generic New Type
+///
+/// ```rust,ignore
+/// #[derive(glib::Downgrade)]
+/// pub struct TypedEntry&lt;T&gt;(gtk::Entry, std::marker::PhantomData&lt;T&gt;);
+///
+/// impl&lt;T: ToString + FromStr&gt; for TypedEntry&lt;T&gt; {
+///     // ...
+/// }
+/// ```
+///
+/// ## Structures and Enums
+///
+/// ```rust,ignore
+/// #[derive(Clone, glib::Downgrade)]
+/// pub struct ControlButtons {
+///     pub up: gtk::Button,
+///     pub down: gtk::Button,
+///     pub left: gtk::Button,
+///     pub right: gtk::Button,
+/// }
+///
+/// #[derive(Clone, glib::Downgrade)]
+/// pub enum DirectionButton {
+///     Left(gtk::Button),
+///     Right(gtk::Button),
+///     Up(gtk::Button),
+///     Down(gtk::Button),
+/// }
+/// ```
+///
+/// [`glib::clone::Downgrade`]: ../glib/clone/trait.Downgrade.html
+/// [`glib::clone::Upgrade`]: ../glib/clone/trait.Upgrade.html
+</span><span class="attribute">#[proc_macro_derive(Downgrade)]
+</span><span class="kw">pub fn </span>downgrade(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    downgrade_derive::impl_downgrade(input)
 }
 
-<span class="doccomment">/// Derive macro for serializing/deserializing custom structs as [`glib::Variant`]s.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Debug, PartialEq, Eq, glib::Variant)]</span>
-<span class="doccomment">/// struct Foo {</span>
-<span class="doccomment">///     some_string: String,</span>
-<span class="doccomment">///     some_int: i32,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let v = Foo { some_string: String::from(&quot;bar&quot;), some_int: 1 };</span>
-<span class="doccomment">/// let var = v.to_variant();</span>
-<span class="doccomment">/// assert_eq!(var.get::&lt;Foo&gt;(), Some(v));</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// When storing `Vec`s of fixed size types it is a good idea to wrap these in</span>
-<span class="doccomment">/// `glib::FixedSizeVariantArray` as serialization/deserialization will be more efficient.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Example</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">/// use glib::prelude::*;</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// #[derive(Debug, PartialEq, Eq, glib::Variant)]</span>
-<span class="doccomment">/// struct Foo {</span>
-<span class="doccomment">///     some_vec: glib::FixedSizeVariantArray&lt;Vec&lt;u32&gt;, u32&gt;,</span>
-<span class="doccomment">///     some_int: i32,</span>
-<span class="doccomment">/// }</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// let v = Foo { some_vec: vec![1u32, 2u32].into(), some_int: 1 };</span>
-<span class="doccomment">/// let var = v.to_variant();</span>
-<span class="doccomment">/// assert_eq!(var.get::&lt;Foo&gt;(), Some(v));</span>
-<span class="doccomment">/// ```</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`glib::Variant`]: variant/struct.Variant.html</span>
-<span class="attribute">#[<span class="ident">proc_macro_derive</span>(<span class="ident">Variant</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variant_derive</span>(<span class="ident">input</span>: <span class="ident">TokenStream</span>) -&gt; <span class="ident">TokenStream</span> {
-    <span class="kw">let</span> <span class="ident">input</span> <span class="op">=</span> <span class="macro">parse_macro_input!</span>(<span class="ident">input</span> <span class="kw">as</span> <span class="ident">DeriveInput</span>);
-    <span class="ident">variant_derive::impl_variant</span>(<span class="ident">input</span>)
+<span class="doccomment">/// Derive macro for serializing/deserializing custom structs/enums as [`glib::Variant`]s.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
+/// struct Foo {
+///     some_string: String,
+///     some_int: i32,
+/// }
+///
+/// let v = Foo { some_string: String::from(&quot;bar&quot;), some_int: 1 };
+/// let var = v.to_variant();
+/// assert_eq!(var.get::&lt;Foo&gt;(), Some(v));
+/// ```
+///
+/// When storing `Vec`s of fixed size types it is a good idea to wrap these in
+/// `glib::FixedSizeVariantArray` as serialization/deserialization will be more efficient.
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
+/// struct Foo {
+///     some_vec: glib::FixedSizeVariantArray&lt;Vec&lt;u32&gt;, u32&gt;,
+///     some_int: i32,
+/// }
+///
+/// let v = Foo { some_vec: vec![1u32, 2u32].into(), some_int: 1 };
+/// let var = v.to_variant();
+/// assert_eq!(var.get::&lt;Foo&gt;(), Some(v));
+/// ```
+///
+/// Enums are serialized as a tuple `(sv)` with the first value as a [kebab case] string for the
+/// enum variant, or just `s` if this is a C-style enum. Some additional attributes are supported
+/// for enums:
+/// - `#[variant_enum(repr)]` to serialize the enum variant as an integer type instead of `s`.  The
+/// `#[repr]` attribute must also be specified on the enum with a sized integer type, and the type
+/// must implement `Copy`.
+/// - `#[variant_enum(enum)]` uses [`EnumClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::Enum`](Enum).
+/// - `#[variant_enum(flags)]` uses [`FlagsClass`] to serialize/deserialize as nicks. Meant for use
+/// with [`glib::flags`](macro@flags).
+/// - `#[variant_enum(enum, repr)]` serializes as `i32`. Meant for use with [`glib::Enum`](Enum).
+/// The type must also implement `Copy`.
+/// - `#[variant_enum(flags, repr)]` serializes as `u32`. Meant for use with
+/// [`glib::flags`](macro@flags).
+///
+/// # Example
+///
+/// ```
+/// use glib::prelude::*;
+///
+/// #[derive(Debug, PartialEq, Eq, glib::Variant)]
+/// enum Foo {
+///     MyA,
+///     MyB(i32),
+///     MyC { some_int: u32, some_string: String }
+/// }
+///
+/// let v = Foo::MyC { some_int: 1, some_string: String::from(&quot;bar&quot;) };
+/// let var = v.to_variant();
+/// assert_eq!(var.child_value(0).str(), Some(&quot;my-c&quot;));
+/// assert_eq!(var.get::&lt;Foo&gt;(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Variant)]
+/// #[variant_enum(repr)]
+/// #[repr(u8)]
+/// enum Bar {
+///     A,
+///     B = 3,
+///     C = 7
+/// }
+///
+/// let v = Bar::B;
+/// let var = v.to_variant();
+/// assert_eq!(var.get::&lt;u8&gt;(), Some(3));
+/// assert_eq!(var.get::&lt;Bar&gt;(), Some(v));
+///
+/// #[derive(Debug, Copy, Clone, PartialEq, Eq, glib::Enum, glib::Variant)]
+/// #[variant_enum(enum)]
+/// #[enum_type(name = &quot;MyEnum&quot;)]
+/// enum MyEnum {
+///     Val,
+///     #[enum_value(name = &quot;My Val&quot;)]
+///     ValWithCustomName,
+///     #[enum_value(name = &quot;My Other Val&quot;, nick = &quot;other&quot;)]
+///     ValWithCustomNameAndNick,
+/// }
+///
+/// let v = MyEnum::ValWithCustomNameAndNick;
+/// let var = v.to_variant();
+/// assert_eq!(var.str(), Some(&quot;other&quot;));
+/// assert_eq!(var.get::&lt;MyEnum&gt;(), Some(v));
+/// ```
+///
+/// [`glib::Variant`]: ../glib/variant/struct.Variant.html
+/// [`EnumClass`]: ../glib/struct.EnumClass.html
+/// [`FlagsClass`]: ../glib/struct.FlagsClass.html
+/// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
+</span><span class="attribute">#[proc_macro_derive(Variant, attributes(variant_enum))]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span>variant_derive(input: TokenStream) -&gt; TokenStream {
+    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
+    variant_derive::impl_variant(input)
+}
+
+<span class="attribute">#[proc_macro]
+</span><span class="kw">pub fn </span>cstr_bytes(item: TokenStream) -&gt; TokenStream {
+    syn::parse::Parser::parse2(
+        |stream: syn::parse::ParseStream&lt;<span class="lifetime">&#39;_</span>&gt;| {
+            <span class="kw">let </span>literal = stream.parse::&lt;syn::LitStr&gt;()<span class="question-mark">?</span>;
+            stream.parse::&lt;syn::parse::Nothing&gt;()<span class="question-mark">?</span>;
+            <span class="kw">let </span>bytes = std::ffi::CString::new(literal.value())
+                .map_err(|e| syn::Error::new_spanned(<span class="kw-2">&amp;</span>literal, <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, e)))<span class="question-mark">?
+                </span>.into_bytes_with_nul();
+            <span class="kw">let </span>bytes = proc_macro2::Literal::byte_string(<span class="kw-2">&amp;</span>bytes);
+            <span class="prelude-val">Ok</span>(<span class="macro">quote::quote! </span>{ #bytes }.into())
+        },
+        item.into(),
+    )
+    .unwrap_or_else(|e| e.into_compile_error().into())
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib_macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib_macros" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

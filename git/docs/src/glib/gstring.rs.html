@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gstring.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/gstring.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>gstring.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -840,770 +835,1639 @@
 <span id="762">762</span>
 <span id="763">763</span>
 <span id="764">764</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+<span id="765">765</span>
+<span id="766">766</span>
+<span id="767">767</span>
+<span id="768">768</span>
+<span id="769">769</span>
+<span id="770">770</span>
+<span id="771">771</span>
+<span id="772">772</span>
+<span id="773">773</span>
+<span id="774">774</span>
+<span id="775">775</span>
+<span id="776">776</span>
+<span id="777">777</span>
+<span id="778">778</span>
+<span id="779">779</span>
+<span id="780">780</span>
+<span id="781">781</span>
+<span id="782">782</span>
+<span id="783">783</span>
+<span id="784">784</span>
+<span id="785">785</span>
+<span id="786">786</span>
+<span id="787">787</span>
+<span id="788">788</span>
+<span id="789">789</span>
+<span id="790">790</span>
+<span id="791">791</span>
+<span id="792">792</span>
+<span id="793">793</span>
+<span id="794">794</span>
+<span id="795">795</span>
+<span id="796">796</span>
+<span id="797">797</span>
+<span id="798">798</span>
+<span id="799">799</span>
+<span id="800">800</span>
+<span id="801">801</span>
+<span id="802">802</span>
+<span id="803">803</span>
+<span id="804">804</span>
+<span id="805">805</span>
+<span id="806">806</span>
+<span id="807">807</span>
+<span id="808">808</span>
+<span id="809">809</span>
+<span id="810">810</span>
+<span id="811">811</span>
+<span id="812">812</span>
+<span id="813">813</span>
+<span id="814">814</span>
+<span id="815">815</span>
+<span id="816">816</span>
+<span id="817">817</span>
+<span id="818">818</span>
+<span id="819">819</span>
+<span id="820">820</span>
+<span id="821">821</span>
+<span id="822">822</span>
+<span id="823">823</span>
+<span id="824">824</span>
+<span id="825">825</span>
+<span id="826">826</span>
+<span id="827">827</span>
+<span id="828">828</span>
+<span id="829">829</span>
+<span id="830">830</span>
+<span id="831">831</span>
+<span id="832">832</span>
+<span id="833">833</span>
+<span id="834">834</span>
+<span id="835">835</span>
+<span id="836">836</span>
+<span id="837">837</span>
+<span id="838">838</span>
+<span id="839">839</span>
+<span id="840">840</span>
+<span id="841">841</span>
+<span id="842">842</span>
+<span id="843">843</span>
+<span id="844">844</span>
+<span id="845">845</span>
+<span id="846">846</span>
+<span id="847">847</span>
+<span id="848">848</span>
+<span id="849">849</span>
+<span id="850">850</span>
+<span id="851">851</span>
+<span id="852">852</span>
+<span id="853">853</span>
+<span id="854">854</span>
+<span id="855">855</span>
+<span id="856">856</span>
+<span id="857">857</span>
+<span id="858">858</span>
+<span id="859">859</span>
+<span id="860">860</span>
+<span id="861">861</span>
+<span id="862">862</span>
+<span id="863">863</span>
+<span id="864">864</span>
+<span id="865">865</span>
+<span id="866">866</span>
+<span id="867">867</span>
+<span id="868">868</span>
+<span id="869">869</span>
+<span id="870">870</span>
+<span id="871">871</span>
+<span id="872">872</span>
+<span id="873">873</span>
+<span id="874">874</span>
+<span id="875">875</span>
+<span id="876">876</span>
+<span id="877">877</span>
+<span id="878">878</span>
+<span id="879">879</span>
+<span id="880">880</span>
+<span id="881">881</span>
+<span id="882">882</span>
+<span id="883">883</span>
+<span id="884">884</span>
+<span id="885">885</span>
+<span id="886">886</span>
+<span id="887">887</span>
+<span id="888">888</span>
+<span id="889">889</span>
+<span id="890">890</span>
+<span id="891">891</span>
+<span id="892">892</span>
+<span id="893">893</span>
+<span id="894">894</span>
+<span id="895">895</span>
+<span id="896">896</span>
+<span id="897">897</span>
+<span id="898">898</span>
+<span id="899">899</span>
+<span id="900">900</span>
+<span id="901">901</span>
+<span id="902">902</span>
+<span id="903">903</span>
+<span id="904">904</span>
+<span id="905">905</span>
+<span id="906">906</span>
+<span id="907">907</span>
+<span id="908">908</span>
+<span id="909">909</span>
+<span id="910">910</span>
+<span id="911">911</span>
+<span id="912">912</span>
+<span id="913">913</span>
+<span id="914">914</span>
+<span id="915">915</span>
+<span id="916">916</span>
+<span id="917">917</span>
+<span id="918">918</span>
+<span id="919">919</span>
+<span id="920">920</span>
+<span id="921">921</span>
+<span id="922">922</span>
+<span id="923">923</span>
+<span id="924">924</span>
+<span id="925">925</span>
+<span id="926">926</span>
+<span id="927">927</span>
+<span id="928">928</span>
+<span id="929">929</span>
+<span id="930">930</span>
+<span id="931">931</span>
+<span id="932">932</span>
+<span id="933">933</span>
+<span id="934">934</span>
+<span id="935">935</span>
+<span id="936">936</span>
+<span id="937">937</span>
+<span id="938">938</span>
+<span id="939">939</span>
+<span id="940">940</span>
+<span id="941">941</span>
+<span id="942">942</span>
+<span id="943">943</span>
+<span id="944">944</span>
+<span id="945">945</span>
+<span id="946">946</span>
+<span id="947">947</span>
+<span id="948">948</span>
+<span id="949">949</span>
+<span id="950">950</span>
+<span id="951">951</span>
+<span id="952">952</span>
+<span id="953">953</span>
+<span id="954">954</span>
+<span id="955">955</span>
+<span id="956">956</span>
+<span id="957">957</span>
+<span id="958">958</span>
+<span id="959">959</span>
+<span id="960">960</span>
+<span id="961">961</span>
+<span id="962">962</span>
+<span id="963">963</span>
+<span id="964">964</span>
+<span id="965">965</span>
+<span id="966">966</span>
+<span id="967">967</span>
+<span id="968">968</span>
+<span id="969">969</span>
+<span id="970">970</span>
+<span id="971">971</span>
+<span id="972">972</span>
+<span id="973">973</span>
+<span id="974">974</span>
+<span id="975">975</span>
+<span id="976">976</span>
+<span id="977">977</span>
+<span id="978">978</span>
+<span id="979">979</span>
+<span id="980">980</span>
+<span id="981">981</span>
+<span id="982">982</span>
+<span id="983">983</span>
+<span id="984">984</span>
+<span id="985">985</span>
+<span id="986">986</span>
+<span id="987">987</span>
+<span id="988">988</span>
+<span id="989">989</span>
+<span id="990">990</span>
+<span id="991">991</span>
+<span id="992">992</span>
+<span id="993">993</span>
+<span id="994">994</span>
+<span id="995">995</span>
+<span id="996">996</span>
+<span id="997">997</span>
+<span id="998">998</span>
+<span id="999">999</span>
+<span id="1000">1000</span>
+<span id="1001">1001</span>
+<span id="1002">1002</span>
+<span id="1003">1003</span>
+<span id="1004">1004</span>
+<span id="1005">1005</span>
+<span id="1006">1006</span>
+<span id="1007">1007</span>
+<span id="1008">1008</span>
+<span id="1009">1009</span>
+<span id="1010">1010</span>
+<span id="1011">1011</span>
+<span id="1012">1012</span>
+<span id="1013">1013</span>
+<span id="1014">1014</span>
+<span id="1015">1015</span>
+<span id="1016">1016</span>
+<span id="1017">1017</span>
+<span id="1018">1018</span>
+<span id="1019">1019</span>
+<span id="1020">1020</span>
+<span id="1021">1021</span>
+<span id="1022">1022</span>
+<span id="1023">1023</span>
+<span id="1024">1024</span>
+<span id="1025">1025</span>
+<span id="1026">1026</span>
+<span id="1027">1027</span>
+<span id="1028">1028</span>
+<span id="1029">1029</span>
+<span id="1030">1030</span>
+<span id="1031">1031</span>
+<span id="1032">1032</span>
+<span id="1033">1033</span>
+<span id="1034">1034</span>
+<span id="1035">1035</span>
+<span id="1036">1036</span>
+<span id="1037">1037</span>
+<span id="1038">1038</span>
+<span id="1039">1039</span>
+<span id="1040">1040</span>
+<span id="1041">1041</span>
+<span id="1042">1042</span>
+<span id="1043">1043</span>
+<span id="1044">1044</span>
+<span id="1045">1045</span>
+<span id="1046">1046</span>
+<span id="1047">1047</span>
+<span id="1048">1048</span>
+<span id="1049">1049</span>
+<span id="1050">1050</span>
+<span id="1051">1051</span>
+<span id="1052">1052</span>
+<span id="1053">1053</span>
+<span id="1054">1054</span>
+<span id="1055">1055</span>
+<span id="1056">1056</span>
+<span id="1057">1057</span>
+<span id="1058">1058</span>
+<span id="1059">1059</span>
+<span id="1060">1060</span>
+<span id="1061">1061</span>
+<span id="1062">1062</span>
+<span id="1063">1063</span>
+<span id="1064">1064</span>
+<span id="1065">1065</span>
+<span id="1066">1066</span>
+<span id="1067">1067</span>
+<span id="1068">1068</span>
+<span id="1069">1069</span>
+<span id="1070">1070</span>
+<span id="1071">1071</span>
+<span id="1072">1072</span>
+<span id="1073">1073</span>
+<span id="1074">1074</span>
+<span id="1075">1075</span>
+<span id="1076">1076</span>
+<span id="1077">1077</span>
+<span id="1078">1078</span>
+<span id="1079">1079</span>
+<span id="1080">1080</span>
+<span id="1081">1081</span>
+<span id="1082">1082</span>
+<span id="1083">1083</span>
+<span id="1084">1084</span>
+<span id="1085">1085</span>
+<span id="1086">1086</span>
+<span id="1087">1087</span>
+<span id="1088">1088</span>
+<span id="1089">1089</span>
+<span id="1090">1090</span>
+<span id="1091">1091</span>
+<span id="1092">1092</span>
+<span id="1093">1093</span>
+<span id="1094">1094</span>
+<span id="1095">1095</span>
+<span id="1096">1096</span>
+<span id="1097">1097</span>
+<span id="1098">1098</span>
+<span id="1099">1099</span>
+<span id="1100">1100</span>
+<span id="1101">1101</span>
+<span id="1102">1102</span>
+<span id="1103">1103</span>
+<span id="1104">1104</span>
+<span id="1105">1105</span>
+<span id="1106">1106</span>
+<span id="1107">1107</span>
+<span id="1108">1108</span>
+<span id="1109">1109</span>
+<span id="1110">1110</span>
+<span id="1111">1111</span>
+<span id="1112">1112</span>
+<span id="1113">1113</span>
+<span id="1114">1114</span>
+<span id="1115">1115</span>
+<span id="1116">1116</span>
+<span id="1117">1117</span>
+<span id="1118">1118</span>
+<span id="1119">1119</span>
+<span id="1120">1120</span>
+<span id="1121">1121</span>
+<span id="1122">1122</span>
+<span id="1123">1123</span>
+<span id="1124">1124</span>
+<span id="1125">1125</span>
+<span id="1126">1126</span>
+<span id="1127">1127</span>
+<span id="1128">1128</span>
+<span id="1129">1129</span>
+<span id="1130">1130</span>
+<span id="1131">1131</span>
+<span id="1132">1132</span>
+<span id="1133">1133</span>
+<span id="1134">1134</span>
+<span id="1135">1135</span>
+<span id="1136">1136</span>
+<span id="1137">1137</span>
+<span id="1138">1138</span>
+<span id="1139">1139</span>
+<span id="1140">1140</span>
+<span id="1141">1141</span>
+<span id="1142">1142</span>
+<span id="1143">1143</span>
+<span id="1144">1144</span>
+<span id="1145">1145</span>
+<span id="1146">1146</span>
+<span id="1147">1147</span>
+<span id="1148">1148</span>
+<span id="1149">1149</span>
+<span id="1150">1150</span>
+<span id="1151">1151</span>
+<span id="1152">1152</span>
+<span id="1153">1153</span>
+<span id="1154">1154</span>
+<span id="1155">1155</span>
+<span id="1156">1156</span>
+<span id="1157">1157</span>
+<span id="1158">1158</span>
+<span id="1159">1159</span>
+<span id="1160">1160</span>
+<span id="1161">1161</span>
+<span id="1162">1162</span>
+<span id="1163">1163</span>
+<span id="1164">1164</span>
+<span id="1165">1165</span>
+<span id="1166">1166</span>
+<span id="1167">1167</span>
+<span id="1168">1168</span>
+<span id="1169">1169</span>
+<span id="1170">1170</span>
+<span id="1171">1171</span>
+<span id="1172">1172</span>
+<span id="1173">1173</span>
+<span id="1174">1174</span>
+<span id="1175">1175</span>
+<span id="1176">1176</span>
+<span id="1177">1177</span>
+<span id="1178">1178</span>
+<span id="1179">1179</span>
+<span id="1180">1180</span>
+<span id="1181">1181</span>
+<span id="1182">1182</span>
+<span id="1183">1183</span>
+<span id="1184">1184</span>
+<span id="1185">1185</span>
+<span id="1186">1186</span>
+<span id="1187">1187</span>
+<span id="1188">1188</span>
+<span id="1189">1189</span>
+<span id="1190">1190</span>
+<span id="1191">1191</span>
+<span id="1192">1192</span>
+<span id="1193">1193</span>
+<span id="1194">1194</span>
+<span id="1195">1195</span>
+<span id="1196">1196</span>
+<span id="1197">1197</span>
+<span id="1198">1198</span>
+<span id="1199">1199</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::types</span>::{<span class="ident">StaticType</span>, <span class="ident">Type</span>};
-<span class="kw">use</span> <span class="ident">std::borrow::Borrow</span>;
-<span class="kw">use</span> <span class="ident">std::cmp::Ordering</span>;
-<span class="kw">use</span> <span class="ident">std::ffi</span>::{<span class="ident">CStr</span>, <span class="ident">CString</span>, <span class="ident">OsStr</span>};
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::hash</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>;
-<span class="kw">use</span> <span class="ident">std::ops::Deref</span>;
-<span class="kw">use</span> <span class="ident">std::os::raw</span>::{<span class="ident">c_char</span>, <span class="ident">c_void</span>};
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
-<span class="kw">use</span> <span class="ident">std::slice</span>;
-<span class="kw">use</span> <span class="ident">std::string::String</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::types::{StaticType, Type};
+<span class="kw">use </span>std::borrow::Borrow;
+<span class="kw">use </span>std::cmp::Ordering;
+<span class="kw">use </span>std::ffi::{CStr, CString, OsStr};
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::hash;
+<span class="kw">use </span>std::mem;
+<span class="kw">use </span>std::ops::Deref;
+<span class="kw">use </span>std::os::raw::{c_char, c_void};
+<span class="kw">use </span>std::path::Path;
+<span class="kw">use </span>std::ptr;
+<span class="kw">use </span>std::slice;
+<span class="kw">use </span>std::string::String;
 
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">GString</span>(<span class="ident">Inner</span>);
-<span class="kw">enum</span> <span class="ident">Inner</span> {
-    <span class="ident">Native</span>(<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">CString</span><span class="op">&gt;</span>),
-    <span class="ident">Foreign</span> {
-        <span class="ident">ptr</span>: <span class="ident">ptr::NonNull</span><span class="op">&lt;</span><span class="ident">c_char</span><span class="op">&gt;</span>,
-        <span class="ident">len</span>: <span class="ident">usize</span>,
+<span class="comment">// rustdoc-stripper-ignore-next
+</span><span class="doccomment">/// Representaion of a borrowed [`GString`].
+///
+/// This type is very similar to [`std::ffi::CStr`], but with one added constraint: the string
+/// must also be valid UTF-8.
+</span><span class="attribute">#[derive(Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+#[repr(transparent)]
+</span><span class="kw">pub struct </span>GStr(str);
+
+<span class="kw">impl </span>GStr {
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Creates a GLib string wrapper from a string slice. The string slice must be terminated with
+    /// a nul byte.
+    ///
+    /// This function will cast the provided bytes to a `GStr` wrapper after ensuring
+    /// that the string slice is nul-terminated and does not contain any interior nul bytes.
+    </span><span class="kw">pub fn </span>from_str_with_nul(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>, std::ffi::FromBytesWithNulError&gt; {
+        <span class="kw">let </span>bytes = s.as_bytes();
+        CStr::from_bytes_with_nul(bytes)<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ <span class="self">Self</span>::from_bytes_with_nul_unchecked(bytes) })
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Unsafely creates a GLib string wrapper from a byte slice.
+    ///
+    /// This function will cast the provided `bytes` to a `GStr` wrapper without performing any
+    /// sanity checks. The provided slice **must** be valid UTF-8, nul-terminated and not contain
+    /// any interior nul bytes.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub const unsafe fn </span>from_bytes_with_nul_unchecked(bytes: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="kw-2">&amp;</span><span class="self">Self </span>{
+        <span class="macro">debug_assert!</span>(!bytes.is_empty() &amp;&amp; bytes[bytes.len() - <span class="number">1</span>] == <span class="number">0</span>);
+        mem::transmute(bytes)
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Wraps a raw C string with a safe GLib string wrapper. The provided C string **must** be
+    /// valid UTF-8 and nul-terminated. All constraints from [`std::ffi::CStr::from_ptr`] also
+    /// apply here.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub unsafe fn </span>from_ptr&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*const </span>c_char) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self </span>{
+        <span class="kw">let </span>cstr = CStr::from_ptr(ptr);
+        <span class="self">Self</span>::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Converts this GLib string to a byte slice containing the trailing 0 byte.
+    ///
+    /// This function is the equivalent of [`GStr::to_bytes`] except that it will retain the
+    /// trailing nul terminator instead of chopping it off.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>to_bytes_with_nul(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
+        <span class="self">self</span>.<span class="number">0</span>.as_bytes()
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Converts this GLib string to a byte slice.
+    ///
+    /// The returned slice will **not** contain the trailing nul terminator that this GLib
+    /// string has.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>to_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
+        <span class="self">self</span>.as_str().as_bytes()
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Returns the inner pointer to this GLib string.
+    ///
+    /// The returned pointer will be valid for as long as `self` is, and points to a contiguous
+    /// region of memory terminated with a 0 byte to represent the end of the string.
+    ///
+    /// **WARNING**
+    ///
+    /// The returned pointer is read-only; writing to it (including passing it to C code that
+    /// writes to it) causes undefined behavior. It is your responsibility to make
+    /// sure that the underlying memory is not freed too early.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_char {
+        <span class="self">self</span>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_
+    </span>}
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Converts this GLib string to a string slice.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="comment">// Clip off the nul byte
+        </span><span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[<span class="number">0</span>..<span class="self">self</span>.<span class="number">0</span>.len() - <span class="number">1</span>]
+    }
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Converts this GLib string to a C string slice.
+    </span><span class="attribute">#[inline]
+    </span><span class="kw">pub fn </span>as_c_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
+        <span class="kw">unsafe </span>{ CStr::from_bytes_with_nul_unchecked(<span class="self">self</span>.to_bytes_with_nul()) }
+    }
+}
+
+<span class="comment">// rustdoc-stripper-ignore-next
+</span><span class="doccomment">/// Converts a static string literal into a static nul-terminated string.
+///
+/// The expanded expression has type [`&amp;&#39;static GStr`]. This macro will panic if the
+/// string literal contains any interior nul bytes.
+///
+/// # Examples
+///
+/// ```
+/// # fn main() {
+/// use glib::{gstr, GStr, GString};
+///
+/// const MY_STRING: &amp;GStr = gstr!(&quot;Hello&quot;);
+/// assert_eq!(MY_STRING.to_bytes_with_nul()[5], 0u8);
+/// let owned: GString = MY_STRING.to_owned();
+/// assert_eq!(MY_STRING, owned);
+/// # }
+/// ```
+///
+/// [`&amp;&#39;static GStr`]: crate::GStr
+</span><span class="attribute">#[macro_export]
+</span><span class="macro">macro_rules! </span>gstr {
+    (<span class="macro-nonterminal">$s</span>:literal) =&gt; {
+        <span class="kw">unsafe </span>{ <span class="macro-nonterminal">$crate::GStr::from_bytes_with_nul_unchecked</span>(<span class="macro-nonterminal">$</span><span class="macro">crate::cstr_bytes!</span>(<span class="macro-nonterminal">$s</span>)) }
+    };
+}
+
+<span class="kw">impl </span>Default <span class="kw">for </span><span class="kw-2">&amp;</span>GStr {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="kw">const </span>SLICE: <span class="kw-2">&amp;</span>[c_char] = <span class="kw-2">&amp;</span>[<span class="number">0</span>];
+        <span class="kw">unsafe </span>{ GStr::from_ptr(SLICE.as_ptr()) }
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; TryFrom&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>CStr&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GStr {
+    <span class="kw">type </span>Error = std::str::Utf8Error;
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>try_from(s: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>CStr) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="self">Self</span>, <span class="self">Self</span>::Error&gt; {
+        s.to_str()<span class="question-mark">?</span>;
+        <span class="prelude-val">Ok</span>(<span class="kw">unsafe </span>{ GStr::from_bytes_with_nul_unchecked(s.to_bytes_with_nul()) })
+    }
+}
+
+<span class="kw">impl </span>PartialEq&lt;GStr&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
+    }
+}
+
+<span class="kw">impl </span>PartialEq&lt;str&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="self">self</span>.as_str() == other
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PartialEq&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;<span class="lifetime">&#39;a </span>str) -&gt; bool {
+        <span class="self">self</span>.as_str() == <span class="kw-2">*</span>other
+    }
+}
+
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; PartialEq&lt;GStr&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>str {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; bool {
+        <span class="kw-2">*</span><span class="self">self </span>== other.as_str()
+    }
+}
+
+<span class="kw">impl </span>PartialEq&lt;String&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>String) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
+    }
+}
+
+<span class="kw">impl </span>PartialEq&lt;GStr&gt; <span class="kw">for </span>str {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; bool {
+        <span class="self">self </span>== other.as_str()
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;GStr&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(<span class="kw-2">&amp;</span>String::from(other.as_str())))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;String&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>String) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other.as_str()))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;GStr&gt; <span class="kw">for </span>str {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other.as_str()))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;str&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other))
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;GStr&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
+        <span class="self">self
+    </span>}
+}
+
+<span class="kw">impl </span>AsRef&lt;str&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.as_str()
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;CStr&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
+        <span class="self">self</span>.as_c_str()
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;OsStr&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>OsStr {
+        OsStr::new(<span class="self">self</span>.as_str())
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;Path&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Path {
+        Path::new(<span class="self">self</span>.as_str())
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;[u8]&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
+        <span class="self">self</span>.to_bytes()
+    }
+}
+
+<span class="kw">impl </span>Deref <span class="kw">for </span>GStr {
+    <span class="kw">type </span>Target = str;
+
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.as_str()
+    }
+}
+
+<span class="kw">impl </span>ToOwned <span class="kw">for </span>GStr {
+    <span class="kw">type </span>Owned = GString;
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_owned(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self</span>::Owned {
+        GString(Inner::Native(<span class="prelude-val">Some</span>(<span class="self">self</span>.as_c_str().to_owned())))
+    }
+}
+
+<span class="kw">impl </span>GlibPtrDefault <span class="kw">for </span>GStr {
+    <span class="kw">type </span>GlibType = <span class="kw-2">*mut </span>c_char;
+}
+
+<span class="kw">impl </span>StaticType <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>static_type() -&gt; Type {
+        str::static_type()
+    }
+}
+
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GStr {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
+
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::Value) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_string(value.to_glib_none().<span class="number">0</span>);
+        <span class="kw">let </span>cstr = CStr::from_ptr(ptr);
+        <span class="macro">assert!</span>(cstr.to_str().is_ok());
+        GStr::from_bytes_with_nul_unchecked(cstr.to_bytes_with_nul())
+    }
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValue <span class="kw">for </span>GStr {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::Value {
+        <span class="self">self</span>.as_str().to_value()
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
+        str::static_type()
+    }
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValue <span class="kw">for </span><span class="kw-2">&amp;</span>GStr {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::Value {
+        (<span class="kw-2">*</span><span class="self">self</span>).to_value()
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
+        str::static_type()
+    }
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValueOptional <span class="kw">for </span>GStr {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::Value {
+        <span class="kw">crate</span>::value::ToValueOptional::to_value_optional(s.map(|s| s.as_str()))
+    }
+}
+
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>c_char&gt; <span class="kw">for </span>GStr {
+    <span class="kw">type </span>Storage = GString;
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>c_char, <span class="self">Self</span>&gt; {
+        <span class="kw">let </span>tmp = <span class="self">self</span>.to_owned();
+        Stash(<span class="self">self</span>.as_ptr(), tmp)
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_char {
+        <span class="self">self</span>.as_str().to_glib_full()
+    }
+}
+
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>c_char&gt; <span class="kw">for </span>GStr {
+    <span class="kw">type </span>Storage = GString;
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>c_char, <span class="self">Self</span>&gt; {
+        <span class="kw">let </span>tmp = <span class="self">self</span>.to_owned();
+        Stash(tmp.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>c_char, tmp)
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
+        <span class="self">self</span>.as_str().to_glib_full()
+    }
+}
+
+<span class="comment">// rustdoc-stripper-ignore-next
+</span><span class="doccomment">/// A type representing an owned, C-compatible, nul-terminated UTF-8 string.
+///
+/// `GString` is to &lt;code&gt;&amp;[GStr]&lt;/code&gt; as [`String`] is to &lt;code&gt;&amp;[str]&lt;/code&gt;: the former in
+/// each pair are owned strings; the latter are borrowed references.
+///
+/// This type is very similar to [`std::ffi::CString`], but with one added constraint: the string
+/// must also be valid UTF-8.
+</span><span class="kw">pub struct </span>GString(Inner);
+<span class="kw">enum </span>Inner {
+    Native(<span class="prelude-ty">Option</span>&lt;CString&gt;),
+    Foreign {
+        ptr: ptr::NonNull&lt;c_char&gt;,
+        len: usize,
     },
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">GString</span> {}
-<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Sync</span> <span class="kw">for</span> <span class="ident">GString</span> {}
+<span class="kw">unsafe impl </span>Send <span class="kw">for </span>GString {}
+<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>GString {}
 
-<span class="kw">impl</span> <span class="ident">GString</span> {
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Return the `GString` as string slice.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_str</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> (<span class="ident">ptr</span>, <span class="ident">len</span>) <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-                <span class="ident">Inner::Native</span>(<span class="kw-2">ref</span> <span class="ident">cstr</span>) =&gt; {
-                    <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">cstr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
-                    (<span class="ident">cstr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">cstr</span>.<span class="ident">to_bytes</span>().<span class="ident">len</span>())
+<span class="kw">impl </span>GString {
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Return the `GString` as string slice.
+    </span><span class="kw">pub fn </span>as_str(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>(ptr, len) = <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
+                Inner::Native(<span class="kw-2">ref </span>cstr) =&gt; {
+                    <span class="kw">let </span>cstr = cstr.as_ref().unwrap();
+                    (cstr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8, cstr.to_bytes().len())
                 }
-                <span class="ident">Inner::Foreign</span> { <span class="ident">ptr</span>, <span class="ident">len</span> } =&gt; (<span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">len</span>),
+                Inner::Foreign { ptr, len } =&gt; (ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8, len),
             };
-            <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> {
-                <span class="string">&quot;&quot;</span>
-            } <span class="kw">else</span> {
-                <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span>, <span class="ident">len</span>);
-                <span class="ident">std::str::from_utf8_unchecked</span>(<span class="ident">slice</span>)
+            <span class="kw">if </span>len == <span class="number">0 </span>{
+                <span class="string">&quot;&quot;
+            </span>} <span class="kw">else </span>{
+                <span class="kw">let </span>slice = slice::from_raw_parts(ptr, len);
+                std::str::from_utf8_unchecked(slice)
             }
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Return the underlying pointer of the `GString`.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_ptr</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">c_char</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">Inner::Native</span>(<span class="kw-2">ref</span> <span class="ident">cstr</span>) =&gt; <span class="ident">cstr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-            <span class="ident">Inner::Foreign</span> { <span class="ident">ptr</span>, .. } =&gt; <span class="ident">ptr</span>.<span class="ident">as_ptr</span>(),
-        }
-    }
-
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Transform into a `NUL`-terminated raw C string pointer.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_raw</span>(<span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">c_char</span> {
-        <span class="kw">match</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="ident">Inner::Native</span>(<span class="kw-2">ref</span> <span class="ident">cstr</span>) =&gt; <span class="kw">unsafe</span> {
-                <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">cstr</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>();
-
-                <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">cstr</span>.<span class="ident">as_ptr</span>();
-                <span class="kw">let</span> <span class="ident">len</span> <span class="op">=</span> <span class="ident">cstr</span>.<span class="ident">to_bytes</span>().<span class="ident">len</span>();
-
-                <span class="kw">let</span> <span class="ident">copy</span> <span class="op">=</span> <span class="ident">ffi::g_malloc</span>(<span class="ident">len</span> <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_char</span>;
-                <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="ident">copy</span>, <span class="ident">len</span> <span class="op">+</span> <span class="number">1</span>);
-                <span class="ident">ptr::write</span>(<span class="ident">copy</span>.<span class="ident">add</span>(<span class="ident">len</span>), <span class="number">0</span>);
-
-                <span class="ident">copy</span>
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Extracts the [`GStr`] containing the entire string.
+    </span><span class="kw">pub fn </span>as_gstr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
+        <span class="kw">let </span>bytes = <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
+            Inner::Native(<span class="kw-2">ref </span>cstr) =&gt; cstr.as_ref().unwrap().to_bytes_with_nul(),
+            Inner::Foreign { len, .. } <span class="kw">if </span>len == <span class="number">0 </span>=&gt; <span class="kw-2">&amp;</span>[<span class="number">0</span>],
+            Inner::Foreign { ptr, len } =&gt; <span class="kw">unsafe </span>{
+                slice::from_raw_parts(ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>, len + <span class="number">1</span>)
             },
-            <span class="ident">Inner::Foreign</span> { <span class="ident">ptr</span>, .. } =&gt; {
-                <span class="kw">let</span> <span class="ident">_s</span> <span class="op">=</span> <span class="ident">mem::ManuallyDrop::new</span>(<span class="self">self</span>);
-                <span class="ident">ptr</span>.<span class="ident">as_ptr</span>()
+        };
+        <span class="kw">unsafe </span>{ GStr::from_bytes_with_nul_unchecked(bytes) }
+    }
+
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Return the underlying pointer of the `GString`.
+    </span><span class="kw">pub fn </span>as_ptr(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>c_char {
+        <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
+            Inner::Native(<span class="kw-2">ref </span>cstr) =&gt; cstr.as_ref().unwrap().as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+            Inner::Foreign { ptr, .. } =&gt; ptr.as_ptr(),
+        }
+    }
+}
+
+<span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span>c_char&gt; <span class="kw">for </span>GString {
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Transform into a `NUL`-terminated raw C string pointer.
+    </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>c_char {
+        <span class="kw">match </span><span class="self">self</span>.<span class="number">0 </span>{
+            Inner::Native(<span class="kw-2">ref </span>cstr) =&gt; {
+                <span class="kw">let </span>cstr = cstr.as_ref().unwrap();
+
+                <span class="kw">let </span>ptr = cstr.as_ptr();
+                <span class="kw">let </span>len = cstr.to_bytes().len();
+
+                <span class="kw">let </span>copy = ffi::g_malloc(len + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut </span>c_char;
+                ptr::copy_nonoverlapping(ptr <span class="kw">as </span><span class="kw-2">*const </span>c_char, copy, len + <span class="number">1</span>);
+                ptr::write(copy.add(len), <span class="number">0</span>);
+
+                copy
+            }
+            Inner::Foreign { ptr, .. } =&gt; {
+                <span class="kw">let </span>_s = mem::ManuallyDrop::new(<span class="self">self</span>);
+                ptr.as_ptr()
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Clone</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">clone</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">GString</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">into</span>()
+<span class="kw">impl </span>Clone <span class="kw">for </span>GString {
+    <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; GString {
+        <span class="self">self</span>.as_str().into()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Debug</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_str</span>(), <span class="ident">f</span>)
+<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>GString {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; fmt::Result {
+        &lt;<span class="kw-2">&amp;</span>str <span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="kw-2">&amp;</span><span class="self">self</span>.as_str(), f)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Inner::Foreign</span> { <span class="ident">ptr</span>, .. } <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span> {
-            <span class="kw">unsafe</span> {
-                <span class="ident">ffi::g_free</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+<span class="kw">impl </span>Drop <span class="kw">for </span>GString {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
+        <span class="kw">if let </span>Inner::Foreign { ptr, .. } = <span class="self">self</span>.<span class="number">0 </span>{
+            <span class="kw">unsafe </span>{
+                ffi::g_free(ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>GString {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="self">self</span>.as_str())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">hash::Hash</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">hash</span><span class="op">&lt;</span><span class="ident">H</span>: <span class="ident">hash::Hasher</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">state</span>: <span class="kw-2">&amp;mut</span> <span class="ident">H</span>) {
-        <span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">hash</span>(<span class="ident">state</span>)
+<span class="kw">impl </span>hash::Hash <span class="kw">for </span>GString {
+    <span class="kw">fn </span>hash&lt;H: hash::Hasher&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
+        <span class="self">self</span>.as_str().hash(state)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Borrow</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">borrow</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>Borrow&lt;GStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
+        <span class="self">self</span>.as_gstr()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="ident">Ordering</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">cmp</span>(<span class="ident">other</span>.<span class="ident">as_str</span>())
+<span class="kw">impl </span>Borrow&lt;str&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>))
+<span class="kw">impl </span>Ord <span class="kw">for </span>GString {
+    <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; Ordering {
+        <span class="self">self</span>.as_str().cmp(other.as_str())
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialOrd <span class="kw">for </span>GString {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialEq <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="ident">other</span>
+<span class="kw">impl </span>PartialEq&lt;GString&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="op">&amp;&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="kw-2">*</span><span class="ident">other</span>
+<span class="kw">impl </span>PartialEq&lt;GStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw-2">*</span><span class="self">self</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialEq&lt;<span class="kw-2">&amp;</span>GStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;GStr) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>() <span class="op">==</span> <span class="ident">other</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialEq&lt;str&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="self">self</span>.as_str() == other
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span> <span class="op">==</span> <span class="ident">other</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialEq&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: &amp;&amp;str) -&gt; bool {
+        <span class="self">self</span>.as_str() == <span class="kw-2">*</span>other
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="ident">String::from</span>(<span class="ident">other</span>.<span class="ident">as_str</span>())))
+<span class="kw">impl </span>PartialEq&lt;GString&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>GStr {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">String</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">cmp</span>(<span class="ident">other</span>.<span class="ident">as_str</span>()))
+<span class="kw">impl </span>PartialEq&lt;GString&gt; <span class="kw">for </span><span class="kw-2">&amp;</span>str {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="kw-2">*</span><span class="self">self </span>== other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">str</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">GString</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>))
+<span class="kw">impl </span>PartialEq&lt;String&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>String) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PartialOrd</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Ordering</span><span class="op">&gt;</span> {
-        <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">as_str</span>().<span class="ident">cmp</span>(<span class="ident">other</span>))
+<span class="kw">impl </span>PartialEq&lt;GString&gt; <span class="kw">for </span>str {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="self">self </span>== other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Eq</span> <span class="kw">for</span> <span class="ident">GString</span> {}
-
-<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialEq&lt;GString&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; bool {
+        <span class="self">self</span>.as_str() == other.as_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">OsStr</span> {
-        <span class="ident">OsStr::new</span>(<span class="self">self</span>.<span class="ident">as_str</span>())
+<span class="kw">impl </span>PartialOrd&lt;GString&gt; <span class="kw">for </span>String {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(<span class="kw-2">&amp;</span>String::from(other.as_str())))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Deref</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Target</span> <span class="op">=</span> <span class="ident">str</span>;
-
-    <span class="kw">fn</span> <span class="ident">deref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="ident">str</span> {
-        <span class="self">self</span>.<span class="ident">as_str</span>()
+<span class="kw">impl </span>PartialOrd&lt;String&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>String) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other.as_str()))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">String</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="kw-2">mut</span> <span class="ident">s</span>: <span class="ident">GString</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">match</span> <span class="ident">s</span>.<span class="number">0</span> {
-            <span class="ident">Inner::Foreign</span> { <span class="ident">len</span>, .. } <span class="kw">if</span> <span class="ident">len</span> <span class="op">==</span> <span class="number">0</span> =&gt; <span class="ident">String::new</span>(),
-            <span class="ident">Inner::Foreign</span> { <span class="ident">ptr</span>, <span class="ident">len</span> } =&gt; <span class="kw">unsafe</span> {
-                <span class="comment">// Creates a copy</span>
-                <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">len</span>);
-                <span class="ident">std::str::from_utf8_unchecked</span>(<span class="ident">slice</span>).<span class="ident">into</span>()
+<span class="kw">impl </span>PartialOrd&lt;GString&gt; <span class="kw">for </span>GStr {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;GStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GStr) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other.as_str()))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;GString&gt; <span class="kw">for </span>str {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>GString) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.cmp(other))
+    }
+}
+
+<span class="kw">impl </span>PartialOrd&lt;str&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Ordering&gt; {
+        <span class="prelude-val">Some</span>(<span class="self">self</span>.as_str().cmp(other))
+    }
+}
+
+<span class="kw">impl </span>Eq <span class="kw">for </span>GString {}
+
+<span class="kw">impl </span>AsRef&lt;GStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>GStr {
+        <span class="self">self</span>.as_gstr()
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;str&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.as_str()
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;CStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>CStr {
+        <span class="self">self</span>.as_gstr().as_c_str()
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;OsStr&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>OsStr {
+        OsStr::new(<span class="self">self</span>.as_str())
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;Path&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>Path {
+        Path::new(<span class="self">self</span>.as_str())
+    }
+}
+
+<span class="kw">impl </span>AsRef&lt;[u8]&gt; <span class="kw">for </span>GString {
+    <span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[u8] {
+        <span class="self">self</span>.as_str().as_bytes()
+    }
+}
+
+<span class="kw">impl </span>Deref <span class="kw">for </span>GString {
+    <span class="kw">type </span>Target = str;
+
+    <span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+        <span class="self">self</span>.as_str()
+    }
+}
+
+<span class="kw">impl </span>From&lt;GString&gt; <span class="kw">for </span>String {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(<span class="kw-2">mut </span>s: GString) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span>s.<span class="number">0 </span>{
+            Inner::Foreign { len, .. } <span class="kw">if </span>len == <span class="number">0 </span>=&gt; String::new(),
+            Inner::Foreign { ptr, len } =&gt; <span class="kw">unsafe </span>{
+                <span class="comment">// Creates a copy
+                </span><span class="kw">let </span>slice = slice::from_raw_parts(ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8, len);
+                std::str::from_utf8_unchecked(slice).into()
             },
-            <span class="ident">Inner::Native</span>(<span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">cstr</span>) =&gt; {
-                <span class="comment">// Moves the underlying string</span>
-                <span class="ident">cstr</span>.<span class="ident">take</span>().<span class="ident">unwrap</span>().<span class="ident">into_string</span>().<span class="ident">unwrap</span>()
+            Inner::Native(<span class="kw-2">ref mut </span>cstr) =&gt; {
+                <span class="comment">// Moves the underlying string
+                </span>cstr.take().unwrap().into_string().unwrap()
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">GString</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Potentially creates a copy</span>
-        <span class="kw">let</span> <span class="ident">st</span>: <span class="ident">String</span> <span class="op">=</span> <span class="ident">s</span>.<span class="ident">into</span>();
-        <span class="ident">st</span>.<span class="ident">into_boxed_str</span>()
+<span class="kw">impl </span>From&lt;GString&gt; <span class="kw">for </span>Box&lt;str&gt; {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: GString) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Potentially creates a copy
+        </span><span class="kw">let </span>st: String = s.into();
+        st.into_boxed_str()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">String</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Moves the content of the String</span>
-        <span class="kw">unsafe</span> {
-            <span class="comment">// No check for valid UTF-8 here</span>
-            <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::from_vec_unchecked</span>(<span class="ident">s</span>.<span class="ident">into_bytes</span>());
-            <span class="ident">GString</span>(<span class="ident">Inner::Native</span>(<span class="prelude-val">Some</span>(<span class="ident">cstr</span>)))
+<span class="kw">impl </span>From&lt;String&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: String) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Moves the content of the String
+        </span><span class="kw">unsafe </span>{
+            <span class="comment">// No check for valid UTF-8 here
+            </span><span class="kw">let </span>cstr = CString::from_vec_unchecked(s.into_bytes());
+            GString(Inner::Native(<span class="prelude-val">Some</span>(cstr)))
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Moves the content of the String</span>
-        <span class="ident">s</span>.<span class="ident">into_string</span>().<span class="ident">into</span>()
+<span class="kw">impl </span>From&lt;Box&lt;str&gt;&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: Box&lt;str&gt;) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Moves the content of the String
+        </span>s.into_string().into()
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">str</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Allocates with the GLib allocator</span>
-        <span class="kw">unsafe</span> {
-            <span class="comment">// No check for valid UTF-8 here</span>
-            <span class="kw">let</span> <span class="ident">copy</span> <span class="op">=</span> <span class="ident">ffi::g_malloc</span>(<span class="ident">s</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">c_char</span>;
-            <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">s</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="ident">copy</span>, <span class="ident">s</span>.<span class="ident">len</span>() <span class="op">+</span> <span class="number">1</span>);
-            <span class="ident">ptr::write</span>(<span class="ident">copy</span>.<span class="ident">add</span>(<span class="ident">s</span>.<span class="ident">len</span>()), <span class="number">0</span>);
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>GStr&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>GStr) -&gt; GString {
+        s.to_owned()
+    }
+}
 
-            <span class="ident">GString</span>(<span class="ident">Inner::Foreign</span> {
-                <span class="ident">ptr</span>: <span class="ident">ptr::NonNull::new_unchecked</span>(<span class="ident">copy</span>),
-                <span class="ident">len</span>: <span class="ident">s</span>.<span class="ident">len</span>(),
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>str&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: <span class="kw-2">&amp;</span>str) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Allocates with the GLib allocator
+        </span><span class="kw">unsafe </span>{
+            <span class="comment">// No check for valid UTF-8 here
+            </span><span class="kw">let </span>copy = ffi::g_malloc(s.len() + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut </span>c_char;
+            ptr::copy_nonoverlapping(s.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>c_char, copy, s.len());
+            ptr::write(copy.add(s.len()), <span class="number">0</span>);
+
+            GString(Inner::Foreign {
+                ptr: ptr::NonNull::new_unchecked(copy),
+                len: s.len(),
             })
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Moves the content of the Vec</span>
-        <span class="comment">// Also check if it&#39;s valid UTF-8</span>
-        <span class="kw">let</span> <span class="ident">cstring</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">s</span>).<span class="ident">expect</span>(<span class="string">&quot;CString::new failed&quot;</span>);
-        <span class="ident">cstring</span>.<span class="ident">into</span>()
+<span class="kw">impl </span>From&lt;Vec&lt;u8&gt;&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: Vec&lt;u8&gt;) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Moves the content of the Vec
+        // Also check if it&#39;s valid UTF-8
+        </span><span class="kw">let </span>cstring = CString::new(s).expect(<span class="string">&quot;CString::new failed&quot;</span>);
+        cstring.into()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">CString</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">s</span>: <span class="ident">CString</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Moves the content of the CString</span>
-        <span class="comment">// Also check if it&#39;s valid UTF-8</span>
-        <span class="macro">assert!</span>(<span class="ident">s</span>.<span class="ident">to_str</span>().<span class="ident">is_ok</span>());
-        <span class="self">Self</span>(<span class="ident">Inner::Native</span>(<span class="prelude-val">Some</span>(<span class="ident">s</span>)))
+<span class="kw">impl </span>From&lt;CString&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(s: CString) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Moves the content of the CString
+        // Also check if it&#39;s valid UTF-8
+        </span><span class="macro">assert!</span>(s.to_str().is_ok());
+        <span class="self">Self</span>(Inner::Native(<span class="prelude-val">Some</span>(s)))
     }
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">c</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span>) -&gt; <span class="self">Self</span> {
-        <span class="comment">// Creates a copy with the GLib allocator</span>
-        <span class="comment">// Also check if it&#39;s valid UTF-8</span>
-        <span class="ident">c</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">into</span>()
+<span class="kw">impl </span>From&lt;<span class="kw-2">&amp;</span>CStr&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>from(c: <span class="kw-2">&amp;</span>CStr) -&gt; <span class="self">Self </span>{
+        <span class="comment">// Creates a copy with the GLib allocator
+        // Also check if it&#39;s valid UTF-8
+        </span>c.to_str().unwrap().into()
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrFull</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>u8) -&gt; <span class="self">Self </span>{
+        <span class="macro">assert!</span>(!ptr.is_null());
 
-        <span class="comment">// Check for valid UTF-8 here</span>
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
-        <span class="macro">assert!</span>(<span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">is_ok</span>());
-        <span class="ident">GString</span>(<span class="ident">Inner::Foreign</span> {
-            <span class="ident">ptr</span>: <span class="ident">ptr::NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>),
-            <span class="ident">len</span>: <span class="ident">cstr</span>.<span class="ident">to_bytes</span>().<span class="ident">len</span>(),
+        <span class="comment">// Check for valid UTF-8 here
+        </span><span class="kw">let </span>cstr = CStr::from_ptr(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+        <span class="macro">assert!</span>(cstr.to_str().is_ok());
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
+            len: cstr.to_bytes().len(),
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrFull</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_full</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>i8) -&gt; <span class="self">Self </span>{
+        from_glib_full(ptr <span class="kw">as </span><span class="kw-2">*mut </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrFull</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_full</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*const </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>u8) -&gt; <span class="self">Self </span>{
+        from_glib_full(ptr <span class="kw">as </span><span class="kw-2">*mut </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrFull</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_full</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*const </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*const </span>i8) -&gt; <span class="self">Self </span>{
+        from_glib_full(ptr <span class="kw">as </span><span class="kw-2">*mut </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrNone</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
-        <span class="comment">// Also check if it&#39;s valid UTF-8</span>
-        <span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">unwrap</span>().<span class="ident">into</span>()
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*const </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>u8) -&gt; <span class="self">Self </span>{
+        <span class="macro">assert!</span>(!ptr.is_null());
+        <span class="kw">let </span>cstr = CStr::from_ptr(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+        <span class="comment">// Also check if it&#39;s valid UTF-8
+        </span>cstr.to_str().unwrap().into()
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrNone</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_none</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*const </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*const </span>i8) -&gt; <span class="self">Self </span>{
+        from_glib_none(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrNone</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_none</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>u8) -&gt; <span class="self">Self </span>{
+        from_glib_none(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrNone</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib_none</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>i8) -&gt; <span class="self">Self </span>{
+        from_glib_none(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrBorrow</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>) -&gt; <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">ptr</span>.<span class="ident">is_null</span>());
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*const </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*const </span>u8) -&gt; Borrowed&lt;<span class="self">Self</span>&gt; {
+        <span class="macro">assert!</span>(!ptr.is_null());
 
-        <span class="comment">// Check for valid UTF-8 here</span>
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CStr::from_ptr</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>);
-        <span class="macro">assert!</span>(<span class="ident">cstr</span>.<span class="ident">to_str</span>().<span class="ident">is_ok</span>());
-        <span class="ident">Borrowed::new</span>(<span class="ident">GString</span>(<span class="ident">Inner::Foreign</span> {
-            <span class="ident">ptr</span>: <span class="ident">ptr::NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>),
-            <span class="ident">len</span>: <span class="ident">cstr</span>.<span class="ident">to_bytes</span>().<span class="ident">len</span>(),
+        <span class="comment">// Check for valid UTF-8 here
+        </span><span class="kw">let </span>cstr = CStr::from_ptr(ptr <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>);
+        <span class="macro">assert!</span>(cstr.to_str().is_ok());
+        Borrowed::new(GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
+            len: cstr.to_bytes().len(),
         }))
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrBorrow</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>) -&gt; <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*const </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*const </span>i8) -&gt; Borrowed&lt;<span class="self">Self</span>&gt; {
+        from_glib_borrow(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrBorrow</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>) -&gt; <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>u8) -&gt; Borrowed&lt;<span class="self">Self</span>&gt; {
+        from_glib_borrow(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlibPtrBorrow</span><span class="op">&lt;</span><span class="kw-2">*mut</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>) -&gt; <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">from_glib_borrow</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="attribute">#[inline]
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>i8) -&gt; Borrowed&lt;<span class="self">Self</span>&gt; {
+        from_glib_borrow(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ToGlibPtr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*const</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Storage</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="kw">type </span>Storage = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>;
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_none</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">Stash</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">Stash</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="self">self</span>)
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>u8, <span class="self">Self</span>&gt; {
+        Stash(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8, <span class="self">self</span>)
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_full</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">u8</span> {
-        <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>
-    }
-}
-
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ToGlibPtr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*const</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Storage</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>;
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_none</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">Stash</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">Stash</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="self">self</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_full</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const</span> <span class="ident">i8</span> {
-        <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>u8 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.clone().into_glib_ptr() <span class="kw">as </span><span class="kw-2">*const </span>u8 }
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ToGlibPtr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*mut</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Storage</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="kw">type </span>Storage = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>;
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_none</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">Stash</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">Stash</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="self">self</span>)
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*const </span>i8, <span class="self">Self</span>&gt; {
+        Stash(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>i8, <span class="self">self</span>)
     }
 
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_full</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">u8</span> {
-        <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">u8</span>
-    }
-}
-
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ToGlibPtr</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*mut</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Storage</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">Self</span>;
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_none</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">Stash</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="ident">Stash</span>(<span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="self">self</span>)
-    }
-
-    <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_glib_full</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut</span> <span class="ident">i8</span> {
-        <span class="self">self</span>.<span class="ident">clone</span>().<span class="ident">into_raw</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">i8</span>
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*const </span>i8 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.clone().into_glib_ptr() <span class="kw">as </span><span class="kw-2">*const </span>i8 }
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromGlibContainer</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="kw-2">*const</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">return</span> <span class="ident"><span class="self">Self</span>::from</span>(<span class="string">&quot;&quot;</span>);
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="kw">type </span>Storage = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>;
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>u8, <span class="self">Self</span>&gt; {
+        Stash(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>u8, <span class="self">self</span>)
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>u8 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.clone().into_glib_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>u8 }
+    }
+}
+
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="kw">type </span>Storage = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">Self</span>;
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>i8, <span class="self">Self</span>&gt; {
+        Stash(<span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>i8, <span class="self">self</span>)
+    }
+
+    <span class="attribute">#[inline]
+    </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>i8 {
+        <span class="kw">unsafe </span>{ <span class="self">self</span>.clone().into_glib_ptr() <span class="kw">as </span><span class="kw-2">*mut </span>i8 }
+    }
+}
+
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*const </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
+            <span class="kw">return </span><span class="self">Self</span>::from(<span class="string">&quot;&quot;</span>);
         }
-        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>);
-        <span class="comment">// Also check if it&#39;s valid UTF-8</span>
-        <span class="ident">std::str::from_utf8</span>(<span class="ident">slice</span>).<span class="ident">unwrap</span>().<span class="ident">into</span>()
+        <span class="kw">let </span>slice = slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8, num);
+        <span class="comment">// Also check if it&#39;s valid UTF-8
+        </span>std::str::from_utf8(slice).unwrap().into()
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_container_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">return</span> <span class="ident"><span class="self">Self</span>::from</span>(<span class="string">&quot;&quot;</span>);
+    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*const </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
+            <span class="kw">return </span><span class="self">Self</span>::from(<span class="string">&quot;&quot;</span>);
         }
 
-        <span class="comment">// Check if it&#39;s valid UTF-8</span>
-        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>);
-        <span class="ident">std::str::from_utf8</span>(<span class="ident">slice</span>).<span class="ident">unwrap</span>();
+        <span class="comment">// Check if it&#39;s valid UTF-8
+        </span><span class="kw">let </span>slice = slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8, num);
+        std::str::from_utf8(slice).unwrap();
 
-        <span class="ident">GString</span>(<span class="ident">Inner::Foreign</span> {
-            <span class="ident">ptr</span>: <span class="ident">ptr::NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>),
-            <span class="ident">len</span>: <span class="ident">num</span>,
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
+            len: num,
         })
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="ident">num</span> <span class="op">==</span> <span class="number">0</span> <span class="op">|</span><span class="op">|</span> <span class="ident">ptr</span>.<span class="ident">is_null</span>() {
-            <span class="kw">return</span> <span class="ident"><span class="self">Self</span>::from</span>(<span class="string">&quot;&quot;</span>);
+    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*const </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        <span class="kw">if </span>num == <span class="number">0 </span>|| ptr.is_null() {
+            <span class="kw">return </span><span class="self">Self</span>::from(<span class="string">&quot;&quot;</span>);
         }
 
-        <span class="comment">// Check if it&#39;s valid UTF-8</span>
-        <span class="kw">let</span> <span class="ident">slice</span> <span class="op">=</span> <span class="ident">slice::from_raw_parts</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>);
-        <span class="ident">std::str::from_utf8</span>(<span class="ident">slice</span>).<span class="ident">unwrap</span>();
+        <span class="comment">// Check if it&#39;s valid UTF-8
+        </span><span class="kw">let </span>slice = slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>u8, num);
+        std::str::from_utf8(slice).unwrap();
 
-        <span class="ident">GString</span>(<span class="ident">Inner::Foreign</span> {
-            <span class="ident">ptr</span>: <span class="ident">ptr::NonNull::new_unchecked</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>),
-            <span class="ident">len</span>: <span class="ident">num</span>,
+        GString(Inner::Foreign {
+            ptr: ptr::NonNull::new_unchecked(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>),
+            len: num,
         })
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromGlibContainer</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="kw-2">*mut</span> <span class="ident">i8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span>i8&gt; <span class="kw">for </span>GString {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_none_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_container_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_container_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
+    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_container_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">i8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_full_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
-    }
-}
-
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromGlibContainer</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="kw-2">*const</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
-    }
-
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_container_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_container_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
-    }
-
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*const</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_full_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
+    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>i8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_full_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromGlibContainer</span><span class="op">&lt;</span><span class="kw-2">*const</span> <span class="ident">c_char</span>, <span class="kw-2">*mut</span> <span class="ident">u8</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_none_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*const </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*const </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_none_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_container_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_container_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
+    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*const </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_container_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib_full_num</span>(<span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="ident">u8</span>, <span class="ident">num</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">FromGlibContainer::from_glib_full_num</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">i8</span>, <span class="ident">num</span>)
-    }
-}
-
-<span class="kw">impl</span> <span class="ident">GlibPtrDefault</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="kw-2">*const</span> <span class="ident">c_char</span>;
-}
-
-<span class="kw">impl</span> <span class="ident">StaticType</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">static_type</span>() -&gt; <span class="ident">Type</span> {
-        <span class="ident">String::static_type</span>()
+    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*const </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_full_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ValueType</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Type</span> <span class="op">=</span> <span class="ident">String</span>;
-}
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlibContainer&lt;<span class="kw-2">*const </span>c_char, <span class="kw-2">*mut </span>u8&gt; <span class="kw">for </span>GString {
+    <span class="kw">unsafe fn </span>from_glib_none_num(ptr: <span class="kw-2">*mut </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_none_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
+    }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ValueTypeOptional</span> <span class="kw">for</span> <span class="ident">GString</span> {}
+    <span class="kw">unsafe fn </span>from_glib_container_num(ptr: <span class="kw-2">*mut </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_container_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
+    }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::value::FromValue</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">type</span> <span class="ident">Checker</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
-
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_value</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident"><span class="kw">crate</span>::Value</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from</span>(<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span><span class="ident">::from_value</span>(<span class="ident">value</span>))
+    <span class="kw">unsafe fn </span>from_glib_full_num(ptr: <span class="kw-2">*mut </span>u8, num: usize) -&gt; <span class="self">Self </span>{
+        FromGlibContainer::from_glib_full_num(ptr <span class="kw">as </span><span class="kw-2">*const </span>i8, num)
     }
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ToValue</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Value</span> {
-        <span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span><span class="ident">::to_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_str</span>())
-    }
-
-    <span class="kw">fn</span> <span class="ident">value_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Type</span> {
-        <span class="ident">String::static_type</span>()
-    }
+<span class="kw">impl </span>GlibPtrDefault <span class="kw">for </span>GString {
+    <span class="kw">type </span>GlibType = <span class="kw-2">*const </span>c_char;
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ToValueOptional</span> <span class="kw">for</span> <span class="ident">GString</span> {
-    <span class="kw">fn</span> <span class="ident">to_value_optional</span>(<span class="ident">s</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="self">Self</span><span class="op">&gt;</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Value</span> {
-        <span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span><span class="ident">::to_value_optional</span>(<span class="ident">s</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">s</span><span class="op">|</span> <span class="ident">s</span>.<span class="ident">as_str</span>()))
+<span class="kw">impl </span>StaticType <span class="kw">for </span>GString {
+    <span class="kw">fn </span>static_type() -&gt; Type {
+        String::static_type()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">StaticType</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">static_type</span>() -&gt; <span class="ident">Type</span> {
-        <span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::static_type</span>()
+<span class="kw">impl </span><span class="kw">crate</span>::value::ValueType <span class="kw">for </span>GString {
+    <span class="kw">type </span>Type = String;
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ValueTypeOptional <span class="kw">for </span>GString {}
+
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>GString {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeOrNoneChecker&lt;<span class="self">Self</span>&gt;;
+
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::Value) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from(&lt;<span class="kw-2">&amp;</span>str&gt;::from_value(value))
     }
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ValueType</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Type</span> <span class="op">=</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span>;
-}
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValue <span class="kw">for </span>GString {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::Value {
+        &lt;<span class="kw-2">&amp;</span>str&gt;::to_value(<span class="kw-2">&amp;</span><span class="self">self</span>.as_str())
+    }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident"><span class="kw">crate</span>::value::FromValue</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> {
-    <span class="kw">type</span> <span class="ident">Checker</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::value::GenericValueTypeChecker</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
-
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_value</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident"><span class="kw">crate</span>::value::Value</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">gobject_ffi::g_value_get_boxed</span>(<span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>) <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw-2">*const</span> <span class="ident">c_char</span>;
-        <span class="ident">FromGlibPtrContainer::from_glib_none</span>(<span class="ident">ptr</span>)
+    <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
+        String::static_type()
     }
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ToValue</span> <span class="kw">for</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::value::Value</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::value::Value::for_value_type</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>();
-            <span class="kw">let</span> <span class="ident">ptr</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">c_char</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_glib_full</span>();
-            <span class="ident">gobject_ffi::g_value_take_boxed</span>(<span class="ident">value</span>.<span class="ident">to_glib_none_mut</span>().<span class="number">0</span>, <span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">c_void</span>);
-            <span class="ident">value</span>
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValueOptional <span class="kw">for </span>GString {
+    <span class="kw">fn </span>to_value_optional(s: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="self">Self</span>&gt;) -&gt; <span class="kw">crate</span>::Value {
+        &lt;str&gt;::to_value_optional(s.as_ref().map(|s| s.as_str()))
+    }
+}
+
+<span class="kw">impl </span>StaticType <span class="kw">for </span>Vec&lt;GString&gt; {
+    <span class="kw">fn </span>static_type() -&gt; Type {
+        &lt;Vec&lt;String&gt;&gt;::static_type()
+    }
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ValueType <span class="kw">for </span>Vec&lt;GString&gt; {
+    <span class="kw">type </span>Type = Vec&lt;GString&gt;;
+}
+
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Vec&lt;GString&gt; {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
+
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::value::Value) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>ptr = gobject_ffi::g_value_get_boxed(value.to_glib_none().<span class="number">0</span>) <span class="kw">as </span><span class="kw-2">*const *const </span>c_char;
+        FromGlibPtrContainer::from_glib_none(ptr)
+    }
+}
+
+<span class="kw">impl </span><span class="kw">crate</span>::value::ToValue <span class="kw">for </span>Vec&lt;GString&gt; {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::value::Value {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::value::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
+            <span class="kw">let </span>ptr: <span class="kw-2">*mut *mut </span>c_char = <span class="self">self</span>.to_glib_full();
+            gobject_ffi::g_value_take_boxed(value.to_glib_none_mut().<span class="number">0</span>, ptr <span class="kw">as </span><span class="kw-2">*const </span>c_void);
+            value
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">value_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Type</span> {
-        <span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="ident">::static_type</span>()
+    <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Type {
+        &lt;Vec&lt;GString&gt;&gt;::static_type()
     }
 }
 
-<span class="macro">impl_from_glib_container_as_vec_string!</span>(<span class="ident">GString</span>, <span class="kw-2">*const</span> <span class="ident">c_char</span>);
-<span class="macro">impl_from_glib_container_as_vec_string!</span>(<span class="ident">GString</span>, <span class="kw-2">*mut</span> <span class="ident">c_char</span>);
+<span class="macro">impl_from_glib_container_as_vec_string!</span>(GString, <span class="kw-2">*const </span>c_char);
+<span class="macro">impl_from_glib_container_as_vec_string!</span>(GString, <span class="kw-2">*mut </span>c_char);
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::blacklisted_name</span>)]</span>
-<span class="kw">mod</span> <span class="ident">tests</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
-    <span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
+<span class="attribute">#[cfg(test)]
+#[allow(clippy::disallowed_names)]
+</span><span class="kw">mod </span>tests {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
+    <span class="kw">use </span>std::ffi::CString;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_gstring</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="string">&quot;foo&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">as_ptr</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_gstring() {
+        <span class="kw">let </span>data = CString::new(<span class="string">&quot;foo&quot;</span>).unwrap();
+        <span class="kw">let </span>ptr = data.as_ptr();
 
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr_copy</span> <span class="op">=</span> <span class="ident">ffi::g_strdup</span>(<span class="ident">ptr</span>);
-            <span class="kw">let</span> <span class="ident">gstring</span> <span class="op">=</span> <span class="ident">GString::from_glib_full</span>(<span class="ident">ptr_copy</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-            <span class="kw">let</span> <span class="ident">foo</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">gstring</span>.<span class="ident">into</span>();
-            <span class="macro">assert_eq!</span>(<span class="ident">foo</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr_copy = ffi::g_strdup(ptr);
+            <span class="kw">let </span>gstring = GString::from_glib_full(ptr_copy);
+            <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+            <span class="kw">let </span>foo: Box&lt;str&gt; = gstring.into();
+            <span class="macro">assert_eq!</span>(foo.as_ref(), <span class="string">&quot;foo&quot;</span>);
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_owned_glib_string</span>() {
-        <span class="kw">let</span> <span class="ident">data</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="string">&quot;foo&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">ptr</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">as_ptr</span>();
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ptr_copy</span> <span class="op">=</span> <span class="ident">ffi::g_strdup</span>(<span class="ident">ptr</span>);
-            <span class="kw">let</span> <span class="ident">gstr</span> <span class="op">=</span> <span class="ident">GString::from_glib_full</span>(<span class="ident">ptr_copy</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">gstr</span>, <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_owned_glib_string() {
+        <span class="kw">let </span>data = CString::new(<span class="string">&quot;foo&quot;</span>).unwrap();
+        <span class="kw">let </span>ptr = data.as_ptr();
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ptr_copy = ffi::g_strdup(ptr);
+            <span class="kw">let </span>gstr = GString::from_glib_full(ptr_copy);
+            <span class="macro">assert_eq!</span>(gstr, <span class="string">&quot;foo&quot;</span>);
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_gstring_from_str</span>() {
-        <span class="kw">let</span> <span class="ident">gstring</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="string">&quot;foo&quot;</span>.<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-        <span class="kw">let</span> <span class="ident">foo</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">gstring</span>.<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">foo</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_gstring_from_str() {
+        <span class="kw">let </span>gstring: GString = <span class="string">&quot;foo&quot;</span>.into();
+        <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">let </span>foo: Box&lt;str&gt; = gstring.into();
+        <span class="macro">assert_eq!</span>(foo.as_ref(), <span class="string">&quot;foo&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_string_from_gstring</span>() {
-        <span class="kw">let</span> <span class="ident">gstring</span> <span class="op">=</span> <span class="ident">GString::from</span>(<span class="string">&quot;foo&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="ident">gstring</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>, <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_string_from_gstring() {
+        <span class="kw">let </span>gstring = GString::from(<span class="string">&quot;foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">let </span>s = String::from(gstring);
+        <span class="macro">assert_eq!</span>(s, <span class="string">&quot;foo&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_gstring_from_cstring</span>() {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="string">&quot;foo&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">gstring</span> <span class="op">=</span> <span class="ident">GString::from</span>(<span class="ident">cstr</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-        <span class="kw">let</span> <span class="ident">foo</span>: <span class="ident">Box</span><span class="op">&lt;</span><span class="ident">str</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">gstring</span>.<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">foo</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_gstring_from_cstring() {
+        <span class="kw">let </span>cstr = CString::new(<span class="string">&quot;foo&quot;</span>).unwrap();
+        <span class="kw">let </span>gstring = GString::from(cstr);
+        <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">let </span>foo: Box&lt;str&gt; = gstring.into();
+        <span class="macro">assert_eq!</span>(foo.as_ref(), <span class="string">&quot;foo&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_string_from_gstring_from_cstring</span>() {
-        <span class="kw">let</span> <span class="ident">cstr</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="string">&quot;foo&quot;</span>).<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">gstring</span> <span class="op">=</span> <span class="ident">GString::from</span>(<span class="ident">cstr</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-        <span class="kw">let</span> <span class="ident">s</span> <span class="op">=</span> <span class="ident">String::from</span>(<span class="ident">gstring</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>, <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_string_from_gstring_from_cstring() {
+        <span class="kw">let </span>cstr = CString::new(<span class="string">&quot;foo&quot;</span>).unwrap();
+        <span class="kw">let </span>gstring = GString::from(cstr);
+        <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">let </span>s = String::from(gstring);
+        <span class="macro">assert_eq!</span>(s, <span class="string">&quot;foo&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_vec_u8_to_gstring</span>() {
-        <span class="kw">let</span> <span class="ident">v</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] <span class="op">=</span> <span class="string">b&quot;foo&quot;</span>;
-        <span class="kw">let</span> <span class="ident">s</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="ident">Vec::from</span>(<span class="ident">v</span>).<span class="ident">into</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">s</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_vec_u8_to_gstring() {
+        <span class="kw">let </span>v: <span class="kw-2">&amp;</span>[u8] = <span class="string">b&quot;foo&quot;</span>;
+        <span class="kw">let </span>s: GString = Vec::from(v).into();
+        <span class="macro">assert_eq!</span>(s.as_str(), <span class="string">&quot;foo&quot;</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_from_glib_container</span>() {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">test_a</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="ident">FromGlibContainer::from_glib_container_num</span>(
-                <span class="ident">ffi::g_strdup</span>(<span class="string">&quot;hello_world&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>),
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_as_ref_path() {
+        <span class="kw">fn </span>foo&lt;P: AsRef&lt;Path&gt;&gt;(_path: P) {}
+        <span class="kw">let </span>gstring: GString = <span class="string">&quot;/my/path/&quot;</span>.into();
+        <span class="kw">let </span>gstr: <span class="kw-2">&amp;</span>GStr = gstring.as_gstr();
+        foo(gstr);
+        foo(gstring);
+    }
+
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_from_glib_container() {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>test_a: GString = FromGlibContainer::from_glib_container_num(
+                ffi::g_strdup(<span class="string">&quot;hello_world\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
                 <span class="number">5</span>,
             );
-            <span class="macro">assert_eq!</span>(<span class="string">&quot;hello&quot;</span>, <span class="ident">test_a</span>.<span class="ident">as_str</span>());
+            <span class="macro">assert_eq!</span>(<span class="string">&quot;hello&quot;</span>, test_a.as_str());
 
-            <span class="kw">let</span> <span class="ident">test_b</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="string">&quot;hello_world&quot;</span>.<span class="ident">as_ptr</span>(), <span class="number">5</span>);
-            <span class="macro">assert_eq!</span>(<span class="string">&quot;hello&quot;</span>, <span class="ident">test_b</span>.<span class="ident">as_str</span>());
+            <span class="kw">let </span>test_b: GString = FromGlibContainer::from_glib_none_num(<span class="string">&quot;hello_world&quot;</span>.as_ptr(), <span class="number">5</span>);
+            <span class="macro">assert_eq!</span>(<span class="string">&quot;hello&quot;</span>, test_b.as_str());
 
-            <span class="kw">let</span> <span class="ident">test_c</span>: <span class="ident">GString</span> <span class="op">=</span>
-                <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="ident">std::ptr::null</span>::<span class="op">&lt;</span><span class="ident">std::os::raw::c_char</span><span class="op">&gt;</span>(), <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, <span class="ident">test_c</span>.<span class="ident">as_str</span>());
+            <span class="kw">let </span>test_c: GString =
+                FromGlibContainer::from_glib_none_num(std::ptr::null::&lt;std::os::raw::c_char&gt;(), <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, test_c.as_str());
 
-            <span class="kw">let</span> <span class="ident">test_d</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="ident">FromGlibContainer::from_glib_none_num</span>(<span class="string">&quot;&quot;</span>.<span class="ident">as_ptr</span>(), <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, <span class="ident">test_d</span>.<span class="ident">as_str</span>());
+            <span class="kw">let </span>test_d: GString = FromGlibContainer::from_glib_none_num(<span class="string">&quot;&quot;</span>.as_ptr(), <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, test_d.as_str());
 
-            <span class="kw">let</span> <span class="ident">test_e</span>: <span class="ident">GString</span> <span class="op">=</span>
-                <span class="ident">FromGlibContainer::from_glib_container_num</span>(<span class="ident">ffi::g_strdup</span>(<span class="ident">std::ptr::null</span>()), <span class="number">0</span>);
-            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, <span class="ident">test_e</span>.<span class="ident">as_str</span>());
+            <span class="kw">let </span>test_e: GString =
+                FromGlibContainer::from_glib_container_num(ffi::g_strdup(std::ptr::null()), <span class="number">0</span>);
+            <span class="macro">assert_eq!</span>(<span class="string">&quot;&quot;</span>, test_e.as_str());
         }
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">test_hashmap</span>() {
-        <span class="kw">use</span> <span class="ident">std::collections::HashMap</span>;
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>test_hashmap() {
+        <span class="kw">use </span>std::collections::HashMap;
 
-        <span class="kw">let</span> <span class="ident">gstring</span> <span class="op">=</span> <span class="ident">GString::from</span>(<span class="string">&quot;foo&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">gstring</span>.<span class="ident">as_str</span>(), <span class="string">&quot;foo&quot;</span>);
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">h</span>: <span class="ident">HashMap</span><span class="op">&lt;</span><span class="ident">GString</span>, <span class="ident">i32</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">HashMap::new</span>();
-        <span class="ident">h</span>.<span class="ident">insert</span>(<span class="ident">gstring</span>, <span class="number">42</span>);
-        <span class="kw">let</span> <span class="ident">gstring</span>: <span class="ident">GString</span> <span class="op">=</span> <span class="string">&quot;foo&quot;</span>.<span class="ident">into</span>();
-        <span class="macro">assert!</span>(<span class="ident">h</span>.<span class="ident">contains_key</span>(<span class="kw-2">&amp;</span><span class="ident">gstring</span>));
+        <span class="kw">let </span>gstring = GString::from(<span class="string">&quot;foo&quot;</span>);
+        <span class="macro">assert_eq!</span>(gstring.as_str(), <span class="string">&quot;foo&quot;</span>);
+        <span class="kw">let </span><span class="kw-2">mut </span>h: HashMap&lt;GString, i32&gt; = HashMap::new();
+        h.insert(gstring, <span class="number">42</span>);
+        <span class="kw">let </span>gstring: GString = <span class="string">&quot;foo&quot;</span>.into();
+        <span class="macro">assert!</span>(h.contains_key(<span class="kw-2">&amp;</span>gstring));
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

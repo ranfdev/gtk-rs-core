@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/functions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>functions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/functions.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>functions.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -341,331 +336,270 @@
 <span id="263">263</span>
 <span id="264">264</span>
 <span id="265">265</span>
-<span id="266">266</span>
-<span id="267">267</span>
-<span id="268">268</span>
-<span id="269">269</span>
-<span id="270">270</span>
-<span id="271">271</span>
-<span id="272">272</span>
-<span id="273">273</span>
-<span id="274">274</span>
-<span id="275">275</span>
-<span id="276">276</span>
-<span id="277">277</span>
-<span id="278">278</span>
-<span id="279">279</span>
-<span id="280">280</span>
-<span id="281">281</span>
-<span id="282">282</span>
-<span id="283">283</span>
-<span id="284">284</span>
-<span id="285">285</span>
-<span id="286">286</span>
-<span id="287">287</span>
-<span id="288">288</span>
-<span id="289">289</span>
-<span id="290">290</span>
-<span id="291">291</span>
-<span id="292">292</span>
-<span id="293">293</span>
-<span id="294">294</span>
-<span id="295">295</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident">std::mem</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_58&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="kw">use</span> <span class="ident">std::os::unix::io::AsRawFd</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident">std::os::unix::io</span>::{<span class="ident">FromRawFd</span>, <span class="ident">IntoRawFd</span>, <span class="ident">RawFd</span>};
-<span class="comment">// #[cfg(windows)]</span>
-<span class="comment">// #[cfg(any(feature = &quot;v2_58&quot;, feature = &quot;dox&quot;))]</span>
-<span class="comment">// use std::os::windows::io::AsRawHandle;</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::translate</span>::<span class="kw-2">*</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Error</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::GString</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Pid</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SpawnFlags</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span>std::mem;
+<span class="attribute">#[cfg(not(windows))]
+#[cfg(any(feature = <span class="string">&quot;v2_58&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="kw">use </span>std::os::unix::io::AsRawFd;
+<span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span>std::os::unix::io::{FromRawFd, IntoRawFd, RawFd};
+<span class="comment">// #[cfg(windows)]
+// #[cfg(any(feature = &quot;v2_58&quot;, feature = &quot;dox&quot;))]
+// use std::os::windows::io::AsRawHandle;
+</span><span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span><span class="kw">crate</span>::Error;
+<span class="kw">use </span><span class="kw">crate</span>::GString;
+<span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span><span class="kw">crate</span>::Pid;
+<span class="attribute">#[cfg(not(windows))]
+</span><span class="kw">use </span><span class="kw">crate</span>::SpawnFlags;
+<span class="kw">use </span>std::ptr;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_58&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_58&quot;</span>, <span class="ident">not</span>(<span class="ident">windows</span>)))))]</span>
-<span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::too_many_arguments</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_spawn_async_with_fds&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_async_with_fds</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>, <span class="ident">T</span>: <span class="ident">AsRawFd</span>, <span class="ident">U</span>: <span class="ident">AsRawFd</span>, <span class="ident">V</span>: <span class="ident">AsRawFd</span><span class="op">&gt;</span>(
-    <span class="ident">working_directory</span>: <span class="ident">P</span>,
-    <span class="ident">argv</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
-    <span class="ident">envp</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">str</span>],
-    <span class="ident">flags</span>: <span class="ident">SpawnFlags</span>,
-    <span class="ident">child_setup</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">stdin_fd</span>: <span class="ident">T</span>,
-    <span class="ident">stdout_fd</span>: <span class="ident">U</span>,
-    <span class="ident">stderr_fd</span>: <span class="ident">V</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Pid</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">child_setup_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">child_setup</span>);
-    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">child_setup_func</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">user_data</span>: <span class="ident">ffi::gpointer</span>) {
-        <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">callback</span>).<span class="ident">expect</span>(<span class="string">&quot;cannot get closure...&quot;</span>);
-        <span class="ident">callback</span>()
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_58&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg(not(windows))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(all(feature = <span class="string">&quot;v2_58&quot;</span>, not(windows)))))]
+#[allow(clippy::too_many_arguments)]
+#[doc(alias = <span class="string">&quot;g_spawn_async_with_fds&quot;</span>)]
+</span><span class="kw">pub fn </span>spawn_async_with_fds&lt;P: AsRef&lt;std::path::Path&gt;, T: AsRawFd, U: AsRawFd, V: AsRawFd&gt;(
+    working_directory: P,
+    argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str],
+    envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str],
+    flags: SpawnFlags,
+    child_setup: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;,
+    stdin_fd: T,
+    stdout_fd: U,
+    stderr_fd: V,
+) -&gt; <span class="prelude-ty">Result</span>&lt;Pid, Error&gt; {
+    <span class="kw">let </span>child_setup_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; = Box_::new(child_setup);
+    <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>child_setup_func&lt;P: AsRef&lt;std::path::Path&gt;&gt;(user_data: ffi::gpointer) {
+        <span class="kw">let </span>callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
+            Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">let </span>callback = (<span class="kw-2">*</span>callback).expect(<span class="string">&quot;cannot get closure...&quot;</span>);
+        callback()
     }
-    <span class="kw">let</span> <span class="ident">child_setup</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">child_setup_data</span>.<span class="ident">is_some</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">child_setup_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>)
-    } <span class="kw">else</span> {
-        <span class="prelude-val">None</span>
-    };
-    <span class="kw">let</span> <span class="ident">super_callback0</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">child_setup_data</span>;
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">child_pid</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_spawn_async_with_fds</span>(
-            <span class="ident">working_directory</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">argv</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">envp</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">flags</span>.<span class="ident">into_glib</span>(),
-            <span class="ident">child_setup</span>,
-            <span class="ident">Box_::into_raw</span>(<span class="ident">super_callback0</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">child_pid</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="ident">stdin_fd</span>.<span class="ident">as_raw_fd</span>(),
-            <span class="ident">stdout_fd</span>.<span class="ident">as_raw_fd</span>(),
-            <span class="ident">stderr_fd</span>.<span class="ident">as_raw_fd</span>(),
-            <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="kw">let </span>child_setup = <span class="kw">if </span>child_setup_data.is_some() {
+        <span class="prelude-val">Some</span>(child_setup_func::&lt;P&gt; <span class="kw">as _</span>)
+    } <span class="kw">else </span>{
+        <span class="prelude-val">None
+    </span>};
+    <span class="kw">let </span>super_callback0: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; = child_setup_data;
+    <span class="kw">unsafe </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>child_pid = mem::MaybeUninit::uninit();
+        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+        <span class="kw">let _ </span>= ffi::g_spawn_async_with_fds(
+            working_directory.as_ref().to_glib_none().<span class="number">0</span>,
+            argv.to_glib_none().<span class="number">0</span>,
+            envp.to_glib_none().<span class="number">0</span>,
+            flags.into_glib(),
+            child_setup,
+            Box_::into_raw(super_callback0) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            child_pid.as_mut_ptr(),
+            stdin_fd.as_raw_fd(),
+            stdout_fd.as_raw_fd(),
+            stderr_fd.as_raw_fd(),
+            <span class="kw-2">&amp;mut </span>error,
         );
-        <span class="kw">let</span> <span class="ident">child_pid</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">child_pid</span>.<span class="ident">assume_init</span>());
-        <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">child_pid</span>)
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+        <span class="kw">let </span>child_pid = from_glib(child_pid.assume_init());
+        <span class="kw">if </span>error.is_null() {
+            <span class="prelude-val">Ok</span>(child_pid)
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(from_glib_full(error))
         }
     }
 }
 
-<span class="comment">// #[cfg(any(feature = &quot;v2_58&quot;, feature = &quot;dox&quot;))]</span>
-<span class="comment">// #[cfg(windows)]</span>
-<span class="comment">// pub fn spawn_async_with_fds&lt;</span>
-<span class="comment">//     P: AsRef&lt;std::path::Path&gt;,</span>
-<span class="comment">//     T: AsRawHandle,</span>
-<span class="comment">//     U: AsRawHandle,</span>
-<span class="comment">//     V: AsRawHandle,</span>
-<span class="comment">// &gt;(</span>
-<span class="comment">//     working_directory: P,</span>
-<span class="comment">//     argv: &amp;[&amp;str],</span>
-<span class="comment">//     envp: &amp;[&amp;str],</span>
-<span class="comment">//     flags: SpawnFlags,</span>
-<span class="comment">//     child_setup: Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;,</span>
-<span class="comment">//     stdin_fd: T,</span>
-<span class="comment">//     stdout_fd: U,</span>
-<span class="comment">//     stderr_fd: V,</span>
-<span class="comment">// ) -&gt; Result&lt;Pid, Error&gt; {</span>
-<span class="comment">//     let child_setup_data: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; = Box_::new(child_setup);</span>
-<span class="comment">//     unsafe extern &quot;C&quot; fn child_setup_func&lt;P: AsRef&lt;std::path::Path&gt;&gt;(</span>
-<span class="comment">//         user_data: ffi::gpointer,</span>
-<span class="comment">//     ) {</span>
-<span class="comment">//         let callback: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; =</span>
-<span class="comment">//             Box_::from_raw(user_data as *mut _);</span>
-<span class="comment">//         let callback = (*callback).expect(&quot;cannot get closure...&quot;);</span>
-<span class="comment">//         callback()</span>
-<span class="comment">//     }</span>
-<span class="comment">//     let child_setup = if child_setup_data.is_some() {</span>
-<span class="comment">//         Some(child_setup_func::&lt;P&gt; as _)</span>
-<span class="comment">//     } else {</span>
-<span class="comment">//         None</span>
-<span class="comment">//     };</span>
-<span class="comment">//     let super_callback0: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; = child_setup_data;</span>
-<span class="comment">//     unsafe {</span>
-<span class="comment">//         let mut child_pid = mem::MaybeUninit::uninit();</span>
-<span class="comment">//         let mut error = ptr::null_mut();</span>
-<span class="comment">//         let _ = ffi::g_spawn_async_with_fds(</span>
-<span class="comment">//             working_directory.as_ref().to_glib_none().0,</span>
-<span class="comment">//             argv.to_glib_none().0,</span>
-<span class="comment">//             envp.to_glib_none().0,</span>
-<span class="comment">//             flags.into_glib(),</span>
-<span class="comment">//             child_setup,</span>
-<span class="comment">//             Box_::into_raw(super_callback0) as *mut _,</span>
-<span class="comment">//             child_pid.as_mut_ptr(),</span>
-<span class="comment">//             stdin_fd.as_raw_handle() as usize as _,</span>
-<span class="comment">//             stdout_fd.as_raw_handle() as usize as _,</span>
-<span class="comment">//             stderr_fd.as_raw_handle() as usize as _,</span>
-<span class="comment">//             &amp;mut error,</span>
-<span class="comment">//         );</span>
-<span class="comment">//         let child_pid = from_glib(child_pid.assume_init());</span>
-<span class="comment">//         if error.is_null() {</span>
-<span class="comment">//             Ok(child_pid)</span>
-<span class="comment">//         } else {</span>
-<span class="comment">//             Err(from_glib_full(error))</span>
-<span class="comment">//         }</span>
-<span class="comment">//     }</span>
-<span class="comment">// }</span>
+<span class="comment">// #[cfg(any(feature = &quot;v2_58&quot;, feature = &quot;dox&quot;))]
+// #[cfg(windows)]
+// pub fn spawn_async_with_fds&lt;
+//     P: AsRef&lt;std::path::Path&gt;,
+//     T: AsRawHandle,
+//     U: AsRawHandle,
+//     V: AsRawHandle,
+// &gt;(
+//     working_directory: P,
+//     argv: &amp;[&amp;str],
+//     envp: &amp;[&amp;str],
+//     flags: SpawnFlags,
+//     child_setup: Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;,
+//     stdin_fd: T,
+//     stdout_fd: U,
+//     stderr_fd: V,
+// ) -&gt; Result&lt;Pid, Error&gt; {
+//     let child_setup_data: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; = Box_::new(child_setup);
+//     unsafe extern &quot;C&quot; fn child_setup_func&lt;P: AsRef&lt;std::path::Path&gt;&gt;(
+//         user_data: ffi::gpointer,
+//     ) {
+//         let callback: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; =
+//             Box_::from_raw(user_data as *mut _);
+//         let callback = (*callback).expect(&quot;cannot get closure...&quot;);
+//         callback()
+//     }
+//     let child_setup = if child_setup_data.is_some() {
+//         Some(child_setup_func::&lt;P&gt; as _)
+//     } else {
+//         None
+//     };
+//     let super_callback0: Box_&lt;Option&lt;Box_&lt;dyn FnOnce() + &#39;static&gt;&gt;&gt; = child_setup_data;
+//     unsafe {
+//         let mut child_pid = mem::MaybeUninit::uninit();
+//         let mut error = ptr::null_mut();
+//         let _ = ffi::g_spawn_async_with_fds(
+//             working_directory.as_ref().to_glib_none().0,
+//             argv.to_glib_none().0,
+//             envp.to_glib_none().0,
+//             flags.into_glib(),
+//             child_setup,
+//             Box_::into_raw(super_callback0) as *mut _,
+//             child_pid.as_mut_ptr(),
+//             stdin_fd.as_raw_handle() as usize as _,
+//             stdout_fd.as_raw_handle() as usize as _,
+//             stderr_fd.as_raw_handle() as usize as _,
+//             &amp;mut error,
+//         );
+//         let child_pid = from_glib(child_pid.assume_init());
+//         if error.is_null() {
+//             Ok(child_pid)
+//         } else {
+//             Err(from_glib_full(error))
+//         }
+//     }
+// }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_spawn_async_with_pipes&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">spawn_async_with_pipes</span><span class="op">&lt;</span>
-    <span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
-    <span class="ident">T</span>: <span class="ident">FromRawFd</span>,
-    <span class="ident">U</span>: <span class="ident">FromRawFd</span>,
-    <span class="ident">V</span>: <span class="ident">FromRawFd</span>,
-<span class="op">&gt;</span>(
-    <span class="ident">working_directory</span>: <span class="ident">P</span>,
-    <span class="ident">argv</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">std::path::Path</span>],
-    <span class="ident">envp</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">std::path::Path</span>],
-    <span class="ident">flags</span>: <span class="ident">SpawnFlags</span>,
-    <span class="ident">child_setup</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Pid</span>, <span class="ident">T</span>, <span class="ident">U</span>, <span class="ident">V</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">let</span> <span class="ident">child_setup_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">child_setup</span>);
-    <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">child_setup_func</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">user_data</span>: <span class="ident">ffi::gpointer</span>) {
-        <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">callback</span>).<span class="ident">expect</span>(<span class="string">&quot;cannot get closure...&quot;</span>);
-        <span class="ident">callback</span>()
+</span><span class="attribute">#[cfg(not(windows))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(not(windows))))]
+#[doc(alias = <span class="string">&quot;g_spawn_async_with_pipes&quot;</span>)]
+</span><span class="kw">pub fn </span>spawn_async_with_pipes&lt;
+    P: AsRef&lt;std::path::Path&gt;,
+    T: FromRawFd,
+    U: FromRawFd,
+    V: FromRawFd,
+&gt;(
+    working_directory: P,
+    argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>std::path::Path],
+    envp: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>std::path::Path],
+    flags: SpawnFlags,
+    child_setup: <span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(Pid, T, U, V), Error&gt; {
+    <span class="kw">let </span>child_setup_data: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; = Box_::new(child_setup);
+    <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>child_setup_func&lt;P: AsRef&lt;std::path::Path&gt;&gt;(user_data: ffi::gpointer) {
+        <span class="kw">let </span>callback: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; =
+            Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+        <span class="kw">let </span>callback = (<span class="kw-2">*</span>callback).expect(<span class="string">&quot;cannot get closure...&quot;</span>);
+        callback()
     }
-    <span class="kw">let</span> <span class="ident">child_setup</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">child_setup_data</span>.<span class="ident">is_some</span>() {
-        <span class="prelude-val">Some</span>(<span class="ident">child_setup_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>)
-    } <span class="kw">else</span> {
-        <span class="prelude-val">None</span>
-    };
-    <span class="kw">let</span> <span class="ident">super_callback0</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">FnOnce</span>() <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">child_setup_data</span>;
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">child_pid</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">standard_input</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">standard_output</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">standard_error</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_spawn_async_with_pipes</span>(
-            <span class="ident">working_directory</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">argv</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">envp</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="ident">flags</span>.<span class="ident">into_glib</span>(),
-            <span class="ident">child_setup</span>,
-            <span class="ident">Box_::into_raw</span>(<span class="ident">super_callback0</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-            <span class="ident">child_pid</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="ident">standard_input</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="ident">standard_output</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="ident">standard_error</span>.<span class="ident">as_mut_ptr</span>(),
-            <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="kw">let </span>child_setup = <span class="kw">if </span>child_setup_data.is_some() {
+        <span class="prelude-val">Some</span>(child_setup_func::&lt;P&gt; <span class="kw">as _</span>)
+    } <span class="kw">else </span>{
+        <span class="prelude-val">None
+    </span>};
+    <span class="kw">let </span>super_callback0: Box_&lt;<span class="prelude-ty">Option</span>&lt;Box_&lt;<span class="kw">dyn </span>FnOnce() + <span class="lifetime">&#39;static</span>&gt;&gt;&gt; = child_setup_data;
+    <span class="kw">unsafe </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>child_pid = mem::MaybeUninit::uninit();
+        <span class="kw">let </span><span class="kw-2">mut </span>standard_input = mem::MaybeUninit::uninit();
+        <span class="kw">let </span><span class="kw-2">mut </span>standard_output = mem::MaybeUninit::uninit();
+        <span class="kw">let </span><span class="kw-2">mut </span>standard_error = mem::MaybeUninit::uninit();
+        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+        <span class="kw">let _ </span>= ffi::g_spawn_async_with_pipes(
+            working_directory.as_ref().to_glib_none().<span class="number">0</span>,
+            argv.to_glib_none().<span class="number">0</span>,
+            envp.to_glib_none().<span class="number">0</span>,
+            flags.into_glib(),
+            child_setup,
+            Box_::into_raw(super_callback0) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            child_pid.as_mut_ptr(),
+            standard_input.as_mut_ptr(),
+            standard_output.as_mut_ptr(),
+            standard_error.as_mut_ptr(),
+            <span class="kw-2">&amp;mut </span>error,
         );
-        <span class="kw">let</span> <span class="ident">child_pid</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">child_pid</span>.<span class="ident">assume_init</span>());
-        <span class="kw">let</span> <span class="ident">standard_input</span> <span class="op">=</span> <span class="ident">standard_input</span>.<span class="ident">assume_init</span>();
-        <span class="kw">let</span> <span class="ident">standard_output</span> <span class="op">=</span> <span class="ident">standard_output</span>.<span class="ident">assume_init</span>();
-        <span class="kw">let</span> <span class="ident">standard_error</span> <span class="op">=</span> <span class="ident">standard_error</span>.<span class="ident">assume_init</span>();
-        <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-            <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">windows</span>))]</span>
-            {
+        <span class="kw">let </span>child_pid = from_glib(child_pid.assume_init());
+        <span class="kw">let </span>standard_input = standard_input.assume_init();
+        <span class="kw">let </span>standard_output = standard_output.assume_init();
+        <span class="kw">let </span>standard_error = standard_error.assume_init();
+        <span class="kw">if </span>error.is_null() {
+            <span class="attribute">#[cfg(not(windows))]
+            </span>{
                 <span class="prelude-val">Ok</span>((
-                    <span class="ident">child_pid</span>,
-                    <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">standard_input</span>),
-                    <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">standard_output</span>),
-                    <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">standard_error</span>),
+                    child_pid,
+                    FromRawFd::from_raw_fd(standard_input),
+                    FromRawFd::from_raw_fd(standard_output),
+                    FromRawFd::from_raw_fd(standard_error),
                 ))
             }
-        <span class="comment">// #[cfg(windows)]</span>
-        <span class="comment">// {</span>
-        <span class="comment">//     use std::os::windows::io::{FromRawHandle, RawHandle};</span>
-        <span class="comment">//     Ok((</span>
-        <span class="comment">//         child_pid,</span>
-        <span class="comment">//         File::from_raw_handle(standard_input as usize as RawHandle),</span>
-        <span class="comment">//         File::from_raw_handle(standard_output as usize as RawHandle),</span>
-        <span class="comment">//         File::from_raw_handle(standard_error as usize as RawHandle),</span>
-        <span class="comment">//     ))</span>
-        <span class="comment">// }</span>
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+        <span class="comment">// #[cfg(windows)]
+        // {
+        //     use std::os::windows::io::{FromRawHandle, RawHandle};
+        //     Ok((
+        //         child_pid,
+        //         File::from_raw_handle(standard_input as usize as RawHandle),
+        //         File::from_raw_handle(standard_output as usize as RawHandle),
+        //         File::from_raw_handle(standard_error as usize as RawHandle),
+        //     ))
+        // }
+        </span>} <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(from_glib_full(error))
         }
     }
 }
 
-<span class="comment">// rustdoc-stripper-ignore-next</span>
-<span class="doccomment">/// Obtain the character set for the current locale.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// This returns whether the locale&#39;s encoding is UTF-8, and the current</span>
-<span class="doccomment">/// charset if available.</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_get_charset&quot;</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_charset&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">charset</span>() -&gt; (<span class="ident">bool</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">GString</span><span class="op">&gt;</span>) {
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out_charset</span> <span class="op">=</span> <span class="ident">ptr::null</span>();
-        <span class="kw">let</span> <span class="ident">is_utf8</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">ffi::g_get_charset</span>(<span class="kw-2">&amp;mut</span> <span class="ident">out_charset</span>));
-        <span class="kw">let</span> <span class="ident">charset</span> <span class="op">=</span> <span class="ident">from_glib_none</span>(<span class="ident">out_charset</span>);
-        (<span class="ident">is_utf8</span>, <span class="ident">charset</span>)
+<span class="comment">// rustdoc-stripper-ignore-next
+</span><span class="doccomment">/// Obtain the character set for the current locale.
+///
+/// This returns whether the locale&#39;s encoding is UTF-8, and the current
+/// charset if available.
+</span><span class="attribute">#[doc(alias = <span class="string">&quot;g_get_charset&quot;</span>)]
+#[doc(alias = <span class="string">&quot;get_charset&quot;</span>)]
+</span><span class="kw">pub fn </span>charset() -&gt; (bool, <span class="prelude-ty">Option</span>&lt;GString&gt;) {
+    <span class="kw">unsafe </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>out_charset = ptr::null();
+        <span class="kw">let </span>is_utf8 = from_glib(ffi::g_get_charset(<span class="kw-2">&amp;mut </span>out_charset));
+        <span class="kw">let </span>charset = from_glib_none(out_charset);
+        (is_utf8, charset)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_open_pipe&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unix_open_pipe</span>(<span class="ident">flags</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">RawFd</span>, <span class="ident">RawFd</span>), <span class="ident">Error</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fds</span> <span class="op">=</span> [<span class="number">0</span>, <span class="number">2</span>];
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_unix_open_pipe</span>(<span class="ident">fds</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">flags</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-        <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+<span class="attribute">#[cfg(unix)]
+#[doc(alias = <span class="string">&quot;g_unix_open_pipe&quot;</span>)]
+</span><span class="kw">pub fn </span>unix_open_pipe(flags: i32) -&gt; <span class="prelude-ty">Result</span>&lt;(RawFd, RawFd), Error&gt; {
+    <span class="kw">unsafe </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>fds = [<span class="number">0</span>, <span class="number">2</span>];
+        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+        <span class="kw">let _ </span>= ffi::g_unix_open_pipe(<span class="kw-2">&amp;mut </span>fds, flags, <span class="kw-2">&amp;mut </span>error);
+        <span class="kw">if </span>error.is_null() {
             <span class="prelude-val">Ok</span>((
-                <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">fds</span>[<span class="number">0</span>]),
-                <span class="ident">FromRawFd::from_raw_fd</span>(<span class="ident">fds</span>[<span class="number">1</span>]),
+                FromRawFd::from_raw_fd(fds[<span class="number">0</span>]),
+                FromRawFd::from_raw_fd(fds[<span class="number">1</span>]),
             ))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(from_glib_full(error))
         }
     }
 }
 
-<span class="doccomment">/// Opens a file for writing in the preferred directory for temporary</span>
-<span class="doccomment">/// files (as returned by [`tmp_dir()`][crate::tmp_dir()]).</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// `tmpl` should be a string in the GLib file name encoding containing</span>
-<span class="doccomment">/// a sequence of six &#39;X&#39; characters, as the parameter to [`mkstemp()`][crate::mkstemp()].</span>
-<span class="doccomment">/// However, unlike these functions, the template should only be a</span>
-<span class="doccomment">/// basename, no directory components are allowed. If template is</span>
-<span class="doccomment">/// [`None`], a default template is used.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Note that in contrast to [`mkstemp()`][crate::mkstemp()] (and `mkstemp()`) `tmpl` is not</span>
-<span class="doccomment">/// modified, and might thus be a read-only literal string.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// Upon success, and if `name_used` is non-[`None`], the actual name used</span>
-<span class="doccomment">/// is returned in `name_used`. This string should be freed with `g_free()`</span>
-<span class="doccomment">/// when not needed any longer. The returned name is in the GLib file</span>
-<span class="doccomment">/// name encoding.</span>
-<span class="doccomment">/// ## `tmpl`</span>
-<span class="doccomment">/// Template for file name, as in</span>
-<span class="doccomment">///  [`mkstemp()`][crate::mkstemp()], basename only, or [`None`] for a default template</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Returns</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// A file handle (as from `open()`) to the file opened for</span>
-<span class="doccomment">///  reading and writing. The file is opened in binary mode on platforms</span>
-<span class="doccomment">///  where there is a difference. The file handle should be closed with</span>
-<span class="doccomment">///  `close()`. In case of errors, -1 is returned and `error` will be set.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// ## `name_used`</span>
-<span class="doccomment">/// location to store actual name used,</span>
-<span class="doccomment">///  or [`None`]</span>
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_file_open_tmp&quot;</span>)]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_open_tmp</span>(
-    <span class="ident">tmpl</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">RawFd</span>, <span class="ident">std::path::PathBuf</span>), <span class="ident"><span class="kw">crate</span>::Error</span><span class="op">&gt;</span> {
-    <span class="kw">unsafe</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">name_used</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-        <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_file_open_tmp</span>(
-            <span class="ident">tmpl</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">name_used</span>,
-            <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+<span class="attribute">#[cfg(unix)]
+#[doc(alias = <span class="string">&quot;g_file_open_tmp&quot;</span>)]
+</span><span class="kw">pub fn </span>file_open_tmp(
+    tmpl: <span class="prelude-ty">Option</span>&lt;<span class="kw">impl </span>AsRef&lt;std::path::Path&gt;&gt;,
+) -&gt; <span class="prelude-ty">Result</span>&lt;(RawFd, std::path::PathBuf), <span class="kw">crate</span>::Error&gt; {
+    <span class="kw">unsafe </span>{
+        <span class="kw">let </span><span class="kw-2">mut </span>name_used = ptr::null_mut();
+        <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+        <span class="kw">let </span>ret = ffi::g_file_open_tmp(
+            tmpl.as_ref().map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+            <span class="kw-2">&amp;mut </span>name_used,
+            <span class="kw-2">&amp;mut </span>error,
         );
-        <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-            <span class="prelude-val">Ok</span>((<span class="ident">ret</span>.<span class="ident">into_raw_fd</span>(), <span class="ident">from_glib_full</span>(<span class="ident">name_used</span>)))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+        <span class="kw">if </span>error.is_null() {
+            <span class="prelude-val">Ok</span>((ret.into_raw_fd(), from_glib_full(name_used)))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">Err</span>(from_glib_full(error))
         }
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

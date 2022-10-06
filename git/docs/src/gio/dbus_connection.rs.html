@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus_connection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dbus_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/dbus_connection.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>dbus_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -651,581 +646,580 @@
 <span id="573">573</span>
 <span id="574">574</span>
 <span id="575">575</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ActionGroup</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DBusConnection</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DBusInterfaceInfo</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DBusMessage</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DBusMethodInvocation</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::DBusSignalFlags</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MenuModel</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::num::NonZeroU32</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::ActionGroup;
+<span class="kw">use </span><span class="kw">crate</span>::DBusConnection;
+<span class="kw">use </span><span class="kw">crate</span>::DBusInterfaceInfo;
+<span class="kw">use </span><span class="kw">crate</span>::DBusMessage;
+<span class="kw">use </span><span class="kw">crate</span>::DBusMethodInvocation;
+<span class="kw">use </span><span class="kw">crate</span>::DBusSignalFlags;
+<span class="kw">use </span><span class="kw">crate</span>::MenuModel;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::num::NonZeroU32;
 
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">RegistrationId</span>(<span class="ident">NonZeroU32</span>);
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">WatcherId</span>(<span class="ident">NonZeroU32</span>);
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ActionGroupExportId</span>(<span class="ident">NonZeroU32</span>);
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MenuModelExportId</span>(<span class="ident">NonZeroU32</span>);
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FilterId</span>(<span class="ident">NonZeroU32</span>);
-<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SignalSubscriptionId</span>(<span class="ident">NonZeroU32</span>);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>RegistrationId(NonZeroU32);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>WatcherId(NonZeroU32);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>ActionGroupExportId(NonZeroU32);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>MenuModelExportId(NonZeroU32);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>FilterId(NonZeroU32);
+<span class="attribute">#[derive(Debug, Eq, PartialEq)]
+</span><span class="kw">pub struct </span>SignalSubscriptionId(NonZeroU32);
 
-<span class="kw">impl</span> <span class="ident">DBusConnection</span> {
-    <span class="doccomment">/// Registers callbacks for exported objects at `object_path` with the</span>
-    <span class="doccomment">/// D-Bus interface that is described in `interface_info`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Calls to functions in `vtable` (and `user_data_free_func`) will happen</span>
-    <span class="doccomment">/// in the</span>
-    <span class="doccomment">/// [thread-default main context][g-main-context-push-thread-default]</span>
-    <span class="doccomment">/// of the thread you are calling this method from.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that all [`glib::Variant`][struct@crate::glib::Variant] values passed to functions in `vtable` will match</span>
-    <span class="doccomment">/// the signature given in `interface_info` - if a remote caller passes</span>
-    <span class="doccomment">/// incorrect values, the `org.freedesktop.DBus.Error.InvalidArgs`</span>
-    <span class="doccomment">/// is returned to the remote caller.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Additionally, if the remote caller attempts to invoke methods or</span>
-    <span class="doccomment">/// access properties not mentioned in `interface_info` the</span>
-    <span class="doccomment">/// `org.freedesktop.DBus.Error.UnknownMethod` resp.</span>
-    <span class="doccomment">/// `org.freedesktop.DBus.Error.InvalidArgs` errors</span>
-    <span class="doccomment">/// are returned to the caller.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is considered a programming error if the</span>
-    <span class="doccomment">/// `GDBusInterfaceGetPropertyFunc` function in `vtable` returns a</span>
-    <span class="doccomment">/// [`glib::Variant`][struct@crate::glib::Variant] of incorrect type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If an existing callback is already registered at `object_path` and</span>
-    <span class="doccomment">/// `interface_name`, then `error` is set to [`IOErrorEnum::Exists`][crate::IOErrorEnum::Exists].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// GDBus automatically implements the standard D-Bus interfaces</span>
-    <span class="doccomment">/// org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable</span>
-    <span class="doccomment">/// and org.freedesktop.Peer, so you don&#39;t have to implement those for the</span>
-    <span class="doccomment">/// objects you export. You can implement org.freedesktop.DBus.Properties</span>
-    <span class="doccomment">/// yourself, e.g. to handle getting and setting of properties asynchronously.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that the reference count on `interface_info` will be</span>
-    <span class="doccomment">/// incremented by 1 (unless allocated statically, e.g. if the</span>
-    <span class="doccomment">/// reference count is -1, see `g_dbus_interface_info_ref()`) for as long</span>
-    <span class="doccomment">/// as the object is exported. Also note that `vtable` will be copied.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See this [server][gdbus-server] for an example of how to use this method.</span>
-    <span class="doccomment">/// ## `object_path`</span>
-    <span class="doccomment">/// the object path to register at</span>
-    <span class="doccomment">/// ## `interface_info`</span>
-    <span class="doccomment">/// introspection data for the interface</span>
-    <span class="doccomment">/// ## `vtable`</span>
-    <span class="doccomment">/// a `GDBusInterfaceVTable` to call into or [`None`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// 0 if `error` is set, otherwise a registration id (never 0)</span>
-    <span class="doccomment">///  that can be used with [`unregister_object()`][Self::unregister_object()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_register_object_with_closures&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">register_object</span><span class="op">&lt;</span><span class="ident">MethodCall</span>, <span class="ident">SetProperty</span>, <span class="ident">GetProperty</span><span class="op">&gt;</span>(
+<span class="kw">impl </span>DBusConnection {
+    <span class="doccomment">/// Registers callbacks for exported objects at `object_path` with the
+    /// D-Bus interface that is described in `interface_info`.
+    ///
+    /// Calls to functions in `vtable` (and `user_data_free_func`) will happen
+    /// in the
+    /// [thread-default main context][g-main-context-push-thread-default]
+    /// of the thread you are calling this method from.
+    ///
+    /// Note that all [`glib::Variant`][struct@crate::glib::Variant] values passed to functions in `vtable` will match
+    /// the signature given in `interface_info` - if a remote caller passes
+    /// incorrect values, the `org.freedesktop.DBus.Error.InvalidArgs`
+    /// is returned to the remote caller.
+    ///
+    /// Additionally, if the remote caller attempts to invoke methods or
+    /// access properties not mentioned in `interface_info` the
+    /// `org.freedesktop.DBus.Error.UnknownMethod` resp.
+    /// `org.freedesktop.DBus.Error.InvalidArgs` errors
+    /// are returned to the caller.
+    ///
+    /// It is considered a programming error if the
+    /// `GDBusInterfaceGetPropertyFunc` function in `vtable` returns a
+    /// [`glib::Variant`][struct@crate::glib::Variant] of incorrect type.
+    ///
+    /// If an existing callback is already registered at `object_path` and
+    /// `interface_name`, then `error` is set to [`IOErrorEnum::Exists`][crate::IOErrorEnum::Exists].
+    ///
+    /// GDBus automatically implements the standard D-Bus interfaces
+    /// org.freedesktop.DBus.Properties, org.freedesktop.DBus.Introspectable
+    /// and org.freedesktop.Peer, so you don&#39;t have to implement those for the
+    /// objects you export. You can implement org.freedesktop.DBus.Properties
+    /// yourself, e.g. to handle getting and setting of properties asynchronously.
+    ///
+    /// Note that the reference count on `interface_info` will be
+    /// incremented by 1 (unless allocated statically, e.g. if the
+    /// reference count is -1, see `g_dbus_interface_info_ref()`) for as long
+    /// as the object is exported. Also note that `vtable` will be copied.
+    ///
+    /// See this [server][gdbus-server] for an example of how to use this method.
+    /// ## `object_path`
+    /// the object path to register at
+    /// ## `interface_info`
+    /// introspection data for the interface
+    /// ## `vtable`
+    /// a `GDBusInterfaceVTable` to call into or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// 0 if `error` is set, otherwise a registration id (never 0)
+    ///  that can be used with [`unregister_object()`][Self::unregister_object()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_register_object_with_closures&quot;</span>)]
+    </span><span class="kw">pub fn </span>register_object&lt;MethodCall, SetProperty, GetProperty&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">interface_info</span>: <span class="kw-2">&amp;</span><span class="ident">DBusInterfaceInfo</span>,
-        <span class="ident">method_call</span>: <span class="ident">MethodCall</span>,
-        <span class="ident">get_property</span>: <span class="ident">GetProperty</span>,
-        <span class="ident">set_property</span>: <span class="ident">SetProperty</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">RegistrationId</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span>
-    <span class="kw">where</span>
-        <span class="ident">MethodCall</span>: <span class="ident">Fn</span>(<span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">glib::Variant</span>, <span class="ident">DBusMethodInvocation</span>)
-            <span class="op">+</span> <span class="ident">Send</span>
-            <span class="op">+</span> <span class="ident">Sync</span>
-            <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="ident">GetProperty</span>:
-            <span class="ident">Fn</span>(<span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">glib::Variant</span> <span class="op">+</span> <span class="ident">Send</span> <span class="op">+</span> <span class="ident">Sync</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="ident">SetProperty</span>: <span class="ident">Fn</span>(<span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">glib::Variant</span>) -&gt; <span class="ident">bool</span>
-            <span class="op">+</span> <span class="ident">Send</span>
-            <span class="op">+</span> <span class="ident">Sync</span>
-            <span class="op">+</span> <span class="lifetime">&#39;static</span>,
+        object_path: <span class="kw-2">&amp;</span>str,
+        interface_info: <span class="kw-2">&amp;</span>DBusInterfaceInfo,
+        method_call: MethodCall,
+        get_property: GetProperty,
+        set_property: SetProperty,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;RegistrationId, glib::Error&gt;
+    <span class="kw">where
+        </span>MethodCall: Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, glib::Variant, DBusMethodInvocation)
+            + Send
+            + Sync
+            + <span class="lifetime">&#39;static</span>,
+        GetProperty:
+            Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str) -&gt; glib::Variant + Send + Sync + <span class="lifetime">&#39;static</span>,
+        SetProperty: Fn(DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, glib::Variant) -&gt; bool
+            + Send
+            + Sync
+            + <span class="lifetime">&#39;static</span>,
     {
-        <span class="kw">use</span> <span class="ident">glib::ToValue</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ffi::g_dbus_connection_register_object_with_closures</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">object_path</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">interface_info</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">glib::Closure::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">args</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">0</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">DBusConnection</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">1</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">object_path</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">2</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">interface_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">3</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">method_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">4</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">parameters</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">5</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">invocation</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">6</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">DBusMethodInvocation</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="ident">method_call</span>(
-                        <span class="ident">conn</span>,
-                        <span class="ident">sender</span>,
-                        <span class="ident">object_path</span>,
-                        <span class="ident">interface_name</span>,
-                        <span class="ident">method_name</span>,
-                        <span class="ident">parameters</span>,
-                        <span class="ident">invocation</span>,
+        <span class="kw">use </span>glib::ToValue;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>id = ffi::g_dbus_connection_register_object_with_closures(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                object_path.to_glib_none().<span class="number">0</span>,
+                interface_info.to_glib_none().<span class="number">0</span>,
+                glib::Closure::new(<span class="kw">move </span>|args| {
+                    <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
+                    <span class="kw">let </span>sender = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>object_path = args[<span class="number">2</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>interface_name = args[<span class="number">3</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>method_name = args[<span class="number">4</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>parameters = args[<span class="number">5</span>].get::&lt;glib::Variant&gt;().unwrap();
+                    <span class="kw">let </span>invocation = args[<span class="number">6</span>].get::&lt;DBusMethodInvocation&gt;().unwrap();
+                    method_call(
+                        conn,
+                        sender,
+                        object_path,
+                        interface_name,
+                        method_name,
+                        parameters,
+                        invocation,
                     );
-                    <span class="prelude-val">None</span>
-                })
-                .<span class="ident">to_glib_none</span>()
+                    <span class="prelude-val">None
+                </span>})
+                .to_glib_none()
                 .<span class="number">0</span>,
-                <span class="ident">glib::Closure::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">args</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">0</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">DBusConnection</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">1</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">object_path</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">2</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">interface_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">3</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">property_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">4</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span>
-                        <span class="ident">get_property</span>(<span class="ident">conn</span>, <span class="ident">sender</span>, <span class="ident">object_path</span>, <span class="ident">interface_name</span>, <span class="ident">property_name</span>);
-                    <span class="prelude-val">Some</span>(<span class="ident">result</span>.<span class="ident">to_value</span>())
+                glib::Closure::new(<span class="kw">move </span>|args| {
+                    <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
+                    <span class="kw">let </span>sender = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>object_path = args[<span class="number">2</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>interface_name = args[<span class="number">3</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>property_name = args[<span class="number">4</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>result =
+                        get_property(conn, sender, object_path, interface_name, property_name);
+                    <span class="prelude-val">Some</span>(result.to_value())
                 })
-                .<span class="ident">to_glib_none</span>()
+                .to_glib_none()
                 .<span class="number">0</span>,
-                <span class="ident">glib::Closure::new</span>(<span class="kw">move</span> <span class="op">|</span><span class="ident">args</span><span class="op">|</span> {
-                    <span class="kw">let</span> <span class="ident">conn</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">0</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">DBusConnection</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">sender</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">1</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">object_path</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">2</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">interface_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">3</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">property_name</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">4</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident">args</span>[<span class="number">5</span>].<span class="ident">get</span>::<span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>().<span class="ident">unwrap</span>();
-                    <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">set_property</span>(
-                        <span class="ident">conn</span>,
-                        <span class="ident">sender</span>,
-                        <span class="ident">object_path</span>,
-                        <span class="ident">interface_name</span>,
-                        <span class="ident">property_name</span>,
-                        <span class="ident">value</span>,
+                glib::Closure::new(<span class="kw">move </span>|args| {
+                    <span class="kw">let </span>conn = args[<span class="number">0</span>].get::&lt;DBusConnection&gt;().unwrap();
+                    <span class="kw">let </span>sender = args[<span class="number">1</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>object_path = args[<span class="number">2</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>interface_name = args[<span class="number">3</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>property_name = args[<span class="number">4</span>].get::&lt;<span class="kw-2">&amp;</span>str&gt;().unwrap();
+                    <span class="kw">let </span>value = args[<span class="number">5</span>].get::&lt;glib::Variant&gt;().unwrap();
+                    <span class="kw">let </span>result = set_property(
+                        conn,
+                        sender,
+                        object_path,
+                        interface_name,
+                        property_name,
+                        value,
                     );
-                    <span class="prelude-val">Some</span>(<span class="ident">result</span>.<span class="ident">to_value</span>())
+                    <span class="prelude-val">Some</span>(result.to_value())
                 })
-                .<span class="ident">to_glib_none</span>()
+                .to_glib_none()
                 .<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">RegistrationId</span>(<span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(RegistrationId(NonZeroU32::new_unchecked(id)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Unregisters an object.</span>
-    <span class="doccomment">/// ## `registration_id`</span>
-    <span class="doccomment">/// a registration id obtained from</span>
-    <span class="doccomment">///  `g_dbus_connection_register_object()`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the object was unregistered, [`false`] otherwise</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unregister_object&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unregister_object</span>(
+    <span class="doccomment">/// Unregisters an object.
+    /// ## `registration_id`
+    /// a registration id obtained from
+    ///  `g_dbus_connection_register_object()`
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the object was unregistered, [`false`] otherwise
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_unregister_object&quot;</span>)]
+    </span><span class="kw">pub fn </span>unregister_object(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">registration_id</span>: <span class="ident">RegistrationId</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::error::BoolError</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
+        registration_id: RegistrationId,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::error::BoolError&gt; {
+        <span class="kw">unsafe </span>{
             <span class="macro">glib::result_from_gboolean!</span>(
-                <span class="ident">ffi::g_dbus_connection_unregister_object</span>(
-                    <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                    <span class="ident">registration_id</span>.<span class="number">0</span>.<span class="ident">into</span>()
+                ffi::g_dbus_connection_unregister_object(
+                    <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                    registration_id.<span class="number">0</span>.into()
                 ),
-                <span class="string">&quot;Failed to unregister D-Bus object&quot;</span>
-            )
+                <span class="string">&quot;Failed to unregister D-Bus object&quot;
+            </span>)
         }
     }
 
-    <span class="doccomment">/// Exports `action_group` on `self` at `object_path`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The implemented D-Bus API should be considered private. It is</span>
-    <span class="doccomment">/// subject to change in the future.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A given object path can only have one action group exported on it.</span>
-    <span class="doccomment">/// If this constraint is violated, the export will fail and 0 will be</span>
-    <span class="doccomment">/// returned (with `error` set accordingly).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You can unexport the action group using</span>
-    <span class="doccomment">/// [`unexport_action_group()`][Self::unexport_action_group()] with the return value of</span>
-    <span class="doccomment">/// this function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The thread default main context is taken at the time of this call.</span>
-    <span class="doccomment">/// All incoming action activations and state change requests are</span>
-    <span class="doccomment">/// reported from this context. Any changes on the action group that</span>
-    <span class="doccomment">/// cause it to emit signals must also come from this same context.</span>
-    <span class="doccomment">/// Since incoming action activations and state change requests are</span>
-    <span class="doccomment">/// rather likely to cause changes on the action group, this effectively</span>
-    <span class="doccomment">/// limits a given action group to being exported from only one main</span>
-    <span class="doccomment">/// context.</span>
-    <span class="doccomment">/// ## `object_path`</span>
-    <span class="doccomment">/// a D-Bus object path</span>
-    <span class="doccomment">/// ## `action_group`</span>
-    <span class="doccomment">/// a [`ActionGroup`][crate::ActionGroup]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the ID of the export (never zero), or 0 in case of failure</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_export_action_group&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">export_action_group</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Exports `action_group` on `self` at `object_path`.
+    ///
+    /// The implemented D-Bus API should be considered private. It is
+    /// subject to change in the future.
+    ///
+    /// A given object path can only have one action group exported on it.
+    /// If this constraint is violated, the export will fail and 0 will be
+    /// returned (with `error` set accordingly).
+    ///
+    /// You can unexport the action group using
+    /// [`unexport_action_group()`][Self::unexport_action_group()] with the return value of
+    /// this function.
+    ///
+    /// The thread default main context is taken at the time of this call.
+    /// All incoming action activations and state change requests are
+    /// reported from this context. Any changes on the action group that
+    /// cause it to emit signals must also come from this same context.
+    /// Since incoming action activations and state change requests are
+    /// rather likely to cause changes on the action group, this effectively
+    /// limits a given action group to being exported from only one main
+    /// context.
+    /// ## `object_path`
+    /// a D-Bus object path
+    /// ## `action_group`
+    /// a [`ActionGroup`][crate::ActionGroup]
+    ///
+    /// # Returns
+    ///
+    /// the ID of the export (never zero), or 0 in case of failure
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_export_action_group&quot;</span>)]
+    </span><span class="kw">pub fn </span>export_action_group&lt;P: IsA&lt;ActionGroup&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">ActionGroupExportId</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ffi::g_dbus_connection_export_action_group</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">object_path</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">action_group</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        object_path: <span class="kw-2">&amp;</span>str,
+        action_group: <span class="kw-2">&amp;</span>P,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;ActionGroupExportId, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>id = ffi::g_dbus_connection_export_action_group(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                object_path.to_glib_none().<span class="number">0</span>,
+                action_group.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">ActionGroupExportId</span>(<span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(ActionGroupExportId(NonZeroU32::new_unchecked(id)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Reverses the effect of a previous call to</span>
-    <span class="doccomment">/// [`export_action_group()`][Self::export_action_group()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function with an ID that wasn&#39;t returned</span>
-    <span class="doccomment">/// from [`export_action_group()`][Self::export_action_group()] or to call it with the</span>
-    <span class="doccomment">/// same ID more than once.</span>
-    <span class="doccomment">/// ## `export_id`</span>
-    <span class="doccomment">/// the ID from [`export_action_group()`][Self::export_action_group()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unexport_action_group&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unexport_action_group</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">export_id</span>: <span class="ident">ActionGroupExportId</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_dbus_connection_unexport_action_group</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">export_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
+    <span class="doccomment">/// Reverses the effect of a previous call to
+    /// [`export_action_group()`][Self::export_action_group()].
+    ///
+    /// It is an error to call this function with an ID that wasn&#39;t returned
+    /// from [`export_action_group()`][Self::export_action_group()] or to call it with the
+    /// same ID more than once.
+    /// ## `export_id`
+    /// the ID from [`export_action_group()`][Self::export_action_group()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_unexport_action_group&quot;</span>)]
+    </span><span class="kw">pub fn </span>unexport_action_group(<span class="kw-2">&amp;</span><span class="self">self</span>, export_id: ActionGroupExportId) {
+        <span class="kw">unsafe </span>{
+            ffi::g_dbus_connection_unexport_action_group(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, export_id.<span class="number">0</span>.into());
         }
     }
 
-    <span class="doccomment">/// Exports `menu` on `self` at `object_path`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The implemented D-Bus API should be considered private.</span>
-    <span class="doccomment">/// It is subject to change in the future.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// An object path can only have one menu model exported on it. If this</span>
-    <span class="doccomment">/// constraint is violated, the export will fail and 0 will be</span>
-    <span class="doccomment">/// returned (with `error` set accordingly).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You can unexport the menu model using</span>
-    <span class="doccomment">/// [`unexport_menu_model()`][Self::unexport_menu_model()] with the return value of</span>
-    <span class="doccomment">/// this function.</span>
-    <span class="doccomment">/// ## `object_path`</span>
-    <span class="doccomment">/// a D-Bus object path</span>
-    <span class="doccomment">/// ## `menu`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the ID of the export (never zero), or 0 in case of failure</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_export_menu_model&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">export_menu_model</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Exports `menu` on `self` at `object_path`.
+    ///
+    /// The implemented D-Bus API should be considered private.
+    /// It is subject to change in the future.
+    ///
+    /// An object path can only have one menu model exported on it. If this
+    /// constraint is violated, the export will fail and 0 will be
+    /// returned (with `error` set accordingly).
+    ///
+    /// You can unexport the menu model using
+    /// [`unexport_menu_model()`][Self::unexport_menu_model()] with the return value of
+    /// this function.
+    /// ## `object_path`
+    /// a D-Bus object path
+    /// ## `menu`
+    /// a [`MenuModel`][crate::MenuModel]
+    ///
+    /// # Returns
+    ///
+    /// the ID of the export (never zero), or 0 in case of failure
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_export_menu_model&quot;</span>)]
+    </span><span class="kw">pub fn </span>export_menu_model&lt;P: IsA&lt;MenuModel&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">object_path</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">menu</span>: <span class="kw-2">&amp;</span><span class="ident">P</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">MenuModelExportId</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">std::ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ffi::g_dbus_connection_export_menu_model</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">object_path</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">menu</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        object_path: <span class="kw-2">&amp;</span>str,
+        menu: <span class="kw-2">&amp;</span>P,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;MenuModelExportId, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
+            <span class="kw">let </span>id = ffi::g_dbus_connection_export_menu_model(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                object_path.to_glib_none().<span class="number">0</span>,
+                menu.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">MenuModelExportId</span>(<span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(MenuModelExportId(NonZeroU32::new_unchecked(id)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Reverses the effect of a previous call to</span>
-    <span class="doccomment">/// [`export_menu_model()`][Self::export_menu_model()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function with an ID that wasn&#39;t returned</span>
-    <span class="doccomment">/// from [`export_menu_model()`][Self::export_menu_model()] or to call it with the</span>
-    <span class="doccomment">/// same ID more than once.</span>
-    <span class="doccomment">/// ## `export_id`</span>
-    <span class="doccomment">/// the ID from [`export_menu_model()`][Self::export_menu_model()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_unexport_menu_model&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unexport_menu_model</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">export_id</span>: <span class="ident">MenuModelExportId</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_dbus_connection_unexport_menu_model</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">export_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
+    <span class="doccomment">/// Reverses the effect of a previous call to
+    /// [`export_menu_model()`][Self::export_menu_model()].
+    ///
+    /// It is an error to call this function with an ID that wasn&#39;t returned
+    /// from [`export_menu_model()`][Self::export_menu_model()] or to call it with the
+    /// same ID more than once.
+    /// ## `export_id`
+    /// the ID from [`export_menu_model()`][Self::export_menu_model()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_unexport_menu_model&quot;</span>)]
+    </span><span class="kw">pub fn </span>unexport_menu_model(<span class="kw-2">&amp;</span><span class="self">self</span>, export_id: MenuModelExportId) {
+        <span class="kw">unsafe </span>{
+            ffi::g_dbus_connection_unexport_menu_model(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, export_id.<span class="number">0</span>.into());
         }
     }
 
-    <span class="doccomment">/// Adds a message filter. Filters are handlers that are run on all</span>
-    <span class="doccomment">/// incoming and outgoing messages, prior to standard dispatch. Filters</span>
-    <span class="doccomment">/// are run in the order that they were added. The same handler can be</span>
-    <span class="doccomment">/// added as a filter more than once, in which case it will be run more</span>
-    <span class="doccomment">/// than once. Filters added during a filter callback won&#39;t be run on</span>
-    <span class="doccomment">/// the message being processed. Filter functions are allowed to modify</span>
-    <span class="doccomment">/// and even drop messages.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that filters are run in a dedicated message handling thread so</span>
-    <span class="doccomment">/// they can&#39;t block and, generally, can&#39;t do anything but signal a</span>
-    <span class="doccomment">/// worker thread. Also note that filters are rarely needed - use API</span>
-    <span class="doccomment">/// such as [`send_message_with_reply()`][Self::send_message_with_reply()],</span>
-    <span class="doccomment">/// [`signal_subscribe()`][Self::signal_subscribe()] or [`call()`][Self::call()] instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If a filter consumes an incoming message the message is not</span>
-    <span class="doccomment">/// dispatched anywhere else - not even the standard dispatch machinery</span>
-    <span class="doccomment">/// (that API such as [`signal_subscribe()`][Self::signal_subscribe()] and</span>
-    <span class="doccomment">/// [`send_message_with_reply()`][Self::send_message_with_reply()] relies on) will see the</span>
-    <span class="doccomment">/// message. Similarly, if a filter consumes an outgoing message, the</span>
-    <span class="doccomment">/// message will not be sent to the other peer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `user_data_free_func` is non-[`None`], it will be called (in the</span>
-    <span class="doccomment">/// thread-default main context of the thread you are calling this</span>
-    <span class="doccomment">/// method from) at some point after `user_data` is no longer</span>
-    <span class="doccomment">/// needed. (It is not guaranteed to be called synchronously when the</span>
-    <span class="doccomment">/// filter is removed, and may be called after `self` has been</span>
-    <span class="doccomment">/// destroyed.)</span>
-    <span class="doccomment">/// ## `filter_function`</span>
-    <span class="doccomment">/// a filter function</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a filter identifier that can be used with</span>
-    <span class="doccomment">///  [`remove_filter()`][Self::remove_filter()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_add_filter&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">add_filter</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">DBusMessage</span>, <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DBusMessage</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// Adds a message filter. Filters are handlers that are run on all
+    /// incoming and outgoing messages, prior to standard dispatch. Filters
+    /// are run in the order that they were added. The same handler can be
+    /// added as a filter more than once, in which case it will be run more
+    /// than once. Filters added during a filter callback won&#39;t be run on
+    /// the message being processed. Filter functions are allowed to modify
+    /// and even drop messages.
+    ///
+    /// Note that filters are run in a dedicated message handling thread so
+    /// they can&#39;t block and, generally, can&#39;t do anything but signal a
+    /// worker thread. Also note that filters are rarely needed - use API
+    /// such as [`send_message_with_reply()`][Self::send_message_with_reply()],
+    /// [`signal_subscribe()`][Self::signal_subscribe()] or [`call()`][Self::call()] instead.
+    ///
+    /// If a filter consumes an incoming message the message is not
+    /// dispatched anywhere else - not even the standard dispatch machinery
+    /// (that API such as [`signal_subscribe()`][Self::signal_subscribe()] and
+    /// [`send_message_with_reply()`][Self::send_message_with_reply()] relies on) will see the
+    /// message. Similarly, if a filter consumes an outgoing message, the
+    /// message will not be sent to the other peer.
+    ///
+    /// If `user_data_free_func` is non-[`None`], it will be called (in the
+    /// thread-default main context of the thread you are calling this
+    /// method from) at some point after `user_data` is no longer
+    /// needed. (It is not guaranteed to be called synchronously when the
+    /// filter is removed, and may be called after `self` has been
+    /// destroyed.)
+    /// ## `filter_function`
+    /// a filter function
+    ///
+    /// # Returns
+    ///
+    /// a filter identifier that can be used with
+    ///  [`remove_filter()`][Self::remove_filter()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_add_filter&quot;</span>)]
+    </span><span class="kw">pub fn </span>add_filter&lt;
+        P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>DBusMessage, bool) -&gt; <span class="prelude-ty">Option</span>&lt;DBusMessage&gt; + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">filter_function</span>: <span class="ident">P</span>,
-    ) -&gt; <span class="ident">FilterId</span> {
-        <span class="kw">let</span> <span class="ident">filter_function_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">filter_function</span>);
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">filter_function_func</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">DBusMessage</span>, <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DBusMessage</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">connection</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GDBusConnection</span>,
-            <span class="ident">message</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GDBusMessage</span>,
-            <span class="ident">incoming</span>: <span class="ident">glib::ffi::gboolean</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
-        ) -&gt; <span class="kw-2">*mut</span> <span class="ident">ffi::GDBusMessage</span> {
-            <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">connection</span>);
-            <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="ident">from_glib_full</span>(<span class="ident">message</span>);
-            <span class="kw">let</span> <span class="ident">incoming</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">incoming</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="kw-2">&amp;</span><span class="ident">P</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">callback</span>)(<span class="kw-2">&amp;</span><span class="ident">connection</span>, <span class="kw-2">&amp;</span><span class="ident">message</span>, <span class="ident">incoming</span>);
-            <span class="ident">res</span>.<span class="ident">to_glib_full</span>()
+        filter_function: P,
+    ) -&gt; FilterId {
+        <span class="kw">let </span>filter_function_data: Box_&lt;P&gt; = Box_::new(filter_function);
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>filter_function_func&lt;
+            P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>DBusMessage, bool) -&gt; <span class="prelude-ty">Option</span>&lt;DBusMessage&gt; + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            connection: <span class="kw-2">*mut </span>ffi::GDBusConnection,
+            message: <span class="kw-2">*mut </span>ffi::GDBusMessage,
+            incoming: glib::ffi::gboolean,
+            user_data: glib::ffi::gpointer,
+        ) -&gt; <span class="kw-2">*mut </span>ffi::GDBusMessage {
+            <span class="kw">let </span>connection = from_glib_borrow(connection);
+            <span class="kw">let </span>message = from_glib_full(message);
+            <span class="kw">let </span>incoming = from_glib(incoming);
+            <span class="kw">let </span>callback: <span class="kw-2">&amp;</span>P = <span class="kw-2">&amp;*</span>(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>res = (<span class="kw-2">*</span>callback)(<span class="kw-2">&amp;</span>connection, <span class="kw-2">&amp;</span>message, incoming);
+            res.to_glib_full()
         }
-        <span class="kw">let</span> <span class="ident">filter_function</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">filter_function_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">user_data_free_func_func</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">DBusMessage</span>, <span class="ident">bool</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">DBusMessage</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>filter_function = <span class="prelude-val">Some</span>(filter_function_func::&lt;P&gt; <span class="kw">as _</span>);
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>user_data_free_func_func&lt;
+            P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>DBusMessage, bool) -&gt; <span class="prelude-ty">Option</span>&lt;DBusMessage&gt; + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">_callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::from_raw</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+            <span class="kw">let </span>_callback: Box_&lt;P&gt; = Box_::from_raw(data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
-        <span class="kw">let</span> <span class="ident">destroy_call3</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">user_data_free_func_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="kw">let</span> <span class="ident">super_callback0</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">filter_function_data</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ffi::g_dbus_connection_add_filter</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">filter_function</span>,
-                <span class="ident">Box_::into_raw</span>(<span class="ident">super_callback0</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">destroy_call3</span>,
+        <span class="kw">let </span>destroy_call3 = <span class="prelude-val">Some</span>(user_data_free_func_func::&lt;P&gt; <span class="kw">as _</span>);
+        <span class="kw">let </span>super_callback0: Box_&lt;P&gt; = filter_function_data;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>id = ffi::g_dbus_connection_add_filter(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                filter_function,
+                Box_::into_raw(super_callback0) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                destroy_call3,
             );
-            <span class="ident">FilterId</span>(<span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span>))
+            FilterId(NonZeroU32::new_unchecked(id))
         }
     }
 
-    <span class="doccomment">/// Removes a filter.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that since filters run in a different thread, there is a race</span>
-    <span class="doccomment">/// condition where it is possible that the filter will be running even</span>
-    <span class="doccomment">/// after calling [`remove_filter()`][Self::remove_filter()], so you cannot just</span>
-    <span class="doccomment">/// free data that the filter might be using. Instead, you should pass</span>
-    <span class="doccomment">/// a `GDestroyNotify` to [`add_filter()`][Self::add_filter()], which will be</span>
-    <span class="doccomment">/// called when it is guaranteed that the data is no longer needed.</span>
-    <span class="doccomment">/// ## `filter_id`</span>
-    <span class="doccomment">/// an identifier obtained from [`add_filter()`][Self::add_filter()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_remove_filter&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove_filter</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">filter_id</span>: <span class="ident">FilterId</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_dbus_connection_remove_filter</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">filter_id</span>.<span class="number">0</span>.<span class="ident">into</span>());
+    <span class="doccomment">/// Removes a filter.
+    ///
+    /// Note that since filters run in a different thread, there is a race
+    /// condition where it is possible that the filter will be running even
+    /// after calling [`remove_filter()`][Self::remove_filter()], so you cannot just
+    /// free data that the filter might be using. Instead, you should pass
+    /// a `GDestroyNotify` to [`add_filter()`][Self::add_filter()], which will be
+    /// called when it is guaranteed that the data is no longer needed.
+    /// ## `filter_id`
+    /// an identifier obtained from [`add_filter()`][Self::add_filter()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_remove_filter&quot;</span>)]
+    </span><span class="kw">pub fn </span>remove_filter(<span class="kw-2">&amp;</span><span class="self">self</span>, filter_id: FilterId) {
+        <span class="kw">unsafe </span>{
+            ffi::g_dbus_connection_remove_filter(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, filter_id.<span class="number">0</span>.into());
         }
     }
 
-    <span class="doccomment">/// Subscribes to signals on `self` and invokes `callback` with a whenever</span>
-    <span class="doccomment">/// the signal is received. Note that `callback` will be invoked in the</span>
-    <span class="doccomment">/// [thread-default main context][g-main-context-push-thread-default]</span>
-    <span class="doccomment">/// of the thread you are calling this method from.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `self` is not a message bus connection, `sender` must be</span>
-    <span class="doccomment">/// [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `sender` is a well-known name note that `callback` is invoked with</span>
-    <span class="doccomment">/// the unique name for the owner of `sender`, not the well-known name</span>
-    <span class="doccomment">/// as one would expect. This is because the message bus rewrites the</span>
-    <span class="doccomment">/// name. As such, to avoid certain race conditions, users should be</span>
-    <span class="doccomment">/// tracking the name owner of the well-known name and use that when</span>
-    <span class="doccomment">/// processing the received signal.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If one of [`DBusSignalFlags::MATCH_ARG0_NAMESPACE`][crate::DBusSignalFlags::MATCH_ARG0_NAMESPACE] or</span>
-    <span class="doccomment">/// [`DBusSignalFlags::MATCH_ARG0_PATH`][crate::DBusSignalFlags::MATCH_ARG0_PATH] are given, `arg0` is</span>
-    <span class="doccomment">/// interpreted as part of a namespace or path. The first argument</span>
-    <span class="doccomment">/// of a signal is matched against that part as specified by D-Bus.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `user_data_free_func` is non-[`None`], it will be called (in the</span>
-    <span class="doccomment">/// thread-default main context of the thread you are calling this</span>
-    <span class="doccomment">/// method from) at some point after `user_data` is no longer</span>
-    <span class="doccomment">/// needed. (It is not guaranteed to be called synchronously when the</span>
-    <span class="doccomment">/// signal is unsubscribed from, and may be called after `self`</span>
-    <span class="doccomment">/// has been destroyed.)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// As `callback` is potentially invoked in a different thread from where it’s</span>
-    <span class="doccomment">/// emitted, it’s possible for this to happen after</span>
-    <span class="doccomment">/// [`signal_unsubscribe()`][Self::signal_unsubscribe()] has been called in another thread.</span>
-    <span class="doccomment">/// Due to this, `user_data` should have a strong reference which is freed with</span>
-    <span class="doccomment">/// `user_data_free_func`, rather than pointing to data whose lifecycle is tied</span>
-    <span class="doccomment">/// to the signal subscription. For example, if a [`glib::Object`][crate::glib::Object] is used to store the</span>
-    <span class="doccomment">/// subscription ID from [`signal_subscribe()`][Self::signal_subscribe()], a strong reference</span>
-    <span class="doccomment">/// to that [`glib::Object`][crate::glib::Object] must be passed to `user_data`, and `g_object_unref()` passed to</span>
-    <span class="doccomment">/// `user_data_free_func`. You are responsible for breaking the resulting</span>
-    <span class="doccomment">/// reference count cycle by explicitly unsubscribing from the signal when</span>
-    <span class="doccomment">/// dropping the last external reference to the [`glib::Object`][crate::glib::Object]. Alternatively, a weak</span>
-    <span class="doccomment">/// reference may be used.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is guaranteed that if you unsubscribe from a signal using</span>
-    <span class="doccomment">/// [`signal_unsubscribe()`][Self::signal_unsubscribe()] from the same thread which made the</span>
-    <span class="doccomment">/// corresponding [`signal_subscribe()`][Self::signal_subscribe()] call, `callback` will not</span>
-    <span class="doccomment">/// be invoked after [`signal_unsubscribe()`][Self::signal_unsubscribe()] returns.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned subscription identifier is an opaque value which is guaranteed</span>
-    <span class="doccomment">/// to never be zero.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function can never fail.</span>
-    <span class="doccomment">/// ## `sender`</span>
-    <span class="doccomment">/// sender name to match on (unique or well-known name)</span>
-    <span class="doccomment">///  or [`None`] to listen from all senders</span>
-    <span class="doccomment">/// ## `interface_name`</span>
-    <span class="doccomment">/// D-Bus interface name to match on or [`None`] to</span>
-    <span class="doccomment">///  match on all interfaces</span>
-    <span class="doccomment">/// ## `member`</span>
-    <span class="doccomment">/// D-Bus signal name to match on or [`None`] to match on</span>
-    <span class="doccomment">///  all signals</span>
-    <span class="doccomment">/// ## `object_path`</span>
-    <span class="doccomment">/// object path to match on or [`None`] to match on</span>
-    <span class="doccomment">///  all object paths</span>
-    <span class="doccomment">/// ## `arg0`</span>
-    <span class="doccomment">/// contents of first string argument to match on or [`None`]</span>
-    <span class="doccomment">///  to match on all kinds of arguments</span>
-    <span class="doccomment">/// ## `flags`</span>
-    <span class="doccomment">/// [`DBusSignalFlags`][crate::DBusSignalFlags] describing how arg0 is used in subscribing to the</span>
-    <span class="doccomment">///  signal</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// callback to invoke when there is a signal matching the requested data</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a subscription identifier that can be used with [`signal_unsubscribe()`][Self::signal_unsubscribe()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_signal_subscribe&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signal_subscribe</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// Subscribes to signals on `self` and invokes `callback` with a whenever
+    /// the signal is received. Note that `callback` will be invoked in the
+    /// [thread-default main context][g-main-context-push-thread-default]
+    /// of the thread you are calling this method from.
+    ///
+    /// If `self` is not a message bus connection, `sender` must be
+    /// [`None`].
+    ///
+    /// If `sender` is a well-known name note that `callback` is invoked with
+    /// the unique name for the owner of `sender`, not the well-known name
+    /// as one would expect. This is because the message bus rewrites the
+    /// name. As such, to avoid certain race conditions, users should be
+    /// tracking the name owner of the well-known name and use that when
+    /// processing the received signal.
+    ///
+    /// If one of [`DBusSignalFlags::MATCH_ARG0_NAMESPACE`][crate::DBusSignalFlags::MATCH_ARG0_NAMESPACE] or
+    /// [`DBusSignalFlags::MATCH_ARG0_PATH`][crate::DBusSignalFlags::MATCH_ARG0_PATH] are given, `arg0` is
+    /// interpreted as part of a namespace or path. The first argument
+    /// of a signal is matched against that part as specified by D-Bus.
+    ///
+    /// If `user_data_free_func` is non-[`None`], it will be called (in the
+    /// thread-default main context of the thread you are calling this
+    /// method from) at some point after `user_data` is no longer
+    /// needed. (It is not guaranteed to be called synchronously when the
+    /// signal is unsubscribed from, and may be called after `self`
+    /// has been destroyed.)
+    ///
+    /// As `callback` is potentially invoked in a different thread from where it’s
+    /// emitted, it’s possible for this to happen after
+    /// [`signal_unsubscribe()`][Self::signal_unsubscribe()] has been called in another thread.
+    /// Due to this, `user_data` should have a strong reference which is freed with
+    /// `user_data_free_func`, rather than pointing to data whose lifecycle is tied
+    /// to the signal subscription. For example, if a [`glib::Object`][crate::glib::Object] is used to store the
+    /// subscription ID from [`signal_subscribe()`][Self::signal_subscribe()], a strong reference
+    /// to that [`glib::Object`][crate::glib::Object] must be passed to `user_data`, and `g_object_unref()` passed to
+    /// `user_data_free_func`. You are responsible for breaking the resulting
+    /// reference count cycle by explicitly unsubscribing from the signal when
+    /// dropping the last external reference to the [`glib::Object`][crate::glib::Object]. Alternatively, a weak
+    /// reference may be used.
+    ///
+    /// It is guaranteed that if you unsubscribe from a signal using
+    /// [`signal_unsubscribe()`][Self::signal_unsubscribe()] from the same thread which made the
+    /// corresponding [`signal_subscribe()`][Self::signal_subscribe()] call, `callback` will not
+    /// be invoked after [`signal_unsubscribe()`][Self::signal_unsubscribe()] returns.
+    ///
+    /// The returned subscription identifier is an opaque value which is guaranteed
+    /// to never be zero.
+    ///
+    /// This function can never fail.
+    /// ## `sender`
+    /// sender name to match on (unique or well-known name)
+    ///  or [`None`] to listen from all senders
+    /// ## `interface_name`
+    /// D-Bus interface name to match on or [`None`] to
+    ///  match on all interfaces
+    /// ## `member`
+    /// D-Bus signal name to match on or [`None`] to match on
+    ///  all signals
+    /// ## `object_path`
+    /// object path to match on or [`None`] to match on
+    ///  all object paths
+    /// ## `arg0`
+    /// contents of first string argument to match on or [`None`]
+    ///  to match on all kinds of arguments
+    /// ## `flags`
+    /// [`DBusSignalFlags`][crate::DBusSignalFlags] describing how arg0 is used in subscribing to the
+    ///  signal
+    /// ## `callback`
+    /// callback to invoke when there is a signal matching the requested data
+    ///
+    /// # Returns
+    ///
+    /// a subscription identifier that can be used with [`signal_unsubscribe()`][Self::signal_unsubscribe()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_signal_subscribe&quot;</span>)]
+    </span><span class="kw">pub fn </span>signal_subscribe&lt;
+        P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>glib::Variant) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">sender</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">interface_name</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">member</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">object_path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">arg0</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">flags</span>: <span class="ident">DBusSignalFlags</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
-    ) -&gt; <span class="ident">SignalSubscriptionId</span> {
-        <span class="kw">let</span> <span class="ident">callback_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">callback</span>);
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">callback_func</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">connection</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GDBusConnection</span>,
-            <span class="ident">sender_name</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-            <span class="ident">object_path</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-            <span class="ident">interface_name</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-            <span class="ident">signal_name</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-            <span class="ident">parameters</span>: <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        sender: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        interface_name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        member: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        object_path: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        arg0: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        flags: DBusSignalFlags,
+        callback: P,
+    ) -&gt; SignalSubscriptionId {
+        <span class="kw">let </span>callback_data: Box_&lt;P&gt; = Box_::new(callback);
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>callback_func&lt;
+            P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>glib::Variant) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            connection: <span class="kw-2">*mut </span>ffi::GDBusConnection,
+            sender_name: <span class="kw-2">*const </span>libc::c_char,
+            object_path: <span class="kw-2">*const </span>libc::c_char,
+            interface_name: <span class="kw-2">*const </span>libc::c_char,
+            signal_name: <span class="kw-2">*const </span>libc::c_char,
+            parameters: <span class="kw-2">*mut </span>glib::ffi::GVariant,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">connection</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">connection</span>);
-            <span class="kw">let</span> <span class="ident">sender_name</span>: <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">sender_name</span>);
-            <span class="kw">let</span> <span class="ident">object_path</span>: <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">object_path</span>);
-            <span class="kw">let</span> <span class="ident">interface_name</span>: <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">interface_name</span>);
-            <span class="kw">let</span> <span class="ident">signal_name</span>: <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">signal_name</span>);
-            <span class="kw">let</span> <span class="ident">parameters</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">parameters</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="kw-2">&amp;</span><span class="ident">P</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            (<span class="kw-2">*</span><span class="ident">callback</span>)(
-                <span class="kw-2">&amp;</span><span class="ident">connection</span>,
-                <span class="ident">sender_name</span>.<span class="ident">as_str</span>(),
-                <span class="ident">object_path</span>.<span class="ident">as_str</span>(),
-                <span class="ident">interface_name</span>.<span class="ident">as_str</span>(),
-                <span class="ident">signal_name</span>.<span class="ident">as_str</span>(),
-                <span class="kw-2">&amp;</span><span class="ident">parameters</span>,
+            <span class="kw">let </span>connection = from_glib_borrow(connection);
+            <span class="kw">let </span>sender_name: Borrowed&lt;glib::GString&gt; = from_glib_borrow(sender_name);
+            <span class="kw">let </span>object_path: Borrowed&lt;glib::GString&gt; = from_glib_borrow(object_path);
+            <span class="kw">let </span>interface_name: Borrowed&lt;glib::GString&gt; = from_glib_borrow(interface_name);
+            <span class="kw">let </span>signal_name: Borrowed&lt;glib::GString&gt; = from_glib_borrow(signal_name);
+            <span class="kw">let </span>parameters = from_glib_borrow(parameters);
+            <span class="kw">let </span>callback: <span class="kw-2">&amp;</span>P = <span class="kw-2">&amp;*</span>(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            (<span class="kw-2">*</span>callback)(
+                <span class="kw-2">&amp;</span>connection,
+                sender_name.as_str(),
+                object_path.as_str(),
+                interface_name.as_str(),
+                signal_name.as_str(),
+                <span class="kw-2">&amp;</span>parameters,
             );
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">callback_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">user_data_free_func_func</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">DBusConnection</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>callback = <span class="prelude-val">Some</span>(callback_func::&lt;P&gt; <span class="kw">as _</span>);
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>user_data_free_func_func&lt;
+            P: Fn(<span class="kw-2">&amp;</span>DBusConnection, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>str, <span class="kw-2">&amp;</span>glib::Variant) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">_callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::from_raw</span>(<span class="ident">data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
+            <span class="kw">let </span>_callback: Box_&lt;P&gt; = Box_::from_raw(data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
-        <span class="kw">let</span> <span class="ident">destroy_call9</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">user_data_free_func_func</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw">_</span>);
-        <span class="kw">let</span> <span class="ident">super_callback0</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">callback_data</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">id</span> <span class="op">=</span> <span class="ident">ffi::g_dbus_connection_signal_subscribe</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">sender</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">interface_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">member</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">object_path</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">arg0</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">flags</span>.<span class="ident">into_glib</span>(),
-                <span class="ident">callback</span>,
-                <span class="ident">Box_::into_raw</span>(<span class="ident">super_callback0</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">destroy_call9</span>,
+        <span class="kw">let </span>destroy_call9 = <span class="prelude-val">Some</span>(user_data_free_func_func::&lt;P&gt; <span class="kw">as _</span>);
+        <span class="kw">let </span>super_callback0: Box_&lt;P&gt; = callback_data;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>id = ffi::g_dbus_connection_signal_subscribe(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                sender.to_glib_none().<span class="number">0</span>,
+                interface_name.to_glib_none().<span class="number">0</span>,
+                member.to_glib_none().<span class="number">0</span>,
+                object_path.to_glib_none().<span class="number">0</span>,
+                arg0.to_glib_none().<span class="number">0</span>,
+                flags.into_glib(),
+                callback,
+                Box_::into_raw(super_callback0) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                destroy_call9,
             );
-            <span class="ident">SignalSubscriptionId</span>(<span class="ident">NonZeroU32::new_unchecked</span>(<span class="ident">id</span>))
+            SignalSubscriptionId(NonZeroU32::new_unchecked(id))
         }
     }
 
-    <span class="doccomment">/// Unsubscribes from signals.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that there may still be D-Bus traffic to process (relating to this</span>
-    <span class="doccomment">/// signal subscription) in the current thread-default [`glib::MainContext`][crate::glib::MainContext] after this</span>
-    <span class="doccomment">/// function has returned. You should continue to iterate the [`glib::MainContext`][crate::glib::MainContext]</span>
-    <span class="doccomment">/// until the `GDestroyNotify` function passed to</span>
-    <span class="doccomment">/// [`signal_subscribe()`][Self::signal_subscribe()] is called, in order to avoid memory</span>
-    <span class="doccomment">/// leaks through callbacks queued on the [`glib::MainContext`][crate::glib::MainContext] after it’s stopped being</span>
-    <span class="doccomment">/// iterated.</span>
-    <span class="doccomment">/// Alternatively, any idle source with a priority lower than `G_PRIORITY_DEFAULT`</span>
-    <span class="doccomment">/// that was scheduled after unsubscription, also indicates that all resources</span>
-    <span class="doccomment">/// of this subscription are released.</span>
-    <span class="doccomment">/// ## `subscription_id`</span>
-    <span class="doccomment">/// a subscription id obtained from</span>
-    <span class="doccomment">///  [`signal_subscribe()`][Self::signal_subscribe()]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_dbus_connection_signal_unsubscribe&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">signal_unsubscribe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">subscription_id</span>: <span class="ident">SignalSubscriptionId</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_dbus_connection_signal_unsubscribe</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">subscription_id</span>.<span class="number">0</span>.<span class="ident">into</span>(),
+    <span class="doccomment">/// Unsubscribes from signals.
+    ///
+    /// Note that there may still be D-Bus traffic to process (relating to this
+    /// signal subscription) in the current thread-default [`glib::MainContext`][crate::glib::MainContext] after this
+    /// function has returned. You should continue to iterate the [`glib::MainContext`][crate::glib::MainContext]
+    /// until the `GDestroyNotify` function passed to
+    /// [`signal_subscribe()`][Self::signal_subscribe()] is called, in order to avoid memory
+    /// leaks through callbacks queued on the [`glib::MainContext`][crate::glib::MainContext] after it’s stopped being
+    /// iterated.
+    /// Alternatively, any idle source with a priority lower than `G_PRIORITY_DEFAULT`
+    /// that was scheduled after unsubscription, also indicates that all resources
+    /// of this subscription are released.
+    /// ## `subscription_id`
+    /// a subscription id obtained from
+    ///  [`signal_subscribe()`][Self::signal_subscribe()]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_dbus_connection_signal_unsubscribe&quot;</span>)]
+    </span><span class="kw">pub fn </span>signal_unsubscribe(<span class="kw-2">&amp;</span><span class="self">self</span>, subscription_id: SignalSubscriptionId) {
+        <span class="kw">unsafe </span>{
+            ffi::g_dbus_connection_signal_unsubscribe(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                subscription_id.<span class="number">0</span>.into(),
             );
         }
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/menu_item.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>menu_item.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/menu_item.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>menu_item.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -532,462 +527,461 @@
 <span id="454">454</span>
 <span id="455">455</span>
 <span id="456">456</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Icon</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MenuModel</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::Icon;
+<span class="kw">use </span><span class="kw">crate</span>::MenuModel;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::fmt;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// [`MenuItem`][crate::MenuItem] is an opaque structure type. You must access it using the</span>
-    <span class="doccomment">/// functions below.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`trait@glib::ObjectExt`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GMenuItem&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MenuItem</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GMenuItem</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// [`MenuItem`][crate::MenuItem] is an opaque structure type. You must access it using the
+    /// functions below.
+    ///
+    /// # Implements
+    ///
+    /// [`trait@glib::ObjectExt`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GMenuItem&quot;</span>)]
+    </span><span class="kw">pub struct </span>MenuItem(Object&lt;ffi::GMenuItem&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_menu_item_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_menu_item_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">MenuItem</span> {
-    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `label` is non-[`None`] it is used to set the &quot;label&quot; attribute of the</span>
-    <span class="doccomment">/// new item.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `detailed_action` is non-[`None`] it is used to set the &quot;action&quot; and</span>
-    <span class="doccomment">/// possibly the &quot;target&quot; attribute of the new item. See</span>
-    <span class="doccomment">/// [`set_detailed_action()`][Self::set_detailed_action()] for more information.</span>
-    <span class="doccomment">/// ## `label`</span>
-    <span class="doccomment">/// the section label, or [`None`]</span>
-    <span class="doccomment">/// ## `detailed_action`</span>
-    <span class="doccomment">/// the detailed action string, or [`None`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`MenuItem`][crate::MenuItem]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_new&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">label</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">detailed_action</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="ident">MenuItem</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_new</span>(
-                <span class="ident">label</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">detailed_action</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+<span class="kw">impl </span>MenuItem {
+    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem].
+    ///
+    /// If `label` is non-[`None`] it is used to set the &quot;label&quot; attribute of the
+    /// new item.
+    ///
+    /// If `detailed_action` is non-[`None`] it is used to set the &quot;action&quot; and
+    /// possibly the &quot;target&quot; attribute of the new item. See
+    /// [`set_detailed_action()`][Self::set_detailed_action()] for more information.
+    /// ## `label`
+    /// the section label, or [`None`]
+    /// ## `detailed_action`
+    /// the detailed action string, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// a new [`MenuItem`][crate::MenuItem]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_new&quot;</span>)]
+    </span><span class="kw">pub fn </span>new(label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, detailed_action: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; MenuItem {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_new(
+                label.to_glib_none().<span class="number">0</span>,
+                detailed_action.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Creates a [`MenuItem`][crate::MenuItem] as an exact copy of an existing menu item in a</span>
-    <span class="doccomment">/// [`MenuModel`][crate::MenuModel].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `item_index` must be valid (ie: be sure to call</span>
-    <span class="doccomment">/// [`MenuModelExt::n_items()`][crate::prelude::MenuModelExt::n_items()] first).</span>
-    <span class="doccomment">/// ## `model`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel]</span>
-    <span class="doccomment">/// ## `item_index`</span>
-    <span class="doccomment">/// the index of an item in `model`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`MenuItem`][crate::MenuItem].</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_new_from_model&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_model&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_model</span>(<span class="ident">model</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span>, <span class="ident">item_index</span>: <span class="ident">i32</span>) -&gt; <span class="ident">MenuItem</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_new_from_model</span>(
-                <span class="ident">model</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">item_index</span>,
+    <span class="doccomment">/// Creates a [`MenuItem`][crate::MenuItem] as an exact copy of an existing menu item in a
+    /// [`MenuModel`][crate::MenuModel].
+    ///
+    /// `item_index` must be valid (ie: be sure to call
+    /// [`MenuModelExt::n_items()`][crate::prelude::MenuModelExt::n_items()] first).
+    /// ## `model`
+    /// a [`MenuModel`][crate::MenuModel]
+    /// ## `item_index`
+    /// the index of an item in `model`
+    ///
+    /// # Returns
+    ///
+    /// a new [`MenuItem`][crate::MenuItem].
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_new_from_model&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_model&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_model(model: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;, item_index: i32) -&gt; MenuItem {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_new_from_model(
+                model.as_ref().to_glib_none().<span class="number">0</span>,
+                item_index,
             ))
         }
     }
 
-    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem] representing a section.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is a convenience API around [`new()`][Self::new()] and</span>
-    <span class="doccomment">/// [`set_section()`][Self::set_section()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The effect of having one menu appear as a section of another is</span>
-    <span class="doccomment">/// exactly as it sounds: the items from `section` become a direct part of</span>
-    <span class="doccomment">/// the menu that `menu_item` is added to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Visual separation is typically displayed between two non-empty</span>
-    <span class="doccomment">/// sections. If `label` is non-[`None`] then it will be encorporated into</span>
-    <span class="doccomment">/// this visual indication. This allows for labeled subsections of a</span>
-    <span class="doccomment">/// menu.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// As a simple example, consider a typical &quot;Edit&quot; menu from a simple</span>
-    <span class="doccomment">/// program. It probably contains an &quot;Undo&quot; and &quot;Redo&quot; item, followed by</span>
-    <span class="doccomment">/// a separator, followed by &quot;Cut&quot;, &quot;Copy&quot; and &quot;Paste&quot;.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This would be accomplished by creating three [`Menu`][crate::Menu] instances. The</span>
-    <span class="doccomment">/// first would be populated with the &quot;Undo&quot; and &quot;Redo&quot; items, and the</span>
-    <span class="doccomment">/// second with the &quot;Cut&quot;, &quot;Copy&quot; and &quot;Paste&quot; items. The first and</span>
-    <span class="doccomment">/// second menus would then be added as submenus of the third. In XML</span>
-    <span class="doccomment">/// format, this would look something like the following:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// &lt;menu id=&#39;edit-menu&#39;&gt;</span>
-    <span class="doccomment">///   &lt;section&gt;</span>
-    <span class="doccomment">///     &lt;item label=&#39;Undo&#39;/&gt;</span>
-    <span class="doccomment">///     &lt;item label=&#39;Redo&#39;/&gt;</span>
-    <span class="doccomment">///   &lt;/section&gt;</span>
-    <span class="doccomment">///   &lt;section&gt;</span>
-    <span class="doccomment">///     &lt;item label=&#39;Cut&#39;/&gt;</span>
-    <span class="doccomment">///     &lt;item label=&#39;Copy&#39;/&gt;</span>
-    <span class="doccomment">///     &lt;item label=&#39;Paste&#39;/&gt;</span>
-    <span class="doccomment">///   &lt;/section&gt;</span>
-    <span class="doccomment">/// &lt;/menu&gt;</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The following example is exactly equivalent. It is more illustrative</span>
-    <span class="doccomment">/// of the exact relationship between the menus and items (keeping in</span>
-    <span class="doccomment">/// mind that the &#39;link&#39; element defines a new menu that is linked to the</span>
-    <span class="doccomment">/// containing one). The style of the second example is more verbose and</span>
-    <span class="doccomment">/// difficult to read (and therefore not recommended except for the</span>
-    <span class="doccomment">/// purpose of understanding what is really going on).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// &lt;menu id=&#39;edit-menu&#39;&gt;</span>
-    <span class="doccomment">///   &lt;item&gt;</span>
-    <span class="doccomment">///     &lt;link name=&#39;section&#39;&gt;</span>
-    <span class="doccomment">///       &lt;item label=&#39;Undo&#39;/&gt;</span>
-    <span class="doccomment">///       &lt;item label=&#39;Redo&#39;/&gt;</span>
-    <span class="doccomment">///     &lt;/link&gt;</span>
-    <span class="doccomment">///   &lt;/item&gt;</span>
-    <span class="doccomment">///   &lt;item&gt;</span>
-    <span class="doccomment">///     &lt;link name=&#39;section&#39;&gt;</span>
-    <span class="doccomment">///       &lt;item label=&#39;Cut&#39;/&gt;</span>
-    <span class="doccomment">///       &lt;item label=&#39;Copy&#39;/&gt;</span>
-    <span class="doccomment">///       &lt;item label=&#39;Paste&#39;/&gt;</span>
-    <span class="doccomment">///     &lt;/link&gt;</span>
-    <span class="doccomment">///   &lt;/item&gt;</span>
-    <span class="doccomment">/// &lt;/menu&gt;</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// ## `label`</span>
-    <span class="doccomment">/// the section label, or [`None`]</span>
-    <span class="doccomment">/// ## `section`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel] with the items of the section</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`MenuItem`][crate::MenuItem]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_new_section&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_section</span>(<span class="ident">label</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">section</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span>) -&gt; <span class="ident">MenuItem</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_new_section</span>(
-                <span class="ident">label</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">section</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem] representing a section.
+    ///
+    /// This is a convenience API around [`new()`][Self::new()] and
+    /// [`set_section()`][Self::set_section()].
+    ///
+    /// The effect of having one menu appear as a section of another is
+    /// exactly as it sounds: the items from `section` become a direct part of
+    /// the menu that `menu_item` is added to.
+    ///
+    /// Visual separation is typically displayed between two non-empty
+    /// sections. If `label` is non-[`None`] then it will be encorporated into
+    /// this visual indication. This allows for labeled subsections of a
+    /// menu.
+    ///
+    /// As a simple example, consider a typical &quot;Edit&quot; menu from a simple
+    /// program. It probably contains an &quot;Undo&quot; and &quot;Redo&quot; item, followed by
+    /// a separator, followed by &quot;Cut&quot;, &quot;Copy&quot; and &quot;Paste&quot;.
+    ///
+    /// This would be accomplished by creating three [`Menu`][crate::Menu] instances. The
+    /// first would be populated with the &quot;Undo&quot; and &quot;Redo&quot; items, and the
+    /// second with the &quot;Cut&quot;, &quot;Copy&quot; and &quot;Paste&quot; items. The first and
+    /// second menus would then be added as submenus of the third. In XML
+    /// format, this would look something like the following:
+    ///
+    /// ```text
+    /// &lt;menu id=&#39;edit-menu&#39;&gt;
+    ///   &lt;section&gt;
+    ///     &lt;item label=&#39;Undo&#39;/&gt;
+    ///     &lt;item label=&#39;Redo&#39;/&gt;
+    ///   &lt;/section&gt;
+    ///   &lt;section&gt;
+    ///     &lt;item label=&#39;Cut&#39;/&gt;
+    ///     &lt;item label=&#39;Copy&#39;/&gt;
+    ///     &lt;item label=&#39;Paste&#39;/&gt;
+    ///   &lt;/section&gt;
+    /// &lt;/menu&gt;
+    /// ```
+    ///
+    /// The following example is exactly equivalent. It is more illustrative
+    /// of the exact relationship between the menus and items (keeping in
+    /// mind that the &#39;link&#39; element defines a new menu that is linked to the
+    /// containing one). The style of the second example is more verbose and
+    /// difficult to read (and therefore not recommended except for the
+    /// purpose of understanding what is really going on).
+    ///
+    /// ```text
+    /// &lt;menu id=&#39;edit-menu&#39;&gt;
+    ///   &lt;item&gt;
+    ///     &lt;link name=&#39;section&#39;&gt;
+    ///       &lt;item label=&#39;Undo&#39;/&gt;
+    ///       &lt;item label=&#39;Redo&#39;/&gt;
+    ///     &lt;/link&gt;
+    ///   &lt;/item&gt;
+    ///   &lt;item&gt;
+    ///     &lt;link name=&#39;section&#39;&gt;
+    ///       &lt;item label=&#39;Cut&#39;/&gt;
+    ///       &lt;item label=&#39;Copy&#39;/&gt;
+    ///       &lt;item label=&#39;Paste&#39;/&gt;
+    ///     &lt;/link&gt;
+    ///   &lt;/item&gt;
+    /// &lt;/menu&gt;
+    /// ```
+    /// ## `label`
+    /// the section label, or [`None`]
+    /// ## `section`
+    /// a [`MenuModel`][crate::MenuModel] with the items of the section
+    ///
+    /// # Returns
+    ///
+    /// a new [`MenuItem`][crate::MenuItem]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_new_section&quot;</span>)]
+    </span><span class="kw">pub fn </span>new_section(label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, section: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;) -&gt; MenuItem {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_new_section(
+                label.to_glib_none().<span class="number">0</span>,
+                section.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem] representing a submenu.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is a convenience API around [`new()`][Self::new()] and</span>
-    <span class="doccomment">/// [`set_submenu()`][Self::set_submenu()].</span>
-    <span class="doccomment">/// ## `label`</span>
-    <span class="doccomment">/// the section label, or [`None`]</span>
-    <span class="doccomment">/// ## `submenu`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel] with the items of the submenu</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`MenuItem`][crate::MenuItem]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_new_submenu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new_submenu</span>(<span class="ident">label</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>, <span class="ident">submenu</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span>) -&gt; <span class="ident">MenuItem</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_new_submenu</span>(
-                <span class="ident">label</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">submenu</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Creates a new [`MenuItem`][crate::MenuItem] representing a submenu.
+    ///
+    /// This is a convenience API around [`new()`][Self::new()] and
+    /// [`set_submenu()`][Self::set_submenu()].
+    /// ## `label`
+    /// the section label, or [`None`]
+    /// ## `submenu`
+    /// a [`MenuModel`][crate::MenuModel] with the items of the submenu
+    ///
+    /// # Returns
+    ///
+    /// a new [`MenuItem`][crate::MenuItem]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_new_submenu&quot;</span>)]
+    </span><span class="kw">pub fn </span>new_submenu(label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, submenu: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;) -&gt; MenuItem {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_new_submenu(
+                label.to_glib_none().<span class="number">0</span>,
+                submenu.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;g_menu_item_get_attribute&quot;)]</span>
-    <span class="comment">//#[doc(alias = &quot;get_attribute&quot;)]</span>
-    <span class="comment">//pub fn is_attribute(&amp;self, attribute: &amp;str, format_string: &amp;str, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) -&gt; bool {</span>
-    <span class="comment">//    unsafe { TODO: call ffi:g_menu_item_get_attribute() }</span>
-    <span class="comment">//}</span>
+    <span class="comment">//#[doc(alias = &quot;g_menu_item_get_attribute&quot;)]
+    //#[doc(alias = &quot;get_attribute&quot;)]
+    //pub fn is_attribute(&amp;self, attribute: &amp;str, format_string: &amp;str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -&gt; bool {
+    //    unsafe { TODO: call ffi:g_menu_item_get_attribute() }
+    //}
 
-    <span class="doccomment">/// Queries the named `attribute` on `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `expected_type` is specified and the attribute does not have this</span>
-    <span class="doccomment">/// type, [`None`] is returned. [`None`] is also returned if the attribute</span>
-    <span class="doccomment">/// simply does not exist.</span>
-    <span class="doccomment">/// ## `attribute`</span>
-    <span class="doccomment">/// the attribute name to query</span>
-    <span class="doccomment">/// ## `expected_type`</span>
-    <span class="doccomment">/// the expected type of the attribute</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the attribute value, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_get_attribute_value&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_attribute_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">attribute_value</span>(
+    </span><span class="doccomment">/// Queries the named `attribute` on `self`.
+    ///
+    /// If `expected_type` is specified and the attribute does not have this
+    /// type, [`None`] is returned. [`None`] is also returned if the attribute
+    /// simply does not exist.
+    /// ## `attribute`
+    /// the attribute name to query
+    /// ## `expected_type`
+    /// the expected type of the attribute
+    ///
+    /// # Returns
+    ///
+    /// the attribute value, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_get_attribute_value&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_attribute_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>attribute_value(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">attribute</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">expected_type</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::VariantTy</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_get_attribute_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">attribute</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">expected_type</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+        attribute: <span class="kw-2">&amp;</span>str,
+        expected_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::VariantTy&gt;,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_get_attribute_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                attribute.to_glib_none().<span class="number">0</span>,
+                expected_type.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="doccomment">/// Queries the named `link` on `self`.</span>
-    <span class="doccomment">/// ## `link`</span>
-    <span class="doccomment">/// the link name to query</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the link, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_get_link&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_link&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">link</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_menu_item_get_link</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">link</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Queries the named `link` on `self`.
+    /// ## `link`
+    /// the link name to query
+    ///
+    /// # Returns
+    ///
+    /// the link, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_get_link&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_link&quot;</span>)]
+    </span><span class="kw">pub fn </span>link(<span class="kw-2">&amp;</span><span class="self">self</span>, link: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;MenuModel&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_menu_item_get_link(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                link.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;g_menu_item_set_action_and_target&quot;)]</span>
-    <span class="comment">//pub fn set_action_and_target(&amp;self, action: Option&lt;&amp;str&gt;, format_string: Option&lt;&amp;str&gt;, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {</span>
-    <span class="comment">//    unsafe { TODO: call ffi:g_menu_item_set_action_and_target() }</span>
-    <span class="comment">//}</span>
+    <span class="comment">//#[doc(alias = &quot;g_menu_item_set_action_and_target&quot;)]
+    //pub fn set_action_and_target(&amp;self, action: Option&lt;&amp;str&gt;, format_string: Option&lt;&amp;str&gt;, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //    unsafe { TODO: call ffi:g_menu_item_set_action_and_target() }
+    //}
 
-    <span class="doccomment">/// Sets or unsets the &quot;action&quot; and &quot;target&quot; attributes of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `action` is [`None`] then both the &quot;action&quot; and &quot;target&quot; attributes</span>
-    <span class="doccomment">/// are unset (and `target_value` is ignored).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `action` is non-[`None`] then the &quot;action&quot; attribute is set. The</span>
-    <span class="doccomment">/// &quot;target&quot; attribute is then set to the value of `target_value` if it is</span>
-    <span class="doccomment">/// non-[`None`] or unset otherwise.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Normal menu items (ie: not submenu, section or other custom item</span>
-    <span class="doccomment">/// types) are expected to have the &quot;action&quot; attribute set to identify</span>
-    <span class="doccomment">/// the action that they are associated with. The state type of the</span>
-    <span class="doccomment">/// action help to determine the disposition of the menu item. See</span>
-    <span class="doccomment">/// [`Action`][crate::Action] and [`ActionGroup`][crate::ActionGroup] for an overview of actions.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In general, clicking on the menu item will result in activation of</span>
-    <span class="doccomment">/// the named action with the &quot;target&quot; attribute given as the parameter</span>
-    <span class="doccomment">/// to the action invocation. If the &quot;target&quot; attribute is not set then</span>
-    <span class="doccomment">/// the action is invoked with no parameter.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action has no state then the menu item is usually drawn as a</span>
-    <span class="doccomment">/// plain menu item (ie: with no additional decoration).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action has a boolean state then the menu item is usually drawn</span>
-    <span class="doccomment">/// as a toggle menu item (ie: with a checkmark or equivalent</span>
-    <span class="doccomment">/// indication). The item should be marked as &#39;toggled&#39; or &#39;checked&#39;</span>
-    <span class="doccomment">/// when the boolean state is [`true`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action has a string state then the menu item is usually drawn</span>
-    <span class="doccomment">/// as a radio menu item (ie: with a radio bullet or equivalent</span>
-    <span class="doccomment">/// indication). The item should be marked as &#39;selected&#39; when the string</span>
-    <span class="doccomment">/// state is equal to the value of the `target` property.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See `g_menu_item_set_action_and_target()` or</span>
-    <span class="doccomment">/// [`set_detailed_action()`][Self::set_detailed_action()] for two equivalent calls that are</span>
-    <span class="doccomment">/// probably more convenient for most uses.</span>
-    <span class="doccomment">/// ## `action`</span>
-    <span class="doccomment">/// the name of the action for this item</span>
-    <span class="doccomment">/// ## `target_value`</span>
-    <span class="doccomment">/// a [`glib::Variant`][struct@crate::glib::Variant] to use as the action target</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_action_and_target_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_action_and_target_value</span>(
+    </span><span class="doccomment">/// Sets or unsets the &quot;action&quot; and &quot;target&quot; attributes of `self`.
+    ///
+    /// If `action` is [`None`] then both the &quot;action&quot; and &quot;target&quot; attributes
+    /// are unset (and `target_value` is ignored).
+    ///
+    /// If `action` is non-[`None`] then the &quot;action&quot; attribute is set. The
+    /// &quot;target&quot; attribute is then set to the value of `target_value` if it is
+    /// non-[`None`] or unset otherwise.
+    ///
+    /// Normal menu items (ie: not submenu, section or other custom item
+    /// types) are expected to have the &quot;action&quot; attribute set to identify
+    /// the action that they are associated with. The state type of the
+    /// action help to determine the disposition of the menu item. See
+    /// [`Action`][crate::Action] and [`ActionGroup`][crate::ActionGroup] for an overview of actions.
+    ///
+    /// In general, clicking on the menu item will result in activation of
+    /// the named action with the &quot;target&quot; attribute given as the parameter
+    /// to the action invocation. If the &quot;target&quot; attribute is not set then
+    /// the action is invoked with no parameter.
+    ///
+    /// If the action has no state then the menu item is usually drawn as a
+    /// plain menu item (ie: with no additional decoration).
+    ///
+    /// If the action has a boolean state then the menu item is usually drawn
+    /// as a toggle menu item (ie: with a checkmark or equivalent
+    /// indication). The item should be marked as &#39;toggled&#39; or &#39;checked&#39;
+    /// when the boolean state is [`true`].
+    ///
+    /// If the action has a string state then the menu item is usually drawn
+    /// as a radio menu item (ie: with a radio bullet or equivalent
+    /// indication). The item should be marked as &#39;selected&#39; when the string
+    /// state is equal to the value of the `target` property.
+    ///
+    /// See `g_menu_item_set_action_and_target()` or
+    /// [`set_detailed_action()`][Self::set_detailed_action()] for two equivalent calls that are
+    /// probably more convenient for most uses.
+    /// ## `action`
+    /// the name of the action for this item
+    /// ## `target_value`
+    /// a [`glib::Variant`][struct@crate::glib::Variant] to use as the action target
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_action_and_target_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_action_and_target_value(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-        <span class="ident">target_value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>,
+        action: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+        target_value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_action_and_target_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">action</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">target_value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_action_and_target_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                action.to_glib_none().<span class="number">0</span>,
+                target_value.to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="comment">//#[doc(alias = &quot;g_menu_item_set_attribute&quot;)]</span>
-    <span class="comment">//pub fn set_attribute(&amp;self, attribute: &amp;str, format_string: Option&lt;&amp;str&gt;, : /*Unknown conversion*//*Unimplemented*/Fundamental: VarArgs) {</span>
-    <span class="comment">//    unsafe { TODO: call ffi:g_menu_item_set_attribute() }</span>
-    <span class="comment">//}</span>
+    <span class="comment">//#[doc(alias = &quot;g_menu_item_set_attribute&quot;)]
+    //pub fn set_attribute(&amp;self, attribute: &amp;str, format_string: Option&lt;&amp;str&gt;, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) {
+    //    unsafe { TODO: call ffi:g_menu_item_set_attribute() }
+    //}
 
-    <span class="doccomment">/// Sets or unsets an attribute on `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The attribute to set or unset is specified by `attribute`. This</span>
-    <span class="doccomment">/// can be one of the standard attribute names [`MENU_ATTRIBUTE_LABEL`][crate::MENU_ATTRIBUTE_LABEL],</span>
-    <span class="doccomment">/// [`MENU_ATTRIBUTE_ACTION`][crate::MENU_ATTRIBUTE_ACTION], [`MENU_ATTRIBUTE_TARGET`][crate::MENU_ATTRIBUTE_TARGET], or a custom</span>
-    <span class="doccomment">/// attribute name.</span>
-    <span class="doccomment">/// Attribute names are restricted to lowercase characters, numbers</span>
-    <span class="doccomment">/// and &#39;-&#39;. Furthermore, the names must begin with a lowercase character,</span>
-    <span class="doccomment">/// must not end with a &#39;-&#39;, and must not contain consecutive dashes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// must consist only of lowercase</span>
-    <span class="doccomment">/// ASCII characters, digits and &#39;-&#39;.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `value` is non-[`None`] then it is used as the new value for the</span>
-    <span class="doccomment">/// attribute. If `value` is [`None`] then the attribute is unset. If</span>
-    <span class="doccomment">/// the `value` [`glib::Variant`][struct@crate::glib::Variant] is floating, it is consumed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See also `g_menu_item_set_attribute()` for a more convenient way to do</span>
-    <span class="doccomment">/// the same.</span>
-    <span class="doccomment">/// ## `attribute`</span>
-    <span class="doccomment">/// the attribute to set</span>
-    <span class="doccomment">/// ## `value`</span>
-    <span class="doccomment">/// a [`glib::Variant`][struct@crate::glib::Variant] to use as the value, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_attribute_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_attribute_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">attribute</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_attribute_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">attribute</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    </span><span class="doccomment">/// Sets or unsets an attribute on `self`.
+    ///
+    /// The attribute to set or unset is specified by `attribute`. This
+    /// can be one of the standard attribute names [`MENU_ATTRIBUTE_LABEL`][crate::MENU_ATTRIBUTE_LABEL],
+    /// [`MENU_ATTRIBUTE_ACTION`][crate::MENU_ATTRIBUTE_ACTION], [`MENU_ATTRIBUTE_TARGET`][crate::MENU_ATTRIBUTE_TARGET], or a custom
+    /// attribute name.
+    /// Attribute names are restricted to lowercase characters, numbers
+    /// and &#39;-&#39;. Furthermore, the names must begin with a lowercase character,
+    /// must not end with a &#39;-&#39;, and must not contain consecutive dashes.
+    ///
+    /// must consist only of lowercase
+    /// ASCII characters, digits and &#39;-&#39;.
+    ///
+    /// If `value` is non-[`None`] then it is used as the new value for the
+    /// attribute. If `value` is [`None`] then the attribute is unset. If
+    /// the `value` [`glib::Variant`][struct@crate::glib::Variant] is floating, it is consumed.
+    ///
+    /// See also `g_menu_item_set_attribute()` for a more convenient way to do
+    /// the same.
+    /// ## `attribute`
+    /// the attribute to set
+    /// ## `value`
+    /// a [`glib::Variant`][struct@crate::glib::Variant] to use as the value, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_attribute_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_attribute_value(<span class="kw-2">&amp;</span><span class="self">self</span>, attribute: <span class="kw-2">&amp;</span>str, value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_attribute_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                attribute.to_glib_none().<span class="number">0</span>,
+                value.to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="doccomment">/// Sets the &quot;action&quot; and possibly the &quot;target&quot; attribute of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The format of `detailed_action` is the same format parsed by</span>
-    <span class="doccomment">/// [`Action::parse_detailed_name()`][crate::Action::parse_detailed_name()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See `g_menu_item_set_action_and_target()` or</span>
-    <span class="doccomment">/// [`set_action_and_target_value()`][Self::set_action_and_target_value()] for more flexible (but</span>
-    <span class="doccomment">/// slightly less convenient) alternatives.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See also [`set_action_and_target_value()`][Self::set_action_and_target_value()] for a description of</span>
-    <span class="doccomment">/// the semantics of the action and target attributes.</span>
-    <span class="doccomment">/// ## `detailed_action`</span>
-    <span class="doccomment">/// the &quot;detailed&quot; action string</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_detailed_action&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_detailed_action</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">detailed_action</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_detailed_action</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">detailed_action</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Sets the &quot;action&quot; and possibly the &quot;target&quot; attribute of `self`.
+    ///
+    /// The format of `detailed_action` is the same format parsed by
+    /// [`Action::parse_detailed_name()`][crate::Action::parse_detailed_name()].
+    ///
+    /// See `g_menu_item_set_action_and_target()` or
+    /// [`set_action_and_target_value()`][Self::set_action_and_target_value()] for more flexible (but
+    /// slightly less convenient) alternatives.
+    ///
+    /// See also [`set_action_and_target_value()`][Self::set_action_and_target_value()] for a description of
+    /// the semantics of the action and target attributes.
+    /// ## `detailed_action`
+    /// the &quot;detailed&quot; action string
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_detailed_action&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_detailed_action(<span class="kw-2">&amp;</span><span class="self">self</span>, detailed_action: <span class="kw-2">&amp;</span>str) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_detailed_action(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                detailed_action.to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="doccomment">/// Sets (or unsets) the icon on `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This call is the same as calling [`IconExt::serialize()`][crate::prelude::IconExt::serialize()] and using the</span>
-    <span class="doccomment">/// result as the value to [`set_attribute_value()`][Self::set_attribute_value()] for</span>
-    <span class="doccomment">/// [`MENU_ATTRIBUTE_ICON`][crate::MENU_ATTRIBUTE_ICON].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This API is only intended for use with &quot;noun&quot; menu items; things like</span>
-    <span class="doccomment">/// bookmarks or applications in an &quot;Open With&quot; menu. Don&#39;t use it on</span>
-    <span class="doccomment">/// menu items corresponding to verbs (eg: stock icons for &#39;Save&#39; or</span>
-    <span class="doccomment">/// &#39;Quit&#39;).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `icon` is [`None`] then the icon is unset.</span>
-    <span class="doccomment">/// ## `icon`</span>
-    <span class="doccomment">/// a [`Icon`][crate::Icon], or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_icon&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_icon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">icon</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Icon</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_icon</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">icon</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+    <span class="doccomment">/// Sets (or unsets) the icon on `self`.
+    ///
+    /// This call is the same as calling [`IconExt::serialize()`][crate::prelude::IconExt::serialize()] and using the
+    /// result as the value to [`set_attribute_value()`][Self::set_attribute_value()] for
+    /// [`MENU_ATTRIBUTE_ICON`][crate::MENU_ATTRIBUTE_ICON].
+    ///
+    /// This API is only intended for use with &quot;noun&quot; menu items; things like
+    /// bookmarks or applications in an &quot;Open With&quot; menu. Don&#39;t use it on
+    /// menu items corresponding to verbs (eg: stock icons for &#39;Save&#39; or
+    /// &#39;Quit&#39;).
+    ///
+    /// If `icon` is [`None`] then the icon is unset.
+    /// ## `icon`
+    /// a [`Icon`][crate::Icon], or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_icon&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_icon(<span class="kw-2">&amp;</span><span class="self">self</span>, icon: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Icon&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_icon(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, icon.as_ref().to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Sets or unsets the &quot;label&quot; attribute of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `label` is non-[`None`] it is used as the label for the menu item. If</span>
-    <span class="doccomment">/// it is [`None`] then the label attribute is unset.</span>
-    <span class="doccomment">/// ## `label`</span>
-    <span class="doccomment">/// the label to set, or [`None`] to unset</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_label&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_label</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">label</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_label</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">label</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+    <span class="doccomment">/// Sets or unsets the &quot;label&quot; attribute of `self`.
+    ///
+    /// If `label` is non-[`None`] it is used as the label for the menu item. If
+    /// it is [`None`] then the label attribute is unset.
+    /// ## `label`
+    /// the label to set, or [`None`] to unset
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_label&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_label(<span class="kw-2">&amp;</span><span class="self">self</span>, label: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_label(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, label.to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="doccomment">/// Creates a link from `self` to `model` if non-[`None`], or unsets it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Links are used to establish a relationship between a particular menu</span>
-    <span class="doccomment">/// item and another menu. For example, [`MENU_LINK_SUBMENU`][crate::MENU_LINK_SUBMENU] is used to</span>
-    <span class="doccomment">/// associate a submenu with a particular menu item, and [`MENU_LINK_SECTION`][crate::MENU_LINK_SECTION]</span>
-    <span class="doccomment">/// is used to create a section. Other types of link can be used, but there</span>
-    <span class="doccomment">/// is no guarantee that clients will be able to make sense of them.</span>
-    <span class="doccomment">/// Link types are restricted to lowercase characters, numbers</span>
-    <span class="doccomment">/// and &#39;-&#39;. Furthermore, the names must begin with a lowercase character,</span>
-    <span class="doccomment">/// must not end with a &#39;-&#39;, and must not contain consecutive dashes.</span>
-    <span class="doccomment">/// ## `link`</span>
-    <span class="doccomment">/// type of link to establish or unset</span>
-    <span class="doccomment">/// ## `model`</span>
-    <span class="doccomment">/// the [`MenuModel`][crate::MenuModel] to link to (or [`None`] to unset)</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_link&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_link</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">link</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">model</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_link</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">link</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">model</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Creates a link from `self` to `model` if non-[`None`], or unsets it.
+    ///
+    /// Links are used to establish a relationship between a particular menu
+    /// item and another menu. For example, [`MENU_LINK_SUBMENU`][crate::MENU_LINK_SUBMENU] is used to
+    /// associate a submenu with a particular menu item, and [`MENU_LINK_SECTION`][crate::MENU_LINK_SECTION]
+    /// is used to create a section. Other types of link can be used, but there
+    /// is no guarantee that clients will be able to make sense of them.
+    /// Link types are restricted to lowercase characters, numbers
+    /// and &#39;-&#39;. Furthermore, the names must begin with a lowercase character,
+    /// must not end with a &#39;-&#39;, and must not contain consecutive dashes.
+    /// ## `link`
+    /// type of link to establish or unset
+    /// ## `model`
+    /// the [`MenuModel`][crate::MenuModel] to link to (or [`None`] to unset)
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_link&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_link(<span class="kw-2">&amp;</span><span class="self">self</span>, link: <span class="kw-2">&amp;</span>str, model: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_link(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                link.to_glib_none().<span class="number">0</span>,
+                model.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="doccomment">/// Sets or unsets the &quot;section&quot; link of `self` to `section`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The effect of having one menu appear as a section of another is</span>
-    <span class="doccomment">/// exactly as it sounds: the items from `section` become a direct part of</span>
-    <span class="doccomment">/// the menu that `self` is added to. See [`new_section()`][Self::new_section()]</span>
-    <span class="doccomment">/// for more information about what it means for a menu item to be a</span>
-    <span class="doccomment">/// section.</span>
-    <span class="doccomment">/// ## `section`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel], or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_section&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_section</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">section</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_section</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">section</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Sets or unsets the &quot;section&quot; link of `self` to `section`.
+    ///
+    /// The effect of having one menu appear as a section of another is
+    /// exactly as it sounds: the items from `section` become a direct part of
+    /// the menu that `self` is added to. See [`new_section()`][Self::new_section()]
+    /// for more information about what it means for a menu item to be a
+    /// section.
+    /// ## `section`
+    /// a [`MenuModel`][crate::MenuModel], or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_section&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_section(<span class="kw-2">&amp;</span><span class="self">self</span>, section: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_section(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                section.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="doccomment">/// Sets or unsets the &quot;submenu&quot; link of `self` to `submenu`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `submenu` is non-[`None`], it is linked to. If it is [`None`] then the</span>
-    <span class="doccomment">/// link is unset.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The effect of having one menu appear as a submenu of another is</span>
-    <span class="doccomment">/// exactly as it sounds.</span>
-    <span class="doccomment">/// ## `submenu`</span>
-    <span class="doccomment">/// a [`MenuModel`][crate::MenuModel], or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_menu_item_set_submenu&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_submenu</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">submenu</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MenuModel</span><span class="op">&gt;</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_menu_item_set_submenu</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">submenu</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Sets or unsets the &quot;submenu&quot; link of `self` to `submenu`.
+    ///
+    /// If `submenu` is non-[`None`], it is linked to. If it is [`None`] then the
+    /// link is unset.
+    ///
+    /// The effect of having one menu appear as a submenu of another is
+    /// exactly as it sounds.
+    /// ## `submenu`
+    /// a [`MenuModel`][crate::MenuModel], or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_menu_item_set_submenu&quot;</span>)]
+    </span><span class="kw">pub fn </span>set_submenu(<span class="kw-2">&amp;</span><span class="self">self</span>, submenu: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MenuModel&gt;&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_menu_item_set_submenu(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                submenu.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
             );
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">MenuItem</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;MenuItem&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>MenuItem {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;MenuItem&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

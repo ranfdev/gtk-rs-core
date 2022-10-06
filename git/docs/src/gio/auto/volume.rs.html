@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/volume.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>volume.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/volume.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>volume.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -665,595 +660,594 @@
 <span id="587">587</span>
 <span id="588">588</span>
 <span id="589">589</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AsyncResult</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Cancellable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Drive</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::File</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Icon</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Mount</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MountMountFlags</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MountOperation</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::MountUnmountFlags</span>;
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::AsyncResult;
+<span class="kw">use </span><span class="kw">crate</span>::Cancellable;
+<span class="kw">use </span><span class="kw">crate</span>::Drive;
+<span class="kw">use </span><span class="kw">crate</span>::File;
+<span class="kw">use </span><span class="kw">crate</span>::Icon;
+<span class="kw">use </span><span class="kw">crate</span>::Mount;
+<span class="kw">use </span><span class="kw">crate</span>::MountMountFlags;
+<span class="kw">use </span><span class="kw">crate</span>::MountOperation;
+<span class="kw">use </span><span class="kw">crate</span>::MountUnmountFlags;
+<span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::pin::Pin;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// The [`Volume`][crate::Volume] interface represents user-visible objects that can be</span>
-    <span class="doccomment">/// mounted. Note, when porting from GnomeVFS, [`Volume`][crate::Volume] is the moral</span>
-    <span class="doccomment">/// equivalent of `GnomeVFSDrive`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Mounting a [`Volume`][crate::Volume] instance is an asynchronous operation. For more</span>
-    <span class="doccomment">/// information about asynchronous operations, see [`AsyncResult`][crate::AsyncResult] and</span>
-    <span class="doccomment">/// [`Task`][crate::Task]. To mount a [`Volume`][crate::Volume], first call [`VolumeExt::mount()`][crate::prelude::VolumeExt::mount()] with (at</span>
-    <span class="doccomment">/// least) the [`Volume`][crate::Volume] instance, optionally a [`MountOperation`][crate::MountOperation] object</span>
-    <span class="doccomment">/// and a `GAsyncReadyCallback`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Typically, one will only want to pass [`None`] for the</span>
-    <span class="doccomment">/// [`MountOperation`][crate::MountOperation] if automounting all volumes when a desktop session</span>
-    <span class="doccomment">/// starts since it&#39;s not desirable to put up a lot of dialogs asking</span>
-    <span class="doccomment">/// for credentials.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The callback will be fired when the operation has resolved (either</span>
-    <span class="doccomment">/// with success or failure), and a [`AsyncResult`][crate::AsyncResult] instance will be</span>
-    <span class="doccomment">/// passed to the callback. That callback should then call</span>
-    <span class="doccomment">/// `g_volume_mount_finish()` with the [`Volume`][crate::Volume] instance and the</span>
-    <span class="doccomment">/// [`AsyncResult`][crate::AsyncResult] data to see if the operation was completed</span>
-    <span class="doccomment">/// successfully. If an `error` is present when `g_volume_mount_finish()`</span>
-    <span class="doccomment">/// is called, then it will be filled with any error information.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## Volume Identifiers # {`volume`-identifier}</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is sometimes necessary to directly access the underlying</span>
-    <span class="doccomment">/// operating system object behind a volume (e.g. for passing a volume</span>
-    <span class="doccomment">/// to an application via the commandline). For this purpose, GIO</span>
-    <span class="doccomment">/// allows to obtain an &#39;identifier&#39; for the volume. There can be</span>
-    <span class="doccomment">/// different kinds of identifiers, such as Hal UDIs, filesystem labels,</span>
-    <span class="doccomment">/// traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO uses predefined</span>
-    <span class="doccomment">/// strings as names for the different kinds of identifiers:</span>
-    <span class="doccomment">/// [`VOLUME_IDENTIFIER_KIND_UUID`][crate::VOLUME_IDENTIFIER_KIND_UUID], [`VOLUME_IDENTIFIER_KIND_LABEL`][crate::VOLUME_IDENTIFIER_KIND_LABEL], etc.</span>
-    <span class="doccomment">/// Use [`VolumeExt::identifier()`][crate::prelude::VolumeExt::identifier()] to obtain an identifier for a volume.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that [`VOLUME_IDENTIFIER_KIND_HAL_UDI`][crate::VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available</span>
-    <span class="doccomment">/// when the gvfs hal volume monitor is in use. Other volume monitors</span>
-    <span class="doccomment">/// will generally be able to provide the [`VOLUME_IDENTIFIER_KIND_UNIX_DEVICE`][crate::VOLUME_IDENTIFIER_KIND_UNIX_DEVICE]</span>
-    <span class="doccomment">/// identifier, which can be used to obtain a hal device by means of</span>
-    <span class="doccomment">/// `libhal_manager_find_device_string_match()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`VolumeExt`][trait@crate::prelude::VolumeExt]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GVolume&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Volume</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GVolume</span>, <span class="ident">ffi::GVolumeIface</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// The [`Volume`][crate::Volume] interface represents user-visible objects that can be
+    /// mounted. Note, when porting from GnomeVFS, [`Volume`][crate::Volume] is the moral
+    /// equivalent of `GnomeVFSDrive`.
+    ///
+    /// Mounting a [`Volume`][crate::Volume] instance is an asynchronous operation. For more
+    /// information about asynchronous operations, see [`AsyncResult`][crate::AsyncResult] and
+    /// [`Task`][crate::Task]. To mount a [`Volume`][crate::Volume], first call [`VolumeExt::mount()`][crate::prelude::VolumeExt::mount()] with (at
+    /// least) the [`Volume`][crate::Volume] instance, optionally a [`MountOperation`][crate::MountOperation] object
+    /// and a `GAsyncReadyCallback`.
+    ///
+    /// Typically, one will only want to pass [`None`] for the
+    /// [`MountOperation`][crate::MountOperation] if automounting all volumes when a desktop session
+    /// starts since it&#39;s not desirable to put up a lot of dialogs asking
+    /// for credentials.
+    ///
+    /// The callback will be fired when the operation has resolved (either
+    /// with success or failure), and a [`AsyncResult`][crate::AsyncResult] instance will be
+    /// passed to the callback. That callback should then call
+    /// `g_volume_mount_finish()` with the [`Volume`][crate::Volume] instance and the
+    /// [`AsyncResult`][crate::AsyncResult] data to see if the operation was completed
+    /// successfully. If an `error` is present when `g_volume_mount_finish()`
+    /// is called, then it will be filled with any error information.
+    ///
+    /// ## Volume Identifiers # {`volume`-identifier}
+    ///
+    /// It is sometimes necessary to directly access the underlying
+    /// operating system object behind a volume (e.g. for passing a volume
+    /// to an application via the commandline). For this purpose, GIO
+    /// allows to obtain an &#39;identifier&#39; for the volume. There can be
+    /// different kinds of identifiers, such as Hal UDIs, filesystem labels,
+    /// traditional Unix devices (e.g. `/dev/sda2`), UUIDs. GIO uses predefined
+    /// strings as names for the different kinds of identifiers:
+    /// [`VOLUME_IDENTIFIER_KIND_UUID`][crate::VOLUME_IDENTIFIER_KIND_UUID], [`VOLUME_IDENTIFIER_KIND_LABEL`][crate::VOLUME_IDENTIFIER_KIND_LABEL], etc.
+    /// Use [`VolumeExt::identifier()`][crate::prelude::VolumeExt::identifier()] to obtain an identifier for a volume.
+    ///
+    ///
+    /// Note that [`VOLUME_IDENTIFIER_KIND_HAL_UDI`][crate::VOLUME_IDENTIFIER_KIND_HAL_UDI] will only be available
+    /// when the gvfs hal volume monitor is in use. Other volume monitors
+    /// will generally be able to provide the [`VOLUME_IDENTIFIER_KIND_UNIX_DEVICE`][crate::VOLUME_IDENTIFIER_KIND_UNIX_DEVICE]
+    /// identifier, which can be used to obtain a hal device by means of
+    /// `libhal_manager_find_device_string_match()`.
+    ///
+    /// # Implements
+    ///
+    /// [`VolumeExt`][trait@crate::prelude::VolumeExt]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GVolume&quot;</span>)]
+    </span><span class="kw">pub struct </span>Volume(Interface&lt;ffi::GVolume, ffi::GVolumeIface&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_volume_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_volume_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Volume</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Volume</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>Volume {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Volume&gt; = <span class="prelude-val">None</span>;
 }
 
-<span class="doccomment">/// Trait containing all [`struct@Volume`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Volume`][struct@crate::Volume]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">VolumeExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Checks if a volume can be ejected.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the `self` can be ejected. [`false`] otherwise</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_can_eject&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">can_eject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+<span class="doccomment">/// Trait containing all [`struct@Volume`] methods.
+///
+/// # Implementors
+///
+/// [`Volume`][struct@crate::Volume]
+</span><span class="kw">pub trait </span>VolumeExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Checks if a volume can be ejected.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the `self` can be ejected. [`false`] otherwise
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_can_eject&quot;</span>)]
+    </span><span class="kw">fn </span>can_eject(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Checks if a volume can be mounted.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the `self` can be mounted. [`false`] otherwise</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_can_mount&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">can_mount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Checks if a volume can be mounted.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the `self` can be mounted. [`false`] otherwise
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_can_mount&quot;</span>)]
+    </span><span class="kw">fn </span>can_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Ejects a volume. This is an asynchronous operation, and is</span>
-    <span class="doccomment">/// finished by calling `g_volume_eject_with_operation_finish()` with the `self`</span>
-    <span class="doccomment">/// and [`AsyncResult`][crate::AsyncResult] data returned in the `callback`.</span>
-    <span class="doccomment">/// ## `flags`</span>
-    <span class="doccomment">/// flags affecting the unmount if required for eject</span>
-    <span class="doccomment">/// ## `mount_operation`</span>
-    <span class="doccomment">/// a [`MountOperation`][crate::MountOperation] or [`None`] to</span>
-    <span class="doccomment">///  avoid user interaction</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback`, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_eject_with_operation&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">eject_with_operation</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Ejects a volume. This is an asynchronous operation, and is
+    /// finished by calling `g_volume_eject_with_operation_finish()` with the `self`
+    /// and [`AsyncResult`][crate::AsyncResult] data returned in the `callback`.
+    /// ## `flags`
+    /// flags affecting the unmount if required for eject
+    /// ## `mount_operation`
+    /// a [`MountOperation`][crate::MountOperation] or [`None`] to
+    ///  avoid user interaction
+    /// ## `cancellable`
+    /// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore
+    /// ## `callback`
+    /// a `GAsyncReadyCallback`, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_eject_with_operation&quot;</span>)]
+    </span><span class="kw">fn </span>eject_with_operation&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountUnmountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        flags: MountUnmountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     );
 
-    <span class="kw">fn</span> <span class="ident">eject_with_operation_future</span>(
+    <span class="kw">fn </span>eject_with_operation_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountUnmountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        flags: MountUnmountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
 
-    <span class="doccomment">/// Gets the kinds of [identifiers][volume-identifier] that `self` has.</span>
-    <span class="doccomment">/// Use [`identifier()`][Self::identifier()] to obtain the identifiers themselves.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`None`]-terminated array</span>
-    <span class="doccomment">///  of strings containing kinds of identifiers. Use `g_strfreev()` to free.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_enumerate_identifiers&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">enumerate_identifiers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the kinds of [identifiers][volume-identifier] that `self` has.
+    /// Use [`identifier()`][Self::identifier()] to obtain the identifiers themselves.
+    ///
+    /// # Returns
+    ///
+    /// a [`None`]-terminated array
+    ///  of strings containing kinds of identifiers. Use `g_strfreev()` to free.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_enumerate_identifiers&quot;</span>)]
+    </span><span class="kw">fn </span>enumerate_identifiers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Gets the activation root for a [`Volume`][crate::Volume] if it is known ahead of</span>
-    <span class="doccomment">/// mount time. Returns [`None`] otherwise. If not [`None`] and if `self`</span>
-    <span class="doccomment">/// is mounted, then the result of [`MountExt::root()`][crate::prelude::MountExt::root()] on the</span>
-    <span class="doccomment">/// [`Mount`][crate::Mount] object obtained from [`get_mount()`][Self::get_mount()] will always</span>
-    <span class="doccomment">/// either be equal or a prefix of what this function returns. In</span>
-    <span class="doccomment">/// other words, in code</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// **⚠️ The following code is in C ⚠️**</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```C</span>
-    <span class="doccomment">///   GMount *mount;</span>
-    <span class="doccomment">///   GFile *mount_root</span>
-    <span class="doccomment">///   GFile *volume_activation_root;</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///   mount = g_volume_get_mount (volume); // mounted, so never NULL</span>
-    <span class="doccomment">///   mount_root = g_mount_get_root (mount);</span>
-    <span class="doccomment">///   volume_activation_root = g_volume_get_activation_root (volume); // assume not NULL</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// then the expression</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// **⚠️ The following code is in C ⚠️**</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```C</span>
-    <span class="doccomment">///   (g_file_has_prefix (volume_activation_root, mount_root) ||</span>
-    <span class="doccomment">///    g_file_equal (volume_activation_root, mount_root))</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">/// will always be [`true`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Activation roots are typically used in [`VolumeMonitor`][crate::VolumeMonitor]</span>
-    <span class="doccomment">/// implementations to find the underlying mount to shadow, see</span>
-    <span class="doccomment">/// [`MountExt::is_shadowed()`][crate::prelude::MountExt::is_shadowed()] for more details.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the activation root of `self`</span>
-    <span class="doccomment">///  or [`None`]. Use `g_object_unref()` to free.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_activation_root&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_activation_root&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">activation_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the activation root for a [`Volume`][crate::Volume] if it is known ahead of
+    /// mount time. Returns [`None`] otherwise. If not [`None`] and if `self`
+    /// is mounted, then the result of [`MountExt::root()`][crate::prelude::MountExt::root()] on the
+    /// [`Mount`][crate::Mount] object obtained from [`get_mount()`][Self::get_mount()] will always
+    /// either be equal or a prefix of what this function returns. In
+    /// other words, in code
+    ///
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    ///   GMount *mount;
+    ///   GFile *mount_root
+    ///   GFile *volume_activation_root;
+    ///
+    ///   mount = g_volume_get_mount (volume); // mounted, so never NULL
+    ///   mount_root = g_mount_get_root (mount);
+    ///   volume_activation_root = g_volume_get_activation_root (volume); // assume not NULL
+    /// ```
+    /// then the expression
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    ///   (g_file_has_prefix (volume_activation_root, mount_root) ||
+    ///    g_file_equal (volume_activation_root, mount_root))
+    /// ```
+    /// will always be [`true`].
+    ///
+    /// Activation roots are typically used in [`VolumeMonitor`][crate::VolumeMonitor]
+    /// implementations to find the underlying mount to shadow, see
+    /// [`MountExt::is_shadowed()`][crate::prelude::MountExt::is_shadowed()] for more details.
+    ///
+    /// # Returns
+    ///
+    /// the activation root of `self`
+    ///  or [`None`]. Use `g_object_unref()` to free.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_activation_root&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_activation_root&quot;</span>)]
+    </span><span class="kw">fn </span>activation_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;File&gt;;
 
-    <span class="doccomment">/// Gets the drive for the `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`Drive`][crate::Drive] or [`None`] if `self` is not</span>
-    <span class="doccomment">///  associated with a drive. The returned object should be unreffed</span>
-    <span class="doccomment">///  with `g_object_unref()` when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_drive&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_drive&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">drive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Drive</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the drive for the `self`.
+    ///
+    /// # Returns
+    ///
+    /// a [`Drive`][crate::Drive] or [`None`] if `self` is not
+    ///  associated with a drive. The returned object should be unreffed
+    ///  with `g_object_unref()` when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_drive&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_drive&quot;</span>)]
+    </span><span class="kw">fn </span>drive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Drive&gt;;
 
-    <span class="doccomment">/// Gets the icon for `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`Icon`][crate::Icon].</span>
-    <span class="doccomment">///  The returned object should be unreffed with `g_object_unref()`</span>
-    <span class="doccomment">///  when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_icon&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_icon&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">icon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Icon</span>;
+    <span class="doccomment">/// Gets the icon for `self`.
+    ///
+    /// # Returns
+    ///
+    /// a [`Icon`][crate::Icon].
+    ///  The returned object should be unreffed with `g_object_unref()`
+    ///  when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_icon&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_icon&quot;</span>)]
+    </span><span class="kw">fn </span>icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon;
 
-    <span class="doccomment">/// Gets the identifier of the given kind for `self`.</span>
-    <span class="doccomment">/// See the [introduction][volume-identifier] for more</span>
-    <span class="doccomment">/// information about volume identifiers.</span>
-    <span class="doccomment">/// ## `kind`</span>
-    <span class="doccomment">/// the kind of identifier to return</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a newly allocated string containing the</span>
-    <span class="doccomment">///  requested identifier, or [`None`] if the [`Volume`][crate::Volume]</span>
-    <span class="doccomment">///  doesn&#39;t have this kind of identifier</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_identifier&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_identifier&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">identifier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the identifier of the given kind for `self`.
+    /// See the [introduction][volume-identifier] for more
+    /// information about volume identifiers.
+    /// ## `kind`
+    /// the kind of identifier to return
+    ///
+    /// # Returns
+    ///
+    /// a newly allocated string containing the
+    ///  requested identifier, or [`None`] if the [`Volume`][crate::Volume]
+    ///  doesn&#39;t have this kind of identifier
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_identifier&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_identifier&quot;</span>)]
+    </span><span class="kw">fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>, kind: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Gets the mount for the `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`Mount`][crate::Mount] or [`None`] if `self` isn&#39;t mounted.</span>
-    <span class="doccomment">///  The returned object should be unreffed with `g_object_unref()`</span>
-    <span class="doccomment">///  when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_mount&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">get_mount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Mount</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the mount for the `self`.
+    ///
+    /// # Returns
+    ///
+    /// a [`Mount`][crate::Mount] or [`None`] if `self` isn&#39;t mounted.
+    ///  The returned object should be unreffed with `g_object_unref()`
+    ///  when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_mount&quot;</span>)]
+    </span><span class="kw">fn </span>get_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mount&gt;;
 
-    <span class="doccomment">/// Gets the name of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the name for the given `self`. The returned string should</span>
-    <span class="doccomment">///  be freed with `g_free()` when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_name&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::GString</span>;
+    <span class="doccomment">/// Gets the name of `self`.
+    ///
+    /// # Returns
+    ///
+    /// the name for the given `self`. The returned string should
+    ///  be freed with `g_free()` when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_name&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_name&quot;</span>)]
+    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString;
 
-    <span class="doccomment">/// Gets the sort key for `self`, if any.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Sorting key for `self` or [`None`] if no such key is available</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_sort_key&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_sort_key&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">sort_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the sort key for `self`, if any.
+    ///
+    /// # Returns
+    ///
+    /// Sorting key for `self` or [`None`] if no such key is available
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_sort_key&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_sort_key&quot;</span>)]
+    </span><span class="kw">fn </span>sort_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Gets the symbolic icon for `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`Icon`][crate::Icon].</span>
-    <span class="doccomment">///  The returned object should be unreffed with `g_object_unref()`</span>
-    <span class="doccomment">///  when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_symbolic_icon&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_symbolic_icon&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">symbolic_icon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Icon</span>;
+    <span class="doccomment">/// Gets the symbolic icon for `self`.
+    ///
+    /// # Returns
+    ///
+    /// a [`Icon`][crate::Icon].
+    ///  The returned object should be unreffed with `g_object_unref()`
+    ///  when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_symbolic_icon&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_symbolic_icon&quot;</span>)]
+    </span><span class="kw">fn </span>symbolic_icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon;
 
-    <span class="doccomment">/// Gets the UUID for the `self`. The reference is typically based on</span>
-    <span class="doccomment">/// the file system UUID for the volume in question and should be</span>
-    <span class="doccomment">/// considered an opaque string. Returns [`None`] if there is no UUID</span>
-    <span class="doccomment">/// available.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the UUID for `self` or [`None`] if no UUID</span>
-    <span class="doccomment">///  can be computed.</span>
-    <span class="doccomment">///  The returned string should be freed with `g_free()`</span>
-    <span class="doccomment">///  when no longer needed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_get_uuid&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_uuid&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">uuid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the UUID for the `self`. The reference is typically based on
+    /// the file system UUID for the volume in question and should be
+    /// considered an opaque string. Returns [`None`] if there is no UUID
+    /// available.
+    ///
+    /// # Returns
+    ///
+    /// the UUID for `self` or [`None`] if no UUID
+    ///  can be computed.
+    ///  The returned string should be freed with `g_free()`
+    ///  when no longer needed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_get_uuid&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_uuid&quot;</span>)]
+    </span><span class="kw">fn </span>uuid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Mounts a volume. This is an asynchronous operation, and is</span>
-    <span class="doccomment">/// finished by calling `g_volume_mount_finish()` with the `self`</span>
-    <span class="doccomment">/// and [`AsyncResult`][crate::AsyncResult] returned in the `callback`.</span>
-    <span class="doccomment">/// ## `flags`</span>
-    <span class="doccomment">/// flags affecting the operation</span>
-    <span class="doccomment">/// ## `mount_operation`</span>
-    <span class="doccomment">/// a [`MountOperation`][crate::MountOperation] or [`None`] to avoid user interaction</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback`, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_mount&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">mount</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Mounts a volume. This is an asynchronous operation, and is
+    /// finished by calling `g_volume_mount_finish()` with the `self`
+    /// and [`AsyncResult`][crate::AsyncResult] returned in the `callback`.
+    /// ## `flags`
+    /// flags affecting the operation
+    /// ## `mount_operation`
+    /// a [`MountOperation`][crate::MountOperation] or [`None`] to avoid user interaction
+    /// ## `cancellable`
+    /// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore
+    /// ## `callback`
+    /// a `GAsyncReadyCallback`, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_mount&quot;</span>)]
+    </span><span class="kw">fn </span>mount&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountMountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        flags: MountMountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     );
 
-    <span class="kw">fn</span> <span class="ident">mount_future</span>(
+    <span class="kw">fn </span>mount_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountMountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        flags: MountMountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
 
-    <span class="doccomment">/// Returns whether the volume should be automatically mounted.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if the volume should be automatically mounted</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_volume_should_automount&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">should_automount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Returns whether the volume should be automatically mounted.
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if the volume should be automatically mounted
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_volume_should_automount&quot;</span>)]
+    </span><span class="kw">fn </span>should_automount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Emitted when the volume has been changed.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;changed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// Emitted when the volume has been changed.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;changed&quot;</span>)]
+    </span><span class="kw">fn </span>connect_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="doccomment">/// This signal is emitted when the [`Volume`][crate::Volume] have been removed. If</span>
-    <span class="doccomment">/// the recipient is holding references to the object they should</span>
-    <span class="doccomment">/// release them so the object can be finalized.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;removed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_removed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// This signal is emitted when the [`Volume`][crate::Volume] have been removed. If
+    /// the recipient is holding references to the object they should
+    /// release them so the object can be finalized.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;removed&quot;</span>)]
+    </span><span class="kw">fn </span>connect_removed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Volume</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">VolumeExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">can_eject</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_volume_can_eject</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+<span class="kw">impl</span>&lt;O: IsA&lt;Volume&gt;&gt; VolumeExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>can_eject(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_eject(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">can_mount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_volume_can_mount</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>can_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_mount(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">eject_with_operation</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>eject_with_operation&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountUnmountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        flags: MountUnmountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">eject_with_operation_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>eject_with_operation_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_volume_eject_with_operation_finish</span>(
-                <span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">res</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_volume_eject_with_operation_finish(
+                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                res,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">eject_with_operation_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_volume_eject_with_operation</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">flags</span>.<span class="ident">into_glib</span>(),
-                <span class="ident">mount_operation</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = eject_with_operation_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_volume_eject_with_operation(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                flags.into_glib(),
+                mount_operation.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">eject_with_operation_future</span>(
+    <span class="kw">fn </span>eject_with_operation_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountUnmountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">mount_operation</span> <span class="op">=</span> <span class="ident">mount_operation</span>.<span class="ident">map</span>(<span class="ident">ToOwned::to_owned</span>);
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+        flags: MountUnmountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">let </span>mount_operation = mount_operation.map(ToOwned::to_owned);
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">eject_with_operation</span>(
-                    <span class="ident">flags</span>,
-                    <span class="ident">mount_operation</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">::std::borrow::Borrow::borrow</span>),
-                    <span class="prelude-val">Some</span>(<span class="ident">cancellable</span>),
-                    <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                        <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.eject_with_operation(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    <span class="prelude-val">Some</span>(cancellable),
+                    <span class="kw">move </span>|res| {
+                        send.resolve(res);
                     },
                 );
             },
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">enumerate_identifiers</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">FromGlibPtrContainer::from_glib_full</span>(<span class="ident">ffi::g_volume_enumerate_identifiers</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>enumerate_identifiers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{
+            FromGlibPtrContainer::from_glib_full(ffi::g_volume_enumerate_identifiers(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">activation_root</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_activation_root</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>activation_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;File&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_volume_get_activation_root(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">drive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Drive</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_drive</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>drive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Drive&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_drive(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">icon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Icon</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_icon</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_icon(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">identifier</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">kind</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_identifier</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">kind</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>, kind: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_volume_get_identifier(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                kind.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">get_mount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Mount</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_mount</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>get_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mount&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_mount(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::GString</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_name</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_name(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">sort_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_volume_get_sort_key</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>sort_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_volume_get_sort_key(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">symbolic_icon</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Icon</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_symbolic_icon</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>symbolic_icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_volume_get_symbolic_icon(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">uuid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_volume_get_uuid</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>uuid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_uuid(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">mount</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>mount&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountMountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        flags: MountMountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">mount_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>mount_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">ffi::g_volume_mount_finish</span>(<span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">res</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>= ffi::g_volume_mount_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">mount_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_volume_mount</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">flags</span>.<span class="ident">into_glib</span>(),
-                <span class="ident">mount_operation</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = mount_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_volume_mount(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                flags.into_glib(),
+                mount_operation.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">mount_future</span>(
+    <span class="kw">fn </span>mount_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">flags</span>: <span class="ident">MountMountFlags</span>,
-        <span class="ident">mount_operation</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">MountOperation</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>)<span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">mount_operation</span> <span class="op">=</span> <span class="ident">mount_operation</span>.<span class="ident">map</span>(<span class="ident">ToOwned::to_owned</span>);
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+        flags: MountMountFlags,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">let </span>mount_operation = mount_operation.map(ToOwned::to_owned);
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">mount</span>(
-                    <span class="ident">flags</span>,
-                    <span class="ident">mount_operation</span>.<span class="ident">as_ref</span>().<span class="ident">map</span>(<span class="ident">::std::borrow::Borrow::borrow</span>),
-                    <span class="prelude-val">Some</span>(<span class="ident">cancellable</span>),
-                    <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                        <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.mount(
+                    flags,
+                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
+                    <span class="prelude-val">Some</span>(cancellable),
+                    <span class="kw">move </span>|res| {
+                        send.resolve(res);
                     },
                 );
             },
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">should_automount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_volume_should_automount</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>should_automount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_volume_should_automount(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">changed_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Volume</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GVolume</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>changed_trampoline&lt;P: IsA&lt;Volume&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GVolume,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Volume::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Volume::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;changed\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">changed_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;changed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    changed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_removed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">removed_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Volume</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GVolume</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_removed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>removed_trampoline&lt;P: IsA&lt;Volume&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GVolume,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Volume::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Volume::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;removed\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">removed_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;removed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    removed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Volume</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Volume&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Volume {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;Volume&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

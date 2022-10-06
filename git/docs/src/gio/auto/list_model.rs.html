@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/list_model.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>list_model.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/list_model.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>list_model.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -330,260 +325,297 @@
 <span id="252">252</span>
 <span id="253">253</span>
 <span id="254">254</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+<span id="255">255</span>
+<span id="256">256</span>
+<span id="257">257</span>
+<span id="258">258</span>
+<span id="259">259</span>
+<span id="260">260</span>
+<span id="261">261</span>
+<span id="262">262</span>
+<span id="263">263</span>
+<span id="264">264</span>
+<span id="265">265</span>
+<span id="266">266</span>
+<span id="267">267</span>
+<span id="268">268</span>
+<span id="269">269</span>
+<span id="270">270</span>
+<span id="271">271</span>
+<span id="272">272</span>
+<span id="273">273</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
+</span><span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// [`ListModel`][crate::ListModel] is an interface that represents a mutable list of</span>
-    <span class="doccomment">/// `GObjects`. Its main intention is as a model for various widgets in</span>
-    <span class="doccomment">/// user interfaces, such as list views, but it can also be used as a</span>
-    <span class="doccomment">/// convenient method of returning lists of data, with support for</span>
-    <span class="doccomment">/// updates.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Each object in the list may also report changes in itself via some</span>
-    <span class="doccomment">/// mechanism (normally the `signal::glib::Object::notify` signal). Taken together</span>
-    <span class="doccomment">/// with the `signal::ListModel::items-changed` signal, this provides for a list</span>
-    <span class="doccomment">/// that can change its membership, and in which the members can change</span>
-    <span class="doccomment">/// their individual properties.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A good example would be the list of visible wireless network access</span>
-    <span class="doccomment">/// points, where each access point can report dynamic properties such as</span>
-    <span class="doccomment">/// signal strength.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is important to note that the [`ListModel`][crate::ListModel] itself does not report</span>
-    <span class="doccomment">/// changes to the individual items. It only reports changes to the list</span>
-    <span class="doccomment">/// membership. If you want to observe changes to the objects themselves</span>
-    <span class="doccomment">/// then you need to connect signals to the objects that you are</span>
-    <span class="doccomment">/// interested in.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// All items in a [`ListModel`][crate::ListModel] are of (or derived from) the same type.</span>
-    <span class="doccomment">/// [`ListModelExt::item_type()`][crate::prelude::ListModelExt::item_type()] returns that type. The type may be an</span>
-    <span class="doccomment">/// interface, in which case all objects in the list must implement it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The semantics are close to that of an array:</span>
-    <span class="doccomment">/// [`ListModelExt::n_items()`][crate::prelude::ListModelExt::n_items()] returns the number of items in the list and</span>
-    <span class="doccomment">/// `g_list_model_get_item()` returns an item at a (0-based) position. In</span>
-    <span class="doccomment">/// order to allow implementations to calculate the list length lazily,</span>
-    <span class="doccomment">/// you can also iterate over items: starting from 0, repeatedly call</span>
-    <span class="doccomment">/// `g_list_model_get_item()` until it returns [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// An implementation may create objects lazily, but must take care to</span>
-    <span class="doccomment">/// return the same object for a given position until all references to</span>
-    <span class="doccomment">/// it are gone.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// On the other side, a consumer is expected only to hold references on</span>
-    <span class="doccomment">/// objects that are currently &quot;user visible&quot;, in order to facilitate the</span>
-    <span class="doccomment">/// maximum level of laziness in the implementation of the list and to</span>
-    <span class="doccomment">/// reduce the required number of signal connections at a given time.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This interface is intended only to be used from a single thread. The</span>
-    <span class="doccomment">/// thread in which it is appropriate to use it depends on the particular</span>
-    <span class="doccomment">/// implementation, but typically it will be from the thread that owns</span>
-    <span class="doccomment">/// the [thread-default main context][g-main-context-push-thread-default]</span>
-    <span class="doccomment">/// in effect at the time that the model was created.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ListModelExt`][trait@crate::prelude::ListModelExt], [`ListModelExtManual`][trait@crate::prelude::ListModelExtManual]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GListModel&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ListModel</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GListModel</span>, <span class="ident">ffi::GListModelInterface</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// [`ListModel`][crate::ListModel] is an interface that represents a mutable list of
+    /// `GObjects`. Its main intention is as a model for various widgets in
+    /// user interfaces, such as list views, but it can also be used as a
+    /// convenient method of returning lists of data, with support for
+    /// updates.
+    ///
+    /// Each object in the list may also report changes in itself via some
+    /// mechanism (normally the `signal::glib::Object::notify` signal). Taken together
+    /// with the `signal::ListModel::items-changed` signal, this provides for a list
+    /// that can change its membership, and in which the members can change
+    /// their individual properties.
+    ///
+    /// A good example would be the list of visible wireless network access
+    /// points, where each access point can report dynamic properties such as
+    /// signal strength.
+    ///
+    /// It is important to note that the [`ListModel`][crate::ListModel] itself does not report
+    /// changes to the individual items. It only reports changes to the list
+    /// membership. If you want to observe changes to the objects themselves
+    /// then you need to connect signals to the objects that you are
+    /// interested in.
+    ///
+    /// All items in a [`ListModel`][crate::ListModel] are of (or derived from) the same type.
+    /// [`ListModelExt::item_type()`][crate::prelude::ListModelExt::item_type()] returns that type. The type may be an
+    /// interface, in which case all objects in the list must implement it.
+    ///
+    /// The semantics are close to that of an array:
+    /// [`ListModelExt::n_items()`][crate::prelude::ListModelExt::n_items()] returns the number of items in the list and
+    /// `g_list_model_get_item()` returns an item at a (0-based) position. In
+    /// order to allow implementations to calculate the list length lazily,
+    /// you can also iterate over items: starting from 0, repeatedly call
+    /// `g_list_model_get_item()` until it returns [`None`].
+    ///
+    /// An implementation may create objects lazily, but must take care to
+    /// return the same object for a given position until all references to
+    /// it are gone.
+    ///
+    /// On the other side, a consumer is expected only to hold references on
+    /// objects that are currently &quot;user visible&quot;, in order to facilitate the
+    /// maximum level of laziness in the implementation of the list and to
+    /// reduce the required number of signal connections at a given time.
+    ///
+    /// This interface is intended only to be used from a single thread. The
+    /// thread in which it is appropriate to use it depends on the particular
+    /// implementation, but typically it will be from the thread that owns
+    /// the [thread-default main context][g-main-context-push-thread-default]
+    /// in effect at the time that the model was created.
+    ///
+    /// Over time, it has established itself as good practice for listmodel
+    /// implementations to provide properties `item-type` and `n-items` to
+    /// ease working with them. While it is not required, it is recommended
+    /// that implementations provide these two properties. They should return
+    /// the values of [`ListModelExt::item_type()`][crate::prelude::ListModelExt::item_type()] and [`ListModelExt::n_items()`][crate::prelude::ListModelExt::n_items()]
+    /// respectively and be defined as such:
+    ///
+    ///
+    /// **⚠️ The following code is in C ⚠️**
+    ///
+    /// ```C
+    /// properties[PROP_ITEM_TYPE] =
+    ///   g_param_spec_gtype (&quot;item-type&quot;, &quot;&quot;, &quot;&quot;, G_TYPE_OBJECT,
+    ///                       G_PARAM_CONSTRUCT_ONLY | G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
+    /// properties[PROP_N_ITEMS] =
+    ///   g_param_spec_uint (&quot;n-items&quot;, &quot;&quot;, &quot;&quot;, 0, G_MAXUINT, 0,
+    ///                      G_PARAM_READABLE | G_PARAM_STATIC_STRINGS);
+    /// ```
+    ///
+    /// # Implements
+    ///
+    /// [`ListModelExt`][trait@crate::prelude::ListModelExt], [`ListModelExtManual`][trait@crate::prelude::ListModelExtManual]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GListModel&quot;</span>)]
+    </span><span class="kw">pub struct </span>ListModel(Interface&lt;ffi::GListModel, ffi::GListModelInterface&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_list_model_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_list_model_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ListModel</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">ListModel</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>ListModel {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>ListModel&gt; = <span class="prelude-val">None</span>;
 }
 
-<span class="doccomment">/// Trait containing all [`struct@ListModel`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`ListModel`][struct@crate::ListModel], [`ListStore`][struct@crate::ListStore]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ListModelExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Gets the type of the items in `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// All items returned from `g_list_model_get_item()` are of the type</span>
-    <span class="doccomment">/// returned by this function, or a subtype, or if the type is an</span>
-    <span class="doccomment">/// interface, they are an implementation of that interface.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The item type of a [`ListModel`][crate::ListModel] can not change during the life of the</span>
-    <span class="doccomment">/// model.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the `GType` of the items contained in `self`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_list_model_get_item_type&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_item_type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">item_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::types::Type</span>;
+<span class="doccomment">/// Trait containing all [`struct@ListModel`] methods.
+///
+/// # Implementors
+///
+/// [`ListModel`][struct@crate::ListModel], [`ListStore`][struct@crate::ListStore]
+</span><span class="kw">pub trait </span>ListModelExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Gets the type of the items in `self`.
+    ///
+    /// All items returned from `g_list_model_get_item()` are of the type
+    /// returned by this function, or a subtype, or if the type is an
+    /// interface, they are an implementation of that interface.
+    ///
+    /// The item type of a [`ListModel`][crate::ListModel] can not change during the life of the
+    /// model.
+    ///
+    /// # Returns
+    ///
+    /// the `GType` of the items contained in `self`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_list_model_get_item_type&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_item_type&quot;</span>)]
+    </span><span class="kw">fn </span>item_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::types::Type;
 
-    <span class="doccomment">/// Gets the number of items in `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Depending on the model implementation, calling this function may be</span>
-    <span class="doccomment">/// less efficient than iterating the list with increasing values for</span>
-    <span class="doccomment">/// `position` until `g_list_model_get_item()` returns [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the number of items in `self`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_list_model_get_n_items&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_n_items&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">n_items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span>;
+    <span class="doccomment">/// Gets the number of items in `self`.
+    ///
+    /// Depending on the model implementation, calling this function may be
+    /// less efficient than iterating the list with increasing values for
+    /// `position` until `g_list_model_get_item()` returns [`None`].
+    ///
+    /// # Returns
+    ///
+    /// the number of items in `self`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_list_model_get_n_items&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_n_items&quot;</span>)]
+    </span><span class="kw">fn </span>n_items(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32;
 
-    <span class="doccomment">/// Get the item at `position`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `position` is greater than the number of items in `self`, [`None`] is</span>
-    <span class="doccomment">/// returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`None`] is never returned for an index that is smaller than the length</span>
-    <span class="doccomment">/// of the list.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is meant to be used by language bindings in place</span>
-    <span class="doccomment">/// of `g_list_model_get_item()`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See also: [`n_items()`][Self::n_items()]</span>
-    <span class="doccomment">/// ## `position`</span>
-    <span class="doccomment">/// the position of the item to fetch</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the object at `position`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_list_model_get_object&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_object&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">item</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">position</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Get the item at `position`.
+    ///
+    /// If `position` is greater than the number of items in `self`, [`None`] is
+    /// returned.
+    ///
+    /// [`None`] is never returned for an index that is smaller than the length
+    /// of the list.
+    ///
+    /// This function is meant to be used by language bindings in place
+    /// of `g_list_model_get_item()`.
+    ///
+    /// See also: [`n_items()`][Self::n_items()]
+    /// ## `position`
+    /// the position of the item to fetch
+    ///
+    /// # Returns
+    ///
+    /// the object at `position`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_list_model_get_object&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_object&quot;</span>)]
+    </span><span class="kw">fn </span>item(<span class="kw-2">&amp;</span><span class="self">self</span>, position: u32) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Object&gt;;
 
-    <span class="doccomment">/// Emits the `signal::ListModel::items-changed` signal on `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function should only be called by classes implementing</span>
-    <span class="doccomment">/// [`ListModel`][crate::ListModel]. It has to be called after the internal representation</span>
-    <span class="doccomment">/// of `self` has been updated, because handlers connected to this signal</span>
-    <span class="doccomment">/// might query the new state of the list.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Implementations must only make changes to the model (as visible to</span>
-    <span class="doccomment">/// its consumer) in places that will not cause problems for that</span>
-    <span class="doccomment">/// consumer. For models that are driven directly by a write API (such</span>
-    <span class="doccomment">/// as [`ListStore`][crate::ListStore]), changes can be reported in response to uses of that</span>
-    <span class="doccomment">/// API. For models that represent remote data, changes should only be</span>
-    <span class="doccomment">/// made from a fresh mainloop dispatch. It is particularly not</span>
-    <span class="doccomment">/// permitted to make changes in response to a call to the [`ListModel`][crate::ListModel]</span>
-    <span class="doccomment">/// consumer API.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Stated another way: in general, it is assumed that code making a</span>
-    <span class="doccomment">/// series of accesses to the model via the API, without returning to the</span>
-    <span class="doccomment">/// mainloop, and without calling other code, will continue to view the</span>
-    <span class="doccomment">/// same contents of the model.</span>
-    <span class="doccomment">/// ## `position`</span>
-    <span class="doccomment">/// the position at which `self` changed</span>
-    <span class="doccomment">/// ## `removed`</span>
-    <span class="doccomment">/// the number of items removed</span>
-    <span class="doccomment">/// ## `added`</span>
-    <span class="doccomment">/// the number of items added</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_list_model_items_changed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">items_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">position</span>: <span class="ident">u32</span>, <span class="ident">removed</span>: <span class="ident">u32</span>, <span class="ident">added</span>: <span class="ident">u32</span>);
+    <span class="doccomment">/// Emits the `signal::ListModel::items-changed` signal on `self`.
+    ///
+    /// This function should only be called by classes implementing
+    /// [`ListModel`][crate::ListModel]. It has to be called after the internal representation
+    /// of `self` has been updated, because handlers connected to this signal
+    /// might query the new state of the list.
+    ///
+    /// Implementations must only make changes to the model (as visible to
+    /// its consumer) in places that will not cause problems for that
+    /// consumer. For models that are driven directly by a write API (such
+    /// as [`ListStore`][crate::ListStore]), changes can be reported in response to uses of that
+    /// API. For models that represent remote data, changes should only be
+    /// made from a fresh mainloop dispatch. It is particularly not
+    /// permitted to make changes in response to a call to the [`ListModel`][crate::ListModel]
+    /// consumer API.
+    ///
+    /// Stated another way: in general, it is assumed that code making a
+    /// series of accesses to the model via the API, without returning to the
+    /// mainloop, and without calling other code, will continue to view the
+    /// same contents of the model.
+    /// ## `position`
+    /// the position at which `self` changed
+    /// ## `removed`
+    /// the number of items removed
+    /// ## `added`
+    /// the number of items added
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_list_model_items_changed&quot;</span>)]
+    </span><span class="kw">fn </span>items_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, position: u32, removed: u32, added: u32);
 
-    <span class="doccomment">/// This signal is emitted whenever items were added to or removed</span>
-    <span class="doccomment">/// from `list`. At `position`, `removed` items were removed and `added`</span>
-    <span class="doccomment">/// items were added in their place.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note: If `removed != added`, the positions of all later items</span>
-    <span class="doccomment">/// in the model change.</span>
-    <span class="doccomment">/// ## `position`</span>
-    <span class="doccomment">/// the position at which `list` changed</span>
-    <span class="doccomment">/// ## `removed`</span>
-    <span class="doccomment">/// the number of items removed</span>
-    <span class="doccomment">/// ## `added`</span>
-    <span class="doccomment">/// the number of items added</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;items-changed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_items_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">u32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>)
-        -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// This signal is emitted whenever items were added to or removed
+    /// from `list`. At `position`, `removed` items were removed and `added`
+    /// items were added in their place.
+    ///
+    /// Note: If `removed != added`, the positions of all later items
+    /// in the model change.
+    /// ## `position`
+    /// the position at which `list` changed
+    /// ## `removed`
+    /// the number of items removed
+    /// ## `added`
+    /// the number of items added
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;items-changed&quot;</span>)]
+    </span><span class="kw">fn </span>connect_items_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, u32, u32, u32) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F)
+        -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">ListModel</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ListModelExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">item_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::types::Type</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_list_model_get_item_type</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+<span class="kw">impl</span>&lt;O: IsA&lt;ListModel&gt;&gt; ListModelExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>item_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::types::Type {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_list_model_get_item_type(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">n_items</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::g_list_model_get_n_items</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>) }
+    <span class="kw">fn </span>n_items(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
+        <span class="kw">unsafe </span>{ ffi::g_list_model_get_n_items(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
     }
 
-    <span class="kw">fn</span> <span class="ident">item</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">position</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_list_model_get_object</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">position</span>,
+    <span class="kw">fn </span>item(<span class="kw-2">&amp;</span><span class="self">self</span>, position: u32) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Object&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_list_model_get_object(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                position,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">items_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">position</span>: <span class="ident">u32</span>, <span class="ident">removed</span>: <span class="ident">u32</span>, <span class="ident">added</span>: <span class="ident">u32</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_list_model_items_changed</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">position</span>,
-                <span class="ident">removed</span>,
-                <span class="ident">added</span>,
+    <span class="kw">fn </span>items_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, position: u32, removed: u32, added: u32) {
+        <span class="kw">unsafe </span>{
+            ffi::g_list_model_items_changed(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                position,
+                removed,
+                added,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_items_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">u32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>connect_items_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, u32, u32, u32) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">items_changed_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">ListModel</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="ident">u32</span>, <span class="ident">u32</span>, <span class="ident">u32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GListModel</span>,
-            <span class="ident">position</span>: <span class="ident">libc::c_uint</span>,
-            <span class="ident">removed</span>: <span class="ident">libc::c_uint</span>,
-            <span class="ident">added</span>: <span class="ident">libc::c_uint</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+        f: F,
+    ) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>items_changed_trampoline&lt;
+            P: IsA&lt;ListModel&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, u32, u32, u32) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GListModel,
+            position: libc::c_uint,
+            removed: libc::c_uint,
+            added: libc::c_uint,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(
-                <span class="ident">ListModel::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
-                <span class="ident">position</span>,
-                <span class="ident">removed</span>,
-                <span class="ident">added</span>,
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(
+                ListModel::from_glib_borrow(this).unsafe_cast_ref(),
+                position,
+                removed,
+                added,
             )
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;items-changed\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">items_changed_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;items-changed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    items_changed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">ListModel</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;ListModel&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>ListModel {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;ListModel&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/action_group.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>action_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/subclass/action_group.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>action_group.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -929,859 +924,858 @@
 <span id="851">851</span>
 <span id="852">852</span>
 <span id="853">853</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::ActionGroup</span>;
-<span class="kw">use</span> <span class="ident">glib::subclass::prelude</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib</span>::{<span class="ident">Cast</span>, <span class="ident">GString</span>, <span class="ident">ObjectExt</span>, <span class="ident">Quark</span>, <span class="ident">Variant</span>, <span class="ident">VariantType</span>};
-<span class="kw">use</span> <span class="ident">once_cell::sync::Lazy</span>;
-<span class="kw">use</span> <span class="ident">std::mem</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::ActionGroup;
+<span class="kw">use </span>glib::subclass::prelude::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::{Cast, GString, ObjectExt, Quark, Variant, VariantType};
+<span class="kw">use </span>once_cell::sync::Lazy;
+<span class="kw">use </span>std::mem;
+<span class="kw">use </span>std::ptr;
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ActionGroupImpl</span>: <span class="ident">ObjectImpl</span> {
-    <span class="kw">fn</span> <span class="ident">action_added</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">parent_action_added</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>);
+<span class="kw">pub trait </span>ActionGroupImpl: ObjectImpl {
+    <span class="kw">fn </span>action_added(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.parent_action_added(action_group, action_name);
     }
 
-    <span class="kw">fn</span> <span class="ident">action_enabled_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">enabled</span>: <span class="ident">bool</span>) {
-        <span class="self">self</span>.<span class="ident">parent_action_enabled_changed</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>, <span class="ident">enabled</span>);
+    <span class="kw">fn </span>action_enabled_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str, enabled: bool) {
+        <span class="self">self</span>.parent_action_enabled_changed(action_group, action_name, enabled);
     }
 
-    <span class="kw">fn</span> <span class="ident">action_removed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="self">self</span>.<span class="ident">parent_action_removed</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>);
+    <span class="kw">fn </span>action_removed(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) {
+        <span class="self">self</span>.parent_action_removed(action_group, action_name);
     }
 
-    <span class="kw">fn</span> <span class="ident">action_state_changed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>) {
-        <span class="self">self</span>.<span class="ident">parent_action_state_changed</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>, <span class="ident">state</span>);
+    <span class="kw">fn </span>action_state_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str, state: <span class="kw-2">&amp;</span>Variant) {
+        <span class="self">self</span>.parent_action_state_changed(action_group, action_name, state);
     }
 
-    <span class="kw">fn</span> <span class="ident">activate_action</span>(
+    <span class="kw">fn </span>activate_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">parameter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        parameter: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Variant&gt;,
     ) {
-        <span class="self">self</span>.<span class="ident">parent_activate_action</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>, <span class="ident">parameter</span>);
+        <span class="self">self</span>.parent_activate_action(action_group, action_name, parameter);
     }
 
-    <span class="kw">fn</span> <span class="ident">change_action_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>) {
-        <span class="self">self</span>.<span class="ident">parent_change_action_state</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>, <span class="ident">value</span>)
+    <span class="kw">fn </span>change_action_state(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>Variant) {
+        <span class="self">self</span>.parent_change_action_state(action_group, action_name, value)
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_action_enabled&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">action_is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">parent_action_is_enabled</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+    <span class="attribute">#[doc(alias = <span class="string">&quot;get_action_enabled&quot;</span>)]
+    </span><span class="kw">fn </span>action_is_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="self">self</span>.parent_action_is_enabled(action_group, action_name)
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_action_parameter_type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">action_parameter_type</span>(
+    <span class="attribute">#[doc(alias = <span class="string">&quot;get_action_parameter_type&quot;</span>)]
+    </span><span class="kw">fn </span>action_parameter_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">parent_action_parameter_type</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt; {
+        <span class="self">self</span>.parent_action_parameter_type(action_group, action_name)
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_action_state&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">action_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">parent_action_state</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+    <span class="attribute">#[doc(alias = <span class="string">&quot;get_action_state&quot;</span>)]
+    </span><span class="kw">fn </span>action_state(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+        <span class="self">self</span>.parent_action_state(action_group, action_name)
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_action_state_hint&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">action_state_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">parent_action_state_hint</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+    <span class="attribute">#[doc(alias = <span class="string">&quot;get_action_state_hint&quot;</span>)]
+    </span><span class="kw">fn </span>action_state_hint(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+        <span class="self">self</span>.parent_action_state_hint(action_group, action_name)
     }
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_action_state_type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">action_state_type</span>(
+    <span class="attribute">#[doc(alias = <span class="string">&quot;get_action_state_type&quot;</span>)]
+    </span><span class="kw">fn </span>action_state_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">parent_action_state_type</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt; {
+        <span class="self">self</span>.parent_action_state_type(action_group, action_name)
     }
 
-    <span class="kw">fn</span> <span class="ident">has_action</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="self">self</span>.<span class="ident">parent_has_action</span>(<span class="ident">action_group</span>, <span class="ident">action_name</span>)
+    <span class="kw">fn </span>has_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="self">self</span>.parent_has_action(action_group, action_name)
     }
 
-    <span class="kw">fn</span> <span class="ident">list_actions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">query_action</span>(
+    <span class="kw">fn </span>list_actions(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type) -&gt; Vec&lt;String&gt;;
+    <span class="kw">fn </span>query_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(
-        <span class="ident">bool</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-    )<span class="op">&gt;</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(
+        bool,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+    )&gt;;
 }
 
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ActionGroupImplExt</span>: <span class="ident">ObjectSubclass</span> {
-    <span class="kw">fn</span> <span class="ident">parent_action_added</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>);
-    <span class="kw">fn</span> <span class="ident">parent_action_enabled_changed</span>(
+<span class="kw">pub trait </span>ActionGroupImplExt: ObjectSubclass {
+    <span class="kw">fn </span>parent_action_added(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str);
+    <span class="kw">fn </span>parent_action_enabled_changed(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">enabled</span>: <span class="ident">bool</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        enabled: bool,
     );
-    <span class="kw">fn</span> <span class="ident">parent_action_removed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>);
-    <span class="kw">fn</span> <span class="ident">parent_action_state_changed</span>(
+    <span class="kw">fn </span>parent_action_removed(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str);
+    <span class="kw">fn </span>parent_action_state_changed(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        state: <span class="kw-2">&amp;</span>Variant,
     );
-    <span class="kw">fn</span> <span class="ident">parent_activate_action</span>(
+    <span class="kw">fn </span>parent_activate_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">parameter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        parameter: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Variant&gt;,
     );
-    <span class="kw">fn</span> <span class="ident">parent_change_action_state</span>(
+    <span class="kw">fn </span>parent_change_action_state(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        value: <span class="kw-2">&amp;</span>Variant,
     );
-    <span class="kw">fn</span> <span class="ident">parent_action_is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span>;
-    <span class="kw">fn</span> <span class="ident">parent_action_parameter_type</span>(
+    <span class="kw">fn </span>parent_action_is_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool;
+    <span class="kw">fn </span>parent_action_parameter_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">parent_action_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">parent_action_state_hint</span>(
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt;;
+    <span class="kw">fn </span>parent_action_state(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt;;
+    <span class="kw">fn </span>parent_action_state_hint(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">parent_action_state_type</span>(
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt;;
+    <span class="kw">fn </span>parent_action_state_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">parent_has_action</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt;;
+    <span class="kw">fn </span>parent_has_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool;
 
-    <span class="kw">fn</span> <span class="ident">parent_list_actions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">parent_query_action</span>(
+    <span class="kw">fn </span>parent_list_actions(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type) -&gt; Vec&lt;String&gt;;
+    <span class="kw">fn </span>parent_query_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(
-        <span class="ident">bool</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-    )<span class="op">&gt;</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(
+        bool,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+    )&gt;;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span> <span class="ident">ActionGroupImplExt</span> <span class="kw">for</span> <span class="ident">T</span> {
-    <span class="kw">fn</span> <span class="ident">parent_action_added</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+<span class="kw">impl</span>&lt;T: ActionGroupImpl&gt; ActionGroupImplExt <span class="kw">for </span>T {
+    <span class="kw">fn </span>parent_action_added(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">func</span>) <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>).<span class="ident">action_added</span> {
-                <span class="ident">func</span>(
-                    <span class="ident">action_group</span>
-                        .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                        .<span class="ident">to_glib_none</span>()
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = (<span class="kw-2">*</span>parent_iface).action_added {
+                func(
+                    action_group
+                        .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                        .to_glib_none()
                         .<span class="number">0</span>,
-                    <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                    action_name.to_glib_none().<span class="number">0</span>,
                 );
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_enabled_changed</span>(
+    <span class="kw">fn </span>parent_action_enabled_changed(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">enabled</span>: <span class="ident">bool</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        enabled: bool,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">func</span>) <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>).<span class="ident">action_enabled_changed</span> {
-                <span class="ident">func</span>(
-                    <span class="ident">action_group</span>
-                        .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                        .<span class="ident">to_glib_none</span>()
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = (<span class="kw-2">*</span>parent_iface).action_enabled_changed {
+                func(
+                    action_group
+                        .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                        .to_glib_none()
                         .<span class="number">0</span>,
-                    <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                    <span class="ident">enabled</span>.<span class="ident">into_glib</span>(),
+                    action_name.to_glib_none().<span class="number">0</span>,
+                    enabled.into_glib(),
                 );
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_removed</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+    <span class="kw">fn </span>parent_action_removed(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">func</span>) <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>).<span class="ident">action_removed</span> {
-                <span class="ident">func</span>(
-                    <span class="ident">action_group</span>
-                        .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                        .<span class="ident">to_glib_none</span>()
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = (<span class="kw-2">*</span>parent_iface).action_removed {
+                func(
+                    action_group
+                        .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                        .to_glib_none()
                         .<span class="number">0</span>,
-                    <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                    action_name.to_glib_none().<span class="number">0</span>,
                 );
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_state_changed</span>(
+    <span class="kw">fn </span>parent_action_state_changed(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">state</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        state: <span class="kw-2">&amp;</span>Variant,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">func</span>) <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>).<span class="ident">action_state_changed</span> {
-                <span class="ident">func</span>(
-                    <span class="ident">action_group</span>
-                        .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                        .<span class="ident">to_glib_none</span>()
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(func) = (<span class="kw-2">*</span>parent_iface).action_state_changed {
+                func(
+                    action_group
+                        .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                        .to_glib_none()
                         .<span class="number">0</span>,
-                    <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                    <span class="ident">state</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                    action_name.to_glib_none().<span class="number">0</span>,
+                    state.to_glib_none().<span class="number">0</span>,
                 );
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_activate_action</span>(
+    <span class="kw">fn </span>parent_activate_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">parameter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        parameter: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Variant&gt;,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">activate_action</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;activate_action\&quot; implementation&quot;</span>);
-            <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .activate_action
+                .expect(<span class="string">&quot;no parent \&quot;activate_action\&quot; implementation&quot;</span>);
+            func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">parameter</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
+                parameter.to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_change_action_state</span>(
+    <span class="kw">fn </span>parent_change_action_state(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>,
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+        value: <span class="kw-2">&amp;</span>Variant,
     ) {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">change_action_state</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;change_action_state\&quot; implementation&quot;</span>);
-            <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .change_action_state
+                .expect(<span class="string">&quot;no parent \&quot;change_action_state\&quot; implementation&quot;</span>);
+            func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
+                value.to_glib_none().<span class="number">0</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+    <span class="kw">fn </span>parent_action_is_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">get_action_enabled</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;action_is_enabled\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .get_action_enabled
+                .expect(<span class="string">&quot;no parent \&quot;action_is_enabled\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib</span>(<span class="ident">ret</span>)
+            from_glib(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_parameter_type</span>(
+    <span class="kw">fn </span>parent_action_parameter_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">get_action_parameter_type</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;get_action_parameter_type\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .get_action_parameter_type
+                .expect(<span class="string">&quot;no parent \&quot;get_action_parameter_type\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib_none</span>(<span class="ident">ret</span>)
+            from_glib_none(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+    <span class="kw">fn </span>parent_action_state(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">get_action_state</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;get_action_state\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .get_action_state
+                .expect(<span class="string">&quot;no parent \&quot;get_action_state\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib_none</span>(<span class="ident">ret</span>)
+            from_glib_none(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_state_hint</span>(
+    <span class="kw">fn </span>parent_action_state_hint(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">get_action_state_hint</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;get_action_state_hint\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .get_action_state_hint
+                .expect(<span class="string">&quot;no parent \&quot;get_action_state_hint\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib_none</span>(<span class="ident">ret</span>)
+            from_glib_none(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_action_state_type</span>(
+    <span class="kw">fn </span>parent_action_state_type(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;VariantType&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">get_action_state_type</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;get_action_state_type\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .get_action_state_type
+                .expect(<span class="string">&quot;no parent \&quot;get_action_state_type\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib_none</span>(<span class="ident">ret</span>)
+            from_glib_none(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_has_action</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>, <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+    <span class="kw">fn </span>parent_has_action(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type, action_name: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">has_action</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;has_action\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .has_action
+                .expect(<span class="string">&quot;no parent \&quot;has_action\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
             );
-            <span class="ident">from_glib</span>(<span class="ident">ret</span>)
+            from_glib(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_list_actions</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+    <span class="kw">fn </span>parent_list_actions(<span class="kw-2">&amp;</span><span class="self">self</span>, action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type) -&gt; Vec&lt;String&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">list_actions</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;list_actions\&quot; implementation&quot;</span>);
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .list_actions
+                .expect(<span class="string">&quot;no parent \&quot;list_actions\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>ret = func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
             );
-            <span class="ident">FromGlibPtrContainer::from_glib_none</span>(<span class="ident">ret</span>)
+            FromGlibPtrContainer::from_glib_none(ret)
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">parent_query_action</span>(
+    <span class="kw">fn </span>parent_query_action(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">action_group</span>: <span class="kw-2">&amp;</span><span class="ident"><span class="self">Self</span>::Type</span>,
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span>(
-        <span class="ident">bool</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">VariantType</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-        <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>,
-    )<span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">type_data</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::type_data</span>();
-            <span class="kw">let</span> <span class="ident">parent_iface</span> <span class="op">=</span> <span class="ident">type_data</span>.<span class="ident">as_ref</span>().<span class="ident">parent_interface</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">ffi::GActionGroupInterface</span>;
+        action_group: <span class="kw-2">&amp;</span><span class="self">Self</span>::Type,
+        action_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;(
+        bool,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;VariantType&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+        <span class="prelude-ty">Option</span>&lt;Variant&gt;,
+    )&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>type_data = <span class="self">Self</span>::type_data();
+            <span class="kw">let </span>parent_iface = type_data.as_ref().parent_interface::&lt;ActionGroup&gt;()
+                <span class="kw">as </span><span class="kw-2">*const </span>ffi::GActionGroupInterface;
 
-            <span class="kw">let</span> <span class="ident">func</span> <span class="op">=</span> (<span class="kw-2">*</span><span class="ident">parent_iface</span>)
-                .<span class="ident">query_action</span>
-                .<span class="ident">expect</span>(<span class="string">&quot;no parent \&quot;query_action\&quot; implementation&quot;</span>);
+            <span class="kw">let </span>func = (<span class="kw-2">*</span>parent_iface)
+                .query_action
+                .expect(<span class="string">&quot;no parent \&quot;query_action\&quot; implementation&quot;</span>);
 
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">enabled</span> <span class="op">=</span> <span class="ident">mem::MaybeUninit::uninit</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">parameter_type</span> <span class="op">=</span> <span class="ident">ptr::null</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state_type</span> <span class="op">=</span> <span class="ident">ptr::null</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state_hint</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+            <span class="kw">let </span><span class="kw-2">mut </span>enabled = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>parameter_type = ptr::null();
+            <span class="kw">let </span><span class="kw-2">mut </span>state_type = ptr::null();
+            <span class="kw">let </span><span class="kw-2">mut </span>state_hint = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>state = ptr::null_mut();
 
-            <span class="kw">let</span> <span class="ident">ret</span>: <span class="ident">bool</span> <span class="op">=</span> <span class="ident">from_glib</span>(<span class="ident">func</span>(
-                <span class="ident">action_group</span>
-                    .<span class="ident">unsafe_cast_ref</span>::<span class="op">&lt;</span><span class="ident">ActionGroup</span><span class="op">&gt;</span>()
-                    .<span class="ident">to_glib_none</span>()
+            <span class="kw">let </span>ret: bool = from_glib(func(
+                action_group
+                    .unsafe_cast_ref::&lt;ActionGroup&gt;()
+                    .to_glib_none()
                     .<span class="number">0</span>,
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">enabled</span>.<span class="ident">as_mut_ptr</span>(),
-                <span class="kw-2">&amp;mut</span> <span class="ident">parameter_type</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">state_type</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">state_hint</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">state</span>,
+                action_name.to_glib_none().<span class="number">0</span>,
+                enabled.as_mut_ptr(),
+                <span class="kw-2">&amp;mut </span>parameter_type,
+                <span class="kw-2">&amp;mut </span>state_type,
+                <span class="kw-2">&amp;mut </span>state_hint,
+                <span class="kw-2">&amp;mut </span>state,
             ));
 
-            <span class="kw">if</span> <span class="op">!</span><span class="ident">ret</span> {
-                <span class="prelude-val">None</span>
-            } <span class="kw">else</span> {
+            <span class="kw">if </span>!ret {
+                <span class="prelude-val">None
+            </span>} <span class="kw">else </span>{
                 <span class="prelude-val">Some</span>((
-                    <span class="ident">from_glib</span>(<span class="ident">enabled</span>.<span class="ident">assume_init</span>()),
-                    <span class="ident">from_glib_none</span>(<span class="ident">parameter_type</span>),
-                    <span class="ident">from_glib_none</span>(<span class="ident">state_type</span>),
-                    <span class="ident">from_glib_none</span>(<span class="ident">state_hint</span>),
-                    <span class="ident">from_glib_none</span>(<span class="ident">state</span>),
+                    from_glib(enabled.assume_init()),
+                    from_glib_none(parameter_type),
+                    from_glib_none(state_type),
+                    from_glib_none(state_hint),
+                    from_glib_none(state),
                 ))
             }
         }
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span> <span class="ident">IsImplementable</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">ActionGroup</span> {
-    <span class="kw">fn</span> <span class="ident">interface_init</span>(<span class="ident">iface</span>: <span class="kw-2">&amp;mut</span> <span class="ident">glib::Interface</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>) {
-        <span class="kw">let</span> <span class="ident">iface</span> <span class="op">=</span> <span class="ident">iface</span>.<span class="ident">as_mut</span>();
+<span class="kw">unsafe impl</span>&lt;T: ActionGroupImpl&gt; IsImplementable&lt;T&gt; <span class="kw">for </span>ActionGroup {
+    <span class="kw">fn </span>interface_init(iface: <span class="kw-2">&amp;mut </span>glib::Interface&lt;<span class="self">Self</span>&gt;) {
+        <span class="kw">let </span>iface = iface.as_mut();
 
-        <span class="ident">iface</span>.<span class="ident">action_added</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_action_added</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">action_enabled_changed</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_action_enabled_changed</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">action_removed</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_action_removed</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">action_state_changed</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_action_state_changed</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">activate_action</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_activate_action</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">change_action_state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_change_action_state</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">get_action_enabled</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_get_action_enabled</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">get_action_parameter_type</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_get_action_parameter_type</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">get_action_state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_get_action_state</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">get_action_state_hint</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_get_action_state_hint</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">get_action_state_type</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_get_action_state_type</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">has_action</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_has_action</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">list_actions</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_list_actions</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
-        <span class="ident">iface</span>.<span class="ident">query_action</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">action_group_query_action</span>::<span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>);
+        iface.action_added = <span class="prelude-val">Some</span>(action_group_action_added::&lt;T&gt;);
+        iface.action_enabled_changed = <span class="prelude-val">Some</span>(action_group_action_enabled_changed::&lt;T&gt;);
+        iface.action_removed = <span class="prelude-val">Some</span>(action_group_action_removed::&lt;T&gt;);
+        iface.action_state_changed = <span class="prelude-val">Some</span>(action_group_action_state_changed::&lt;T&gt;);
+        iface.activate_action = <span class="prelude-val">Some</span>(action_group_activate_action::&lt;T&gt;);
+        iface.change_action_state = <span class="prelude-val">Some</span>(action_group_change_action_state::&lt;T&gt;);
+        iface.get_action_enabled = <span class="prelude-val">Some</span>(action_group_get_action_enabled::&lt;T&gt;);
+        iface.get_action_parameter_type = <span class="prelude-val">Some</span>(action_group_get_action_parameter_type::&lt;T&gt;);
+        iface.get_action_state = <span class="prelude-val">Some</span>(action_group_get_action_state::&lt;T&gt;);
+        iface.get_action_state_hint = <span class="prelude-val">Some</span>(action_group_get_action_state_hint::&lt;T&gt;);
+        iface.get_action_state_type = <span class="prelude-val">Some</span>(action_group_get_action_state_type::&lt;T&gt;);
+        iface.has_action = <span class="prelude-val">Some</span>(action_group_has_action::&lt;T&gt;);
+        iface.list_actions = <span class="prelude-val">Some</span>(action_group_list_actions::&lt;T&gt;);
+        iface.query_action = <span class="prelude-val">Some</span>(action_group_query_action::&lt;T&gt;);
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_has_action</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="ident">glib::ffi::gboolean</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_has_action&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; glib::ffi::gboolean {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>imp = instance.imp();
 
-    <span class="ident">imp</span>.<span class="ident">has_action</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
+    imp.has_action(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
     )
-    .<span class="ident">into_glib</span>()
+    .into_glib()
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_get_action_enabled</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="ident">glib::ffi::gboolean</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_get_action_enabled&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; glib::ffi::gboolean {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
 
-    <span class="ident">imp</span>.<span class="ident">action_is_enabled</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
+    imp.action_is_enabled(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
     )
-    .<span class="ident">into_glib</span>()
+    .into_glib()
 }
 
-<span class="comment">// rustdoc-stripper-ignore-next</span>
-<span class="doccomment">/// Struct to hold a pointer and free it on `Drop::drop`</span>
-<span class="kw">struct</span> <span class="ident">PtrHolder</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>, <span class="ident">F</span>);
+<span class="comment">// rustdoc-stripper-ignore-next
+</span><span class="doccomment">/// Struct to hold a pointer and free it on `Drop::drop`
+</span><span class="kw">struct </span>PtrHolder&lt;T, F: Fn(<span class="kw-2">*mut </span>T) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">*mut </span>T, F);
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">*mut</span> <span class="ident">T</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span> <span class="ident">Drop</span> <span class="kw">for</span> <span class="ident">PtrHolder</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">drop</span>(<span class="kw-2">&amp;mut</span> <span class="self">self</span>) {
+<span class="kw">impl</span>&lt;T, F: Fn(<span class="kw-2">*mut </span>T) + <span class="lifetime">&#39;static</span>&gt; Drop <span class="kw">for </span>PtrHolder&lt;T, F&gt; {
+    <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         (<span class="self">self</span>.<span class="number">1</span>)(<span class="self">self</span>.<span class="number">0</span>)
     }
 }
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_GET_ACTION_PARAMETER_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-parameter&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_GET_ACTION_PARAMETER_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-parameter&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_get_action_parameter_type</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="kw-2">*const</span> <span class="ident">glib::ffi::GVariantType</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_get_action_parameter_type&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; <span class="kw-2">*const </span>glib::ffi::GVariantType {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">action_parameter_type</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">action_name</span>);
+    <span class="kw">let </span>ret = imp.action_parameter_type(wrap.unsafe_cast_ref(), <span class="kw-2">&amp;</span>action_name);
 
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">param_type</span>) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="kw">let</span> <span class="ident">param_type</span> <span class="op">=</span> <span class="ident">param_type</span>.<span class="ident">to_glib_full</span>();
-        <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-            <span class="kw-2">*</span><span class="ident">ACTION_GROUP_GET_ACTION_PARAMETER_QUARK</span>,
-            <span class="ident">PtrHolder</span>(<span class="ident">param_type</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_free</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)),
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(param_type) = ret {
+        <span class="kw">let </span>param_type = param_type.to_glib_full();
+        wrap.set_qdata(
+            <span class="kw-2">*</span>ACTION_GROUP_GET_ACTION_PARAMETER_QUARK,
+            PtrHolder(param_type, |ptr| glib::ffi::g_free(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
         );
-        <span class="ident">param_type</span>
-    } <span class="kw">else</span> {
-        <span class="ident">ptr::null</span>()
+        param_type
+    } <span class="kw">else </span>{
+        ptr::null()
     }
 }
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state-type&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state-type&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_get_action_state_type</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="kw-2">*const</span> <span class="ident">glib::ffi::GVariantType</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_get_action_state_type&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; <span class="kw-2">*const </span>glib::ffi::GVariantType {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">action_state_type</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">action_name</span>);
+    <span class="kw">let </span>ret = imp.action_state_type(wrap.unsafe_cast_ref(), <span class="kw-2">&amp;</span>action_name);
 
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">state_type</span>) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="kw">let</span> <span class="ident">state_type</span> <span class="op">=</span> <span class="ident">state_type</span>.<span class="ident">to_glib_full</span>();
-        <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-            <span class="kw-2">*</span><span class="ident">ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK</span>,
-            <span class="ident">PtrHolder</span>(<span class="ident">state_type</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_free</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)),
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(state_type) = ret {
+        <span class="kw">let </span>state_type = state_type.to_glib_full();
+        wrap.set_qdata(
+            <span class="kw-2">*</span>ACTION_GROUP_GET_ACTION_STATE_TYPE_QUARK,
+            PtrHolder(state_type, |ptr| glib::ffi::g_free(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
         );
-        <span class="ident">state_type</span>
-    } <span class="kw">else</span> {
-        <span class="ident">ptr::null</span>()
+        state_type
+    } <span class="kw">else </span>{
+        ptr::null()
     }
 }
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state-hint&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state-hint&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_get_action_state_hint</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_get_action_state_hint&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; <span class="kw-2">*mut </span>glib::ffi::GVariant {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
 
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">action_state_hint</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">action_name</span>);
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">state_hint</span>) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="kw">let</span> <span class="ident">state_hint_ptr</span> <span class="op">=</span> <span class="ident">state_hint</span>.<span class="ident">to_glib_full</span>();
-        <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-            <span class="kw-2">*</span><span class="ident">ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK</span>,
-            <span class="ident">PtrHolder</span>(<span class="ident">state_hint_ptr</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_variant_unref</span>(<span class="ident">ptr</span>)),
+    <span class="kw">let </span>ret = imp.action_state_hint(wrap.unsafe_cast_ref(), <span class="kw-2">&amp;</span>action_name);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(state_hint) = ret {
+        <span class="kw">let </span>state_hint_ptr = state_hint.to_glib_full();
+        wrap.set_qdata(
+            <span class="kw-2">*</span>ACTION_GROUP_GET_ACTION_STATE_HINT_QUARK,
+            PtrHolder(state_hint_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
         );
-        <span class="ident">state_hint_ptr</span>
-    } <span class="kw">else</span> {
-        <span class="ident">ptr::null_mut</span>()
+        state_hint_ptr
+    } <span class="kw">else </span>{
+        ptr::null_mut()
     }
 }
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_GET_ACTION_STATE_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_GET_ACTION_STATE_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-get-action-state&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_get_action_state</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-) -&gt; <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_get_action_state&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+) -&gt; <span class="kw-2">*mut </span>glib::ffi::GVariant {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">action_state</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">action_name</span>);
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">state</span>) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="kw">let</span> <span class="ident">state_ptr</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">to_glib_full</span>();
-        <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-            <span class="kw-2">*</span><span class="ident">ACTION_GROUP_GET_ACTION_STATE_QUARK</span>,
-            <span class="ident">PtrHolder</span>(<span class="ident">state_ptr</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_variant_unref</span>(<span class="ident">ptr</span>)),
+    <span class="kw">let </span>ret = imp.action_state(wrap.unsafe_cast_ref(), <span class="kw-2">&amp;</span>action_name);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(state) = ret {
+        <span class="kw">let </span>state_ptr = state.to_glib_full();
+        wrap.set_qdata(
+            <span class="kw-2">*</span>ACTION_GROUP_GET_ACTION_STATE_QUARK,
+            PtrHolder(state_ptr, |ptr| glib::ffi::g_variant_unref(ptr)),
         );
-        <span class="ident">state_ptr</span>
-    } <span class="kw">else</span> {
-        <span class="ident">ptr::null_mut</span>()
+        state_ptr
+    } <span class="kw">else </span>{
+        ptr::null_mut()
     }
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_change_action_state</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-    <span class="ident">stateptr</span>: <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_change_action_state&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+    stateptr: <span class="kw-2">*mut </span>glib::ffi::GVariant,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Variant::from_glib_borrow</span>(<span class="ident">stateptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>state = Variant::from_glib_borrow(stateptr);
 
-    <span class="ident">imp</span>.<span class="ident">change_action_state</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
-        <span class="kw-2">&amp;</span><span class="ident">state</span>,
+    imp.change_action_state(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
+        <span class="kw-2">&amp;</span>state,
     )
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_activate_action</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-    <span class="ident">parameterptr</span>: <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_activate_action&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+    parameterptr: <span class="kw-2">*mut </span>glib::ffi::GVariant,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">param</span>: <span class="ident">Borrowed</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>(<span class="ident">parameterptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>param: Borrowed&lt;<span class="prelude-ty">Option</span>&lt;Variant&gt;&gt; = from_glib_borrow(parameterptr);
 
-    <span class="ident">imp</span>.<span class="ident">activate_action</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
-        <span class="ident">param</span>.<span class="ident">as_ref</span>().<span class="ident">as_ref</span>(),
+    imp.activate_action(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
+        param.as_ref().as_ref(),
     )
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_action_added</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_action_added&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
 
-    <span class="ident">imp</span>.<span class="ident">action_added</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
+    imp.action_added(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
     )
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_action_removed</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_action_removed&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
 
-    <span class="ident">imp</span>.<span class="ident">action_removed</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
+    imp.action_removed(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
     )
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_action_enabled_changed</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-    <span class="ident">enabled</span>: <span class="ident">glib::ffi::gboolean</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_action_enabled_changed&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+    enabled: glib::ffi::gboolean,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
 
-    <span class="ident">imp</span>.<span class="ident">action_enabled_changed</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
-        <span class="ident">from_glib</span>(<span class="ident">enabled</span>),
+    imp.action_enabled_changed(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
+        from_glib(enabled),
     )
 }
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_action_state_changed</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-    <span class="ident">stateptr</span>: <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_action_state_changed&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+    stateptr: <span class="kw-2">*mut </span>glib::ffi::GVariant,
 ) {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Variant::from_glib_borrow</span>(<span class="ident">stateptr</span>);
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>state = Variant::from_glib_borrow(stateptr);
 
-    <span class="ident">imp</span>.<span class="ident">action_state_changed</span>(
-        <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>).<span class="ident">unsafe_cast_ref</span>(),
-        <span class="kw-2">&amp;</span><span class="ident">action_name</span>,
-        <span class="kw-2">&amp;</span><span class="ident">state</span>,
+    imp.action_state_changed(
+        from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group).unsafe_cast_ref(),
+        <span class="kw-2">&amp;</span>action_name,
+        <span class="kw-2">&amp;</span>state,
     )
 }
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_LIST_ACTIONS_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-list-actions&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_LIST_ACTIONS_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-list-actions&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_list_actions</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-) -&gt; <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">libc::c_char</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_list_actions&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+) -&gt; <span class="kw-2">*mut *mut </span>libc::c_char {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">actions</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">list_actions</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>());
+    <span class="kw">let </span>actions = imp.list_actions(wrap.unsafe_cast_ref());
 
     {
-        <span class="kw">let</span> <span class="ident">actionsptr</span> <span class="op">=</span> <span class="ident">actions</span>.<span class="ident">to_glib_full</span>();
-        <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(<span class="kw-2">*</span><span class="ident">ACTION_GROUP_LIST_ACTIONS_QUARK</span>, <span class="ident">actionsptr</span>);
-        <span class="ident">actionsptr</span>
+        <span class="kw">let </span>actionsptr = actions.to_glib_full();
+        wrap.set_qdata(<span class="kw-2">*</span>ACTION_GROUP_LIST_ACTIONS_QUARK, actionsptr);
+        actionsptr
     }
 }
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-parameter-type&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-parameter-type&quot;</span>));
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state-type&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state-type&quot;</span>));
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state-hint&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state-hint&quot;</span>));
 
-<span class="kw">static</span> <span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_QUARK</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">Quark</span><span class="op">&gt;</span> <span class="op">=</span>
-    <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">Quark::from_str</span>(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state&quot;</span>));
+<span class="kw">static </span>ACTION_GROUP_QUERY_ACTION_STATE_QUARK: Lazy&lt;Quark&gt; =
+    Lazy::new(|| Quark::from_str(<span class="string">&quot;gtk-rs-subclass-action-group-query-action-state&quot;</span>));
 
-<span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">action_group_query_action</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ActionGroupImpl</span><span class="op">&gt;</span>(
-    <span class="ident">action_group</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GActionGroup</span>,
-    <span class="ident">action_nameptr</span>: <span class="kw-2">*const</span> <span class="ident">libc::c_char</span>,
-    <span class="ident">enabled</span>: <span class="kw-2">*mut</span> <span class="ident">glib::ffi::gboolean</span>,
-    <span class="ident">parameter_type</span>: <span class="kw-2">*mut</span> <span class="kw-2">*const</span> <span class="ident">glib::ffi::GVariantType</span>,
-    <span class="ident">state_type</span>: <span class="kw-2">*mut</span> <span class="kw-2">*const</span> <span class="ident">glib::ffi::GVariantType</span>,
-    <span class="ident">state_hint</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
-    <span class="ident">state</span>: <span class="kw-2">*mut</span> <span class="kw-2">*mut</span> <span class="ident">glib::ffi::GVariant</span>,
-) -&gt; <span class="ident">glib::ffi::gboolean</span> {
-    <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">action_group</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="ident">T::Instance</span>);
-    <span class="kw">let</span> <span class="ident">imp</span> <span class="op">=</span> <span class="ident">instance</span>.<span class="ident">imp</span>();
-    <span class="kw">let</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">GString::from_glib_borrow</span>(<span class="ident">action_nameptr</span>);
-    <span class="kw">let</span> <span class="ident">wrap</span> <span class="op">=</span> <span class="ident">from_glib_borrow</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="ident">ActionGroup</span><span class="op">&gt;</span>(<span class="ident">action_group</span>);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>action_group_query_action&lt;T: ActionGroupImpl&gt;(
+    action_group: <span class="kw-2">*mut </span>ffi::GActionGroup,
+    action_nameptr: <span class="kw-2">*const </span>libc::c_char,
+    enabled: <span class="kw-2">*mut </span>glib::ffi::gboolean,
+    parameter_type: <span class="kw-2">*mut *const </span>glib::ffi::GVariantType,
+    state_type: <span class="kw-2">*mut *const </span>glib::ffi::GVariantType,
+    state_hint: <span class="kw-2">*mut *mut </span>glib::ffi::GVariant,
+    state: <span class="kw-2">*mut *mut </span>glib::ffi::GVariant,
+) -&gt; glib::ffi::gboolean {
+    <span class="kw">let </span>instance = <span class="kw-2">&amp;*</span>(action_group <span class="kw">as </span><span class="kw-2">*mut </span>T::Instance);
+    <span class="kw">let </span>imp = instance.imp();
+    <span class="kw">let </span>action_name = GString::from_glib_borrow(action_nameptr);
+    <span class="kw">let </span>wrap = from_glib_borrow::&lt;<span class="kw">_</span>, ActionGroup&gt;(action_group);
 
-    <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">imp</span>.<span class="ident">query_action</span>(<span class="ident">wrap</span>.<span class="ident">unsafe_cast_ref</span>(), <span class="kw-2">&amp;</span><span class="ident">action_name</span>);
-    <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>((<span class="ident">rs_enabled</span>, <span class="ident">rs_parameter_type</span>, <span class="ident">rs_state_type</span>, <span class="ident">rs_state_hint</span>, <span class="ident">rs_state</span>)) <span class="op">=</span> <span class="ident">ret</span> {
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">enabled</span>.<span class="ident">is_null</span>() {
-            <span class="kw-2">*</span><span class="ident">enabled</span> <span class="op">=</span> <span class="ident">rs_enabled</span>.<span class="ident">into_glib</span>();
+    <span class="kw">let </span>ret = imp.query_action(wrap.unsafe_cast_ref(), <span class="kw-2">&amp;</span>action_name);
+    <span class="kw">if let </span><span class="prelude-val">Some</span>((rs_enabled, rs_parameter_type, rs_state_type, rs_state_hint, rs_state)) = ret {
+        <span class="kw">if </span>!enabled.is_null() {
+            <span class="kw-2">*</span>enabled = rs_enabled.into_glib();
         }
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">parameter_type</span>.<span class="ident">is_null</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rs_parameter_type</span>) <span class="op">=</span> <span class="ident">rs_parameter_type</span> {
-                <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">rs_parameter_type</span>.<span class="ident">to_glib_full</span>();
-                <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-                    <span class="kw-2">*</span><span class="ident">ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK</span>,
-                    <span class="ident">PtrHolder</span>(<span class="ident">ret</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_free</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)),
+        <span class="kw">if </span>!parameter_type.is_null() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(rs_parameter_type) = rs_parameter_type {
+                <span class="kw">let </span>ret = rs_parameter_type.to_glib_full();
+                wrap.set_qdata(
+                    <span class="kw-2">*</span>ACTION_GROUP_QUERY_ACTION_PARAM_TYPE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
                 );
-                <span class="kw-2">*</span><span class="ident">parameter_type</span> <span class="op">=</span> <span class="ident">ret</span>;
-            } <span class="kw">else</span> {
-                <span class="kw-2">*</span><span class="ident">parameter_type</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+                <span class="kw-2">*</span>parameter_type = ret;
+            } <span class="kw">else </span>{
+                <span class="kw-2">*</span>parameter_type = ptr::null_mut();
             }
         }
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">state_type</span>.<span class="ident">is_null</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rs_state_type</span>) <span class="op">=</span> <span class="ident">rs_state_type</span> {
-                <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">rs_state_type</span>.<span class="ident">to_glib_full</span>();
-                <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-                    <span class="kw-2">*</span><span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK</span>,
-                    <span class="ident">PtrHolder</span>(<span class="ident">ret</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_free</span>(<span class="ident">ptr</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>)),
+        <span class="kw">if </span>!state_type.is_null() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(rs_state_type) = rs_state_type {
+                <span class="kw">let </span>ret = rs_state_type.to_glib_full();
+                wrap.set_qdata(
+                    <span class="kw-2">*</span>ACTION_GROUP_QUERY_ACTION_STATE_TYPE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_free(ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)),
                 );
-                <span class="kw-2">*</span><span class="ident">state_type</span> <span class="op">=</span> <span class="ident">ret</span>;
-            } <span class="kw">else</span> {
-                <span class="kw-2">*</span><span class="ident">state_type</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+                <span class="kw-2">*</span>state_type = ret;
+            } <span class="kw">else </span>{
+                <span class="kw-2">*</span>state_type = ptr::null_mut();
             }
         }
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">state_hint</span>.<span class="ident">is_null</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rs_state_hint</span>) <span class="op">=</span> <span class="ident">rs_state_hint</span> {
-                <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">rs_state_hint</span>.<span class="ident">to_glib_full</span>();
-                <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-                    <span class="kw-2">*</span><span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK</span>,
-                    <span class="ident">PtrHolder</span>(<span class="ident">ret</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_variant_unref</span>(<span class="ident">ptr</span>)),
+        <span class="kw">if </span>!state_hint.is_null() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(rs_state_hint) = rs_state_hint {
+                <span class="kw">let </span>ret = rs_state_hint.to_glib_full();
+                wrap.set_qdata(
+                    <span class="kw-2">*</span>ACTION_GROUP_QUERY_ACTION_STATE_HINT_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
                 );
-                <span class="kw-2">*</span><span class="ident">state_hint</span> <span class="op">=</span> <span class="ident">ret</span>;
-            } <span class="kw">else</span> {
-                <span class="kw-2">*</span><span class="ident">state_hint</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+                <span class="kw-2">*</span>state_hint = ret;
+            } <span class="kw">else </span>{
+                <span class="kw-2">*</span>state_hint = ptr::null_mut();
             }
         }
-        <span class="kw">if</span> <span class="op">!</span><span class="ident">state</span>.<span class="ident">is_null</span>() {
-            <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">rs_state</span>) <span class="op">=</span> <span class="ident">rs_state</span> {
-                <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">rs_state</span>.<span class="ident">to_glib_full</span>();
-                <span class="ident">wrap</span>.<span class="ident">set_qdata</span>(
-                    <span class="kw-2">*</span><span class="ident">ACTION_GROUP_QUERY_ACTION_STATE_QUARK</span>,
-                    <span class="ident">PtrHolder</span>(<span class="ident">ret</span>, <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">glib::ffi::g_variant_unref</span>(<span class="ident">ptr</span>)),
+        <span class="kw">if </span>!state.is_null() {
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(rs_state) = rs_state {
+                <span class="kw">let </span>ret = rs_state.to_glib_full();
+                wrap.set_qdata(
+                    <span class="kw-2">*</span>ACTION_GROUP_QUERY_ACTION_STATE_QUARK,
+                    PtrHolder(ret, |ptr| glib::ffi::g_variant_unref(ptr)),
                 );
-                <span class="kw-2">*</span><span class="ident">state</span> <span class="op">=</span> <span class="ident">ret</span>;
-            } <span class="kw">else</span> {
-                <span class="kw-2">*</span><span class="ident">state</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
+                <span class="kw-2">*</span>state = ret;
+            } <span class="kw">else </span>{
+                <span class="kw-2">*</span>state = ptr::null_mut();
             }
         }
-        <span class="bool-val">true</span>
-    } <span class="kw">else</span> {
-        <span class="bool-val">false</span>
-    }
-    .<span class="ident">into_glib</span>()
+        <span class="bool-val">true
+    </span>} <span class="kw">else </span>{
+        <span class="bool-val">false
+    </span>}
+    .into_glib()
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

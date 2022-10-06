@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/flags.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>flags.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/auto/flags.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>flags.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -639,569 +634,608 @@
 <span id="561">561</span>
 <span id="562">562</span>
 <span id="563">563</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+<span id="564">564</span>
+<span id="565">565</span>
+<span id="566">566</span>
+<span id="567">567</span>
+<span id="568">568</span>
+<span id="569">569</span>
+<span id="570">570</span>
+<span id="571">571</span>
+<span id="572">572</span>
+<span id="573">573</span>
+<span id="574">574</span>
+<span id="575">575</span>
+<span id="576">576</span>
+<span id="577">577</span>
+<span id="578">578</span>
+<span id="579">579</span>
+<span id="580">580</span>
+<span id="581">581</span>
+<span id="582">582</span>
+<span id="583">583</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::value::FromValue</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::value::ToValue</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::StaticType</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Type</span>;
-<span class="kw">use</span> <span class="ident">bitflags::bitflags</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::value::FromValue;
+<span class="kw">use </span><span class="kw">crate</span>::value::ToValue;
+<span class="kw">use </span><span class="kw">crate</span>::StaticType;
+<span class="kw">use </span><span class="kw">crate</span>::Type;
+<span class="kw">use </span>bitflags::bitflags;
+<span class="kw">use </span>std::fmt;
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GFileSetContentsFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FileSetContentsFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_SET_CONTENTS_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_SET_CONTENTS_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_SET_CONTENTS_CONSISTENT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">CONSISTENT</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_SET_CONTENTS_CONSISTENT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_SET_CONTENTS_DURABLE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">DURABLE</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_SET_CONTENTS_DURABLE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_SET_CONTENTS_ONLY_EXISTING&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ONLY_EXISTING</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="macro">bitflags! </span>{
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;GFileSetContentsFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>FileSetContentsFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_SET_CONTENTS_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_FILE_SET_CONTENTS_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_SET_CONTENTS_CONSISTENT&quot;</span>)]
+        </span><span class="kw">const </span>CONSISTENT = ffi::G_FILE_SET_CONTENTS_CONSISTENT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_SET_CONTENTS_DURABLE&quot;</span>)]
+        </span><span class="kw">const </span>DURABLE = ffi::G_FILE_SET_CONTENTS_DURABLE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_SET_CONTENTS_ONLY_EXISTING&quot;</span>)]
+        </span><span class="kw">const </span>ONLY_EXISTING = ffi::G_FILE_SET_CONTENTS_ONLY_EXISTING <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FileSetContentsFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>FileSetContentsFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">FileSetContentsFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GFileSetContentsFlags</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>FileSetContentsFlags {
+    <span class="kw">type </span>GlibType = ffi::GFileSetContentsFlags;
 
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GFileSetContentsFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GFileSetContentsFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GFileSetContentsFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FileSetContentsFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GFileSetContentsFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GFileSetContentsFlags&gt; <span class="kw">for </span>FileSetContentsFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GFileSetContentsFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GFileTest&quot;</span>)]</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">FileTest</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_TEST_IS_REGULAR&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IS_REGULAR</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_TEST_IS_REGULAR</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_TEST_IS_SYMLINK&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IS_SYMLINK</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_TEST_IS_SYMLINK</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_TEST_IS_DIR&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IS_DIR</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_TEST_IS_DIR</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_TEST_IS_EXECUTABLE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IS_EXECUTABLE</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_TEST_IS_EXECUTABLE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FILE_TEST_EXISTS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">EXISTS</span> <span class="op">=</span> <span class="ident">ffi::G_FILE_TEST_EXISTS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GFileTest&quot;</span>)]
+    </span><span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct </span>FileTest: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_TEST_IS_REGULAR&quot;</span>)]
+        </span><span class="kw">const </span>IS_REGULAR = ffi::G_FILE_TEST_IS_REGULAR <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_TEST_IS_SYMLINK&quot;</span>)]
+        </span><span class="kw">const </span>IS_SYMLINK = ffi::G_FILE_TEST_IS_SYMLINK <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_TEST_IS_DIR&quot;</span>)]
+        </span><span class="kw">const </span>IS_DIR = ffi::G_FILE_TEST_IS_DIR <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_TEST_IS_EXECUTABLE&quot;</span>)]
+        </span><span class="kw">const </span>IS_EXECUTABLE = ffi::G_FILE_TEST_IS_EXECUTABLE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FILE_TEST_EXISTS&quot;</span>)]
+        </span><span class="kw">const </span>EXISTS = ffi::G_FILE_TEST_EXISTS <span class="kw">as </span>u32;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FileTest</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>FileTest {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">FileTest</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GFileTest</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>FileTest {
+    <span class="kw">type </span>GlibType = ffi::GFileTest;
 
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GFileTest</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GFileTest {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GFileTest</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FileTest</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GFileTest</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GFileTest&gt; <span class="kw">for </span>FileTest {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GFileTest) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GFormatSizeFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">FormatSizeFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FORMAT_SIZE_DEFAULT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">DEFAULT</span> <span class="op">=</span> <span class="ident">ffi::G_FORMAT_SIZE_DEFAULT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FORMAT_SIZE_LONG_FORMAT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LONG_FORMAT</span> <span class="op">=</span> <span class="ident">ffi::G_FORMAT_SIZE_LONG_FORMAT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FORMAT_SIZE_IEC_UNITS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IEC_UNITS</span> <span class="op">=</span> <span class="ident">ffi::G_FORMAT_SIZE_IEC_UNITS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_FORMAT_SIZE_BITS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">BITS</span> <span class="op">=</span> <span class="ident">ffi::G_FORMAT_SIZE_BITS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GFormatSizeFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>FormatSizeFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_DEFAULT&quot;</span>)]
+        </span><span class="kw">const </span>DEFAULT = ffi::G_FORMAT_SIZE_DEFAULT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_LONG_FORMAT&quot;</span>)]
+        </span><span class="kw">const </span>LONG_FORMAT = ffi::G_FORMAT_SIZE_LONG_FORMAT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_IEC_UNITS&quot;</span>)]
+        </span><span class="kw">const </span>IEC_UNITS = ffi::G_FORMAT_SIZE_IEC_UNITS <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_BITS&quot;</span>)]
+        </span><span class="kw">const </span>BITS = ffi::G_FORMAT_SIZE_BITS <span class="kw">as </span>u32;
+        <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_74&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+        #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_74&quot;</span>)))]
+        #[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_ONLY_VALUE&quot;</span>)]
+        </span><span class="kw">const </span>ONLY_VALUE = ffi::G_FORMAT_SIZE_ONLY_VALUE <span class="kw">as </span>u32;
+        <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_74&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+        #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_74&quot;</span>)))]
+        #[doc(alias = <span class="string">&quot;G_FORMAT_SIZE_ONLY_UNIT&quot;</span>)]
+        </span><span class="kw">const </span>ONLY_UNIT = ffi::G_FORMAT_SIZE_ONLY_UNIT <span class="kw">as </span>u32;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">FormatSizeFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>FormatSizeFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">FormatSizeFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GFormatSizeFlags</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>FormatSizeFlags {
+    <span class="kw">type </span>GlibType = ffi::GFormatSizeFlags;
 
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GFormatSizeFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GFormatSizeFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GFormatSizeFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">FormatSizeFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GFormatSizeFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GFormatSizeFlags&gt; <span class="kw">for </span>FormatSizeFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GFormatSizeFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GIOCondition&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">IOCondition</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_IN&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IN</span> <span class="op">=</span> <span class="ident">ffi::G_IO_IN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_OUT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">OUT</span> <span class="op">=</span> <span class="ident">ffi::G_IO_OUT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_PRI&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">PRI</span> <span class="op">=</span> <span class="ident">ffi::G_IO_PRI</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_ERR&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ERR</span> <span class="op">=</span> <span class="ident">ffi::G_IO_ERR</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_HUP&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">HUP</span> <span class="op">=</span> <span class="ident">ffi::G_IO_HUP</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_IO_NVAL&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NVAL</span> <span class="op">=</span> <span class="ident">ffi::G_IO_NVAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GIOCondition&quot;</span>)]
+    </span><span class="kw">pub struct </span>IOCondition: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_IN&quot;</span>)]
+        </span><span class="kw">const </span>IN = ffi::G_IO_IN <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_OUT&quot;</span>)]
+        </span><span class="kw">const </span>OUT = ffi::G_IO_OUT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_PRI&quot;</span>)]
+        </span><span class="kw">const </span>PRI = ffi::G_IO_PRI <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_ERR&quot;</span>)]
+        </span><span class="kw">const </span>ERR = ffi::G_IO_ERR <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_HUP&quot;</span>)]
+        </span><span class="kw">const </span>HUP = ffi::G_IO_HUP <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_IO_NVAL&quot;</span>)]
+        </span><span class="kw">const </span>NVAL = ffi::G_IO_NVAL <span class="kw">as </span>u32;
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>IOCondition {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GIOCondition</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>IOCondition {
+    <span class="kw">type </span>GlibType = ffi::GIOCondition;
 
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GIOCondition</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GIOCondition {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GIOCondition</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GIOCondition</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GIOCondition&gt; <span class="kw">for </span>IOCondition {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GIOCondition) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">StaticType</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">fn</span> <span class="ident">static_type</span>() -&gt; <span class="ident">Type</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_io_condition_get_type</span>()) }
+<span class="kw">impl </span>StaticType <span class="kw">for </span>IOCondition {
+    <span class="kw">fn </span>static_type() -&gt; Type {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_io_condition_get_type()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident"><span class="kw">crate</span>::value::ValueType</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">type</span> <span class="ident">Type</span> <span class="op">=</span> <span class="self">Self</span>;
+<span class="kw">impl </span><span class="kw">crate</span>::value::ValueType <span class="kw">for </span>IOCondition {
+    <span class="kw">type </span>Type = <span class="self">Self</span>;
 }
 
-<span class="kw">unsafe</span> <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">FromValue</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">type</span> <span class="ident">Checker</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::value::GenericValueTypeChecker</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>IOCondition {
+    <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_value</span>(<span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident"><span class="kw">crate</span>::Value</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident">from_glib</span>(<span class="ident"><span class="kw">crate</span>::gobject_ffi::g_value_get_flags</span>(
-            <span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::Value) -&gt; <span class="self">Self </span>{
+        from_glib(<span class="kw">crate</span>::gobject_ffi::g_value_get_flags(
+            value.to_glib_none().<span class="number">0</span>,
         ))
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ToValue</span> <span class="kw">for</span> <span class="ident">IOCondition</span> {
-    <span class="kw">fn</span> <span class="ident">to_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Value</span> {
-        <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">value</span> <span class="op">=</span> <span class="ident"><span class="kw">crate</span>::Value::for_value_type</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>();
-        <span class="kw">unsafe</span> {
-            <span class="ident"><span class="kw">crate</span>::gobject_ffi::g_value_set_flags</span>(<span class="ident">value</span>.<span class="ident">to_glib_none_mut</span>().<span class="number">0</span>, <span class="self">self</span>.<span class="ident">into_glib</span>());
+<span class="kw">impl </span>ToValue <span class="kw">for </span>IOCondition {
+    <span class="kw">fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::Value {
+        <span class="kw">let </span><span class="kw-2">mut </span>value = <span class="kw">crate</span>::Value::for_value_type::&lt;<span class="self">Self</span>&gt;();
+        <span class="kw">unsafe </span>{
+            <span class="kw">crate</span>::gobject_ffi::g_value_set_flags(value.to_glib_none_mut().<span class="number">0</span>, <span class="self">self</span>.into_glib());
         }
-        <span class="ident">value</span>
+        value
     }
 
-    <span class="kw">fn</span> <span class="ident">value_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident"><span class="kw">crate</span>::Type</span> {
-        <span class="ident"><span class="self">Self</span>::static_type</span>()
-    }
-}
-
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GKeyFileFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">KeyFileFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_KEY_FILE_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_KEY_FILE_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_KEY_FILE_KEEP_COMMENTS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">KEEP_COMMENTS</span> <span class="op">=</span> <span class="ident">ffi::G_KEY_FILE_KEEP_COMMENTS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_KEY_FILE_KEEP_TRANSLATIONS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">KEEP_TRANSLATIONS</span> <span class="op">=</span> <span class="ident">ffi::G_KEY_FILE_KEEP_TRANSLATIONS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+    <span class="kw">fn </span>value_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw">crate</span>::Type {
+        <span class="self">Self</span>::static_type()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">KeyFileFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GKeyFileFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>KeyFileFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_KEY_FILE_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_KEY_FILE_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_KEY_FILE_KEEP_COMMENTS&quot;</span>)]
+        </span><span class="kw">const </span>KEEP_COMMENTS = ffi::G_KEY_FILE_KEEP_COMMENTS <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_KEY_FILE_KEEP_TRANSLATIONS&quot;</span>)]
+        </span><span class="kw">const </span>KEEP_TRANSLATIONS = ffi::G_KEY_FILE_KEEP_TRANSLATIONS <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">KeyFileFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GKeyFileFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GKeyFileFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>KeyFileFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GKeyFileFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">KeyFileFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GKeyFileFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>KeyFileFlags {
+    <span class="kw">type </span>GlibType = ffi::GKeyFileFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GKeyFileFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GLogLevelFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">LogLevelFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_FLAG_RECURSION&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">FLAG_RECURSION</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_FLAG_RECURSION</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_FLAG_FATAL&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">FLAG_FATAL</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_FLAG_FATAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_ERROR&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_ERROR</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_ERROR</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_CRITICAL&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_CRITICAL</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_CRITICAL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_WARNING&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_WARNING</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_WARNING</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_MESSAGE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_MESSAGE</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_MESSAGE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_INFO&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_INFO</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_INFO</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_DEBUG&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_DEBUG</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_DEBUG</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_LOG_LEVEL_MASK&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEVEL_MASK</span> <span class="op">=</span> <span class="ident">ffi::G_LOG_LEVEL_MASK</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GKeyFileFlags&gt; <span class="kw">for </span>KeyFileFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GKeyFileFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">LogLevelFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GLogLevelFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>LogLevelFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_FLAG_RECURSION&quot;</span>)]
+        </span><span class="kw">const </span>FLAG_RECURSION = ffi::G_LOG_FLAG_RECURSION <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_FLAG_FATAL&quot;</span>)]
+        </span><span class="kw">const </span>FLAG_FATAL = ffi::G_LOG_FLAG_FATAL <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_ERROR&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_ERROR = ffi::G_LOG_LEVEL_ERROR <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_CRITICAL&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_CRITICAL = ffi::G_LOG_LEVEL_CRITICAL <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_WARNING&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_WARNING = ffi::G_LOG_LEVEL_WARNING <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_MESSAGE&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_MESSAGE = ffi::G_LOG_LEVEL_MESSAGE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_INFO&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_INFO = ffi::G_LOG_LEVEL_INFO <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_DEBUG&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_DEBUG = ffi::G_LOG_LEVEL_DEBUG <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_LOG_LEVEL_MASK&quot;</span>)]
+        </span><span class="kw">const </span>LEVEL_MASK = ffi::G_LOG_LEVEL_MASK <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">LogLevelFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GLogLevelFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GLogLevelFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>LogLevelFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GLogLevelFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">LogLevelFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GLogLevelFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>LogLevelFlags {
+    <span class="kw">type </span>GlibType = ffi::GLogLevelFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GLogLevelFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GMainContextFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">MainContextFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_MAIN_CONTEXT_FLAGS_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_MAIN_CONTEXT_FLAGS_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">OWNERLESS_POLLING</span> <span class="op">=</span> <span class="ident">ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GLogLevelFlags&gt; <span class="kw">for </span>LogLevelFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GLogLevelFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">MainContextFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="macro">bitflags! </span>{
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;GMainContextFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>MainContextFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_MAIN_CONTEXT_FLAGS_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_MAIN_CONTEXT_FLAGS_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING&quot;</span>)]
+        </span><span class="kw">const </span>OWNERLESS_POLLING = ffi::G_MAIN_CONTEXT_FLAGS_OWNERLESS_POLLING <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">MainContextFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GMainContextFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GMainContextFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>MainContextFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GMainContextFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">MainContextFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GMainContextFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>MainContextFlags {
+    <span class="kw">type </span>GlibType = ffi::GMainContextFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GMainContextFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GOptionFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">OptionFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_HIDDEN&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">HIDDEN</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_HIDDEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_IN_MAIN&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">IN_MAIN</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_IN_MAIN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_REVERSE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">REVERSE</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_REVERSE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_NO_ARG&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NO_ARG</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_NO_ARG</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_FILENAME&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">FILENAME</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_FILENAME</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_OPTIONAL_ARG&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">OPTIONAL_ARG</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_OPTIONAL_ARG</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_OPTION_FLAG_NOALIAS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NOALIAS</span> <span class="op">=</span> <span class="ident">ffi::G_OPTION_FLAG_NOALIAS</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GMainContextFlags&gt; <span class="kw">for </span>MainContextFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GMainContextFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">OptionFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GOptionFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>OptionFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_OPTION_FLAG_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_HIDDEN&quot;</span>)]
+        </span><span class="kw">const </span>HIDDEN = ffi::G_OPTION_FLAG_HIDDEN <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_IN_MAIN&quot;</span>)]
+        </span><span class="kw">const </span>IN_MAIN = ffi::G_OPTION_FLAG_IN_MAIN <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_REVERSE&quot;</span>)]
+        </span><span class="kw">const </span>REVERSE = ffi::G_OPTION_FLAG_REVERSE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_NO_ARG&quot;</span>)]
+        </span><span class="kw">const </span>NO_ARG = ffi::G_OPTION_FLAG_NO_ARG <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_FILENAME&quot;</span>)]
+        </span><span class="kw">const </span>FILENAME = ffi::G_OPTION_FLAG_FILENAME <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_OPTIONAL_ARG&quot;</span>)]
+        </span><span class="kw">const </span>OPTIONAL_ARG = ffi::G_OPTION_FLAG_OPTIONAL_ARG <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_OPTION_FLAG_NOALIAS&quot;</span>)]
+        </span><span class="kw">const </span>NOALIAS = ffi::G_OPTION_FLAG_NOALIAS <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">OptionFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GOptionFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GOptionFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>OptionFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GOptionFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">OptionFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GOptionFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>OptionFlags {
+    <span class="kw">type </span>GlibType = ffi::GOptionFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GOptionFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GSpawnFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SpawnFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_DEFAULT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">DEFAULT</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_DEFAULT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_LEAVE_DESCRIPTORS_OPEN&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">LEAVE_DESCRIPTORS_OPEN</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_LEAVE_DESCRIPTORS_OPEN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_DO_NOT_REAP_CHILD&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">DO_NOT_REAP_CHILD</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_DO_NOT_REAP_CHILD</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_SEARCH_PATH&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">SEARCH_PATH</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_SEARCH_PATH</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_STDOUT_TO_DEV_NULL&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">STDOUT_TO_DEV_NULL</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_STDOUT_TO_DEV_NULL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_STDERR_TO_DEV_NULL&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">STDERR_TO_DEV_NULL</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_STDERR_TO_DEV_NULL</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_CHILD_INHERITS_STDIN&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">CHILD_INHERITS_STDIN</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_CHILD_INHERITS_STDIN</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_FILE_AND_ARGV_ZERO&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">FILE_AND_ARGV_ZERO</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_FILE_AND_ARGV_ZERO</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_SEARCH_PATH_FROM_ENVP&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">SEARCH_PATH_FROM_ENVP</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_SPAWN_CLOEXEC_PIPES&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">CLOEXEC_PIPES</span> <span class="op">=</span> <span class="ident">ffi::G_SPAWN_CLOEXEC_PIPES</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GOptionFlags&gt; <span class="kw">for </span>OptionFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GOptionFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SpawnFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="macro">bitflags! </span>{
+    <span class="attribute">#[doc(alias = <span class="string">&quot;GSpawnFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>SpawnFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_DEFAULT&quot;</span>)]
+        </span><span class="kw">const </span>DEFAULT = ffi::G_SPAWN_DEFAULT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_LEAVE_DESCRIPTORS_OPEN&quot;</span>)]
+        </span><span class="kw">const </span>LEAVE_DESCRIPTORS_OPEN = ffi::G_SPAWN_LEAVE_DESCRIPTORS_OPEN <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_DO_NOT_REAP_CHILD&quot;</span>)]
+        </span><span class="kw">const </span>DO_NOT_REAP_CHILD = ffi::G_SPAWN_DO_NOT_REAP_CHILD <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_SEARCH_PATH&quot;</span>)]
+        </span><span class="kw">const </span>SEARCH_PATH = ffi::G_SPAWN_SEARCH_PATH <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_STDOUT_TO_DEV_NULL&quot;</span>)]
+        </span><span class="kw">const </span>STDOUT_TO_DEV_NULL = ffi::G_SPAWN_STDOUT_TO_DEV_NULL <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_STDERR_TO_DEV_NULL&quot;</span>)]
+        </span><span class="kw">const </span>STDERR_TO_DEV_NULL = ffi::G_SPAWN_STDERR_TO_DEV_NULL <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_CHILD_INHERITS_STDIN&quot;</span>)]
+        </span><span class="kw">const </span>CHILD_INHERITS_STDIN = ffi::G_SPAWN_CHILD_INHERITS_STDIN <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_FILE_AND_ARGV_ZERO&quot;</span>)]
+        </span><span class="kw">const </span>FILE_AND_ARGV_ZERO = ffi::G_SPAWN_FILE_AND_ARGV_ZERO <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_SEARCH_PATH_FROM_ENVP&quot;</span>)]
+        </span><span class="kw">const </span>SEARCH_PATH_FROM_ENVP = ffi::G_SPAWN_SEARCH_PATH_FROM_ENVP <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_SPAWN_CLOEXEC_PIPES&quot;</span>)]
+        </span><span class="kw">const </span>CLOEXEC_PIPES = ffi::G_SPAWN_CLOEXEC_PIPES <span class="kw">as </span>u32;
+        <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_74&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+        #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_74&quot;</span>)))]
+        #[doc(alias = <span class="string">&quot;G_SPAWN_CHILD_INHERITS_STDOUT&quot;</span>)]
+        </span><span class="kw">const </span>CHILD_INHERITS_STDOUT = ffi::G_SPAWN_CHILD_INHERITS_STDOUT <span class="kw">as </span>u32;
+        <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_74&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+        #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_74&quot;</span>)))]
+        #[doc(alias = <span class="string">&quot;G_SPAWN_CHILD_INHERITS_STDERR&quot;</span>)]
+        </span><span class="kw">const </span>CHILD_INHERITS_STDERR = ffi::G_SPAWN_CHILD_INHERITS_STDERR <span class="kw">as </span>u32;
+        <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_74&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+        #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_74&quot;</span>)))]
+        #[doc(alias = <span class="string">&quot;G_SPAWN_STDIN_FROM_DEV_NULL&quot;</span>)]
+        </span><span class="kw">const </span>STDIN_FROM_DEV_NULL = ffi::G_SPAWN_STDIN_FROM_DEV_NULL <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">SpawnFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GSpawnFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GSpawnFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>SpawnFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GSpawnFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SpawnFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GSpawnFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>SpawnFlags {
+    <span class="kw">type </span>GlibType = ffi::GSpawnFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GSpawnFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GUriFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UriFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_PARSE_RELAXED&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">PARSE_RELAXED</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_PARSE_RELAXED</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_HAS_PASSWORD&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">HAS_PASSWORD</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_HAS_PASSWORD</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_HAS_AUTH_PARAMS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">HAS_AUTH_PARAMS</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_HAS_AUTH_PARAMS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_ENCODED&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ENCODED</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_ENCODED</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_NON_DNS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NON_DNS</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_NON_DNS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_ENCODED_QUERY&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ENCODED_QUERY</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_ENCODED_QUERY</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_ENCODED_PATH&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ENCODED_PATH</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_ENCODED_PATH</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_ENCODED_FRAGMENT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">ENCODED_FRAGMENT</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_ENCODED_FRAGMENT</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_FLAGS_SCHEME_NORMALIZE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">SCHEME_NORMALIZE</span> <span class="op">=</span> <span class="ident">ffi::G_URI_FLAGS_SCHEME_NORMALIZE</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GSpawnFlags&gt; <span class="kw">for </span>SpawnFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GSpawnFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">UriFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="macro">bitflags! </span>{
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;GUriFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>UriFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_URI_FLAGS_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_PARSE_RELAXED&quot;</span>)]
+        </span><span class="kw">const </span>PARSE_RELAXED = ffi::G_URI_FLAGS_PARSE_RELAXED <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_HAS_PASSWORD&quot;</span>)]
+        </span><span class="kw">const </span>HAS_PASSWORD = ffi::G_URI_FLAGS_HAS_PASSWORD <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_HAS_AUTH_PARAMS&quot;</span>)]
+        </span><span class="kw">const </span>HAS_AUTH_PARAMS = ffi::G_URI_FLAGS_HAS_AUTH_PARAMS <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_ENCODED&quot;</span>)]
+        </span><span class="kw">const </span>ENCODED = ffi::G_URI_FLAGS_ENCODED <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_NON_DNS&quot;</span>)]
+        </span><span class="kw">const </span>NON_DNS = ffi::G_URI_FLAGS_NON_DNS <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_ENCODED_QUERY&quot;</span>)]
+        </span><span class="kw">const </span>ENCODED_QUERY = ffi::G_URI_FLAGS_ENCODED_QUERY <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_ENCODED_PATH&quot;</span>)]
+        </span><span class="kw">const </span>ENCODED_PATH = ffi::G_URI_FLAGS_ENCODED_PATH <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_ENCODED_FRAGMENT&quot;</span>)]
+        </span><span class="kw">const </span>ENCODED_FRAGMENT = ffi::G_URI_FLAGS_ENCODED_FRAGMENT <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_FLAGS_SCHEME_NORMALIZE&quot;</span>)]
+        </span><span class="kw">const </span>SCHEME_NORMALIZE = ffi::G_URI_FLAGS_SCHEME_NORMALIZE <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">UriFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GUriFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GUriFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>UriFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GUriFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UriFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GUriFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>UriFlags {
+    <span class="kw">type </span>GlibType = ffi::GUriFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GUriFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GUriHideFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UriHideFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_USERINFO&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">USERINFO</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_USERINFO</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_PASSWORD&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">PASSWORD</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_PASSWORD</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_AUTH_PARAMS&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">AUTH_PARAMS</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_AUTH_PARAMS</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_QUERY&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">QUERY</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_QUERY</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_HIDE_FRAGMENT&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">FRAGMENT</span> <span class="op">=</span> <span class="ident">ffi::G_URI_HIDE_FRAGMENT</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GUriFlags&gt; <span class="kw">for </span>UriFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GUriFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">UriHideFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="macro">bitflags! </span>{
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;GUriHideFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>UriHideFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_URI_HIDE_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_USERINFO&quot;</span>)]
+        </span><span class="kw">const </span>USERINFO = ffi::G_URI_HIDE_USERINFO <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_PASSWORD&quot;</span>)]
+        </span><span class="kw">const </span>PASSWORD = ffi::G_URI_HIDE_PASSWORD <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_AUTH_PARAMS&quot;</span>)]
+        </span><span class="kw">const </span>AUTH_PARAMS = ffi::G_URI_HIDE_AUTH_PARAMS <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_QUERY&quot;</span>)]
+        </span><span class="kw">const </span>QUERY = ffi::G_URI_HIDE_QUERY <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_HIDE_FRAGMENT&quot;</span>)]
+        </span><span class="kw">const </span>FRAGMENT = ffi::G_URI_HIDE_FRAGMENT <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">UriHideFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GUriHideFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GUriHideFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>UriHideFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GUriHideFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UriHideFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GUriHideFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>UriHideFlags {
+    <span class="kw">type </span>GlibType = ffi::GUriHideFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GUriHideFlags {
+        <span class="self">self</span>.bits()
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="macro">bitflags!</span> {
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GUriParamsFlags&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UriParamsFlags</span>: <span class="ident">u32</span> {
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_PARAMS_NONE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">NONE</span> <span class="op">=</span> <span class="ident">ffi::G_URI_PARAMS_NONE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_PARAMS_CASE_INSENSITIVE&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">CASE_INSENSITIVE</span> <span class="op">=</span> <span class="ident">ffi::G_URI_PARAMS_CASE_INSENSITIVE</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_PARAMS_WWW_FORM&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">WWW_FORM</span> <span class="op">=</span> <span class="ident">ffi::G_URI_PARAMS_WWW_FORM</span> <span class="kw">as</span> <span class="ident">u32</span>;
-        <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;G_URI_PARAMS_PARSE_RELAXED&quot;</span>)]</span>
-        <span class="kw">const</span> <span class="ident">PARSE_RELAXED</span> <span class="op">=</span> <span class="ident">ffi::G_URI_PARAMS_PARSE_RELAXED</span> <span class="kw">as</span> <span class="ident">u32</span>;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GUriHideFlags&gt; <span class="kw">for </span>UriHideFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GUriHideFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">UriParamsFlags</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="op">&lt;</span><span class="self">Self</span> <span class="kw">as</span> <span class="ident">fmt::Debug</span><span class="op">&gt;</span><span class="ident">::fmt</span>(<span class="self">self</span>, <span class="ident">f</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+</span><span class="macro">bitflags! </span>{
+    <span class="attribute">#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;GUriParamsFlags&quot;</span>)]
+    </span><span class="kw">pub struct </span>UriParamsFlags: u32 {
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_PARAMS_NONE&quot;</span>)]
+        </span><span class="kw">const </span>NONE = ffi::G_URI_PARAMS_NONE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_PARAMS_CASE_INSENSITIVE&quot;</span>)]
+        </span><span class="kw">const </span>CASE_INSENSITIVE = ffi::G_URI_PARAMS_CASE_INSENSITIVE <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_PARAMS_WWW_FORM&quot;</span>)]
+        </span><span class="kw">const </span>WWW_FORM = ffi::G_URI_PARAMS_WWW_FORM <span class="kw">as </span>u32;
+        <span class="attribute">#[doc(alias = <span class="string">&quot;G_URI_PARAMS_PARSE_RELAXED&quot;</span>)]
+        </span><span class="kw">const </span>PARSE_RELAXED = ffi::G_URI_PARAMS_PARSE_RELAXED <span class="kw">as </span>u32;
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">IntoGlib</span> <span class="kw">for</span> <span class="ident">UriParamsFlags</span> {
-    <span class="kw">type</span> <span class="ident">GlibType</span> <span class="op">=</span> <span class="ident">ffi::GUriParamsFlags</span>;
-
-    <span class="kw">fn</span> <span class="ident">into_glib</span>(<span class="self">self</span>) -&gt; <span class="ident">ffi::GUriParamsFlags</span> {
-        <span class="self">self</span>.<span class="ident">bits</span>()
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+</span><span class="kw">impl </span>fmt::Display <span class="kw">for </span>UriParamsFlags {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        &lt;<span class="self">Self </span><span class="kw">as </span>fmt::Debug&gt;::fmt(<span class="self">self</span>, f)
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_66&quot;</span>)))]</span>
-<span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
-<span class="kw">impl</span> <span class="ident">FromGlib</span><span class="op">&lt;</span><span class="ident">ffi::GUriParamsFlags</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UriParamsFlags</span> {
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_glib</span>(<span class="ident">value</span>: <span class="ident">ffi::GUriParamsFlags</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::from_bits_truncate</span>(<span class="ident">value</span>)
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>IntoGlib <span class="kw">for </span>UriParamsFlags {
+    <span class="kw">type </span>GlibType = ffi::GUriParamsFlags;
+
+    <span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GUriParamsFlags {
+        <span class="self">self</span>.bits()
+    }
+}
+
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_66&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_66&quot;</span>)))]
+#[doc(hidden)]
+</span><span class="kw">impl </span>FromGlib&lt;ffi::GUriParamsFlags&gt; <span class="kw">for </span>UriParamsFlags {
+    <span class="kw">unsafe fn </span>from_glib(value: ffi::GUriParamsFlags) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::from_bits_truncate(value)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

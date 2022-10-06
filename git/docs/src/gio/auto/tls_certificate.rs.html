@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_certificate.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tls_certificate.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_certificate.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>tls_certificate.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -950,880 +945,883 @@
 <span id="872">872</span>
 <span id="873">873</span>
 <span id="874">874</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+<span id="875">875</span>
+<span id="876">876</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::InetAddress</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketConnectable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::TlsCertificateFlags</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib::StaticType</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-<span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span><span class="kw">crate</span>::InetAddress;
+<span class="kw">use </span><span class="kw">crate</span>::SocketConnectable;
+<span class="kw">use </span><span class="kw">crate</span>::TlsCertificateFlags;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span>glib::signal::connect_raw;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::StaticType;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+#[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+</span><span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// A certificate used for TLS authentication and encryption.</span>
-    <span class="doccomment">/// This can represent either a certificate only (eg, the certificate</span>
-    <span class="doccomment">/// received by a client from a server), or the combination of</span>
-    <span class="doccomment">/// a certificate and a private key (which is needed when acting as a</span>
-    <span class="doccomment">/// [`TlsServerConnection`][crate::TlsServerConnection]).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is an Abstract Base Class, you cannot instantiate it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`TlsCertificateExt`][trait@crate::prelude::TlsCertificateExt], [`trait@glib::ObjectExt`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GTlsCertificate&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">TlsCertificate</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GTlsCertificate</span>, <span class="ident">ffi::GTlsCertificateClass</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// A certificate used for TLS authentication and encryption.
+    /// This can represent either a certificate only (eg, the certificate
+    /// received by a client from a server), or the combination of
+    /// a certificate and a private key (which is needed when acting as a
+    /// [`TlsServerConnection`][crate::TlsServerConnection]).
+    ///
+    /// This is an Abstract Base Class, you cannot instantiate it.
+    ///
+    /// # Implements
+    ///
+    /// [`TlsCertificateExt`][trait@crate::prelude::TlsCertificateExt], [`trait@glib::ObjectExt`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GTlsCertificate&quot;</span>)]
+    </span><span class="kw">pub struct </span>TlsCertificate(Object&lt;ffi::GTlsCertificate, ffi::GTlsCertificateClass&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_tls_certificate_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_tls_certificate_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">TlsCertificate</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">TlsCertificate</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>TlsCertificate {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TlsCertificate&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `file`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// As of 2.72, if the filename ends in `.p12` or `.pfx` the data is loaded by</span>
-    <span class="doccomment">/// [`from_pkcs12()`][Self::from_pkcs12()] otherwise it is loaded by</span>
-    <span class="doccomment">/// [`from_pem()`][Self::from_pem()]. See those functions for</span>
-    <span class="doccomment">/// exact details.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `file` cannot be read or parsed, the function will return [`None`] and</span>
-    <span class="doccomment">/// set `error`.</span>
-    <span class="doccomment">/// ## `file`</span>
-    <span class="doccomment">/// file containing a certificate to import</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] on error</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_file&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_file&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file</span>(<span class="ident">file</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-                <span class="ident">ffi::g_tls_certificate_new_from_file</span>(<span class="ident">file</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `file`.
+    ///
+    /// As of 2.72, if the filename ends in `.p12` or `.pfx` the data is loaded by
+    /// [`from_pkcs12()`][Self::from_pkcs12()] otherwise it is loaded by
+    /// [`from_pem()`][Self::from_pem()]. See those functions for
+    /// exact details.
+    ///
+    /// If `file` cannot be read or parsed, the function will return [`None`] and
+    /// set `error`.
+    /// ## `file`
+    /// file containing a certificate to import
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] on error
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_file&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_file&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_file(file: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret =
+                ffi::g_tls_certificate_new_from_file(file.as_ref().to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `file`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `file` cannot be read or parsed, the function will return [`None`] and</span>
-    <span class="doccomment">/// set `error`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Any unknown file types will error with [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported].</span>
-    <span class="doccomment">/// Currently only `.p12` and `.pfx` files are supported.</span>
-    <span class="doccomment">/// See [`from_pkcs12()`][Self::from_pkcs12()] for more details.</span>
-    <span class="doccomment">/// ## `file`</span>
-    <span class="doccomment">/// file containing a certificate to import</span>
-    <span class="doccomment">/// ## `password`</span>
-    <span class="doccomment">/// password for PKCS `12` files</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] on error</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_file_with_password&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_file_with_password&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_file_with_password</span>(
-        <span class="ident">file</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
-        <span class="ident">password</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_tls_certificate_new_from_file_with_password</span>(
-                <span class="ident">file</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">password</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `file`.
+    ///
+    /// If `file` cannot be read or parsed, the function will return [`None`] and
+    /// set `error`.
+    ///
+    /// Any unknown file types will error with [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported].
+    /// Currently only `.p12` and `.pfx` files are supported.
+    /// See [`from_pkcs12()`][Self::from_pkcs12()] for more details.
+    /// ## `file`
+    /// file containing a certificate to import
+    /// ## `password`
+    /// password for PKCS `12` files
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] on error
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_file_with_password&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_file_with_password&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_file_with_password(
+        file: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
+        password: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_file_with_password(
+                file.as_ref().to_glib_none().<span class="number">0</span>,
+                password.to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the PEM-encoded data in `cert_file`</span>
-    <span class="doccomment">/// and `key_file`. The returned certificate will be the first certificate</span>
-    <span class="doccomment">/// found in `cert_file`. As of GLib 2.44, if `cert_file` contains more</span>
-    <span class="doccomment">/// certificates it will try to load a certificate chain. All</span>
-    <span class="doccomment">/// certificates will be verified in the order found (top-level</span>
-    <span class="doccomment">/// certificate should be the last one in the file) and the</span>
-    <span class="doccomment">/// `property::TlsCertificate::issuer` property of each certificate will be set</span>
-    <span class="doccomment">/// accordingly if the verification succeeds. If any certificate in the</span>
-    <span class="doccomment">/// chain cannot be verified, the first certificate in the file will</span>
-    <span class="doccomment">/// still be returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If either file cannot be read or parsed, the function will return</span>
-    <span class="doccomment">/// [`None`] and set `error`. Otherwise, this behaves like</span>
-    <span class="doccomment">/// [`from_pem()`][Self::from_pem()].</span>
-    <span class="doccomment">/// ## `cert_file`</span>
-    <span class="doccomment">/// file containing one or more PEM-encoded</span>
-    <span class="doccomment">///  certificates to import</span>
-    <span class="doccomment">/// ## `key_file`</span>
-    <span class="doccomment">/// file containing a PEM-encoded private key</span>
-    <span class="doccomment">///  to import</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] on error</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_files&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_files&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_files</span>(
-        <span class="ident">cert_file</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
-        <span class="ident">key_file</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_tls_certificate_new_from_files</span>(
-                <span class="ident">cert_file</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key_file</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the PEM-encoded data in `cert_file`
+    /// and `key_file`. The returned certificate will be the first certificate
+    /// found in `cert_file`. As of GLib 2.44, if `cert_file` contains more
+    /// certificates it will try to load a certificate chain. All
+    /// certificates will be verified in the order found (top-level
+    /// certificate should be the last one in the file) and the
+    /// `property::TlsCertificate::issuer` property of each certificate will be set
+    /// accordingly if the verification succeeds. If any certificate in the
+    /// chain cannot be verified, the first certificate in the file will
+    /// still be returned.
+    ///
+    /// If either file cannot be read or parsed, the function will return
+    /// [`None`] and set `error`. Otherwise, this behaves like
+    /// [`from_pem()`][Self::from_pem()].
+    /// ## `cert_file`
+    /// file containing one or more PEM-encoded
+    ///  certificates to import
+    /// ## `key_file`
+    /// file containing a PEM-encoded private key
+    ///  to import
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] on error
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_files&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_files&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_files(
+        cert_file: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
+        key_file: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_files(
+                cert_file.as_ref().to_glib_none().<span class="number">0</span>,
+                key_file.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the PEM-encoded data in `data`. If</span>
-    <span class="doccomment">/// `data` includes both a certificate and a private key, then the</span>
-    <span class="doccomment">/// returned certificate will include the private key data as well. (See</span>
-    <span class="doccomment">/// the `property::TlsCertificate::private-key-pem` property for information about</span>
-    <span class="doccomment">/// supported formats.)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned certificate will be the first certificate found in</span>
-    <span class="doccomment">/// `data`. As of GLib 2.44, if `data` contains more certificates it will</span>
-    <span class="doccomment">/// try to load a certificate chain. All certificates will be verified in</span>
-    <span class="doccomment">/// the order found (top-level certificate should be the last one in the</span>
-    <span class="doccomment">/// file) and the `property::TlsCertificate::issuer` property of each certificate</span>
-    <span class="doccomment">/// will be set accordingly if the verification succeeds. If any</span>
-    <span class="doccomment">/// certificate in the chain cannot be verified, the first certificate in</span>
-    <span class="doccomment">/// the file will still be returned.</span>
-    <span class="doccomment">/// ## `data`</span>
-    <span class="doccomment">/// PEM-encoded certificate data</span>
-    <span class="doccomment">/// ## `length`</span>
-    <span class="doccomment">/// the length of `data`, or -1 if it&#39;s 0-terminated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] if `data` is invalid</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_pem&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_pem&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pem</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">isize</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-                <span class="ident">ffi::g_tls_certificate_new_from_pem</span>(<span class="ident">data</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">length</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the PEM-encoded data in `data`. If
+    /// `data` includes both a certificate and a private key, then the
+    /// returned certificate will include the private key data as well. (See
+    /// the `property::TlsCertificate::private-key-pem` property for information about
+    /// supported formats.)
+    ///
+    /// The returned certificate will be the first certificate found in
+    /// `data`. As of GLib 2.44, if `data` contains more certificates it will
+    /// try to load a certificate chain. All certificates will be verified in
+    /// the order found (top-level certificate should be the last one in the
+    /// file) and the `property::TlsCertificate::issuer` property of each certificate
+    /// will be set accordingly if the verification succeeds. If any
+    /// certificate in the chain cannot be verified, the first certificate in
+    /// the file will still be returned.
+    /// ## `data`
+    /// PEM-encoded certificate data
+    /// ## `length`
+    /// the length of `data`, or -1 if it&#39;s 0-terminated.
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] if `data` is invalid
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_pem&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_pem&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_pem(data: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">let </span>length = data.len() <span class="kw">as </span>isize;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret =
+                ffi::g_tls_certificate_new_from_pem(data.to_glib_none().<span class="number">0</span>, length, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from a</span>
-    <span class="doccomment">/// [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html) URI.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// An example `pkcs11_uri` would be `pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My`20Client``20Certificate`;id=`01``</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Where the token’s layout is:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ```text</span>
-    <span class="doccomment">/// Object 0:</span>
-    <span class="doccomment">///   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=private%20key;type=private</span>
-    <span class="doccomment">///   Type: Private key (RSA-2048)</span>
-    <span class="doccomment">///   ID: 01</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Object 1:</span>
-    <span class="doccomment">///   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=Certificate%20for%20Authentication;type=cert</span>
-    <span class="doccomment">///   Type: X.509 Certificate (RSA-2048)</span>
-    <span class="doccomment">///   ID: 01</span>
-    <span class="doccomment">/// ```</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In this case the certificate and private key would both be detected and used as expected.</span>
-    <span class="doccomment">/// `pkcs_uri` may also just reference an X.509 certificate object and then optionally</span>
-    <span class="doccomment">/// `private_key_pkcs11_uri` allows using a private key exposed under a different URI.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that the private key is not accessed until usage and may fail or require a PIN later.</span>
-    <span class="doccomment">/// ## `pkcs11_uri`</span>
-    <span class="doccomment">/// A PKCS \`11` URI</span>
-    <span class="doccomment">/// ## `private_key_pkcs11_uri`</span>
-    <span class="doccomment">/// A PKCS \`11` URI</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] on error</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_pkcs11_uris&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_pkcs11_uris&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pkcs11_uris</span>(
-        <span class="ident">pkcs11_uri</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">private_key_pkcs11_uri</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_tls_certificate_new_from_pkcs11_uris</span>(
-                <span class="ident">pkcs11_uri</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">private_key_pkcs11_uri</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from a
+    /// [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html) URI.
+    ///
+    /// An example `pkcs11_uri` would be `pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My`20Client``20Certificate`;id=`01``
+    ///
+    /// Where the token’s layout is:
+    ///
+    ///
+    /// ```text
+    /// Object 0:
+    ///   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=private%20key;type=private
+    ///   Type: Private key (RSA-2048)
+    ///   ID: 01
+    ///
+    /// Object 1:
+    ///   URL: pkcs11:model=Model;manufacturer=Manufacture;serial=1;token=My%20Client%20Certificate;id=%01;object=Certificate%20for%20Authentication;type=cert
+    ///   Type: X.509 Certificate (RSA-2048)
+    ///   ID: 01
+    /// ```
+    ///
+    /// In this case the certificate and private key would both be detected and used as expected.
+    /// `pkcs_uri` may also just reference an X.509 certificate object and then optionally
+    /// `private_key_pkcs11_uri` allows using a private key exposed under a different URI.
+    ///
+    /// Note that the private key is not accessed until usage and may fail or require a PIN later.
+    /// ## `pkcs11_uri`
+    /// A PKCS \`11` URI
+    /// ## `private_key_pkcs11_uri`
+    /// A PKCS \`11` URI
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] on error
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_68&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_pkcs11_uris&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_pkcs11_uris&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_pkcs11_uris(
+        pkcs11_uri: <span class="kw-2">&amp;</span>str,
+        private_key_pkcs11_uri: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_pkcs11_uris(
+                pkcs11_uri.to_glib_none().<span class="number">0</span>,
+                private_key_pkcs11_uri.to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `data`. It must contain</span>
-    <span class="doccomment">/// a certificate and matching private key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If extra certificates are included they will be verified as a chain</span>
-    <span class="doccomment">/// and the `property::TlsCertificate::issuer` property will be set.</span>
-    <span class="doccomment">/// All other data will be ignored.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You can pass as single password for all of the data which will be</span>
-    <span class="doccomment">/// used both for the PKCS `12` container as well as encrypted</span>
-    <span class="doccomment">/// private keys. If decryption fails it will error with</span>
-    <span class="doccomment">/// [`TlsError::BadCertificatePassword`][crate::TlsError::BadCertificatePassword].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This constructor requires support in the current [`TlsBackend`][crate::TlsBackend].</span>
-    <span class="doccomment">/// If support is missing it will error with</span>
-    <span class="doccomment">/// [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Other parsing failures will error with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].</span>
-    <span class="doccomment">/// ## `data`</span>
-    <span class="doccomment">/// DER-encoded PKCS `12` format certificate data</span>
-    <span class="doccomment">/// ## `password`</span>
-    <span class="doccomment">/// optional password for encrypted certificate data</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the new certificate, or [`None`] if `data` is invalid</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_72&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_new_from_pkcs12&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_from_pkcs12&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">from_pkcs12</span>(<span class="ident">data</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>], <span class="ident">password</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">str</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">length</span> <span class="op">=</span> <span class="ident">data</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_tls_certificate_new_from_pkcs12</span>(
-                <span class="ident">data</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">length</span>,
-                <span class="ident">password</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `data`. It must contain
+    /// a certificate and matching private key.
+    ///
+    /// If extra certificates are included they will be verified as a chain
+    /// and the `property::TlsCertificate::issuer` property will be set.
+    /// All other data will be ignored.
+    ///
+    /// You can pass as single password for all of the data which will be
+    /// used both for the PKCS `12` container as well as encrypted
+    /// private keys. If decryption fails it will error with
+    /// [`TlsError::BadCertificatePassword`][crate::TlsError::BadCertificatePassword].
+    ///
+    /// This constructor requires support in the current [`TlsBackend`][crate::TlsBackend].
+    /// If support is missing it will error with
+    /// [`IOErrorEnum::NotSupported`][crate::IOErrorEnum::NotSupported].
+    ///
+    /// Other parsing failures will error with [`TlsError::BadCertificate`][crate::TlsError::BadCertificate].
+    /// ## `data`
+    /// DER-encoded PKCS `12` format certificate data
+    /// ## `password`
+    /// optional password for encrypted certificate data
+    ///
+    /// # Returns
+    ///
+    /// the new certificate, or [`None`] if `data` is invalid
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_72&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_pkcs12&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_from_pkcs12&quot;</span>)]
+    </span><span class="kw">pub fn </span>from_pkcs12(data: <span class="kw-2">&amp;</span>[u8], password: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;TlsCertificate, glib::Error&gt; {
+        <span class="kw">let </span>length = data.len() <span class="kw">as </span>usize;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_pkcs12(
+                data.to_glib_none().<span class="number">0</span>,
+                length,
+                password.to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates one or more `GTlsCertificates` from the PEM-encoded</span>
-    <span class="doccomment">/// data in `file`. If `file` cannot be read or parsed, the function will</span>
-    <span class="doccomment">/// return [`None`] and set `error`. If `file` does not contain any</span>
-    <span class="doccomment">/// PEM-encoded certificates, this will return an empty list and not</span>
-    <span class="doccomment">/// set `error`.</span>
-    <span class="doccomment">/// ## `file`</span>
-    <span class="doccomment">/// file containing PEM-encoded certificates to import</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a</span>
-    <span class="doccomment">/// `GList` containing [`TlsCertificate`][crate::TlsCertificate] objects. You must free the list</span>
-    <span class="doccomment">/// and its contents when you are done with it.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_list_new_from_file&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">list_new_from_file</span>(
-        <span class="ident">file</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">std::path::Path</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_tls_certificate_list_new_from_file</span>(
-                <span class="ident">file</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Creates one or more `GTlsCertificates` from the PEM-encoded
+    /// data in `file`. If `file` cannot be read or parsed, the function will
+    /// return [`None`] and set `error`. If `file` does not contain any
+    /// PEM-encoded certificates, this will return an empty list and not
+    /// set `error`.
+    /// ## `file`
+    /// file containing PEM-encoded certificates to import
+    ///
+    /// # Returns
+    ///
+    /// a
+    /// `GList` containing [`TlsCertificate`][crate::TlsCertificate] objects. You must free the list
+    /// and its contents when you are done with it.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_list_new_from_file&quot;</span>)]
+    </span><span class="kw">pub fn </span>list_new_from_file(
+        file: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;TlsCertificate&gt;, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_tls_certificate_list_new_from_file(
+                file.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">FromGlibPtrContainer::from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(FromGlibPtrContainer::from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@TlsCertificate`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`TlsCertificate`][struct@crate::TlsCertificate]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">TlsCertificateExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Gets the value of `property::TlsCertificate::dns-names`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A `GPtrArray` of</span>
-    <span class="doccomment">/// [`glib::Bytes`][crate::glib::Bytes] elements, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_dns_names&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_dns_names&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">dns_names</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Trait containing all [`struct@TlsCertificate`] methods.
+///
+/// # Implementors
+///
+/// [`TlsCertificate`][struct@crate::TlsCertificate]
+</span><span class="kw">pub trait </span>TlsCertificateExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Gets the value of `property::TlsCertificate::dns-names`.
+    ///
+    /// # Returns
+    ///
+    /// A `GPtrArray` of
+    /// [`glib::Bytes`][crate::glib::Bytes] elements, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_dns_names&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_dns_names&quot;</span>)]
+    </span><span class="kw">fn </span>dns_names(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::Bytes&gt;;
 
-    <span class="doccomment">/// Gets the value of `property::TlsCertificate::ip-addresses`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A `GPtrArray`</span>
-    <span class="doccomment">/// of [`InetAddress`][crate::InetAddress] elements, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_ip_addresses&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_ip_addresses&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">ip_addresses</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InetAddress</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the value of `property::TlsCertificate::ip-addresses`.
+    ///
+    /// # Returns
+    ///
+    /// A `GPtrArray`
+    /// of [`InetAddress`][crate::InetAddress] elements, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_ip_addresses&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_ip_addresses&quot;</span>)]
+    </span><span class="kw">fn </span>ip_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InetAddress&gt;;
 
-    <span class="doccomment">/// Gets the [`TlsCertificate`][crate::TlsCertificate] representing `self`&#39;s issuer, if known</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The certificate of `self`&#39;s issuer,</span>
-    <span class="doccomment">/// or [`None`] if `self` is self-signed or signed with an unknown</span>
-    <span class="doccomment">/// certificate.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_issuer&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_issuer&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">must_use</span>]</span>
-    <span class="kw">fn</span> <span class="ident">issuer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Gets the [`TlsCertificate`][crate::TlsCertificate] representing `self`&#39;s issuer, if known
+    ///
+    /// # Returns
+    ///
+    /// The certificate of `self`&#39;s issuer,
+    /// or [`None`] if `self` is self-signed or signed with an unknown
+    /// certificate.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_get_issuer&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_issuer&quot;</span>)]
+    #[must_use]
+    </span><span class="kw">fn </span>issuer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt;;
 
-    <span class="doccomment">/// Returns the issuer name from the certificate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The issuer name, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_issuer_name&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_issuer_name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">issuer_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Returns the issuer name from the certificate.
+    ///
+    /// # Returns
+    ///
+    /// The issuer name, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_issuer_name&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_issuer_name&quot;</span>)]
+    </span><span class="kw">fn </span>issuer_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Returns the time at which the certificate became or will become invalid.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The not-valid-after date, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_not_valid_after&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_not_valid_after&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">not_valid_after</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::DateTime</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Returns the time at which the certificate became or will become invalid.
+    ///
+    /// # Returns
+    ///
+    /// The not-valid-after date, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_not_valid_after&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_not_valid_after&quot;</span>)]
+    </span><span class="kw">fn </span>not_valid_after(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::DateTime&gt;;
 
-    <span class="doccomment">/// Returns the time at which the certificate became or will become valid.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The not-valid-before date, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_not_valid_before&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_not_valid_before&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">not_valid_before</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::DateTime</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Returns the time at which the certificate became or will become valid.
+    ///
+    /// # Returns
+    ///
+    /// The not-valid-before date, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_not_valid_before&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_not_valid_before&quot;</span>)]
+    </span><span class="kw">fn </span>not_valid_before(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::DateTime&gt;;
 
-    <span class="doccomment">/// Returns the subject name from the certificate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The subject name, or [`None`] if it&#39;s not available.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_get_subject_name&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_subject_name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">subject_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Returns the subject name from the certificate.
+    ///
+    /// # Returns
+    ///
+    /// The subject name, or [`None`] if it&#39;s not available.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;g_tls_certificate_get_subject_name&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_subject_name&quot;</span>)]
+    </span><span class="kw">fn </span>subject_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// Check if two [`TlsCertificate`][crate::TlsCertificate] objects represent the same certificate.</span>
-    <span class="doccomment">/// The raw DER byte data of the two certificates are checked for equality.</span>
-    <span class="doccomment">/// This has the effect that two certificates may compare equal even if</span>
-    <span class="doccomment">/// their `property::TlsCertificate::issuer`, `property::TlsCertificate::private-key`, or</span>
-    <span class="doccomment">/// `property::TlsCertificate::private-key-pem` properties differ.</span>
-    <span class="doccomment">/// ## `cert_two`</span>
-    <span class="doccomment">/// second certificate to compare</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// whether the same or not</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_is_same&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">is_same</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cert_two</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Check if two [`TlsCertificate`][crate::TlsCertificate] objects represent the same certificate.
+    /// The raw DER byte data of the two certificates are checked for equality.
+    /// This has the effect that two certificates may compare equal even if
+    /// their `property::TlsCertificate::issuer`, `property::TlsCertificate::private-key`, or
+    /// `property::TlsCertificate::private-key-pem` properties differ.
+    /// ## `cert_two`
+    /// second certificate to compare
+    ///
+    /// # Returns
+    ///
+    /// whether the same or not
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_is_same&quot;</span>)]
+    </span><span class="kw">fn </span>is_same(<span class="kw-2">&amp;</span><span class="self">self</span>, cert_two: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;) -&gt; bool;
 
-    <span class="doccomment">/// This verifies `self` and returns a set of [`TlsCertificateFlags`][crate::TlsCertificateFlags]</span>
-    <span class="doccomment">/// indicating any problems found with it. This can be used to verify a</span>
-    <span class="doccomment">/// certificate outside the context of making a connection, or to</span>
-    <span class="doccomment">/// check a certificate against a CA that is not part of the system</span>
-    <span class="doccomment">/// CA database.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `identity` is not [`None`], `self`&#39;s name(s) will be compared against</span>
-    <span class="doccomment">/// it, and [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] will be set in the return</span>
-    <span class="doccomment">/// value if it does not match. If `identity` is [`None`], that bit will</span>
-    <span class="doccomment">/// never be set in the return value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `trusted_ca` is not [`None`], then `self` (or one of the certificates</span>
-    <span class="doccomment">/// in its chain) must be signed by it, or else</span>
-    <span class="doccomment">/// [`TlsCertificateFlags::UNKNOWN_CA`][crate::TlsCertificateFlags::UNKNOWN_CA] will be set in the return value. If</span>
-    <span class="doccomment">/// `trusted_ca` is [`None`], that bit will never be set in the return</span>
-    <span class="doccomment">/// value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// GLib guarantees that if certificate verification fails, at least one</span>
-    <span class="doccomment">/// error will be set in the return value, but it does not guarantee</span>
-    <span class="doccomment">/// that all possible errors will be set. Accordingly, you may not safely</span>
-    <span class="doccomment">/// decide to ignore any particular type of error. For example, it would</span>
-    <span class="doccomment">/// be incorrect to mask [`TlsCertificateFlags::EXPIRED`][crate::TlsCertificateFlags::EXPIRED] if you want to allow</span>
-    <span class="doccomment">/// expired certificates, because this could potentially be the only</span>
-    <span class="doccomment">/// error flag set even if other problems exist with the certificate.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Because TLS session context is not used, [`TlsCertificate`][crate::TlsCertificate] may not</span>
-    <span class="doccomment">/// perform as many checks on the certificates as [`TlsConnection`][crate::TlsConnection] would.</span>
-    <span class="doccomment">/// For example, certificate constraints may not be honored, and</span>
-    <span class="doccomment">/// revocation checks may not be performed. The best way to verify TLS</span>
-    <span class="doccomment">/// certificates used by a TLS connection is to let [`TlsConnection`][crate::TlsConnection]</span>
-    <span class="doccomment">/// handle the verification.</span>
-    <span class="doccomment">/// ## `identity`</span>
-    <span class="doccomment">/// the expected peer identity</span>
-    <span class="doccomment">/// ## `trusted_ca`</span>
-    <span class="doccomment">/// the certificate of a trusted authority</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the appropriate [`TlsCertificateFlags`][crate::TlsCertificateFlags]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_tls_certificate_verify&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">verify</span>(
+    <span class="doccomment">/// This verifies `self` and returns a set of [`TlsCertificateFlags`][crate::TlsCertificateFlags]
+    /// indicating any problems found with it. This can be used to verify a
+    /// certificate outside the context of making a connection, or to
+    /// check a certificate against a CA that is not part of the system
+    /// CA database.
+    ///
+    /// If `self` is valid, `G_TLS_CERTIFICATE_FLAGS_NONE` is returned.
+    ///
+    /// If `identity` is not [`None`], `self`&#39;s name(s) will be compared against
+    /// it, and [`TlsCertificateFlags::BAD_IDENTITY`][crate::TlsCertificateFlags::BAD_IDENTITY] will be set in the return
+    /// value if it does not match. If `identity` is [`None`], that bit will
+    /// never be set in the return value.
+    ///
+    /// If `trusted_ca` is not [`None`], then `self` (or one of the certificates
+    /// in its chain) must be signed by it, or else
+    /// [`TlsCertificateFlags::UNKNOWN_CA`][crate::TlsCertificateFlags::UNKNOWN_CA] will be set in the return value. If
+    /// `trusted_ca` is [`None`], that bit will never be set in the return
+    /// value.
+    ///
+    /// GLib guarantees that if certificate verification fails, at least one
+    /// error will be set in the return value, but it does not guarantee
+    /// that all possible errors will be set. Accordingly, you may not safely
+    /// decide to ignore any particular type of error. For example, it would
+    /// be incorrect to mask [`TlsCertificateFlags::EXPIRED`][crate::TlsCertificateFlags::EXPIRED] if you want to allow
+    /// expired certificates, because this could potentially be the only
+    /// error flag set even if other problems exist with the certificate.
+    ///
+    /// Because TLS session context is not used, [`TlsCertificate`][crate::TlsCertificate] may not
+    /// perform as many checks on the certificates as [`TlsConnection`][crate::TlsConnection] would.
+    /// For example, certificate constraints may not be honored, and
+    /// revocation checks may not be performed. The best way to verify TLS
+    /// certificates used by a TLS connection is to let [`TlsConnection`][crate::TlsConnection]
+    /// handle the verification.
+    /// ## `identity`
+    /// the expected peer identity
+    /// ## `trusted_ca`
+    /// the certificate of a trusted authority
+    ///
+    /// # Returns
+    ///
+    /// the appropriate [`TlsCertificateFlags`][crate::TlsCertificateFlags]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_tls_certificate_verify&quot;</span>)]
+    </span><span class="kw">fn </span>verify(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">identity</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">trusted_ca</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">TlsCertificateFlags</span>;
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
+        trusted_ca: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;&gt;,
+    ) -&gt; TlsCertificateFlags;
 
-    <span class="doccomment">/// The DER (binary) encoded representation of the certificate.</span>
-    <span class="doccomment">/// This property and the `property::TlsCertificate::certificate-pem` property</span>
-    <span class="doccomment">/// represent the same data, just in different forms.</span>
-    <span class="kw">fn</span> <span class="ident">certificate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::ByteArray</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// The DER (binary) encoded representation of the certificate.
+    /// This property and the `property::TlsCertificate::certificate-pem` property
+    /// represent the same data, just in different forms.
+    </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::ByteArray&gt;;
 
-    <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate.</span>
-    <span class="doccomment">/// This property and the `property::TlsCertificate::certificate`</span>
-    <span class="doccomment">/// property represent the same data, just in different forms.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;certificate-pem&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">certificate_pem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate.
+    /// This property and the `property::TlsCertificate::certificate`
+    /// property represent the same data, just in different forms.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;certificate-pem&quot;</span>)]
+    </span><span class="kw">fn </span>certificate_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// A URI referencing the [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)</span>
-    <span class="doccomment">/// objects containing an X.509 certificate and optionally a private key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`None`], the certificate is either not backed by PKCS \`11` or the</span>
-    <span class="doccomment">/// [`TlsBackend`][crate::TlsBackend] does not support PKCS \`11`.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;pkcs11-uri&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">pkcs11_uri</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// A URI referencing the [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
+    /// objects containing an X.509 certificate and optionally a private key.
+    ///
+    /// If [`None`], the certificate is either not backed by PKCS \`11` or the
+    /// [`TlsBackend`][crate::TlsBackend] does not support PKCS \`11`.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_68&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;pkcs11-uri&quot;</span>)]
+    </span><span class="kw">fn </span>pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// The DER (binary) encoded representation of the certificate&#39;s</span>
-    <span class="doccomment">/// private key, in either [PKCS \`1` format](https://datatracker.ietf.org/doc/html/rfc8017)</span>
-    <span class="doccomment">/// or unencrypted [PKCS \`8` format.](https://datatracker.ietf.org/doc/html/rfc5208)</span>
-    <span class="doccomment">/// PKCS \`8` format is supported since 2.32; earlier releases only</span>
-    <span class="doccomment">/// support PKCS \`1`. You can use the `openssl rsa` tool to convert</span>
-    <span class="doccomment">/// PKCS \`8` keys to PKCS \`1`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This property (or the `property::TlsCertificate::private-key-pem` property)</span>
-    <span class="doccomment">/// can be set when constructing a key (for example, from a file).</span>
-    <span class="doccomment">/// Since GLib 2.70, it is now also readable; however, be aware that if</span>
-    <span class="doccomment">/// the private key is backed by a PKCS \`11` URI – for example, if it</span>
-    <span class="doccomment">/// is stored on a smartcard – then this property will be [`None`]. If so,</span>
-    <span class="doccomment">/// the private key must be referenced via its PKCS \`11` URI,</span>
-    <span class="doccomment">/// `property::TlsCertificate::private-key-pkcs11-uri`. You must check both</span>
-    <span class="doccomment">/// properties to see if the certificate really has a private key.</span>
-    <span class="doccomment">/// When this property is read, the output format will be unencrypted</span>
-    <span class="doccomment">/// PKCS \`8`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;private-key&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">private_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::ByteArray</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// The DER (binary) encoded representation of the certificate&#39;s
+    /// private key, in either [PKCS \`1` format](https://datatracker.ietf.org/doc/html/rfc8017)
+    /// or unencrypted [PKCS \`8` format.](https://datatracker.ietf.org/doc/html/rfc5208)
+    /// PKCS \`8` format is supported since 2.32; earlier releases only
+    /// support PKCS \`1`. You can use the `openssl rsa` tool to convert
+    /// PKCS \`8` keys to PKCS \`1`.
+    ///
+    /// This property (or the `property::TlsCertificate::private-key-pem` property)
+    /// can be set when constructing a key (for example, from a file).
+    /// Since GLib 2.70, it is now also readable; however, be aware that if
+    /// the private key is backed by a PKCS \`11` URI – for example, if it
+    /// is stored on a smartcard – then this property will be [`None`]. If so,
+    /// the private key must be referenced via its PKCS \`11` URI,
+    /// `property::TlsCertificate::private-key-pkcs11-uri`. You must check both
+    /// properties to see if the certificate really has a private key.
+    /// When this property is read, the output format will be unencrypted
+    /// PKCS \`8`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;private-key&quot;</span>)]
+    </span><span class="kw">fn </span>private_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::ByteArray&gt;;
 
-    <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate&#39;s</span>
-    <span class="doccomment">/// private key in either [PKCS \`1` format](https://datatracker.ietf.org/doc/html/rfc8017)</span>
-    <span class="doccomment">/// (&quot;`BEGIN RSA PRIVATE KEY`&quot;) or unencrypted</span>
-    <span class="doccomment">/// [PKCS \`8` format](https://datatracker.ietf.org/doc/html/rfc5208)</span>
-    <span class="doccomment">/// (&quot;`BEGIN PRIVATE KEY`&quot;). PKCS \`8` format is supported since 2.32;</span>
-    <span class="doccomment">/// earlier releases only support PKCS \`1`. You can use the `openssl rsa`</span>
-    <span class="doccomment">/// tool to convert PKCS \`8` keys to PKCS \`1`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This property (or the `property::TlsCertificate::private-key` property)</span>
-    <span class="doccomment">/// can be set when constructing a key (for example, from a file).</span>
-    <span class="doccomment">/// Since GLib 2.70, it is now also readable; however, be aware that if</span>
-    <span class="doccomment">/// the private key is backed by a PKCS \`11` URI - for example, if it</span>
-    <span class="doccomment">/// is stored on a smartcard - then this property will be [`None`]. If so,</span>
-    <span class="doccomment">/// the private key must be referenced via its PKCS \`11` URI,</span>
-    <span class="doccomment">/// `property::TlsCertificate::private-key-pkcs11-uri`. You must check both</span>
-    <span class="doccomment">/// properties to see if the certificate really has a private key.</span>
-    <span class="doccomment">/// When this property is read, the output format will be unencrypted</span>
-    <span class="doccomment">/// PKCS \`8`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;private-key-pem&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">private_key_pem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate&#39;s
+    /// private key in either [PKCS \`1` format](https://datatracker.ietf.org/doc/html/rfc8017)
+    /// (&quot;`BEGIN RSA PRIVATE KEY`&quot;) or unencrypted
+    /// [PKCS \`8` format](https://datatracker.ietf.org/doc/html/rfc5208)
+    /// (&quot;`BEGIN PRIVATE KEY`&quot;). PKCS \`8` format is supported since 2.32;
+    /// earlier releases only support PKCS \`1`. You can use the `openssl rsa`
+    /// tool to convert PKCS \`8` keys to PKCS \`1`.
+    ///
+    /// This property (or the `property::TlsCertificate::private-key` property)
+    /// can be set when constructing a key (for example, from a file).
+    /// Since GLib 2.70, it is now also readable; however, be aware that if
+    /// the private key is backed by a PKCS \`11` URI - for example, if it
+    /// is stored on a smartcard - then this property will be [`None`]. If so,
+    /// the private key must be referenced via its PKCS \`11` URI,
+    /// `property::TlsCertificate::private-key-pkcs11-uri`. You must check both
+    /// properties to see if the certificate really has a private key.
+    /// When this property is read, the output format will be unencrypted
+    /// PKCS \`8`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;private-key-pem&quot;</span>)]
+    </span><span class="kw">fn </span>private_key_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="doccomment">/// A URI referencing a [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)</span>
-    <span class="doccomment">/// object containing a private key.</span>
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">private_key_pkcs11_uri</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// A URI referencing a [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
+    /// object containing a private key.
+    </span><span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_68&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)]
+    </span><span class="kw">fn </span>private_key_pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt;;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;dns-names&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_dns_names_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;dns-names&quot;</span>)]
+    </span><span class="kw">fn </span>connect_dns_names_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;ip-addresses&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_ip_addresses_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;ip-addresses&quot;</span>)]
+    </span><span class="kw">fn </span>connect_ip_addresses_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;issuer-name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_issuer_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;issuer-name&quot;</span>)]
+    </span><span class="kw">fn </span>connect_issuer_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;not-valid-after&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_not_valid_after_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;not-valid-after&quot;</span>)]
+    </span><span class="kw">fn </span>connect_not_valid_after_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;not-valid-before&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_not_valid_before_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;not-valid-before&quot;</span>)]
+    </span><span class="kw">fn </span>connect_not_valid_before_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;subject-name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_subject_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    #[doc(alias = <span class="string">&quot;subject-name&quot;</span>)]
+    </span><span class="kw">fn </span>connect_subject_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">TlsCertificateExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">dns_names</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">glib::Bytes</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">FromGlibPtrContainer::from_glib_container</span>(<span class="ident">ffi::g_tls_certificate_get_dns_names</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+<span class="kw">impl</span>&lt;O: IsA&lt;TlsCertificate&gt;&gt; TlsCertificateExt <span class="kw">for </span>O {
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>dns_names(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::Bytes&gt; {
+        <span class="kw">unsafe </span>{
+            FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_dns_names(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">ip_addresses</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">InetAddress</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">FromGlibPtrContainer::from_glib_container</span>(<span class="ident">ffi::g_tls_certificate_get_ip_addresses</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>ip_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;InetAddress&gt; {
+        <span class="kw">unsafe </span>{
+            FromGlibPtrContainer::from_glib_container(ffi::g_tls_certificate_get_ip_addresses(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">issuer</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_tls_certificate_get_issuer</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>issuer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_tls_certificate_get_issuer(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">issuer_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_tls_certificate_get_issuer_name</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>issuer_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_certificate_get_issuer_name(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">not_valid_after</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::DateTime</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_tls_certificate_get_not_valid_after</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>not_valid_after(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::DateTime&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_certificate_get_not_valid_after(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">not_valid_before</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::DateTime</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_tls_certificate_get_not_valid_before</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>not_valid_before(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::DateTime&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_certificate_get_not_valid_before(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">subject_name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_tls_certificate_get_subject_name</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>subject_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_tls_certificate_get_subject_name(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_same</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">cert_two</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_tls_certificate_is_same</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cert_two</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>is_same(<span class="kw-2">&amp;</span><span class="self">self</span>, cert_two: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_certificate_is_same(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                cert_two.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">verify</span>(
+    <span class="kw">fn </span>verify(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">identity</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">trusted_ca</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">TlsCertificateFlags</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_tls_certificate_verify</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">identity</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">trusted_ca</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;&gt;,
+        trusted_ca: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;&gt;,
+    ) -&gt; TlsCertificateFlags {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_tls_certificate_verify(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                identity.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                trusted_ca.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">certificate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::ByteArray</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;certificate&quot;</span>)
+    <span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::ByteArray&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;certificate&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">certificate_pem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;certificate-pem&quot;</span>)
+    <span class="kw">fn </span>certificate_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;certificate-pem&quot;</span>)
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">pkcs11_uri</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;pkcs11-uri&quot;</span>)
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_68&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
+    </span><span class="kw">fn </span>pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;pkcs11-uri&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">private_key</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::ByteArray</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;private-key&quot;</span>)
+    <span class="kw">fn </span>private_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::ByteArray&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;private-key&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">private_key_pem</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;private-key-pem&quot;</span>)
+    <span class="kw">fn </span>private_key_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;private-key-pem&quot;</span>)
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_68&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">private_key_pkcs11_uri</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::GString</span><span class="op">&gt;</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_68&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
+    </span><span class="kw">fn </span>private_key_pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_dns_names_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_dns_names_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_dns_names_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_dns_names_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::dns-names\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_dns_names_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::dns-names\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_dns_names_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_ip_addresses_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_ip_addresses_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_ip_addresses_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_ip_addresses_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::ip-addresses\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_ip_addresses_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::ip-addresses\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_ip_addresses_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_issuer_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_issuer_name_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_issuer_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_issuer_name_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::issuer-name\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_issuer_name_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::issuer-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_issuer_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_not_valid_after_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_not_valid_after_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_not_valid_after_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_not_valid_after_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::not-valid-after\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_not_valid_after_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::not-valid-after\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_not_valid_after_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_not_valid_before_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_not_valid_before_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_not_valid_before_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_not_valid_before_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::not-valid-before\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_not_valid_before_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::not-valid-before\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_not_valid_before_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>))]</span>
-    <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;dox&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;v2_70&quot;</span>)))]</span>
-    <span class="kw">fn</span> <span class="ident">connect_subject_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_subject_name_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">TlsCertificate</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GTlsCertificate</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="attribute">#[cfg(any(feature = <span class="string">&quot;v2_70&quot;</span>, feature = <span class="string">&quot;dox&quot;</span>))]
+    #[cfg_attr(feature = <span class="string">&quot;dox&quot;</span>, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
+    </span><span class="kw">fn </span>connect_subject_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_subject_name_trampoline&lt;
+            P: IsA&lt;TlsCertificate&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">TlsCertificate::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(TlsCertificate::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::subject-name\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_subject_name_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::subject-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_subject_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">TlsCertificate</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;TlsCertificate&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TlsCertificate {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;TlsCertificate&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

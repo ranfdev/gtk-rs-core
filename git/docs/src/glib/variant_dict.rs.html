@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_dict.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>variant_dict.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><script defer src="../../main.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/variant_dict.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>variant_dict.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../normalize.css"><link rel="stylesheet" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../ayu.css" disabled><link rel="stylesheet" href="../../dark.css" disabled><link rel="stylesheet" href="../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../storage.js"></script><script defer src="../../source-script.js"></script><script defer src="../../source-files.js"></script><script defer src="../../main.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../glib/index.html"><div class="logo-container"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -365,295 +360,294 @@
 <span id="287">287</span>
 <span id="288">288</span>
 <span id="289">289</span>
-</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.</span>
+</pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-<span class="kw">use</span> <span class="ident">std::borrow::Cow</span>;
-<span class="kw">use</span> <span class="ident">std::default::Default</span>;
+</span><span class="kw">use </span>std::borrow::Cow;
+<span class="kw">use </span>std::default::Default;
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::variant</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::variant_type</span>::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::variant::<span class="kw-2">*</span>;
+<span class="kw">use </span><span class="kw">crate</span>::variant_type::<span class="kw-2">*</span>;
 
-<span class="macro">wrapper!</span> {
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// `VariantDict` is a mutable key/value store where the keys are always</span>
-    <span class="doccomment">/// strings and the values are [`Variant`s](variant/struct.Variant.html).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Variant dictionaries can easily be converted to/from `Variant`s of the</span>
-    <span class="doccomment">/// appropriate type.  In `glib` terms, this is a variant of the form `&quot;a{sv}&quot;`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note, pretty much all methods on this struct will panic if the</span>
-    <span class="doccomment">/// [`end_unsafe()`](#method.end_unsafe) method was called on the instance.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GVariantDict&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">VariantDict</span>(<span class="ident">Shared</span><span class="op">&lt;</span><span class="ident">ffi::GVariantDict</span><span class="op">&gt;</span>);
+<span class="macro">wrapper! </span>{
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// `VariantDict` is a mutable key/value store where the keys are always
+    /// strings and the values are [`Variant`s](variant/struct.Variant.html).
+    ///
+    /// Variant dictionaries can easily be converted to/from `Variant`s of the
+    /// appropriate type.  In `glib` terms, this is a variant of the form `&quot;a{sv}&quot;`.
+    ///
+    /// # Panics
+    ///
+    /// Note, pretty much all methods on this struct will panic if the
+    /// [`end_unsafe()`](#method.end_unsafe) method was called on the instance.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GVariantDict&quot;</span>)]
+    </span><span class="kw">pub struct </span>VariantDict(Shared&lt;ffi::GVariantDict&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="kw-2">ref</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::g_variant_dict_ref</span>(<span class="ident">ptr</span>),
-        <span class="ident">unref</span> =&gt; <span class="op">|</span><span class="ident">ptr</span><span class="op">|</span> <span class="ident">ffi::g_variant_dict_unref</span>(<span class="ident">ptr</span>),
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_variant_dict_get_type</span>(),
+    <span class="kw">match fn </span>{
+        <span class="kw-2">ref </span>=&gt; |ptr| ffi::g_variant_dict_ref(ptr),
+        unref =&gt; |ptr| ffi::g_variant_dict_unref(ptr),
+        type_ =&gt; || ffi::g_variant_dict_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">VariantDict</span> {
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Create a new `VariantDict` optionally populating it with the given `Variant`</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Since `Variant`s are immutable, this does not couple the `VariantDict` with</span>
-    <span class="doccomment">/// the input `Variant`, instead the contents are copied into the `VariantDict`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Panics</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function will panic if the given `Variant` is not of the correct type.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_new&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">from_asv</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">Variant</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
-        <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">var</span>) <span class="op">=</span> <span class="ident">from_asv</span> {
-            <span class="macro">assert_eq!</span>(<span class="ident">var</span>.<span class="ident">type_</span>(), <span class="ident">VariantDict::static_variant_type</span>());
+<span class="kw">impl </span>VariantDict {
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Create a new `VariantDict` optionally populating it with the given `Variant`
+    ///
+    /// Since `Variant`s are immutable, this does not couple the `VariantDict` with
+    /// the input `Variant`, instead the contents are copied into the `VariantDict`.
+    ///
+    /// # Panics
+    ///
+    /// This function will panic if the given `Variant` is not of the correct type.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_new&quot;</span>)]
+    </span><span class="kw">pub fn </span>new(from_asv: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Variant&gt;) -&gt; <span class="self">Self </span>{
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(var) = from_asv {
+            <span class="macro">assert_eq!</span>(var.type_(), VariantDict::static_variant_type());
         }
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_variant_dict_new</span>(<span class="ident">from_asv</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_variant_dict_new(from_asv.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Check if this `VariantDict` contains the given key.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Look up whether or not the given key is present, returning `true` if it</span>
-    <span class="doccomment">/// is present in `self`.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_contains&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_variant_dict_contains</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Check if this `VariantDict` contains the given key.
+    ///
+    /// Look up whether or not the given key is present, returning `true` if it
+    /// is present in `self`.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_contains&quot;</span>)]
+    </span><span class="kw">pub fn </span>contains(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_variant_dict_contains(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                key.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Look up a typed value from this `VariantDict`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The given `key` is looked up in `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will return `None` if the `key` is not present in the dictionary,</span>
-    <span class="doccomment">/// and an error if the key is present but with the wrong type.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_lookup&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">FromVariant</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">T</span><span class="op">&gt;</span>, <span class="ident">VariantTypeMismatchError</span><span class="op">&gt;</span> {
-        <span class="self">self</span>.<span class="ident">lookup_value</span>(<span class="ident">key</span>, <span class="prelude-val">None</span>)
-            .<span class="ident">map</span>(<span class="op">|</span><span class="ident">v</span><span class="op">|</span> <span class="ident">Variant::try_get</span>(<span class="kw-2">&amp;</span><span class="ident">v</span>))
-            .<span class="ident">transpose</span>()
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Look up a typed value from this `VariantDict`.
+    ///
+    /// The given `key` is looked up in `self`.
+    ///
+    /// This will return `None` if the `key` is not present in the dictionary,
+    /// and an error if the key is present but with the wrong type.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_lookup&quot;</span>)]
+    </span><span class="kw">pub fn </span>lookup&lt;T: FromVariant&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;<span class="prelude-ty">Option</span>&lt;T&gt;, VariantTypeMismatchError&gt; {
+        <span class="self">self</span>.lookup_value(key, <span class="prelude-val">None</span>)
+            .map(|v| Variant::try_get(<span class="kw-2">&amp;</span>v))
+            .transpose()
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Look up and return a value from this `VariantDict`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The given `key` is looked up in `self`.  If `expected_type` is not</span>
-    <span class="doccomment">/// `None` then it will be matched against the type of any found value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This will return `None` if the `key` is not present in the dictionary</span>
-    <span class="doccomment">/// or if it is present but the type of the value does not match a given</span>
-    <span class="doccomment">/// `expected_type`.  Otherwise, `Some(value)` will be returned where</span>
-    <span class="doccomment">/// the `value` is an instance of [`Variant`](variant/struct.Variant.html).</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_lookup_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">lookup_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">expected_type</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">VariantTy</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_variant_dict_lookup_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">expected_type</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Look up and return a value from this `VariantDict`.
+    ///
+    /// The given `key` is looked up in `self`.  If `expected_type` is not
+    /// `None` then it will be matched against the type of any found value.
+    ///
+    /// This will return `None` if the `key` is not present in the dictionary
+    /// or if it is present but the type of the value does not match a given
+    /// `expected_type`.  Otherwise, `Some(value)` will be returned where
+    /// the `value` is an instance of [`Variant`](variant/struct.Variant.html).
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_lookup_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>lookup_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str, expected_type: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>VariantTy&gt;) -&gt; <span class="prelude-ty">Option</span>&lt;Variant&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_variant_dict_lookup_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                key.to_glib_none().<span class="number">0</span>,
+                expected_type.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Insert a variant into the dictionary.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The given `key`/`value` pair is inserted into `self`.  If a value</span>
-    <span class="doccomment">/// was previously associated with `key` then it is overwritten.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For convenience, you may use the [`insert()`](#method.insert) if</span>
-    <span class="doccomment">/// you have a value which implements [`ToVariant`](variant/trait.ToVariant.html).</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_insert_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert_value</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_variant_dict_insert_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Insert a variant into the dictionary.
+    ///
+    /// The given `key`/`value` pair is inserted into `self`.  If a value
+    /// was previously associated with `key` then it is overwritten.
+    ///
+    /// For convenience, you may use the [`insert()`](#method.insert) if
+    /// you have a value which implements [`ToVariant`](variant/trait.ToVariant.html).
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_insert_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>insert_value(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>Variant) {
+        <span class="kw">unsafe </span>{
+            ffi::g_variant_dict_insert_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                key.to_glib_none().<span class="number">0</span>,
+                value.to_glib_none().<span class="number">0</span>,
             )
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Insert a value into the dictionary</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The given `key`/`value` pair is inserted into `self`.  If a value</span>
-    <span class="doccomment">/// was previously associated with `key` then it is overwritten.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is a convenience method which automatically calls</span>
-    <span class="doccomment">/// [`to_variant()`](variant/trait.ToVariant.html#method.to_variant) for you</span>
-    <span class="doccomment">/// on the given value.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If, on the other hand, you have a [`Variant`](variant/struct.Variant.html)</span>
-    <span class="doccomment">/// instance already, you should use the [`insert_value()`](#method.insert_value)</span>
-    <span class="doccomment">/// method instead.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_insert_value&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">insert</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">ToVariant</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">T</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_variant_dict_insert_value</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">value</span>.<span class="ident">to_variant</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Insert a value into the dictionary
+    ///
+    /// The given `key`/`value` pair is inserted into `self`.  If a value
+    /// was previously associated with `key` then it is overwritten.
+    ///
+    /// This is a convenience method which automatically calls
+    /// [`to_variant()`](variant/trait.ToVariant.html#method.to_variant) for you
+    /// on the given value.
+    ///
+    /// If, on the other hand, you have a [`Variant`](variant/struct.Variant.html)
+    /// instance already, you should use the [`insert_value()`](#method.insert_value)
+    /// method instead.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_insert_value&quot;</span>)]
+    </span><span class="kw">pub fn </span>insert&lt;T: ToVariant&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>T) {
+        <span class="kw">unsafe </span>{
+            ffi::g_variant_dict_insert_value(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                key.to_glib_none().<span class="number">0</span>,
+                value.to_variant().to_glib_none().<span class="number">0</span>,
             )
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Remove the given `key` from the dictionary.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This removes the given `key` from the dictionary, releasing the reference</span>
-    <span class="doccomment">/// on the associated value if one is present.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If a `key`/`value` pair was removed from the dictionary, `true` is</span>
-    <span class="doccomment">/// returned.  If `key` was not present then `false` is returned instead.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_variant_dict_remove&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">key</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_variant_dict_remove</span>(
-                <span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">key</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Remove the given `key` from the dictionary.
+    ///
+    /// This removes the given `key` from the dictionary, releasing the reference
+    /// on the associated value if one is present.
+    ///
+    /// If a `key`/`value` pair was removed from the dictionary, `true` is
+    /// returned.  If `key` was not present then `false` is returned instead.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_variant_dict_remove&quot;</span>)]
+    </span><span class="kw">pub fn </span>remove(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_variant_dict_remove(
+                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                key.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)</span>
-    <span class="doccomment">/// but in doing so renders it very unsafe to use.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Safety</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// After calling this, the underlying `GVariantDict` is in a state where</span>
-    <span class="doccomment">/// the only valid operations to perform as reference ones.  As such</span>
-    <span class="doccomment">/// any attempt to read/update the dictionary *will* fail and emit warnings</span>
-    <span class="doccomment">/// of such.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// You should only use this function if the extra cost of the safe function</span>
-    <span class="doccomment">/// is too much for your performance critical codepaths</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">end_unsafe</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Variant</span> {
-        <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_variant_dict_end</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>))
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)
+    ///
+    /// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)
+    /// but in doing so renders it very unsafe to use.
+    ///
+    /// # Safety
+    ///
+    /// After calling this, the underlying `GVariantDict` is in a state where
+    /// the only valid operations to perform as reference ones.  As such
+    /// any attempt to read/update the dictionary *will* fail and emit warnings
+    /// of such.
+    ///
+    /// You should only use this function if the extra cost of the safe function
+    /// is too much for your performance critical codepaths
+    </span><span class="kw">pub unsafe fn </span>end_unsafe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Variant {
+        from_glib_none(ffi::g_variant_dict_end(<span class="self">self</span>.to_glib_none().<span class="number">0</span>))
     }
 
-    <span class="comment">// rustdoc-stripper-ignore-next</span>
-    <span class="doccomment">/// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)</span>
-    <span class="doccomment">/// and then reinitialises itself in order to be safe for further use.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If you are certain that nothing other than disposing of references will</span>
-    <span class="doccomment">/// be done after ending the instance, you can call the</span>
-    <span class="doccomment">/// [`end_unsafe()`](#method.end_unsafe) method instead to avoid the unnecessary</span>
-    <span class="doccomment">/// reinitialisation of the dictionary.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">end</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Variant</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">end_unsafe</span>();
-            <span class="comment">// Reinitialise the dict so that we can continue safely</span>
-            <span class="ident">ffi::g_variant_dict_init</span>(<span class="self">self</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="prelude-val">None</span>::<span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
-            <span class="ident">ret</span>
+    <span class="comment">// rustdoc-stripper-ignore-next
+    </span><span class="doccomment">/// Convert this dictionary to a [`Variant`](variant/struct.Variant.html)
+    ///
+    /// This method converts `self` into an instance of [`Variant`](variant/struct.Variant.html)
+    /// and then reinitialises itself in order to be safe for further use.
+    ///
+    /// If you are certain that nothing other than disposing of references will
+    /// be done after ending the instance, you can call the
+    /// [`end_unsafe()`](#method.end_unsafe) method instead to avoid the unnecessary
+    /// reinitialisation of the dictionary.
+    </span><span class="kw">pub fn </span>end(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Variant {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>ret = <span class="self">self</span>.end_unsafe();
+            <span class="comment">// Reinitialise the dict so that we can continue safely
+            </span>ffi::g_variant_dict_init(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, <span class="prelude-val">None</span>::&lt;Variant&gt;.to_glib_none().<span class="number">0</span>);
+            ret
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">VariantDict</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="prelude-val">None</span>)
+<span class="kw">impl </span>Default <span class="kw">for </span>VariantDict {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="prelude-val">None</span>)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">StaticVariantType</span> <span class="kw">for</span> <span class="ident">VariantDict</span> {
-    <span class="kw">fn</span> <span class="ident">static_variant_type</span>() -&gt; <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span>, <span class="ident">VariantTy</span><span class="op">&gt;</span> {
-        <span class="ident">Cow::Borrowed</span>(<span class="ident">VariantTy::VARDICT</span>)
+<span class="kw">impl </span>StaticVariantType <span class="kw">for </span>VariantDict {
+    <span class="kw">fn </span>static_variant_type() -&gt; Cow&lt;<span class="lifetime">&#39;static</span>, VariantTy&gt; {
+        Cow::Borrowed(VariantTy::VARDICT)
     }
 }
 
-<span class="kw">impl</span> <span class="ident">ToVariant</span> <span class="kw">for</span> <span class="ident">VariantDict</span> {
-    <span class="kw">fn</span> <span class="ident">to_variant</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Variant</span> {
-        <span class="self">self</span>.<span class="ident">end</span>()
+<span class="kw">impl </span>ToVariant <span class="kw">for </span>VariantDict {
+    <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Variant {
+        <span class="self">self</span>.end()
     }
 }
 
-<span class="kw">impl</span> <span class="ident">FromVariant</span> <span class="kw">for</span> <span class="ident">VariantDict</span> {
-    <span class="kw">fn</span> <span class="ident">from_variant</span>(<span class="ident">variant</span>: <span class="kw-2">&amp;</span><span class="ident">Variant</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="ident">variant</span>.<span class="ident">type_</span>() <span class="op">==</span> <span class="ident">VariantDict::static_variant_type</span>() {
-            <span class="prelude-val">Some</span>(<span class="ident"><span class="self">Self</span>::new</span>(<span class="prelude-val">Some</span>(<span class="ident">variant</span>)))
-        } <span class="kw">else</span> {
-            <span class="prelude-val">None</span>
-        }
+<span class="kw">impl </span>FromVariant <span class="kw">for </span>VariantDict {
+    <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>Variant) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">if </span>variant.type_() == VariantDict::static_variant_type() {
+            <span class="prelude-val">Some</span>(<span class="self">Self</span>::new(<span class="prelude-val">Some</span>(variant)))
+        } <span class="kw">else </span>{
+            <span class="prelude-val">None
+        </span>}
     }
 }
 
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Variant</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">VariantDict</span> {
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">other</span>: <span class="ident">Variant</span>) -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>))
+<span class="kw">impl </span>From&lt;Variant&gt; <span class="kw">for </span>VariantDict {
+    <span class="kw">fn </span>from(other: Variant) -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>other))
     }
 }
 
-<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">test</span>)]</span>
-<span class="kw">mod</span> <span class="ident">test</span> {
-    <span class="kw">use</span> <span class="kw">super</span>::<span class="kw-2">*</span>;
+<span class="attribute">#[cfg(test)]
+</span><span class="kw">mod </span>test {
+    <span class="kw">use super</span>::<span class="kw-2">*</span>;
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_destroy</span>() {
-        <span class="kw">let</span> <span class="ident">_dict</span> <span class="op">=</span> <span class="ident">VariantDict::new</span>(<span class="prelude-val">None</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_destroy() {
+        <span class="kw">let </span>_dict = VariantDict::new(<span class="prelude-val">None</span>);
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_roundtrip</span>() {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::default</span>();
-        <span class="kw">let</span> <span class="ident">var</span>: <span class="ident">Variant</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">to_variant</span>();
-        <span class="kw">let</span> <span class="ident">_dict2</span>: <span class="ident">VariantDict</span> <span class="op">=</span> <span class="ident">var</span>.<span class="ident">into</span>();
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_roundtrip() {
+        <span class="kw">let </span>dict = VariantDict::default();
+        <span class="kw">let </span>var: Variant = dict.to_variant();
+        <span class="kw">let </span>_dict2: VariantDict = var.into();
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_populate_destroy</span>() {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::default</span>();
-        <span class="ident">dict</span>.<span class="ident">insert_value</span>(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.<span class="ident">to_variant</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dict</span>.<span class="ident">lookup_value</span>(<span class="string">&quot;one&quot;</span>, <span class="prelude-val">None</span>), <span class="prelude-val">Some</span>(<span class="number">1u8</span>.<span class="ident">to_variant</span>()));
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_populate_destroy() {
+        <span class="kw">let </span>dict = VariantDict::default();
+        dict.insert_value(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.to_variant()));
+        <span class="macro">assert_eq!</span>(dict.lookup_value(<span class="string">&quot;one&quot;</span>, <span class="prelude-val">None</span>), <span class="prelude-val">Some</span>(<span class="number">1u8</span>.to_variant()));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_populate_roundtrip</span>() {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::default</span>();
-        <span class="ident">dict</span>.<span class="ident">insert_value</span>(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.<span class="ident">to_variant</span>()));
-        <span class="kw">let</span> <span class="ident">var</span>: <span class="ident">Variant</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">to_variant</span>();
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::from_variant</span>(<span class="kw-2">&amp;</span><span class="ident">var</span>).<span class="ident">expect</span>(<span class="string">&quot;Not a dict?&quot;</span>);
-        <span class="macro">assert_eq!</span>(<span class="ident">dict</span>.<span class="ident">lookup_value</span>(<span class="string">&quot;one&quot;</span>, <span class="prelude-val">None</span>), <span class="prelude-val">Some</span>(<span class="number">1u8</span>.<span class="ident">to_variant</span>()));
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_populate_roundtrip() {
+        <span class="kw">let </span>dict = VariantDict::default();
+        dict.insert_value(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.to_variant()));
+        <span class="kw">let </span>var: Variant = dict.to_variant();
+        <span class="kw">let </span>dict = VariantDict::from_variant(<span class="kw-2">&amp;</span>var).expect(<span class="string">&quot;Not a dict?&quot;</span>);
+        <span class="macro">assert_eq!</span>(dict.lookup_value(<span class="string">&quot;one&quot;</span>, <span class="prelude-val">None</span>), <span class="prelude-val">Some</span>(<span class="number">1u8</span>.to_variant()));
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">lookup</span>() -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">Box</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::error::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::default</span>();
-        <span class="ident">dict</span>.<span class="ident">insert_value</span>(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.<span class="ident">to_variant</span>()));
-        <span class="macro">assert_eq!</span>(<span class="ident">dict</span>.<span class="ident">lookup</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="string">&quot;one&quot;</span>)<span class="question-mark">?</span>.<span class="ident">unwrap</span>(), <span class="number">1u8</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>lookup() -&gt; <span class="prelude-ty">Result</span>&lt;(), Box&lt;<span class="kw">dyn </span>std::error::Error&gt;&gt; {
+        <span class="kw">let </span>dict = VariantDict::default();
+        dict.insert_value(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span>(<span class="number">1u8</span>.to_variant()));
+        <span class="macro">assert_eq!</span>(dict.lookup::&lt;u8&gt;(<span class="string">&quot;one&quot;</span>)<span class="question-mark">?</span>.unwrap(), <span class="number">1u8</span>);
         <span class="macro">assert_eq!</span>(
-            <span class="ident">dict</span>.<span class="ident">lookup</span>::<span class="op">&lt;</span><span class="ident">String</span><span class="op">&gt;</span>(<span class="string">&quot;one&quot;</span>).<span class="ident">err</span>().<span class="ident">unwrap</span>().<span class="ident">actual</span>,
-            <span class="ident">u8::static_variant_type</span>()
+            dict.lookup::&lt;String&gt;(<span class="string">&quot;one&quot;</span>).err().unwrap().actual,
+            u8::static_variant_type()
         );
-        <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">lookup</span>::<span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>(<span class="string">&quot;two&quot;</span>)<span class="question-mark">?</span>.<span class="ident">is_none</span>());
+        <span class="macro">assert!</span>(dict.lookup::&lt;u8&gt;(<span class="string">&quot;two&quot;</span>)<span class="question-mark">?</span>.is_none());
         <span class="prelude-val">Ok</span>(())
     }
 
-    <span class="attribute">#[<span class="ident">test</span>]</span>
-    <span class="kw">fn</span> <span class="ident">create_populate_remove</span>() {
-        <span class="kw">let</span> <span class="ident">dict</span> <span class="op">=</span> <span class="ident">VariantDict::default</span>();
-        <span class="kw">let</span> <span class="ident">empty_var</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">to_variant</span>();
-        <span class="ident">dict</span>.<span class="ident">insert</span>(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span><span class="number">1u64</span>);
-        <span class="macro">assert!</span>(<span class="ident">dict</span>.<span class="ident">remove</span>(<span class="string">&quot;one&quot;</span>));
-        <span class="macro">assert!</span>(<span class="op">!</span><span class="ident">dict</span>.<span class="ident">remove</span>(<span class="string">&quot;one&quot;</span>));
-        <span class="kw">let</span> <span class="ident">var2</span> <span class="op">=</span> <span class="ident">dict</span>.<span class="ident">to_variant</span>();
-        <span class="macro">assert_eq!</span>(<span class="ident">empty_var</span>, <span class="ident">var2</span>);
+    <span class="attribute">#[test]
+    </span><span class="kw">fn </span>create_populate_remove() {
+        <span class="kw">let </span>dict = VariantDict::default();
+        <span class="kw">let </span>empty_var = dict.to_variant();
+        dict.insert(<span class="string">&quot;one&quot;</span>, <span class="kw-2">&amp;</span><span class="number">1u64</span>);
+        <span class="macro">assert!</span>(dict.remove(<span class="string">&quot;one&quot;</span>));
+        <span class="macro">assert!</span>(!dict.remove(<span class="string">&quot;one&quot;</span>));
+        <span class="kw">let </span>var2 = dict.to_variant();
+        <span class="macro">assert_eq!</span>(empty_var, var2);
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../" data-current-crate="glib" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

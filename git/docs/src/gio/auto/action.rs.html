@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/action.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>action.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/action.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>action.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -552,482 +547,481 @@
 <span id="474">474</span>
 <span id="475">475</span>
 <span id="476">476</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// [`Action`][crate::Action] represents a single named action.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The main interface to an action is that it can be activated with</span>
-    <span class="doccomment">/// [`ActionExt::activate()`][crate::prelude::ActionExt::activate()]. This results in the &#39;activate&#39; signal being</span>
-    <span class="doccomment">/// emitted. An activation has a [`glib::Variant`][struct@crate::glib::Variant] parameter (which may be</span>
-    <span class="doccomment">/// [`None`]). The correct type for the parameter is determined by a static</span>
-    <span class="doccomment">/// parameter type (which is given at construction time).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// An action may optionally have a state, in which case the state may be</span>
-    <span class="doccomment">/// set with [`ActionExt::change_state()`][crate::prelude::ActionExt::change_state()]. This call takes a [`glib::Variant`][struct@crate::glib::Variant]. The</span>
-    <span class="doccomment">/// correct type for the state is determined by a static state type</span>
-    <span class="doccomment">/// (which is given at construction time).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The state may have a hint associated with it, specifying its valid</span>
-    <span class="doccomment">/// range.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`Action`][crate::Action] is merely the interface to the concept of an action, as</span>
-    <span class="doccomment">/// described above. Various implementations of actions exist, including</span>
-    <span class="doccomment">/// [`SimpleAction`][crate::SimpleAction].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In all cases, the implementing class is responsible for storing the</span>
-    <span class="doccomment">/// name of the action, the parameter type, the enabled state, the</span>
-    <span class="doccomment">/// optional state type and the state and emitting the appropriate</span>
-    <span class="doccomment">/// signals when these change. The implementor is responsible for filtering</span>
-    <span class="doccomment">/// calls to [`ActionExt::activate()`][crate::prelude::ActionExt::activate()] and [`ActionExt::change_state()`][crate::prelude::ActionExt::change_state()] for type</span>
-    <span class="doccomment">/// safety and for the state being enabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Probably the only useful thing to do with a [`Action`][crate::Action] is to put it</span>
-    <span class="doccomment">/// inside of a [`SimpleActionGroup`][crate::SimpleActionGroup].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`ActionExt`][trait@crate::prelude::ActionExt]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GAction&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Action</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GAction</span>, <span class="ident">ffi::GActionInterface</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// [`Action`][crate::Action] represents a single named action.
+    ///
+    /// The main interface to an action is that it can be activated with
+    /// [`ActionExt::activate()`][crate::prelude::ActionExt::activate()]. This results in the &#39;activate&#39; signal being
+    /// emitted. An activation has a [`glib::Variant`][struct@crate::glib::Variant] parameter (which may be
+    /// [`None`]). The correct type for the parameter is determined by a static
+    /// parameter type (which is given at construction time).
+    ///
+    /// An action may optionally have a state, in which case the state may be
+    /// set with [`ActionExt::change_state()`][crate::prelude::ActionExt::change_state()]. This call takes a [`glib::Variant`][struct@crate::glib::Variant]. The
+    /// correct type for the state is determined by a static state type
+    /// (which is given at construction time).
+    ///
+    /// The state may have a hint associated with it, specifying its valid
+    /// range.
+    ///
+    /// [`Action`][crate::Action] is merely the interface to the concept of an action, as
+    /// described above. Various implementations of actions exist, including
+    /// [`SimpleAction`][crate::SimpleAction].
+    ///
+    /// In all cases, the implementing class is responsible for storing the
+    /// name of the action, the parameter type, the enabled state, the
+    /// optional state type and the state and emitting the appropriate
+    /// signals when these change. The implementor is responsible for filtering
+    /// calls to [`ActionExt::activate()`][crate::prelude::ActionExt::activate()] and [`ActionExt::change_state()`][crate::prelude::ActionExt::change_state()] for type
+    /// safety and for the state being enabled.
+    ///
+    /// Probably the only useful thing to do with a [`Action`][crate::Action] is to put it
+    /// inside of a [`SimpleActionGroup`][crate::SimpleActionGroup].
+    ///
+    /// # Implements
+    ///
+    /// [`ActionExt`][trait@crate::prelude::ActionExt]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GAction&quot;</span>)]
+    </span><span class="kw">pub struct </span>Action(Interface&lt;ffi::GAction, ffi::GActionInterface&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_action_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_action_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Action</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">Action</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>Action {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Action&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Checks if `action_name` is valid.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `action_name` is valid if it consists only of alphanumeric characters,</span>
-    <span class="doccomment">/// plus &#39;-&#39; and &#39;.&#39;. The empty string is not a valid action name.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function with a non-utf8 `action_name`.</span>
-    <span class="doccomment">/// `action_name` must not be [`None`].</span>
-    <span class="doccomment">/// ## `action_name`</span>
-    <span class="doccomment">/// a potential action name</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if `action_name` is valid</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_name_is_valid&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name_is_valid</span>(<span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_action_name_is_valid</span>(<span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="doccomment">/// Checks if `action_name` is valid.
+    ///
+    /// `action_name` is valid if it consists only of alphanumeric characters,
+    /// plus &#39;-&#39; and &#39;.&#39;. The empty string is not a valid action name.
+    ///
+    /// It is an error to call this function with a non-utf8 `action_name`.
+    /// `action_name` must not be [`None`].
+    /// ## `action_name`
+    /// a potential action name
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `action_name` is valid
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_name_is_valid&quot;</span>)]
+    </span><span class="kw">pub fn </span>name_is_valid(action_name: <span class="kw-2">&amp;</span>str) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_action_name_is_valid(action_name.to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="doccomment">/// Parses a detailed action name into its separate name and target</span>
-    <span class="doccomment">/// components.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Detailed action names can have three formats.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The first format is used to represent an action name with no target</span>
-    <span class="doccomment">/// value and consists of just an action name containing no whitespace</span>
-    <span class="doccomment">/// nor the characters &#39;:&#39;, &#39;(&#39; or &#39;)&#39;. For example: &quot;app.action&quot;.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The second format is used to represent an action with a target value</span>
-    <span class="doccomment">/// that is a non-empty string consisting only of alphanumerics, plus &#39;-&#39;</span>
-    <span class="doccomment">/// and &#39;.&#39;. In that case, the action name and target value are</span>
-    <span class="doccomment">/// separated by a double colon (&quot;::&quot;). For example:</span>
-    <span class="doccomment">/// &quot;app.action::target&quot;.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The third format is used to represent an action with any type of</span>
-    <span class="doccomment">/// target value, including strings. The target value follows the action</span>
-    <span class="doccomment">/// name, surrounded in parens. For example: &quot;app.action(42)&quot;. The</span>
-    <span class="doccomment">/// target value is parsed using `g_variant_parse()`. If a tuple-typed</span>
-    <span class="doccomment">/// value is desired, it must be specified in the same way, resulting in</span>
-    <span class="doccomment">/// two sets of parens, for example: &quot;app.action((1,2,3))&quot;. A string</span>
-    <span class="doccomment">/// target can be specified this way as well: &quot;app.action(&#39;target&#39;)&quot;.</span>
-    <span class="doccomment">/// For strings, this third format must be used if * target value is</span>
-    <span class="doccomment">/// empty or contains characters other than alphanumerics, &#39;-&#39; and &#39;.&#39;.</span>
-    <span class="doccomment">/// ## `detailed_name`</span>
-    <span class="doccomment">/// a detailed action name</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if successful, else [`false`] with `error` set</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `action_name`</span>
-    <span class="doccomment">/// the action name</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `target_value`</span>
-    <span class="doccomment">/// the target value, or [`None`] for no target</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_parse_detailed_name&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">parse_detailed_name</span>(
-        <span class="ident">detailed_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">glib::GString</span>, <span class="ident">glib::Variant</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">action_name</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">target_value</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_action_parse_detailed_name</span>(
-                <span class="ident">detailed_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">action_name</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">target_value</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="doccomment">/// Parses a detailed action name into its separate name and target
+    /// components.
+    ///
+    /// Detailed action names can have three formats.
+    ///
+    /// The first format is used to represent an action name with no target
+    /// value and consists of just an action name containing no whitespace
+    /// nor the characters &#39;:&#39;, &#39;(&#39; or &#39;)&#39;. For example: &quot;app.action&quot;.
+    ///
+    /// The second format is used to represent an action with a target value
+    /// that is a non-empty string consisting only of alphanumerics, plus &#39;-&#39;
+    /// and &#39;.&#39;. In that case, the action name and target value are
+    /// separated by a double colon (&quot;::&quot;). For example:
+    /// &quot;app.action::target&quot;.
+    ///
+    /// The third format is used to represent an action with any type of
+    /// target value, including strings. The target value follows the action
+    /// name, surrounded in parens. For example: &quot;app.action(42)&quot;. The
+    /// target value is parsed using `g_variant_parse()`. If a tuple-typed
+    /// value is desired, it must be specified in the same way, resulting in
+    /// two sets of parens, for example: &quot;app.action((1,2,3))&quot;. A string
+    /// target can be specified this way as well: &quot;app.action(&#39;target&#39;)&quot;.
+    /// For strings, this third format must be used if * target value is
+    /// empty or contains characters other than alphanumerics, &#39;-&#39; and &#39;.&#39;.
+    /// ## `detailed_name`
+    /// a detailed action name
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if successful, else [`false`] with `error` set
+    ///
+    /// ## `action_name`
+    /// the action name
+    ///
+    /// ## `target_value`
+    /// the target value, or [`None`] for no target
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_parse_detailed_name&quot;</span>)]
+    </span><span class="kw">pub fn </span>parse_detailed_name(
+        detailed_name: <span class="kw-2">&amp;</span>str,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(glib::GString, glib::Variant), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>action_name = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>target_value = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_action_parse_detailed_name(
+                detailed_name.to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>action_name,
+                <span class="kw-2">&amp;mut </span>target_value,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">action_name</span>), <span class="ident">from_glib_full</span>(<span class="ident">target_value</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(action_name), from_glib_full(target_value)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Formats a detailed action name from `action_name` and `target_value`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It is an error to call this function with an invalid action name.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is the opposite of [`parse_detailed_name()`][Self::parse_detailed_name()].</span>
-    <span class="doccomment">/// It will produce a string that can be parsed back to the `action_name`</span>
-    <span class="doccomment">/// and `target_value` by that function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See that function for the types of strings that will be printed by</span>
-    <span class="doccomment">/// this function.</span>
-    <span class="doccomment">/// ## `action_name`</span>
-    <span class="doccomment">/// a valid action name</span>
-    <span class="doccomment">/// ## `target_value`</span>
-    <span class="doccomment">/// a [`glib::Variant`][struct@crate::glib::Variant] target value, or [`None`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a detailed format string</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_print_detailed_name&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">print_detailed_name</span>(
-        <span class="ident">action_name</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>,
-        <span class="ident">target_value</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="ident">glib::GString</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_action_print_detailed_name</span>(
-                <span class="ident">action_name</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">target_value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="doccomment">/// Formats a detailed action name from `action_name` and `target_value`.
+    ///
+    /// It is an error to call this function with an invalid action name.
+    ///
+    /// This function is the opposite of [`parse_detailed_name()`][Self::parse_detailed_name()].
+    /// It will produce a string that can be parsed back to the `action_name`
+    /// and `target_value` by that function.
+    ///
+    /// See that function for the types of strings that will be printed by
+    /// this function.
+    /// ## `action_name`
+    /// a valid action name
+    /// ## `target_value`
+    /// a [`glib::Variant`][struct@crate::glib::Variant] target value, or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// a detailed format string
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_print_detailed_name&quot;</span>)]
+    </span><span class="kw">pub fn </span>print_detailed_name(
+        action_name: <span class="kw-2">&amp;</span>str,
+        target_value: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;,
+    ) -&gt; glib::GString {
+        <span class="kw">unsafe </span>{
+            from_glib_full(ffi::g_action_print_detailed_name(
+                action_name.to_glib_none().<span class="number">0</span>,
+                target_value.to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@Action`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`Action`][struct@crate::Action], [`PropertyAction`][struct@crate::PropertyAction], [`SimpleAction`][struct@crate::SimpleAction]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ActionExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Activates the action.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `parameter` must be the correct type of parameter for the action (ie:</span>
-    <span class="doccomment">/// the parameter type given at construction time). If the parameter</span>
-    <span class="doccomment">/// type was [`None`] then `parameter` must also be [`None`].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `parameter` GVariant is floating, it is consumed.</span>
-    <span class="doccomment">/// ## `parameter`</span>
-    <span class="doccomment">/// the parameter to the activation</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_activate&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">activate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parameter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>);
+<span class="doccomment">/// Trait containing all [`struct@Action`] methods.
+///
+/// # Implementors
+///
+/// [`Action`][struct@crate::Action], [`PropertyAction`][struct@crate::PropertyAction], [`SimpleAction`][struct@crate::SimpleAction]
+</span><span class="kw">pub trait </span>ActionExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Activates the action.
+    ///
+    /// `parameter` must be the correct type of parameter for the action (ie:
+    /// the parameter type given at construction time). If the parameter
+    /// type was [`None`] then `parameter` must also be [`None`].
+    ///
+    /// If the `parameter` GVariant is floating, it is consumed.
+    /// ## `parameter`
+    /// the parameter to the activation
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_activate&quot;</span>)]
+    </span><span class="kw">fn </span>activate(<span class="kw-2">&amp;</span><span class="self">self</span>, parameter: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;);
 
-    <span class="doccomment">/// Request for the state of `self` to be changed to `value`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The action must be stateful and `value` must be of the correct type.</span>
-    <span class="doccomment">/// See [`state_type()`][Self::state_type()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This call merely requests a change. The action may refuse to change</span>
-    <span class="doccomment">/// its state or may change its state to something other than `value`.</span>
-    <span class="doccomment">/// See [`state_hint()`][Self::state_hint()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the `value` GVariant is floating, it is consumed.</span>
-    <span class="doccomment">/// ## `value`</span>
-    <span class="doccomment">/// the new state</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_change_state&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">change_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>);
+    <span class="doccomment">/// Request for the state of `self` to be changed to `value`.
+    ///
+    /// The action must be stateful and `value` must be of the correct type.
+    /// See [`state_type()`][Self::state_type()].
+    ///
+    /// This call merely requests a change. The action may refuse to change
+    /// its state or may change its state to something other than `value`.
+    /// See [`state_hint()`][Self::state_hint()].
+    ///
+    /// If the `value` GVariant is floating, it is consumed.
+    /// ## `value`
+    /// the new state
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_change_state&quot;</span>)]
+    </span><span class="kw">fn </span>change_state(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>glib::Variant);
 
-    <span class="doccomment">/// Checks if `self` is currently enabled.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// An action must be enabled in order to be activated or in order to</span>
-    <span class="doccomment">/// have its state changed from outside callers.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// whether the action is enabled</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_enabled&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_enabled&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Checks if `self` is currently enabled.
+    ///
+    /// An action must be enabled in order to be activated or in order to
+    /// have its state changed from outside callers.
+    ///
+    /// # Returns
+    ///
+    /// whether the action is enabled
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_enabled&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_enabled&quot;</span>)]
+    </span><span class="kw">fn </span>is_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Queries the name of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the name of the action</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_name&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::GString</span>;
+    <span class="doccomment">/// Queries the name of `self`.
+    ///
+    /// # Returns
+    ///
+    /// the name of the action
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_name&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_name&quot;</span>)]
+    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString;
 
-    <span class="doccomment">/// Queries the type of the parameter that must be given when activating</span>
-    <span class="doccomment">/// `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When activating the action using [`activate()`][Self::activate()], the [`glib::Variant`][struct@crate::glib::Variant]</span>
-    <span class="doccomment">/// given to that function must be of the type returned by this function.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In the case that this function returns [`None`], you must not give any</span>
-    <span class="doccomment">/// [`glib::Variant`][struct@crate::glib::Variant], but [`None`] instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the parameter type</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_parameter_type&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_parameter_type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">parameter_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::VariantType</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Queries the type of the parameter that must be given when activating
+    /// `self`.
+    ///
+    /// When activating the action using [`activate()`][Self::activate()], the [`glib::Variant`][struct@crate::glib::Variant]
+    /// given to that function must be of the type returned by this function.
+    ///
+    /// In the case that this function returns [`None`], you must not give any
+    /// [`glib::Variant`][struct@crate::glib::Variant], but [`None`] instead.
+    ///
+    /// # Returns
+    ///
+    /// the parameter type
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_parameter_type&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_parameter_type&quot;</span>)]
+    </span><span class="kw">fn </span>parameter_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::VariantType&gt;;
 
-    <span class="doccomment">/// Queries the current state of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action is not stateful then [`None`] will be returned. If the</span>
-    <span class="doccomment">/// action is stateful then the type of the return value is the type</span>
-    <span class="doccomment">/// given by [`state_type()`][Self::state_type()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value (if non-[`None`]) should be freed with</span>
-    <span class="doccomment">/// `g_variant_unref()` when it is no longer required.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the current state of the action</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_state&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_state&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Queries the current state of `self`.
+    ///
+    /// If the action is not stateful then [`None`] will be returned. If the
+    /// action is stateful then the type of the return value is the type
+    /// given by [`state_type()`][Self::state_type()].
+    ///
+    /// The return value (if non-[`None`]) should be freed with
+    /// `g_variant_unref()` when it is no longer required.
+    ///
+    /// # Returns
+    ///
+    /// the current state of the action
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_state&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_state&quot;</span>)]
+    </span><span class="kw">fn </span>state(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt;;
 
-    <span class="doccomment">/// Requests a hint about the valid range of values for the state of</span>
-    <span class="doccomment">/// `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If [`None`] is returned it either means that the action is not stateful</span>
-    <span class="doccomment">/// or that there is no hint about the valid range of values for the</span>
-    <span class="doccomment">/// state of the action.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If a [`glib::Variant`][struct@crate::glib::Variant] array is returned then each item in the array is a</span>
-    <span class="doccomment">/// possible value for the state. If a [`glib::Variant`][struct@crate::glib::Variant] pair (ie: two-tuple) is</span>
-    <span class="doccomment">/// returned then the tuple specifies the inclusive lower and upper bound</span>
-    <span class="doccomment">/// of valid values for the state.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In any case, the information is merely a hint. It may be possible to</span>
-    <span class="doccomment">/// have a state value outside of the hinted range and setting a value</span>
-    <span class="doccomment">/// within the range may fail.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The return value (if non-[`None`]) should be freed with</span>
-    <span class="doccomment">/// `g_variant_unref()` when it is no longer required.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the state range hint</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_state_hint&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_state_hint&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">state_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Requests a hint about the valid range of values for the state of
+    /// `self`.
+    ///
+    /// If [`None`] is returned it either means that the action is not stateful
+    /// or that there is no hint about the valid range of values for the
+    /// state of the action.
+    ///
+    /// If a [`glib::Variant`][struct@crate::glib::Variant] array is returned then each item in the array is a
+    /// possible value for the state. If a [`glib::Variant`][struct@crate::glib::Variant] pair (ie: two-tuple) is
+    /// returned then the tuple specifies the inclusive lower and upper bound
+    /// of valid values for the state.
+    ///
+    /// In any case, the information is merely a hint. It may be possible to
+    /// have a state value outside of the hinted range and setting a value
+    /// within the range may fail.
+    ///
+    /// The return value (if non-[`None`]) should be freed with
+    /// `g_variant_unref()` when it is no longer required.
+    ///
+    /// # Returns
+    ///
+    /// the state range hint
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_state_hint&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_state_hint&quot;</span>)]
+    </span><span class="kw">fn </span>state_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt;;
 
-    <span class="doccomment">/// Queries the type of the state of `self`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action is stateful (e.g. created with</span>
-    <span class="doccomment">/// [`SimpleAction::new_stateful()`][crate::SimpleAction::new_stateful()]) then this function returns the</span>
-    <span class="doccomment">/// [`glib::VariantType`][crate::glib::VariantType] of the state. This is the type of the initial value</span>
-    <span class="doccomment">/// given as the state. All calls to [`change_state()`][Self::change_state()] must give a</span>
-    <span class="doccomment">/// [`glib::Variant`][struct@crate::glib::Variant] of this type and [`state()`][Self::state()] will return a</span>
-    <span class="doccomment">/// [`glib::Variant`][struct@crate::glib::Variant] of the same type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the action is not stateful (e.g. created with [`SimpleAction::new()`][crate::SimpleAction::new()])</span>
-    <span class="doccomment">/// then this function will return [`None`]. In that case, [`state()`][Self::state()]</span>
-    <span class="doccomment">/// will return [`None`] and you must not call [`change_state()`][Self::change_state()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the state type, if the action is stateful</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_action_get_state_type&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_state_type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">state_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::VariantType</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Queries the type of the state of `self`.
+    ///
+    /// If the action is stateful (e.g. created with
+    /// [`SimpleAction::new_stateful()`][crate::SimpleAction::new_stateful()]) then this function returns the
+    /// [`glib::VariantType`][crate::glib::VariantType] of the state. This is the type of the initial value
+    /// given as the state. All calls to [`change_state()`][Self::change_state()] must give a
+    /// [`glib::Variant`][struct@crate::glib::Variant] of this type and [`state()`][Self::state()] will return a
+    /// [`glib::Variant`][struct@crate::glib::Variant] of the same type.
+    ///
+    /// If the action is not stateful (e.g. created with [`SimpleAction::new()`][crate::SimpleAction::new()])
+    /// then this function will return [`None`]. In that case, [`state()`][Self::state()]
+    /// will return [`None`] and you must not call [`change_state()`][Self::change_state()].
+    ///
+    /// # Returns
+    ///
+    /// the state type, if the action is stateful
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_action_get_state_type&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_state_type&quot;</span>)]
+    </span><span class="kw">fn </span>state_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::VariantType&gt;;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;enabled&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_enabled_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;enabled&quot;</span>)]
+    </span><span class="kw">fn </span>connect_enabled_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;name&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;name&quot;</span>)]
+    </span><span class="kw">fn </span>connect_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;parameter-type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_parameter_type_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;parameter-type&quot;</span>)]
+    </span><span class="kw">fn </span>connect_parameter_type_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;state&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_state_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;state&quot;</span>)]
+    </span><span class="kw">fn </span>connect_state_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;state-type&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_state_type_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;state-type&quot;</span>)]
+    </span><span class="kw">fn </span>connect_state_type_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">ActionExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">activate</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">parameter</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_action_activate</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">parameter</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+<span class="kw">impl</span>&lt;O: IsA&lt;Action&gt;&gt; ActionExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>activate(<span class="kw-2">&amp;</span><span class="self">self</span>, parameter: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Variant&gt;) {
+        <span class="kw">unsafe </span>{
+            ffi::g_action_activate(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, parameter.to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">change_state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">value</span>: <span class="kw-2">&amp;</span><span class="ident">glib::Variant</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_action_change_state</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">value</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+    <span class="kw">fn </span>change_state(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span>glib::Variant) {
+        <span class="kw">unsafe </span>{
+            ffi::g_action_change_state(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, value.to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_enabled</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib</span>(<span class="ident">ffi::g_action_get_enabled</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>is_enabled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_action_get_enabled(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">glib::GString</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_action_get_name</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_action_get_name(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">parameter_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::VariantType</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_action_get_parameter_type</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>parameter_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::VariantType&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::g_action_get_parameter_type(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">state</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_action_get_state</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>state(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_action_get_state(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">state_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Variant</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_action_get_state_hint</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>state_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Variant&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_action_get_state_hint(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">state_type</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::VariantType</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_action_get_state_type</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>)) }
+    <span class="kw">fn </span>state_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::VariantType&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_action_get_state_type(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_enabled_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_enabled_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GAction</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_enabled_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_enabled_trampoline&lt;P: IsA&lt;Action&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GAction,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Action::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Action::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::enabled\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_enabled_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::enabled\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_enabled_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_name_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_name_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GAction</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_name_trampoline&lt;P: IsA&lt;Action&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GAction,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Action::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Action::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::name\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_name_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_parameter_type_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_parameter_type_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GAction</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_parameter_type_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_parameter_type_trampoline&lt;
+            P: IsA&lt;Action&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GAction,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Action::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Action::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::parameter-type\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_parameter_type_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::parameter-type\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_parameter_type_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_state_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_state_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GAction</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_state_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_state_trampoline&lt;P: IsA&lt;Action&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GAction,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Action::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Action::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::state\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_state_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::state\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_state_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_state_type_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_state_type_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Action</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GAction</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_state_type_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_state_type_trampoline&lt;P: IsA&lt;Action&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GAction,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">Action::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(Action::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::state-type\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_state_type_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::state-type\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_state_type_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">Action</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;Action&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Action {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;Action&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

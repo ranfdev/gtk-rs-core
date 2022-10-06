@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/network_monitor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>network_monitor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/network_monitor.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>network_monitor.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -484,414 +479,413 @@
 <span id="406">406</span>
 <span id="407">407</span>
 <span id="408">408</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AsyncResult</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Cancellable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Initable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::NetworkConnectivity</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketConnectable</span>;
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::AsyncResult;
+<span class="kw">use </span><span class="kw">crate</span>::Cancellable;
+<span class="kw">use </span><span class="kw">crate</span>::Initable;
+<span class="kw">use </span><span class="kw">crate</span>::NetworkConnectivity;
+<span class="kw">use </span><span class="kw">crate</span>::SocketConnectable;
+<span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::pin::Pin;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// [`NetworkMonitor`][crate::NetworkMonitor] provides an easy-to-use cross-platform API</span>
-    <span class="doccomment">/// for monitoring network connectivity. On Linux, the available</span>
-    <span class="doccomment">/// implementations are based on the kernel&#39;s netlink interface and</span>
-    <span class="doccomment">/// on NetworkManager.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// There is also an implementation for use inside Flatpak sandboxes.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`NetworkMonitorExt`][trait@crate::prelude::NetworkMonitorExt], [`InitableExt`][trait@crate::prelude::InitableExt]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GNetworkMonitor&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NetworkMonitor</span>(<span class="ident">Interface</span><span class="op">&lt;</span><span class="ident">ffi::GNetworkMonitor</span>, <span class="ident">ffi::GNetworkMonitorInterface</span><span class="op">&gt;</span>) @<span class="ident">requires</span> <span class="ident">Initable</span>;
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// [`NetworkMonitor`][crate::NetworkMonitor] provides an easy-to-use cross-platform API
+    /// for monitoring network connectivity. On Linux, the available
+    /// implementations are based on the kernel&#39;s netlink interface and
+    /// on NetworkManager.
+    ///
+    /// There is also an implementation for use inside Flatpak sandboxes.
+    ///
+    /// # Implements
+    ///
+    /// [`NetworkMonitorExt`][trait@crate::prelude::NetworkMonitorExt], [`InitableExt`][trait@crate::prelude::InitableExt]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GNetworkMonitor&quot;</span>)]
+    </span><span class="kw">pub struct </span>NetworkMonitor(Interface&lt;ffi::GNetworkMonitor, ffi::GNetworkMonitorInterface&gt;) @requires Initable;
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_network_monitor_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_network_monitor_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">NetworkMonitor</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">NetworkMonitor</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>NetworkMonitor {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>NetworkMonitor&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Gets the default [`NetworkMonitor`][crate::NetworkMonitor] for the system.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`NetworkMonitor`][crate::NetworkMonitor], which will be</span>
-    <span class="doccomment">///  a dummy object if no network monitor is available</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_get_default&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_default&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="ident">NetworkMonitor</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_none</span>(<span class="ident">ffi::g_network_monitor_get_default</span>()) }
+    <span class="doccomment">/// Gets the default [`NetworkMonitor`][crate::NetworkMonitor] for the system.
+    ///
+    /// # Returns
+    ///
+    /// a [`NetworkMonitor`][crate::NetworkMonitor], which will be
+    ///  a dummy object if no network monitor is available
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_get_default&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_default&quot;</span>)]
+    </span><span class="kw">pub fn </span>default() -&gt; NetworkMonitor {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_network_monitor_get_default()) }
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@NetworkMonitor`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`NetworkMonitor`][struct@crate::NetworkMonitor]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">NetworkMonitorExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Attempts to determine whether or not the host pointed to by</span>
-    <span class="doccomment">/// `connectable` can be reached, without actually trying to connect to</span>
-    <span class="doccomment">/// it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This may return [`true`] even when `property::NetworkMonitor::network-available`</span>
-    <span class="doccomment">/// is [`false`], if, for example, `self` can determine that</span>
-    <span class="doccomment">/// `connectable` refers to a host on a local network.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `self` believes that an attempt to connect to `connectable`</span>
-    <span class="doccomment">/// will succeed, it will return [`true`]. Otherwise, it will return</span>
-    <span class="doccomment">/// [`false`] and set `error` to an appropriate error (such as</span>
-    <span class="doccomment">/// [`IOErrorEnum::HostUnreachable`][crate::IOErrorEnum::HostUnreachable]).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that although this does not attempt to connect to</span>
-    <span class="doccomment">/// `connectable`, it may still block for a brief period of time (eg,</span>
-    <span class="doccomment">/// trying to do multicast DNS on the local network), so if you do not</span>
-    <span class="doccomment">/// want to block, you should use [`can_reach_async()`][Self::can_reach_async()].</span>
-    <span class="doccomment">/// ## `connectable`</span>
-    <span class="doccomment">/// a [`SocketConnectable`][crate::SocketConnectable]</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] if `connectable` is reachable, [`false`] if not.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_can_reach&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">can_reach</span>(
+<span class="doccomment">/// Trait containing all [`struct@NetworkMonitor`] methods.
+///
+/// # Implementors
+///
+/// [`NetworkMonitor`][struct@crate::NetworkMonitor]
+</span><span class="kw">pub trait </span>NetworkMonitorExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Attempts to determine whether or not the host pointed to by
+    /// `connectable` can be reached, without actually trying to connect to
+    /// it.
+    ///
+    /// This may return [`true`] even when `property::NetworkMonitor::network-available`
+    /// is [`false`], if, for example, `self` can determine that
+    /// `connectable` refers to a host on a local network.
+    ///
+    /// If `self` believes that an attempt to connect to `connectable`
+    /// will succeed, it will return [`true`]. Otherwise, it will return
+    /// [`false`] and set `error` to an appropriate error (such as
+    /// [`IOErrorEnum::HostUnreachable`][crate::IOErrorEnum::HostUnreachable]).
+    ///
+    /// Note that although this does not attempt to connect to
+    /// `connectable`, it may still block for a brief period of time (eg,
+    /// trying to do multicast DNS on the local network), so if you do not
+    /// want to block, you should use [`can_reach_async()`][Self::can_reach_async()].
+    /// ## `connectable`
+    /// a [`SocketConnectable`][crate::SocketConnectable]
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    ///
+    /// # Returns
+    ///
+    /// [`true`] if `connectable` is reachable, [`false`] if not.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_can_reach&quot;</span>)]
+    </span><span class="kw">fn </span>can_reach(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// Asynchronously attempts to determine whether or not the host</span>
-    <span class="doccomment">/// pointed to by `connectable` can be reached, without actually</span>
-    <span class="doccomment">/// trying to connect to it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// For more details, see [`can_reach()`][Self::can_reach()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When the operation is finished, `callback` will be called.</span>
-    <span class="doccomment">/// You can then call `g_network_monitor_can_reach_finish()`</span>
-    <span class="doccomment">/// to get the result of the operation.</span>
-    <span class="doccomment">/// ## `connectable`</span>
-    <span class="doccomment">/// a [`SocketConnectable`][crate::SocketConnectable]</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback` to call when the</span>
-    <span class="doccomment">///  request is satisfied</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_can_reach_async&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">can_reach_async</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Asynchronously attempts to determine whether or not the host
+    /// pointed to by `connectable` can be reached, without actually
+    /// trying to connect to it.
+    ///
+    /// For more details, see [`can_reach()`][Self::can_reach()].
+    ///
+    /// When the operation is finished, `callback` will be called.
+    /// You can then call `g_network_monitor_can_reach_finish()`
+    /// to get the result of the operation.
+    /// ## `connectable`
+    /// a [`SocketConnectable`][crate::SocketConnectable]
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// ## `callback`
+    /// a `GAsyncReadyCallback` to call when the
+    ///  request is satisfied
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_can_reach_async&quot;</span>)]
+    </span><span class="kw">fn </span>can_reach_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     );
 
-    <span class="kw">fn</span> <span class="ident">can_reach_future</span>(
+    <span class="kw">fn </span>can_reach_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>),
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+        connectable: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketConnectable&gt; + Clone + <span class="lifetime">&#39;static</span>),
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;;
 
-    <span class="doccomment">/// Gets a more detailed networking state than</span>
-    <span class="doccomment">/// [`is_network_available()`][Self::is_network_available()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `property::NetworkMonitor::network-available` is [`false`], then the</span>
-    <span class="doccomment">/// connectivity state will be [`NetworkConnectivity::Local`][crate::NetworkConnectivity::Local].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `property::NetworkMonitor::network-available` is [`true`], then the</span>
-    <span class="doccomment">/// connectivity state will be [`NetworkConnectivity::Full`][crate::NetworkConnectivity::Full] (if there</span>
-    <span class="doccomment">/// is full Internet connectivity), [`NetworkConnectivity::Limited`][crate::NetworkConnectivity::Limited] (if</span>
-    <span class="doccomment">/// the host has a default route, but appears to be unable to actually</span>
-    <span class="doccomment">/// reach the full Internet), or [`NetworkConnectivity::Portal`][crate::NetworkConnectivity::Portal] (if the</span>
-    <span class="doccomment">/// host is trapped behind a &quot;captive portal&quot; that requires some sort</span>
-    <span class="doccomment">/// of login or acknowledgement before allowing full Internet access).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that in the case of [`NetworkConnectivity::Limited`][crate::NetworkConnectivity::Limited] and</span>
-    <span class="doccomment">/// [`NetworkConnectivity::Portal`][crate::NetworkConnectivity::Portal], it is possible that some sites are</span>
-    <span class="doccomment">/// reachable but others are not. In this case, applications can</span>
-    <span class="doccomment">/// attempt to connect to remote servers, but should gracefully fall</span>
-    <span class="doccomment">/// back to their &quot;offline&quot; behavior if the connection attempt fails.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the network connectivity state</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_get_connectivity&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_connectivity&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connectivity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NetworkConnectivity</span>;
+    <span class="doccomment">/// Gets a more detailed networking state than
+    /// [`is_network_available()`][Self::is_network_available()].
+    ///
+    /// If `property::NetworkMonitor::network-available` is [`false`], then the
+    /// connectivity state will be [`NetworkConnectivity::Local`][crate::NetworkConnectivity::Local].
+    ///
+    /// If `property::NetworkMonitor::network-available` is [`true`], then the
+    /// connectivity state will be [`NetworkConnectivity::Full`][crate::NetworkConnectivity::Full] (if there
+    /// is full Internet connectivity), [`NetworkConnectivity::Limited`][crate::NetworkConnectivity::Limited] (if
+    /// the host has a default route, but appears to be unable to actually
+    /// reach the full Internet), or [`NetworkConnectivity::Portal`][crate::NetworkConnectivity::Portal] (if the
+    /// host is trapped behind a &quot;captive portal&quot; that requires some sort
+    /// of login or acknowledgement before allowing full Internet access).
+    ///
+    /// Note that in the case of [`NetworkConnectivity::Limited`][crate::NetworkConnectivity::Limited] and
+    /// [`NetworkConnectivity::Portal`][crate::NetworkConnectivity::Portal], it is possible that some sites are
+    /// reachable but others are not. In this case, applications can
+    /// attempt to connect to remote servers, but should gracefully fall
+    /// back to their &quot;offline&quot; behavior if the connection attempt fails.
+    ///
+    /// # Returns
+    ///
+    /// the network connectivity state
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_get_connectivity&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_connectivity&quot;</span>)]
+    </span><span class="kw">fn </span>connectivity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NetworkConnectivity;
 
-    <span class="doccomment">/// Checks if the network is available. &quot;Available&quot; here means that the</span>
-    <span class="doccomment">/// system has a default route available for at least one of IPv4 or</span>
-    <span class="doccomment">/// IPv6. It does not necessarily imply that the public Internet is</span>
-    <span class="doccomment">/// reachable. See `property::NetworkMonitor::network-available` for more details.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// whether the network is available</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_get_network_available&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_network_available&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">is_network_available</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Checks if the network is available. &quot;Available&quot; here means that the
+    /// system has a default route available for at least one of IPv4 or
+    /// IPv6. It does not necessarily imply that the public Internet is
+    /// reachable. See `property::NetworkMonitor::network-available` for more details.
+    ///
+    /// # Returns
+    ///
+    /// whether the network is available
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_get_network_available&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_network_available&quot;</span>)]
+    </span><span class="kw">fn </span>is_network_available(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Checks if the network is metered.</span>
-    <span class="doccomment">/// See `property::NetworkMonitor::network-metered` for more details.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// whether the connection is metered</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_network_monitor_get_network_metered&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_network_metered&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">is_network_metered</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="doccomment">/// Checks if the network is metered.
+    /// See `property::NetworkMonitor::network-metered` for more details.
+    ///
+    /// # Returns
+    ///
+    /// whether the connection is metered
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_network_monitor_get_network_metered&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_network_metered&quot;</span>)]
+    </span><span class="kw">fn </span>is_network_metered(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool;
 
-    <span class="doccomment">/// Emitted when the network configuration changes.</span>
-    <span class="doccomment">/// ## `network_available`</span>
-    <span class="doccomment">/// the current value of `property::NetworkMonitor::network-available`</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;network-changed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_network_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">bool</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// Emitted when the network configuration changes.
+    /// ## `network_available`
+    /// the current value of `property::NetworkMonitor::network-available`
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;network-changed&quot;</span>)]
+    </span><span class="kw">fn </span>connect_network_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, bool) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;connectivity&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_connectivity_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;connectivity&quot;</span>)]
+    </span><span class="kw">fn </span>connect_connectivity_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;network-available&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_network_available_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;network-available&quot;</span>)]
+    </span><span class="kw">fn </span>connect_network_available_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;network-metered&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_network_metered_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;network-metered&quot;</span>)]
+    </span><span class="kw">fn </span>connect_network_metered_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">NetworkMonitor</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">NetworkMonitorExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">can_reach</span>(
+<span class="kw">impl</span>&lt;O: IsA&lt;NetworkMonitor&gt;&gt; NetworkMonitorExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>can_reach(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_network_monitor_can_reach</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">connectable</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_network_monitor_can_reach(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                connectable.as_ref().to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">can_reach_async</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>can_reach_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        connectable: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketConnectable&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">can_reach_async_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>can_reach_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span>
-                <span class="ident">ffi::g_network_monitor_can_reach_finish</span>(<span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>, <span class="ident">res</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let _ </span>=
+                ffi::g_network_monitor_can_reach_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">can_reach_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_network_monitor_can_reach_async</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">connectable</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = can_reach_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_network_monitor_can_reach_async(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                connectable.as_ref().to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">can_reach_future</span>(
+    <span class="kw">fn </span>can_reach_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">connectable</span>: <span class="kw-2">&amp;</span>(<span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketConnectable</span><span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Clone</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>),
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span><span class="ident">Box_</span><span class="op">&lt;</span><span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">connectable</span> <span class="op">=</span> <span class="ident">connectable</span>.<span class="ident">clone</span>();
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+        connectable: <span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;SocketConnectable&gt; + Clone + <span class="lifetime">&#39;static</span>),
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">let </span>connectable = connectable.clone();
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">can_reach_async</span>(<span class="kw-2">&amp;</span><span class="ident">connectable</span>, <span class="prelude-val">Some</span>(<span class="ident">cancellable</span>), <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                    <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.can_reach_async(<span class="kw-2">&amp;</span>connectable, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
+                    send.resolve(res);
                 });
             },
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">connectivity</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">NetworkConnectivity</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_network_monitor_get_connectivity</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>connectivity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; NetworkConnectivity {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_network_monitor_get_connectivity(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_network_available</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_network_monitor_get_network_available</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>is_network_available(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_network_monitor_get_network_available(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">is_network_metered</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib</span>(<span class="ident">ffi::g_network_monitor_get_network_metered</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>is_network_metered(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+        <span class="kw">unsafe </span>{
+            from_glib(ffi::g_network_monitor_get_network_metered(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_network_changed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">bool</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">network_changed_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">NetworkMonitor</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="ident">bool</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GNetworkMonitor</span>,
-            <span class="ident">network_available</span>: <span class="ident">glib::ffi::gboolean</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_network_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, bool) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>network_changed_trampoline&lt;
+            P: IsA&lt;NetworkMonitor&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, bool) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GNetworkMonitor,
+            network_available: glib::ffi::gboolean,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(
-                <span class="ident">NetworkMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
-                <span class="ident">from_glib</span>(<span class="ident">network_available</span>),
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(
+                NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref(),
+                from_glib(network_available),
             )
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;network-changed\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">network_changed_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;network-changed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    network_changed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
-            )
-        }
-    }
-
-    <span class="kw">fn</span> <span class="ident">connect_connectivity_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_connectivity_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">NetworkMonitor</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GNetworkMonitor</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
-        ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">NetworkMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
-        }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::connectivity\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_connectivity_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
-                )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_network_available_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_network_available_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">NetworkMonitor</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GNetworkMonitor</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_connectivity_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_connectivity_trampoline&lt;
+            P: IsA&lt;NetworkMonitor&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GNetworkMonitor,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">NetworkMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::network-available\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_network_available_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::connectivity\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_connectivity_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_network_metered_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_network_metered_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">NetworkMonitor</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GNetworkMonitor</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_network_available_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_network_available_trampoline&lt;
+            P: IsA&lt;NetworkMonitor&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GNetworkMonitor,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">NetworkMonitor::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::network-metered\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_network_metered_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::network-available\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_network_available_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
+            )
+        }
+    }
+
+    <span class="kw">fn </span>connect_network_metered_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_network_metered_trampoline&lt;
+            P: IsA&lt;NetworkMonitor&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GNetworkMonitor,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
+        ) {
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(NetworkMonitor::from_glib_borrow(this).unsafe_cast_ref())
+        }
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::network-metered\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_network_metered_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
+                )),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">NetworkMonitor</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;NetworkMonitor&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>NetworkMonitor {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;NetworkMonitor&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

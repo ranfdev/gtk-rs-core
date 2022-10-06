@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_listener.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>socket_listener.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/socket_listener.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>socket_listener.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -793,723 +788,722 @@
 <span id="715">715</span>
 <span id="716">716</span>
 <span id="717">717</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::AsyncResult</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Cancellable</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Socket</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketAddress</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketConnection</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketListenerEvent</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketProtocol</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::SocketType</span>;
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">glib::StaticType</span>;
-<span class="kw">use</span> <span class="ident">glib::ToValue</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::pin::Pin</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::AsyncResult;
+<span class="kw">use </span><span class="kw">crate</span>::Cancellable;
+<span class="kw">use </span><span class="kw">crate</span>::Socket;
+<span class="kw">use </span><span class="kw">crate</span>::SocketAddress;
+<span class="kw">use </span><span class="kw">crate</span>::SocketConnection;
+<span class="kw">use </span><span class="kw">crate</span>::SocketListenerEvent;
+<span class="kw">use </span><span class="kw">crate</span>::SocketProtocol;
+<span class="kw">use </span><span class="kw">crate</span>::SocketType;
+<span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>glib::StaticType;
+<span class="kw">use </span>glib::ToValue;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::pin::Pin;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// A [`SocketListener`][crate::SocketListener] is an object that keeps track of a set</span>
-    <span class="doccomment">/// of server sockets and helps you accept sockets from any of the</span>
-    <span class="doccomment">/// socket, either sync or async.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Add addresses and ports to listen on using [`SocketListenerExt::add_address()`][crate::prelude::SocketListenerExt::add_address()]</span>
-    <span class="doccomment">/// and [`SocketListenerExt::add_inet_port()`][crate::prelude::SocketListenerExt::add_inet_port()]. These will be listened on until</span>
-    <span class="doccomment">/// [`SocketListenerExt::close()`][crate::prelude::SocketListenerExt::close()] is called. Dropping your final reference to the</span>
-    <span class="doccomment">/// [`SocketListener`][crate::SocketListener] will not cause [`SocketListenerExt::close()`][crate::prelude::SocketListenerExt::close()] to be called</span>
-    <span class="doccomment">/// implicitly, as some references to the [`SocketListener`][crate::SocketListener] may be held</span>
-    <span class="doccomment">/// internally.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If you want to implement a network server, also look at [`SocketService`][crate::SocketService]</span>
-    <span class="doccomment">/// and [`ThreadedSocketService`][crate::ThreadedSocketService] which are subclasses of [`SocketListener`][crate::SocketListener]</span>
-    <span class="doccomment">/// that make this even easier.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`SocketListenerExt`][trait@crate::prelude::SocketListenerExt], [`trait@glib::ObjectExt`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GSocketListener&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">SocketListener</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GSocketListener</span>, <span class="ident">ffi::GSocketListenerClass</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// A [`SocketListener`][crate::SocketListener] is an object that keeps track of a set
+    /// of server sockets and helps you accept sockets from any of the
+    /// socket, either sync or async.
+    ///
+    /// Add addresses and ports to listen on using [`SocketListenerExt::add_address()`][crate::prelude::SocketListenerExt::add_address()]
+    /// and [`SocketListenerExt::add_inet_port()`][crate::prelude::SocketListenerExt::add_inet_port()]. These will be listened on until
+    /// [`SocketListenerExt::close()`][crate::prelude::SocketListenerExt::close()] is called. Dropping your final reference to the
+    /// [`SocketListener`][crate::SocketListener] will not cause [`SocketListenerExt::close()`][crate::prelude::SocketListenerExt::close()] to be called
+    /// implicitly, as some references to the [`SocketListener`][crate::SocketListener] may be held
+    /// internally.
+    ///
+    /// If you want to implement a network server, also look at [`SocketService`][crate::SocketService]
+    /// and [`ThreadedSocketService`][crate::ThreadedSocketService] which are subclasses of [`SocketListener`][crate::SocketListener]
+    /// that make this even easier.
+    ///
+    /// # Implements
+    ///
+    /// [`SocketListenerExt`][trait@crate::prelude::SocketListenerExt], [`trait@glib::ObjectExt`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GSocketListener&quot;</span>)]
+    </span><span class="kw">pub struct </span>SocketListener(Object&lt;ffi::GSocketListener, ffi::GSocketListenerClass&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_socket_listener_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_socket_listener_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">SocketListener</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">SocketListener</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>SocketListener {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>SocketListener&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new [`SocketListener`][crate::SocketListener] with no sockets to listen for.</span>
-    <span class="doccomment">/// New listeners can be added with e.g. [`SocketListenerExt::add_address()`][crate::prelude::SocketListenerExt::add_address()]</span>
-    <span class="doccomment">/// or [`SocketListenerExt::add_inet_port()`][crate::prelude::SocketListenerExt::add_inet_port()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`SocketListener`][crate::SocketListener].</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_new&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">SocketListener</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_socket_listener_new</span>()) }
+    <span class="doccomment">/// Creates a new [`SocketListener`][crate::SocketListener] with no sockets to listen for.
+    /// New listeners can be added with e.g. [`SocketListenerExt::add_address()`][crate::prelude::SocketListenerExt::add_address()]
+    /// or [`SocketListenerExt::add_inet_port()`][crate::prelude::SocketListenerExt::add_inet_port()].
+    ///
+    /// # Returns
+    ///
+    /// a new [`SocketListener`][crate::SocketListener].
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_new&quot;</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; SocketListener {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_socket_listener_new()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">SocketListener</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>SocketListener {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@SocketListener`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`SocketListener`][struct@crate::SocketListener], [`SocketService`][struct@crate::SocketService]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">SocketListenerExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Blocks waiting for a client to connect to any of the sockets added</span>
-    <span class="doccomment">/// to the listener. Returns a [`SocketConnection`][crate::SocketConnection] for the socket that was</span>
-    <span class="doccomment">/// accepted.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `source_object` is not [`None`] it will be filled out with the source</span>
-    <span class="doccomment">/// object specified when the corresponding socket or address was added</span>
-    <span class="doccomment">/// to the listener.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `cancellable` is not [`None`], then the operation can be cancelled by</span>
-    <span class="doccomment">/// triggering the cancellable object from another thread. If the operation</span>
-    <span class="doccomment">/// was cancelled, the error [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`SocketConnection`][crate::SocketConnection] on success, [`None`] on error.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// location where [`glib::Object`][crate::glib::Object] pointer will be stored, or [`None`]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_accept&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">accept</span>(
+<span class="doccomment">/// Trait containing all [`struct@SocketListener`] methods.
+///
+/// # Implementors
+///
+/// [`SocketListener`][struct@crate::SocketListener], [`SocketService`][struct@crate::SocketService]
+</span><span class="kw">pub trait </span>SocketListenerExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Blocks waiting for a client to connect to any of the sockets added
+    /// to the listener. Returns a [`SocketConnection`][crate::SocketConnection] for the socket that was
+    /// accepted.
+    ///
+    /// If `source_object` is not [`None`] it will be filled out with the source
+    /// object specified when the corresponding socket or address was added
+    /// to the listener.
+    ///
+    /// If `cancellable` is not [`None`], then the operation can be cancelled by
+    /// triggering the cancellable object from another thread. If the operation
+    /// was cancelled, the error [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned.
+    /// ## `cancellable`
+    /// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore.
+    ///
+    /// # Returns
+    ///
+    /// a [`SocketConnection`][crate::SocketConnection] on success, [`None`] on error.
+    ///
+    /// ## `source_object`
+    /// location where [`glib::Object`][crate::glib::Object] pointer will be stored, or [`None`]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_accept&quot;</span>)]
+    </span><span class="kw">fn </span>accept(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;;
 
-    <span class="doccomment">/// This is the asynchronous version of [`accept()`][Self::accept()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When the operation is finished `callback` will be</span>
-    <span class="doccomment">/// called. You can then call `g_socket_listener_accept_finish()`</span>
-    <span class="doccomment">/// to get the result of the operation.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback`</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_accept_async&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">accept_async</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// This is the asynchronous version of [`accept()`][Self::accept()].
+    ///
+    /// When the operation is finished `callback` will be
+    /// called. You can then call `g_socket_listener_accept_finish()`
+    /// to get the result of the operation.
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// ## `callback`
+    /// a `GAsyncReadyCallback`
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_accept_async&quot;</span>)]
+    </span><span class="kw">fn </span>accept_async&lt;
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     );
 
-    <span class="kw">fn</span> <span class="ident">accept_future</span>(
+    <span class="kw">fn </span>accept_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box_</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span>
-                    <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>,
-                <span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>;
+    ) -&gt; Pin&lt;
+        Box_&lt;
+            <span class="kw">dyn </span>std::future::Future&lt;
+                    Output = <span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;,
+                &gt; + <span class="lifetime">&#39;static</span>,
+        &gt;,
+    &gt;;
 
-    <span class="doccomment">/// Blocks waiting for a client to connect to any of the sockets added</span>
-    <span class="doccomment">/// to the listener. Returns the [`Socket`][crate::Socket] that was accepted.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If you want to accept the high-level [`SocketConnection`][crate::SocketConnection], not a [`Socket`][crate::Socket],</span>
-    <span class="doccomment">/// which is often the case, then you should use [`accept()`][Self::accept()]</span>
-    <span class="doccomment">/// instead.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `source_object` is not [`None`] it will be filled out with the source</span>
-    <span class="doccomment">/// object specified when the corresponding socket or address was added</span>
-    <span class="doccomment">/// to the listener.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `cancellable` is not [`None`], then the operation can be cancelled by</span>
-    <span class="doccomment">/// triggering the cancellable object from another thread. If the operation</span>
-    <span class="doccomment">/// was cancelled, the error [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a [`Socket`][crate::Socket] on success, [`None`] on error.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// location where [`glib::Object`][crate::glib::Object] pointer will be stored, or [`None`].</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_accept_socket&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">accept_socket</span>(
+    <span class="doccomment">/// Blocks waiting for a client to connect to any of the sockets added
+    /// to the listener. Returns the [`Socket`][crate::Socket] that was accepted.
+    ///
+    /// If you want to accept the high-level [`SocketConnection`][crate::SocketConnection], not a [`Socket`][crate::Socket],
+    /// which is often the case, then you should use [`accept()`][Self::accept()]
+    /// instead.
+    ///
+    /// If `source_object` is not [`None`] it will be filled out with the source
+    /// object specified when the corresponding socket or address was added
+    /// to the listener.
+    ///
+    /// If `cancellable` is not [`None`], then the operation can be cancelled by
+    /// triggering the cancellable object from another thread. If the operation
+    /// was cancelled, the error [`IOErrorEnum::Cancelled`][crate::IOErrorEnum::Cancelled] will be returned.
+    /// ## `cancellable`
+    /// optional [`Cancellable`][crate::Cancellable] object, [`None`] to ignore.
+    ///
+    /// # Returns
+    ///
+    /// a [`Socket`][crate::Socket] on success, [`None`] on error.
+    ///
+    /// ## `source_object`
+    /// location where [`glib::Object`][crate::glib::Object] pointer will be stored, or [`None`].
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_accept_socket&quot;</span>)]
+    </span><span class="kw">fn </span>accept_socket(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;;
 
-    <span class="doccomment">/// This is the asynchronous version of [`accept_socket()`][Self::accept_socket()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// When the operation is finished `callback` will be</span>
-    <span class="doccomment">/// called. You can then call `g_socket_listener_accept_socket_finish()`</span>
-    <span class="doccomment">/// to get the result of the operation.</span>
-    <span class="doccomment">/// ## `cancellable`</span>
-    <span class="doccomment">/// a [`Cancellable`][crate::Cancellable], or [`None`]</span>
-    <span class="doccomment">/// ## `callback`</span>
-    <span class="doccomment">/// a `GAsyncReadyCallback`</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_accept_socket_async&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">accept_socket_async</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="doccomment">/// This is the asynchronous version of [`accept_socket()`][Self::accept_socket()].
+    ///
+    /// When the operation is finished `callback` will be
+    /// called. You can then call `g_socket_listener_accept_socket_finish()`
+    /// to get the result of the operation.
+    /// ## `cancellable`
+    /// a [`Cancellable`][crate::Cancellable], or [`None`]
+    /// ## `callback`
+    /// a `GAsyncReadyCallback`
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_accept_socket_async&quot;</span>)]
+    </span><span class="kw">fn </span>accept_socket_async&lt;
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     );
 
-    <span class="kw">fn</span> <span class="ident">accept_socket_future</span>(
+    <span class="kw">fn </span>accept_socket_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box_</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-                <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span>;
+    ) -&gt; Pin&lt;
+        Box_&lt;
+            <span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;&gt;
+                + <span class="lifetime">&#39;static</span>,
+        &gt;,
+    &gt;;
 
-    <span class="doccomment">/// Creates a socket of type `type_` and protocol `protocol`, binds</span>
-    <span class="doccomment">/// it to `address` and adds it to the set of sockets we&#39;re accepting</span>
-    <span class="doccomment">/// sockets from.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that adding an IPv6 address, depending on the platform,</span>
-    <span class="doccomment">/// may or may not result in a listener that also accepts IPv4</span>
-    <span class="doccomment">/// connections. For more deterministic behavior, see</span>
-    <span class="doccomment">/// [`add_inet_port()`][Self::add_inet_port()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `source_object` will be passed out in the various calls</span>
-    <span class="doccomment">/// to accept to identify this particular source, which is</span>
-    <span class="doccomment">/// useful if you&#39;re listening on multiple addresses and do</span>
-    <span class="doccomment">/// different things depending on what address is connected to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If successful and `effective_address` is non-[`None`] then it will</span>
-    <span class="doccomment">/// be set to the address that the binding actually occurred at. This</span>
-    <span class="doccomment">/// is helpful for determining the port number that was used for when</span>
-    <span class="doccomment">/// requesting a binding to port 0 (ie: &quot;any port&quot;). This address, if</span>
-    <span class="doccomment">/// requested, belongs to the caller and must be freed.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Call [`close()`][Self::close()] to stop listening on `address`; this will not</span>
-    <span class="doccomment">/// be done automatically when you drop your final reference to `self`, as</span>
-    <span class="doccomment">/// references may be held internally.</span>
-    <span class="doccomment">/// ## `address`</span>
-    <span class="doccomment">/// a [`SocketAddress`][crate::SocketAddress]</span>
-    <span class="doccomment">/// ## `type_`</span>
-    <span class="doccomment">/// a [`SocketType`][crate::SocketType]</span>
-    <span class="doccomment">/// ## `protocol`</span>
-    <span class="doccomment">/// a [`SocketProtocol`][crate::SocketProtocol]</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// Optional [`glib::Object`][crate::glib::Object] identifying this source</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] on success, [`false`] on error.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## `effective_address`</span>
-    <span class="doccomment">/// location to store the address that was bound to, or [`None`].</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_add_address&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add_address</span>(
+    <span class="doccomment">/// Creates a socket of type `type_` and protocol `protocol`, binds
+    /// it to `address` and adds it to the set of sockets we&#39;re accepting
+    /// sockets from.
+    ///
+    /// Note that adding an IPv6 address, depending on the platform,
+    /// may or may not result in a listener that also accepts IPv4
+    /// connections. For more deterministic behavior, see
+    /// [`add_inet_port()`][Self::add_inet_port()].
+    ///
+    /// `source_object` will be passed out in the various calls
+    /// to accept to identify this particular source, which is
+    /// useful if you&#39;re listening on multiple addresses and do
+    /// different things depending on what address is connected to.
+    ///
+    /// If successful and `effective_address` is non-[`None`] then it will
+    /// be set to the address that the binding actually occurred at. This
+    /// is helpful for determining the port number that was used for when
+    /// requesting a binding to port 0 (ie: &quot;any port&quot;). This address, if
+    /// requested, belongs to the caller and must be freed.
+    ///
+    /// Call [`close()`][Self::close()] to stop listening on `address`; this will not
+    /// be done automatically when you drop your final reference to `self`, as
+    /// references may be held internally.
+    /// ## `address`
+    /// a [`SocketAddress`][crate::SocketAddress]
+    /// ## `type_`
+    /// a [`SocketType`][crate::SocketType]
+    /// ## `protocol`
+    /// a [`SocketProtocol`][crate::SocketProtocol]
+    /// ## `source_object`
+    /// Optional [`glib::Object`][crate::glib::Object] identifying this source
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success, [`false`] on error.
+    ///
+    /// ## `effective_address`
+    /// location to store the address that was bound to, or [`None`].
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_add_address&quot;</span>)]
+    </span><span class="kw">fn </span>add_address(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketAddress</span><span class="op">&gt;</span>,
-        <span class="ident">type_</span>: <span class="ident">SocketType</span>,
-        <span class="ident">protocol</span>: <span class="ident">SocketProtocol</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddress</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
+        type_: SocketType,
+        protocol: SocketProtocol,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt;;
 
-    <span class="doccomment">/// Listens for TCP connections on any available port number for both</span>
-    <span class="doccomment">/// IPv6 and IPv4 (if each is available).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This is useful if you need to have a socket for incoming connections</span>
-    <span class="doccomment">/// but don&#39;t care about the specific port number.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `source_object` will be passed out in the various calls</span>
-    <span class="doccomment">/// to accept to identify this particular source, which is</span>
-    <span class="doccomment">/// useful if you&#39;re listening on multiple addresses and do</span>
-    <span class="doccomment">/// different things depending on what address is connected to.</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// Optional [`glib::Object`][crate::glib::Object] identifying this source</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the port number, or 0 in case of failure.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_add_any_inet_port&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add_any_inet_port</span>(
+    <span class="doccomment">/// Listens for TCP connections on any available port number for both
+    /// IPv6 and IPv4 (if each is available).
+    ///
+    /// This is useful if you need to have a socket for incoming connections
+    /// but don&#39;t care about the specific port number.
+    ///
+    /// `source_object` will be passed out in the various calls
+    /// to accept to identify this particular source, which is
+    /// useful if you&#39;re listening on multiple addresses and do
+    /// different things depending on what address is connected to.
+    /// ## `source_object`
+    /// Optional [`glib::Object`][crate::glib::Object] identifying this source
+    ///
+    /// # Returns
+    ///
+    /// the port number, or 0 in case of failure.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_add_any_inet_port&quot;</span>)]
+    </span><span class="kw">fn </span>add_any_inet_port(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u16</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;u16, glib::Error&gt;;
 
-    <span class="doccomment">/// Helper function for [`add_address()`][Self::add_address()] that</span>
-    <span class="doccomment">/// creates a TCP/IP socket listening on IPv4 and IPv6 (if</span>
-    <span class="doccomment">/// supported) on the specified port on all interfaces.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `source_object` will be passed out in the various calls</span>
-    <span class="doccomment">/// to accept to identify this particular source, which is</span>
-    <span class="doccomment">/// useful if you&#39;re listening on multiple addresses and do</span>
-    <span class="doccomment">/// different things depending on what address is connected to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Call [`close()`][Self::close()] to stop listening on `port`; this will not</span>
-    <span class="doccomment">/// be done automatically when you drop your final reference to `self`, as</span>
-    <span class="doccomment">/// references may be held internally.</span>
-    <span class="doccomment">/// ## `port`</span>
-    <span class="doccomment">/// an IP port number (non-zero)</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// Optional [`glib::Object`][crate::glib::Object] identifying this source</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] on success, [`false`] on error.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_add_inet_port&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add_inet_port</span>(
+    <span class="doccomment">/// Helper function for [`add_address()`][Self::add_address()] that
+    /// creates a TCP/IP socket listening on IPv4 and IPv6 (if
+    /// supported) on the specified port on all interfaces.
+    ///
+    /// `source_object` will be passed out in the various calls
+    /// to accept to identify this particular source, which is
+    /// useful if you&#39;re listening on multiple addresses and do
+    /// different things depending on what address is connected to.
+    ///
+    /// Call [`close()`][Self::close()] to stop listening on `port`; this will not
+    /// be done automatically when you drop your final reference to `self`, as
+    /// references may be held internally.
+    /// ## `port`
+    /// an IP port number (non-zero)
+    /// ## `source_object`
+    /// Optional [`glib::Object`][crate::glib::Object] identifying this source
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success, [`false`] on error.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_add_inet_port&quot;</span>)]
+    </span><span class="kw">fn </span>add_inet_port(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">port</span>: <span class="ident">u16</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        port: u16,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// Adds `socket` to the set of sockets that we try to accept</span>
-    <span class="doccomment">/// new clients from. The socket must be bound to a local</span>
-    <span class="doccomment">/// address and listened to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `source_object` will be passed out in the various calls</span>
-    <span class="doccomment">/// to accept to identify this particular source, which is</span>
-    <span class="doccomment">/// useful if you&#39;re listening on multiple addresses and do</span>
-    <span class="doccomment">/// different things depending on what address is connected to.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The `socket` will not be automatically closed when the `self` is finalized</span>
-    <span class="doccomment">/// unless the listener held the final reference to the socket. Before GLib 2.42,</span>
-    <span class="doccomment">/// the `socket` was automatically closed on finalization of the `self`, even</span>
-    <span class="doccomment">/// if references to it were held elsewhere.</span>
-    <span class="doccomment">/// ## `socket`</span>
-    <span class="doccomment">/// a listening [`Socket`][crate::Socket]</span>
-    <span class="doccomment">/// ## `source_object`</span>
-    <span class="doccomment">/// Optional [`glib::Object`][crate::glib::Object] identifying this source</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`true`] on success, [`false`] on error.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_add_socket&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">add_socket</span>(
+    <span class="doccomment">/// Adds `socket` to the set of sockets that we try to accept
+    /// new clients from. The socket must be bound to a local
+    /// address and listened to.
+    ///
+    /// `source_object` will be passed out in the various calls
+    /// to accept to identify this particular source, which is
+    /// useful if you&#39;re listening on multiple addresses and do
+    /// different things depending on what address is connected to.
+    ///
+    /// The `socket` will not be automatically closed when the `self` is finalized
+    /// unless the listener held the final reference to the socket. Before GLib 2.42,
+    /// the `socket` was automatically closed on finalization of the `self`, even
+    /// if references to it were held elsewhere.
+    /// ## `socket`
+    /// a listening [`Socket`][crate::Socket]
+    /// ## `source_object`
+    /// Optional [`glib::Object`][crate::glib::Object] identifying this source
+    ///
+    /// # Returns
+    ///
+    /// [`true`] on success, [`false`] on error.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_add_socket&quot;</span>)]
+    </span><span class="kw">fn </span>add_socket(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">socket</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Socket</span><span class="op">&gt;</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+        socket: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Socket&gt;,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// Closes all the sockets in the listener.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_close&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>);
+    <span class="doccomment">/// Closes all the sockets in the listener.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_close&quot;</span>)]
+    </span><span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>);
 
-    <span class="doccomment">/// Sets the listen backlog on the sockets in the listener. This must be called</span>
-    <span class="doccomment">/// before adding any sockets, addresses or ports to the [`SocketListener`][crate::SocketListener] (for</span>
-    <span class="doccomment">/// example, by calling [`add_inet_port()`][Self::add_inet_port()]) to be effective.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// See [`SocketExt::set_listen_backlog()`][crate::prelude::SocketExt::set_listen_backlog()] for details</span>
-    <span class="doccomment">/// ## `listen_backlog`</span>
-    <span class="doccomment">/// an integer</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_socket_listener_set_backlog&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">set_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">listen_backlog</span>: <span class="ident">i32</span>);
+    <span class="doccomment">/// Sets the listen backlog on the sockets in the listener. This must be called
+    /// before adding any sockets, addresses or ports to the [`SocketListener`][crate::SocketListener] (for
+    /// example, by calling [`add_inet_port()`][Self::add_inet_port()]) to be effective.
+    ///
+    /// See [`SocketExt::set_listen_backlog()`][crate::prelude::SocketExt::set_listen_backlog()] for details
+    /// ## `listen_backlog`
+    /// an integer
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_socket_listener_set_backlog&quot;</span>)]
+    </span><span class="kw">fn </span>set_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>, listen_backlog: i32);
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;listen-backlog&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">listen_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;listen-backlog&quot;</span>)]
+    </span><span class="kw">fn </span>listen_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;listen-backlog&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">set_listen_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">listen_backlog</span>: <span class="ident">i32</span>);
+    <span class="attribute">#[doc(alias = <span class="string">&quot;listen-backlog&quot;</span>)]
+    </span><span class="kw">fn </span>set_listen_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>, listen_backlog: i32);
 
-    <span class="doccomment">/// Emitted when `listener`&#39;s activity on `socket` changes state.</span>
-    <span class="doccomment">/// Note that when `listener` is used to listen on both IPv4 and</span>
-    <span class="doccomment">/// IPv6, a separate set of signals will be emitted for each, and</span>
-    <span class="doccomment">/// the order they happen in is undefined.</span>
-    <span class="doccomment">/// ## `event`</span>
-    <span class="doccomment">/// the event that is occurring</span>
-    <span class="doccomment">/// ## `socket`</span>
-    <span class="doccomment">/// the [`Socket`][crate::Socket] the event is occurring on</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;event&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_event</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">SocketListenerEvent</span>, <span class="kw-2">&amp;</span><span class="ident">Socket</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// Emitted when `listener`&#39;s activity on `socket` changes state.
+    /// Note that when `listener` is used to listen on both IPv4 and
+    /// IPv6, a separate set of signals will be emitted for each, and
+    /// the order they happen in is undefined.
+    /// ## `event`
+    /// the event that is occurring
+    /// ## `socket`
+    /// the [`Socket`][crate::Socket] the event is occurring on
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;event&quot;</span>)]
+    </span><span class="kw">fn </span>connect_event&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, SocketListenerEvent, <span class="kw-2">&amp;</span>Socket) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">SignalHandlerId</span>;
+        f: F,
+    ) -&gt; SignalHandlerId;
 
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;listen-backlog&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_listen_backlog_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="attribute">#[doc(alias = <span class="string">&quot;listen-backlog&quot;</span>)]
+    </span><span class="kw">fn </span>connect_listen_backlog_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketListener</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">SocketListenerExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">accept</span>(
+<span class="kw">impl</span>&lt;O: IsA&lt;SocketListener&gt;&gt; SocketListenerExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>accept(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source_object</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_accept</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">source_object</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>source_object = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_socket_listener_accept(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>source_object,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">ret</span>), <span class="ident">from_glib_none</span>(<span class="ident">source_object</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(ret), from_glib_none(source_object)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">accept_async</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="kw">fn </span>accept_async&lt;
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">accept_async_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>accept_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source_object</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_accept_finish</span>(
-                <span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">res</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">source_object</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>source_object = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_socket_listener_accept_finish(
+                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                res,
+                <span class="kw-2">&amp;mut </span>source_object,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">ret</span>), <span class="ident">from_glib_none</span>(<span class="ident">source_object</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(ret), from_glib_none(source_object)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">accept_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_socket_listener_accept_async</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = accept_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_socket_listener_accept_async(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">accept_future</span>(
+    <span class="kw">fn </span>accept_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box_</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span>
-                    <span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">SocketConnection</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>,
-                <span class="op">&gt;</span> <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span> {
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+    ) -&gt; Pin&lt;
+        Box_&lt;
+            <span class="kw">dyn </span>std::future::Future&lt;
+                    Output = <span class="prelude-ty">Result</span>&lt;(SocketConnection, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;,
+                &gt; + <span class="lifetime">&#39;static</span>,
+        &gt;,
+    &gt; {
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">accept_async</span>(<span class="prelude-val">Some</span>(<span class="ident">cancellable</span>), <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                    <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.accept_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
+                    send.resolve(res);
                 });
             },
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">accept_socket</span>(
+    <span class="kw">fn </span>accept_socket(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source_object</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_accept_socket</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">source_object</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>source_object = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_socket_listener_accept_socket(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>source_object,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">ret</span>), <span class="ident">from_glib_none</span>(<span class="ident">source_object</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(ret), from_glib_none(source_object)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">accept_socket_async</span><span class="op">&lt;</span>
-        <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-    <span class="op">&gt;</span>(
+    <span class="kw">fn </span>accept_socket_async&lt;
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+    &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">cancellable</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Cancellable</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-        <span class="ident">callback</span>: <span class="ident">P</span>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        callback: P,
     ) {
-        <span class="kw">let</span> <span class="ident">main_context</span> <span class="op">=</span> <span class="ident">glib::MainContext::ref_thread_default</span>();
-        <span class="kw">let</span> <span class="ident">is_main_context_owner</span> <span class="op">=</span> <span class="ident">main_context</span>.<span class="ident">is_owner</span>();
-        <span class="kw">let</span> <span class="ident">has_acquired_main_context</span> <span class="op">=</span> (<span class="op">!</span><span class="ident">is_main_context_owner</span>)
-            .<span class="ident">then</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">main_context</span>.<span class="ident">acquire</span>().<span class="ident">ok</span>())
-            .<span class="ident">flatten</span>();
+        <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
+        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
+            .then(|| main_context.acquire().ok())
+            .flatten();
         <span class="macro">assert!</span>(
-            <span class="ident">is_main_context_owner</span> <span class="op">|</span><span class="op">|</span> <span class="ident">has_acquired_main_context</span>.<span class="ident">is_some</span>(),
-            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;</span>
-        );
+            is_main_context_owner || has_acquired_main_context.is_some(),
+            <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
+        </span>);
 
-        <span class="kw">let</span> <span class="ident">user_data</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-            <span class="ident">Box_::new</span>(<span class="ident">glib::thread_guard::ThreadGuard::new</span>(<span class="ident">callback</span>));
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">accept_socket_async_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">FnOnce</span>(<span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">_source_object</span>: <span class="kw-2">*mut</span> <span class="ident">glib::gobject_ffi::GObject</span>,
-            <span class="ident">res</span>: <span class="kw-2">*mut</span> <span class="ident"><span class="kw">crate</span>::ffi::GAsyncResult</span>,
-            <span class="ident">user_data</span>: <span class="ident">glib::ffi::gpointer</span>,
+        <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>accept_socket_async_trampoline&lt;
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
+            res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
+            user_data: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">source_object</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_accept_socket_finish</span>(
-                <span class="ident">_source_object</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="ident">res</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">source_object</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>source_object = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_socket_listener_accept_socket_finish(
+                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                res,
+                <span class="kw-2">&amp;mut </span>source_object,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>((<span class="ident">from_glib_full</span>(<span class="ident">ret</span>), <span class="ident">from_glib_none</span>(<span class="ident">source_object</span>)))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>((from_glib_full(ret), from_glib_none(source_object)))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             };
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">glib::thread_guard::ThreadGuard</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span>
-                <span class="ident">Box_::from_raw</span>(<span class="ident">user_data</span> <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>);
-            <span class="kw">let</span> <span class="ident">callback</span>: <span class="ident">P</span> <span class="op">=</span> <span class="ident">callback</span>.<span class="ident">into_inner</span>();
-            <span class="ident">callback</span>(<span class="ident">result</span>);
+            <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
+                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = callback.into_inner();
+            callback(result);
         }
-        <span class="kw">let</span> <span class="ident">callback</span> <span class="op">=</span> <span class="ident">accept_socket_async_trampoline</span>::<span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>;
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_socket_listener_accept_socket_async</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">cancellable</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">callback</span>),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">user_data</span>) <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
+        <span class="kw">let </span>callback = accept_socket_async_trampoline::&lt;P&gt;;
+        <span class="kw">unsafe </span>{
+            ffi::g_socket_listener_accept_socket_async(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(callback),
+                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">accept_socket_future</span>(
+    <span class="kw">fn </span>accept_socket_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; <span class="ident">Pin</span><span class="op">&lt;</span>
-        <span class="ident">Box_</span><span class="op">&lt;</span>
-            <span class="kw">dyn</span> <span class="ident">std::future::Future</span><span class="op">&lt;</span><span class="ident">Output</span> <span class="op">=</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(<span class="ident">Socket</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span>), <span class="ident">glib::Error</span><span class="op">&gt;</span><span class="op">&gt;</span>
-                <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>,
-    <span class="op">&gt;</span> {
-        <span class="ident">Box_::pin</span>(<span class="ident"><span class="kw">crate</span>::GioFuture::new</span>(
+    ) -&gt; Pin&lt;
+        Box_&lt;
+            <span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(Socket, <span class="prelude-ty">Option</span>&lt;glib::Object&gt;), glib::Error&gt;&gt;
+                + <span class="lifetime">&#39;static</span>,
+        &gt;,
+    &gt; {
+        Box_::pin(<span class="kw">crate</span>::GioFuture::new(
             <span class="self">self</span>,
-            <span class="kw">move</span> <span class="op">|</span><span class="ident">obj</span>, <span class="ident">cancellable</span>, <span class="ident">send</span><span class="op">|</span> {
-                <span class="ident">obj</span>.<span class="ident">accept_socket_async</span>(<span class="prelude-val">Some</span>(<span class="ident">cancellable</span>), <span class="kw">move</span> <span class="op">|</span><span class="ident">res</span><span class="op">|</span> {
-                    <span class="ident">send</span>.<span class="ident">resolve</span>(<span class="ident">res</span>);
+            <span class="kw">move </span>|obj, cancellable, send| {
+                obj.accept_socket_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
+                    send.resolve(res);
                 });
             },
         ))
     }
 
-    <span class="kw">fn</span> <span class="ident">add_address</span>(
+    <span class="kw">fn </span>add_address(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">address</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketAddress</span><span class="op">&gt;</span>,
-        <span class="ident">type_</span>: <span class="ident">SocketType</span>,
-        <span class="ident">protocol</span>: <span class="ident">SocketProtocol</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">SocketAddress</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">effective_address</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_add_address</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">address</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">type_</span>.<span class="ident">into_glib</span>(),
-                <span class="ident">protocol</span>.<span class="ident">into_glib</span>(),
-                <span class="ident">source_object</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">effective_address</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        address: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;SocketAddress&gt;,
+        type_: SocketType,
+        protocol: SocketProtocol,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;SocketAddress, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>effective_address = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_socket_listener_add_address(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                address.as_ref().to_glib_none().<span class="number">0</span>,
+                type_.into_glib(),
+                protocol.into_glib(),
+                source_object.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>effective_address,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">effective_address</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(effective_address))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add_any_inet_port</span>(
+    <span class="kw">fn </span>add_any_inet_port(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">u16</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_add_any_inet_port</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">source_object</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;u16, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::g_socket_listener_add_any_inet_port(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                source_object.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">ret</span>)
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(ret)
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add_inet_port</span>(
+    <span class="kw">fn </span>add_inet_port(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">port</span>: <span class="ident">u16</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_add_inet_port</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">port</span>,
-                <span class="ident">source_object</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        port: u16,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_socket_listener_add_inet_port(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                port,
+                source_object.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">add_socket</span>(
+    <span class="kw">fn </span>add_socket(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">socket</span>: <span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">Socket</span><span class="op">&gt;</span>,
-        <span class="ident">source_object</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw">impl</span> <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">glib::Object</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::g_socket_listener_add_socket</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">socket</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">source_object</span>.<span class="ident">map</span>(<span class="op">|</span><span class="ident">p</span><span class="op">|</span> <span class="ident">p</span>.<span class="ident">as_ref</span>()).<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+        socket: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Socket&gt;,
+        source_object: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;glib::Object&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::g_socket_listener_add_socket(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                socket.as_ref().to_glib_none().<span class="number">0</span>,
+                source_object.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_socket_listener_close</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>);
+    <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <span class="kw">unsafe </span>{
+            ffi::g_socket_listener_close(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">set_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">listen_backlog</span>: <span class="ident">i32</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::g_socket_listener_set_backlog</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">listen_backlog</span>);
+    <span class="kw">fn </span>set_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>, listen_backlog: i32) {
+        <span class="kw">unsafe </span>{
+            ffi::g_socket_listener_set_backlog(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, listen_backlog);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">listen_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="ident">glib::ObjectExt::property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;listen-backlog&quot;</span>)
+    <span class="kw">fn </span>listen_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;listen-backlog&quot;</span>)
     }
 
-    <span class="kw">fn</span> <span class="ident">set_listen_backlog</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">listen_backlog</span>: <span class="ident">i32</span>) {
-        <span class="ident">glib::ObjectExt::set_property</span>(<span class="self">self</span>.<span class="ident">as_ref</span>(), <span class="string">&quot;listen-backlog&quot;</span>, <span class="kw-2">&amp;</span><span class="ident">listen_backlog</span>)
+    <span class="kw">fn </span>set_listen_backlog(<span class="kw-2">&amp;</span><span class="self">self</span>, listen_backlog: i32) {
+        glib::ObjectExt::set_property(<span class="self">self</span>.as_ref(), <span class="string">&quot;listen-backlog&quot;</span>, <span class="kw-2">&amp;</span>listen_backlog)
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_event</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">SocketListenerEvent</span>, <span class="kw-2">&amp;</span><span class="ident">Socket</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>connect_event&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, SocketListenerEvent, <span class="kw-2">&amp;</span>Socket) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">event_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketListener</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="ident">SocketListenerEvent</span>, <span class="kw-2">&amp;</span><span class="ident">Socket</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GSocketListener</span>,
-            <span class="ident">event</span>: <span class="ident">ffi::GSocketListenerEvent</span>,
-            <span class="ident">socket</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GSocket</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+        f: F,
+    ) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>event_trampoline&lt;
+            P: IsA&lt;SocketListener&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, SocketListenerEvent, <span class="kw-2">&amp;</span>Socket) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GSocketListener,
+            event: ffi::GSocketListenerEvent,
+            socket: <span class="kw-2">*mut </span>ffi::GSocket,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(
-                <span class="ident">SocketListener::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
-                <span class="ident">from_glib</span>(<span class="ident">event</span>),
-                <span class="kw-2">&amp;</span><span class="ident">from_glib_borrow</span>(<span class="ident">socket</span>),
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(
+                SocketListener::from_glib_borrow(this).unsafe_cast_ref(),
+                from_glib(event),
+                <span class="kw-2">&amp;</span>from_glib_borrow(socket),
             )
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;event\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">event_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;event\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    event_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_listen_backlog_notify</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">notify_listen_backlog_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">SocketListener</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GSocketListener</span>,
-            <span class="ident">_param_spec</span>: <span class="ident">glib::ffi::gpointer</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_listen_backlog_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_listen_backlog_trampoline&lt;
+            P: IsA&lt;SocketListener&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GSocketListener,
+            _param_spec: glib::ffi::gpointer,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">SocketListener::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(SocketListener::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;notify::listen-backlog\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">notify_listen_backlog_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;notify::listen-backlog\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    notify_listen_backlog_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">SocketListener</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;SocketListener&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>SocketListener {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;SocketListener&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/unix_fd_list.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>unix_fd_list.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/unix_fd_list.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>unix_fd_list.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,19 +71,15 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1"> 1</span>
-<span id="2"> 2</span>
-<span id="3"> 3</span>
-<span id="4"> 4</span>
-<span id="5"> 5</span>
-<span id="6"> 6</span>
-<span id="7"> 7</span>
-<span id="8"> 8</span>
-<span id="9"> 9</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gio/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
@@ -155,85 +150,88 @@
 <span id="77">77</span>
 <span id="78">78</span>
 <span id="79">79</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+<span id="80">80</span>
+<span id="81">81</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
+</span><span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::fmt;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// A [`UnixFDList`][crate::UnixFDList] contains a list of file descriptors. It owns the file</span>
-    <span class="doccomment">/// descriptors that it contains, closing them when finalized.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It may be wrapped in a `GUnixFDMessage` and sent over a [`Socket`][crate::Socket] in</span>
-    <span class="doccomment">/// the [`SocketFamily::Unix`][crate::SocketFamily::Unix] family by using [`SocketExtManual::send_message()`][crate::prelude::SocketExtManual::send_message()]</span>
-    <span class="doccomment">/// and received using [`SocketExtManual::receive_message()`][crate::prelude::SocketExtManual::receive_message()].</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Note that `&lt;gio/gunixfdlist.h&gt;` belongs to the UNIX-specific GIO</span>
-    <span class="doccomment">/// interfaces, thus you have to use the `gio-unix-2.0.pc` pkg-config</span>
-    <span class="doccomment">/// file when using it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`UnixFDListExt`][trait@crate::prelude::UnixFDListExt], [`trait@glib::ObjectExt`], [`UnixFDListExtManual`][trait@crate::prelude::UnixFDListExtManual]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GUnixFDList&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">UnixFDList</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GUnixFDList</span>, <span class="ident">ffi::GUnixFDListClass</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// A [`UnixFDList`][crate::UnixFDList] contains a list of file descriptors. It owns the file
+    /// descriptors that it contains, closing them when finalized.
+    ///
+    /// It may be wrapped in a `GUnixFDMessage` and sent over a [`Socket`][crate::Socket] in
+    /// the [`SocketFamily::Unix`][crate::SocketFamily::Unix] family by using [`SocketExtManual::send_message()`][crate::prelude::SocketExtManual::send_message()]
+    /// and received using [`SocketExtManual::receive_message()`][crate::prelude::SocketExtManual::receive_message()].
+    ///
+    /// Before 2.74, `&lt;gio/gunixfdlist.h&gt;` belonged to the UNIX-specific GIO
+    /// interfaces, thus you had to use the `gio-unix-2.0.pc` pkg-config file when
+    /// using it.
+    ///
+    /// Since 2.74, the API is available for Windows.
+    ///
+    /// # Implements
+    ///
+    /// [`UnixFDListExt`][trait@crate::prelude::UnixFDListExt], [`trait@glib::ObjectExt`], [`UnixFDListExtManual`][trait@crate::prelude::UnixFDListExtManual]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GUnixFDList&quot;</span>)]
+    </span><span class="kw">pub struct </span>UnixFDList(Object&lt;ffi::GUnixFDList, ffi::GUnixFDListClass&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::g_unix_fd_list_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::g_unix_fd_list_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">UnixFDList</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">UnixFDList</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>UnixFDList {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>UnixFDList&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new [`UnixFDList`][crate::UnixFDList] containing no file descriptors.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// a new [`UnixFDList`][crate::UnixFDList]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_fd_list_new&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">UnixFDList</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::g_unix_fd_list_new</span>()) }
+    <span class="doccomment">/// Creates a new [`UnixFDList`][crate::UnixFDList] containing no file descriptors.
+    ///
+    /// # Returns
+    ///
+    /// a new [`UnixFDList`][crate::UnixFDList]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_unix_fd_list_new&quot;</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; UnixFDList {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_unix_fd_list_new()) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UnixFDList</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>UnixFDList {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@UnixFDList`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`UnixFDList`][struct@crate::UnixFDList]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">UnixFDListExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Gets the length of `self` (ie: the number of file descriptors</span>
-    <span class="doccomment">/// contained within).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// the length of `self`</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;g_unix_fd_list_get_length&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_length&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span>;
+<span class="doccomment">/// Trait containing all [`struct@UnixFDList`] methods.
+///
+/// # Implementors
+///
+/// [`UnixFDList`][struct@crate::UnixFDList]
+</span><span class="kw">pub trait </span>UnixFDListExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Gets the length of `self` (ie: the number of file descriptors
+    /// contained within).
+    ///
+    /// # Returns
+    ///
+    /// the length of `self`
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;g_unix_fd_list_get_length&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_length&quot;</span>)]
+    </span><span class="kw">fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">UnixFDList</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">UnixFDListExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">length</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">i32</span> {
-        <span class="kw">unsafe</span> { <span class="ident">ffi::g_unix_fd_list_get_length</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>) }
+<span class="kw">impl</span>&lt;O: IsA&lt;UnixFDList&gt;&gt; UnixFDListExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+        <span class="kw">unsafe </span>{ ffi::g_unix_fd_list_get_length(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>) }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">UnixFDList</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;UnixFDList&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>UnixFDList {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;UnixFDList&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gio" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>

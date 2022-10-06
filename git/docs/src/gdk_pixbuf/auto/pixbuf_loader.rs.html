@@ -1,5 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_loader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pixbuf_loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../ayu.css" disabled><link rel="stylesheet" type="text/css" href="../../../dark.css" disabled><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script src="../../../crates.js"></script><script defer src="../../../main.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script>
-    <noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf_loader.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>pixbuf_loader.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Regular.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../FiraSans-Medium.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Regular.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceSerif4-Bold.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../SourceCodePro-Semibold.ttf.woff2"><link rel="stylesheet" href="../../../normalize.css"><link rel="stylesheet" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" href="../../../ayu.css" disabled><link rel="stylesheet" href="../../../dark.css" disabled><link rel="stylesheet" href="../../../light.css" id="themeStyle"><script id="default-settings" ></script><script src="../../../storage.js"></script><script defer src="../../../source-script.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../main.js"></script><noscript><link rel="stylesheet" href="../../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../../favicon.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -72,109 +71,105 @@
 </script>
 
 
-<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gdk_pixbuf/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a><h2 class="location"></h2>
-    </nav>
-    <nav class="sidebar"><a class="sidebar-logo" href="../../../gdk_pixbuf/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div>
-        </a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gdk_pixbuf/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><div class="theme-picker hidden"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="22" height="22" alt="Pick another theme!" src="../../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
-<span id="2">  2</span>
-<span id="3">  3</span>
-<span id="4">  4</span>
-<span id="5">  5</span>
-<span id="6">  6</span>
-<span id="7">  7</span>
-<span id="8">  8</span>
-<span id="9">  9</span>
-<span id="10"> 10</span>
-<span id="11"> 11</span>
-<span id="12"> 12</span>
-<span id="13"> 13</span>
-<span id="14"> 14</span>
-<span id="15"> 15</span>
-<span id="16"> 16</span>
-<span id="17"> 17</span>
-<span id="18"> 18</span>
-<span id="19"> 19</span>
-<span id="20"> 20</span>
-<span id="21"> 21</span>
-<span id="22"> 22</span>
-<span id="23"> 23</span>
-<span id="24"> 24</span>
-<span id="25"> 25</span>
-<span id="26"> 26</span>
-<span id="27"> 27</span>
-<span id="28"> 28</span>
-<span id="29"> 29</span>
-<span id="30"> 30</span>
-<span id="31"> 31</span>
-<span id="32"> 32</span>
-<span id="33"> 33</span>
-<span id="34"> 34</span>
-<span id="35"> 35</span>
-<span id="36"> 36</span>
-<span id="37"> 37</span>
-<span id="38"> 38</span>
-<span id="39"> 39</span>
-<span id="40"> 40</span>
-<span id="41"> 41</span>
-<span id="42"> 42</span>
-<span id="43"> 43</span>
-<span id="44"> 44</span>
-<span id="45"> 45</span>
-<span id="46"> 46</span>
-<span id="47"> 47</span>
-<span id="48"> 48</span>
-<span id="49"> 49</span>
-<span id="50"> 50</span>
-<span id="51"> 51</span>
-<span id="52"> 52</span>
-<span id="53"> 53</span>
-<span id="54"> 54</span>
-<span id="55"> 55</span>
-<span id="56"> 56</span>
-<span id="57"> 57</span>
-<span id="58"> 58</span>
-<span id="59"> 59</span>
-<span id="60"> 60</span>
-<span id="61"> 61</span>
-<span id="62"> 62</span>
-<span id="63"> 63</span>
-<span id="64"> 64</span>
-<span id="65"> 65</span>
-<span id="66"> 66</span>
-<span id="67"> 67</span>
-<span id="68"> 68</span>
-<span id="69"> 69</span>
-<span id="70"> 70</span>
-<span id="71"> 71</span>
-<span id="72"> 72</span>
-<span id="73"> 73</span>
-<span id="74"> 74</span>
-<span id="75"> 75</span>
-<span id="76"> 76</span>
-<span id="77"> 77</span>
-<span id="78"> 78</span>
-<span id="79"> 79</span>
-<span id="80"> 80</span>
-<span id="81"> 81</span>
-<span id="82"> 82</span>
-<span id="83"> 83</span>
-<span id="84"> 84</span>
-<span id="85"> 85</span>
-<span id="86"> 86</span>
-<span id="87"> 87</span>
-<span id="88"> 88</span>
-<span id="89"> 89</span>
-<span id="90"> 90</span>
-<span id="91"> 91</span>
-<span id="92"> 92</span>
-<span id="93"> 93</span>
-<span id="94"> 94</span>
-<span id="95"> 95</span>
-<span id="96"> 96</span>
-<span id="97"> 97</span>
-<span id="98"> 98</span>
-<span id="99"> 99</span>
+<nav class="mobile-topbar"><button class="sidebar-menu-toggle">&#9776;</button><a class="sidebar-logo" href="../../../gdk_pixbuf/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a><h2 class="location"></h2></nav><nav class="sidebar"><a class="sidebar-logo" href="../../../gdk_pixbuf/index.html"><div class="logo-container"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></div></a></nav><main><div class="width-limiter"><div class="sub-container"><a class="sub-logo-container" href="../../../gdk_pixbuf/index.html"><img class="rust-logo" src="../../../rust-logo.svg" alt="logo"></a><nav class="sub"><form class="search-form"><div class="search-container"><span></span><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><button type="button">?</button></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../wheel.svg"></a></div></div></form></nav></div><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><span id="1">1</span>
+<span id="2">2</span>
+<span id="3">3</span>
+<span id="4">4</span>
+<span id="5">5</span>
+<span id="6">6</span>
+<span id="7">7</span>
+<span id="8">8</span>
+<span id="9">9</span>
+<span id="10">10</span>
+<span id="11">11</span>
+<span id="12">12</span>
+<span id="13">13</span>
+<span id="14">14</span>
+<span id="15">15</span>
+<span id="16">16</span>
+<span id="17">17</span>
+<span id="18">18</span>
+<span id="19">19</span>
+<span id="20">20</span>
+<span id="21">21</span>
+<span id="22">22</span>
+<span id="23">23</span>
+<span id="24">24</span>
+<span id="25">25</span>
+<span id="26">26</span>
+<span id="27">27</span>
+<span id="28">28</span>
+<span id="29">29</span>
+<span id="30">30</span>
+<span id="31">31</span>
+<span id="32">32</span>
+<span id="33">33</span>
+<span id="34">34</span>
+<span id="35">35</span>
+<span id="36">36</span>
+<span id="37">37</span>
+<span id="38">38</span>
+<span id="39">39</span>
+<span id="40">40</span>
+<span id="41">41</span>
+<span id="42">42</span>
+<span id="43">43</span>
+<span id="44">44</span>
+<span id="45">45</span>
+<span id="46">46</span>
+<span id="47">47</span>
+<span id="48">48</span>
+<span id="49">49</span>
+<span id="50">50</span>
+<span id="51">51</span>
+<span id="52">52</span>
+<span id="53">53</span>
+<span id="54">54</span>
+<span id="55">55</span>
+<span id="56">56</span>
+<span id="57">57</span>
+<span id="58">58</span>
+<span id="59">59</span>
+<span id="60">60</span>
+<span id="61">61</span>
+<span id="62">62</span>
+<span id="63">63</span>
+<span id="64">64</span>
+<span id="65">65</span>
+<span id="66">66</span>
+<span id="67">67</span>
+<span id="68">68</span>
+<span id="69">69</span>
+<span id="70">70</span>
+<span id="71">71</span>
+<span id="72">72</span>
+<span id="73">73</span>
+<span id="74">74</span>
+<span id="75">75</span>
+<span id="76">76</span>
+<span id="77">77</span>
+<span id="78">78</span>
+<span id="79">79</span>
+<span id="80">80</span>
+<span id="81">81</span>
+<span id="82">82</span>
+<span id="83">83</span>
+<span id="84">84</span>
+<span id="85">85</span>
+<span id="86">86</span>
+<span id="87">87</span>
+<span id="88">88</span>
+<span id="89">89</span>
+<span id="90">90</span>
+<span id="91">91</span>
+<span id="92">92</span>
+<span id="93">93</span>
+<span id="94">94</span>
+<span id="95">95</span>
+<span id="96">96</span>
+<span id="97">97</span>
+<span id="98">98</span>
+<span id="99">99</span>
 <span id="100">100</span>
 <span id="101">101</span>
 <span id="102">102</span>
@@ -607,537 +602,536 @@
 <span id="529">529</span>
 <span id="530">530</span>
 <span id="531">531</span>
-</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)</span>
-<span class="comment">// from gir-files (https://github.com/gtk-rs/gir-files)</span>
-<span class="comment">// DO NOT EDIT</span>
+</pre><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
+// from gir-files (https://github.com/gtk-rs/gir-files)
+// DO NOT EDIT
 
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::Pixbuf</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PixbufAnimation</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::PixbufFormat</span>;
-<span class="kw">use</span> <span class="ident">glib::object::Cast</span>;
-<span class="kw">use</span> <span class="ident">glib::object::IsA</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::connect_raw</span>;
-<span class="kw">use</span> <span class="ident">glib::signal::SignalHandlerId</span>;
-<span class="kw">use</span> <span class="ident">glib::translate</span>::<span class="kw-2">*</span>;
-<span class="kw">use</span> <span class="ident">std::boxed::Box</span> <span class="kw">as</span> <span class="ident">Box_</span>;
-<span class="kw">use</span> <span class="ident">std::fmt</span>;
-<span class="kw">use</span> <span class="ident">std::mem::transmute</span>;
-<span class="kw">use</span> <span class="ident">std::ptr</span>;
+</span><span class="kw">use </span><span class="kw">crate</span>::Pixbuf;
+<span class="kw">use </span><span class="kw">crate</span>::PixbufAnimation;
+<span class="kw">use </span><span class="kw">crate</span>::PixbufFormat;
+<span class="kw">use </span>glib::object::Cast;
+<span class="kw">use </span>glib::object::IsA;
+<span class="kw">use </span>glib::signal::connect_raw;
+<span class="kw">use </span>glib::signal::SignalHandlerId;
+<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::boxed::Box <span class="kw">as </span>Box_;
+<span class="kw">use </span>std::fmt;
+<span class="kw">use </span>std::mem::transmute;
+<span class="kw">use </span>std::ptr;
 
-<span class="macro">glib::wrapper!</span> {
-    <span class="doccomment">/// Incremental image loader.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`PixbufLoader`][crate::PixbufLoader] provides a way for applications to drive the</span>
-    <span class="doccomment">/// process of loading an image, by letting them send the image data</span>
-    <span class="doccomment">/// directly to the loader instead of having the loader read the data</span>
-    <span class="doccomment">/// from a file. Applications can use this functionality instead of</span>
-    <span class="doccomment">/// `[`Pixbuf::from_file()`][crate::Pixbuf::from_file()]` or `[`PixbufAnimation::from_file()`][crate::PixbufAnimation::from_file()]`</span>
-    <span class="doccomment">/// when they need to parse image data in small chunks. For example,</span>
-    <span class="doccomment">/// it should be used when reading an image from a (potentially) slow</span>
-    <span class="doccomment">/// network connection, or when loading an extremely large file.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// To use [`PixbufLoader`][crate::PixbufLoader] to load an image, create a new instance,</span>
-    <span class="doccomment">/// and call [method[`Pixbuf`][crate::Pixbuf].write] to send the data</span>
-    <span class="doccomment">/// to it. When done, [method[`Pixbuf`][crate::Pixbuf].close] should be</span>
-    <span class="doccomment">/// called to end the stream and finalize everything.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The loader will emit three important signals throughout the process:</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">///  - [signal[`Pixbuf`][crate::Pixbuf]::size-prepared] will be emitted as</span>
-    <span class="doccomment">///  soon as the image has enough information to determine the size of</span>
-    <span class="doccomment">///  the image to be used. If you want to scale the image while loading</span>
-    <span class="doccomment">///  it, you can call [method[`Pixbuf`][crate::Pixbuf].set_size] in</span>
-    <span class="doccomment">///  response to this signal.</span>
-    <span class="doccomment">///  - [signal[`Pixbuf`][crate::Pixbuf]::area-prepared] will be emitted as</span>
-    <span class="doccomment">///  soon as the pixbuf of the desired has been allocated. You can obtain</span>
-    <span class="doccomment">///  the [`Pixbuf`][crate::Pixbuf] instance by calling [method[`Pixbuf`][crate::Pixbuf].get_pixbuf].</span>
-    <span class="doccomment">///  If you want to use it, simply acquire a reference to it. You can</span>
-    <span class="doccomment">///  also call `[`PixbufLoaderExt::pixbuf()`][crate::prelude::PixbufLoaderExt::pixbuf()]` later to get the same</span>
-    <span class="doccomment">///  pixbuf.</span>
-    <span class="doccomment">///  - [signal[`Pixbuf`][crate::Pixbuf]::area-updated] will be emitted every</span>
-    <span class="doccomment">///  time a region is updated. This way you can update a partially</span>
-    <span class="doccomment">///  completed image. Note that you do not know anything about the</span>
-    <span class="doccomment">///  completeness of an image from the updated area. For example, in an</span>
-    <span class="doccomment">///  interlaced image you will need to make several passes before the</span>
-    <span class="doccomment">///  image is done loading.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// ## Loading an animation</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Loading an animation is almost as easy as loading an image. Once the</span>
-    <span class="doccomment">/// first [signal[`Pixbuf`][crate::Pixbuf]::area-prepared] signal has been</span>
-    <span class="doccomment">/// emitted, you can call [method[`Pixbuf`][crate::Pixbuf].get_animation] to</span>
-    <span class="doccomment">/// get the [class[`Pixbuf`][crate::Pixbuf]] instance, and then call</span>
-    <span class="doccomment">/// and [method[`Pixbuf`][crate::Pixbuf].get_iter] to get a</span>
-    <span class="doccomment">/// [class[`Pixbuf`][crate::Pixbuf]] to retrieve the pixbuf for the</span>
-    <span class="doccomment">/// desired time stamp.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Implements</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// [`PixbufLoaderExt`][trait@crate::prelude::PixbufLoaderExt]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;GdkPixbufLoader&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">PixbufLoader</span>(<span class="ident">Object</span><span class="op">&lt;</span><span class="ident">ffi::GdkPixbufLoader</span>, <span class="ident">ffi::GdkPixbufLoaderClass</span><span class="op">&gt;</span>);
+<span class="macro">glib::wrapper! </span>{
+    <span class="doccomment">/// Incremental image loader.
+    ///
+    /// [`PixbufLoader`][crate::PixbufLoader] provides a way for applications to drive the
+    /// process of loading an image, by letting them send the image data
+    /// directly to the loader instead of having the loader read the data
+    /// from a file. Applications can use this functionality instead of
+    /// `gdk_pixbuf_new_from_file()` or `gdk_pixbuf_animation_new_from_file()`
+    /// when they need to parse image data in small chunks. For example,
+    /// it should be used when reading an image from a (potentially) slow
+    /// network connection, or when loading an extremely large file.
+    ///
+    /// To use [`PixbufLoader`][crate::PixbufLoader] to load an image, create a new instance,
+    /// and call [`PixbufLoaderExt::write()`][crate::prelude::PixbufLoaderExt::write()] to send the data
+    /// to it. When done, [`PixbufLoaderExt::close()`][crate::prelude::PixbufLoaderExt::close()] should be
+    /// called to end the stream and finalize everything.
+    ///
+    /// The loader will emit three important signals throughout the process:
+    ///
+    ///  - `signal::PixbufLoader::size-prepared` will be emitted as
+    ///    soon as the image has enough information to determine the size of
+    ///    the image to be used. If you want to scale the image while loading
+    ///    it, you can call [`PixbufLoaderExt::set_size()`][crate::prelude::PixbufLoaderExt::set_size()] in
+    ///    response to this signal.
+    ///  - `signal::PixbufLoader::area-prepared` will be emitted as
+    ///    soon as the pixbuf of the desired has been allocated. You can obtain
+    ///    the [`Pixbuf`][crate::Pixbuf] instance by calling [`PixbufLoaderExt::pixbuf()`][crate::prelude::PixbufLoaderExt::pixbuf()].
+    ///    If you want to use it, simply acquire a reference to it. You can
+    ///    also call `gdk_pixbuf_loader_get_pixbuf()` later to get the same
+    ///    pixbuf.
+    ///  - `signal::PixbufLoader::area-updated` will be emitted every
+    ///    time a region is updated. This way you can update a partially
+    ///    completed image. Note that you do not know anything about the
+    ///    completeness of an image from the updated area. For example, in an
+    ///    interlaced image you will need to make several passes before the
+    ///    image is done loading.
+    ///
+    /// ## Loading an animation
+    ///
+    /// Loading an animation is almost as easy as loading an image. Once the
+    /// first `signal::PixbufLoader::area-prepared` signal has been
+    /// emitted, you can call [`PixbufLoaderExt::animation()`][crate::prelude::PixbufLoaderExt::animation()] to
+    /// get the [`PixbufAnimation`][crate::PixbufAnimation] instance, and then call
+    /// and [`PixbufAnimationExtManual::iter()`][crate::prelude::PixbufAnimationExtManual::iter()] to get a
+    /// [`PixbufAnimationIter`][crate::PixbufAnimationIter] to retrieve the pixbuf for the
+    /// desired time stamp.
+    ///
+    /// # Implements
+    ///
+    /// [`PixbufLoaderExt`][trait@crate::prelude::PixbufLoaderExt]
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;GdkPixbufLoader&quot;</span>)]
+    </span><span class="kw">pub struct </span>PixbufLoader(Object&lt;ffi::GdkPixbufLoader, ffi::GdkPixbufLoaderClass&gt;);
 
-    <span class="kw">match</span> <span class="kw">fn</span> {
-        <span class="ident">type_</span> =&gt; <span class="op">|</span><span class="op">|</span> <span class="ident">ffi::gdk_pixbuf_loader_get_type</span>(),
+    <span class="kw">match fn </span>{
+        type_ =&gt; || ffi::gdk_pixbuf_loader_get_type(),
     }
 }
 
-<span class="kw">impl</span> <span class="ident">PixbufLoader</span> {
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">NONE</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;static</span> <span class="ident">PixbufLoader</span><span class="op">&gt;</span> <span class="op">=</span> <span class="prelude-val">None</span>;
+<span class="kw">impl </span>PixbufLoader {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>PixbufLoader&gt; = <span class="prelude-val">None</span>;
 
-    <span class="doccomment">/// Creates a new pixbuf loader object.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A newly-created pixbuf loader.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_new&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="ident">PixbufLoader</span> {
-        <span class="kw">unsafe</span> { <span class="ident">from_glib_full</span>(<span class="ident">ffi::gdk_pixbuf_loader_new</span>()) }
+    <span class="doccomment">/// Creates a new pixbuf loader object.
+    ///
+    /// # Returns
+    ///
+    /// A newly-created pixbuf loader.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new&quot;</span>)]
+    </span><span class="kw">pub fn </span>new() -&gt; PixbufLoader {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_loader_new()) }
     }
 
-    <span class="doccomment">/// Creates a new pixbuf loader object that always attempts to parse</span>
-    <span class="doccomment">/// image data as if it were an image of MIME type `mime_type`, instead of</span>
-    <span class="doccomment">/// identifying the type automatically.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is useful if you want an error if the image isn&#39;t the</span>
-    <span class="doccomment">/// expected MIME type; for loading image formats that can&#39;t be reliably</span>
-    <span class="doccomment">/// identified by looking at the data; or if the user manually forces a</span>
-    <span class="doccomment">/// specific MIME type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The list of supported mime types depends on what image loaders</span>
-    <span class="doccomment">/// are installed, but typically &quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;,</span>
-    <span class="doccomment">/// &quot;image/tiff&quot; and &quot;image/x-xpixmap&quot; are among the supported mime types.</span>
-    <span class="doccomment">/// To obtain the full list of supported mime types, call</span>
-    <span class="doccomment">/// [`PixbufFormat::mime_types()`][crate::PixbufFormat::mime_types()] on each of the [`PixbufFormat`][crate::PixbufFormat]</span>
-    <span class="doccomment">/// structs returned by [`Pixbuf::formats()`][crate::Pixbuf::formats()].</span>
-    <span class="doccomment">/// ## `mime_type`</span>
-    <span class="doccomment">/// the mime type to be loaded</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A newly-created pixbuf loader.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_new_with_mime_type&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_with_mime_type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_mime_type</span>(<span class="ident">mime_type</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span>
-                <span class="ident">ffi::gdk_pixbuf_loader_new_with_mime_type</span>(<span class="ident">mime_type</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+    <span class="doccomment">/// Creates a new pixbuf loader object that always attempts to parse
+    /// image data as if it were an image of MIME type @mime_type, instead of
+    /// identifying the type automatically.
+    ///
+    /// This function is useful if you want an error if the image isn&#39;t the
+    /// expected MIME type; for loading image formats that can&#39;t be reliably
+    /// identified by looking at the data; or if the user manually forces a
+    /// specific MIME type.
+    ///
+    /// The list of supported mime types depends on what image loaders
+    /// are installed, but typically &quot;image/png&quot;, &quot;image/jpeg&quot;, &quot;image/gif&quot;,
+    /// &quot;image/tiff&quot; and &quot;image/x-xpixmap&quot; are among the supported mime types.
+    /// To obtain the full list of supported mime types, call
+    /// gdk_pixbuf_format_get_mime_types() on each of the #GdkPixbufFormat
+    /// structs returned by gdk_pixbuf_get_formats().
+    /// ## `mime_type`
+    /// the mime type to be loaded
+    ///
+    /// # Returns
+    ///
+    /// A newly-created pixbuf loader.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new_with_mime_type&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_with_mime_type&quot;</span>)]
+    </span><span class="kw">pub fn </span>with_mime_type(mime_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufLoader, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret =
+                ffi::gdk_pixbuf_loader_new_with_mime_type(mime_type.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="doccomment">/// Creates a new pixbuf loader object that always attempts to parse</span>
-    <span class="doccomment">/// image data as if it were an image of type `image_type`, instead of</span>
-    <span class="doccomment">/// identifying the type automatically.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function is useful if you want an error if the image isn&#39;t the</span>
-    <span class="doccomment">/// expected type; for loading image formats that can&#39;t be reliably</span>
-    <span class="doccomment">/// identified by looking at the data; or if the user manually forces</span>
-    <span class="doccomment">/// a specific type.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The list of supported image formats depends on what image loaders</span>
-    <span class="doccomment">/// are installed, but typically &quot;png&quot;, &quot;jpeg&quot;, &quot;gif&quot;, &quot;tiff&quot; and</span>
-    <span class="doccomment">/// &quot;xpm&quot; are among the supported formats. To obtain the full list of</span>
-    <span class="doccomment">/// supported image formats, call [`PixbufFormat::name()`][crate::PixbufFormat::name()] on each</span>
-    <span class="doccomment">/// of the [`PixbufFormat`][crate::PixbufFormat] structs returned by [`Pixbuf::formats()`][crate::Pixbuf::formats()].</span>
-    <span class="doccomment">/// ## `image_type`</span>
-    <span class="doccomment">/// name of the image format to be loaded with the image</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A newly-created pixbuf loader.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_new_with_type&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;new_with_type&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">with_type</span>(<span class="ident">image_type</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span>, <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">ret</span> <span class="op">=</span> <span class="ident">ffi::gdk_pixbuf_loader_new_with_type</span>(<span class="ident">image_type</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">from_glib_full</span>(<span class="ident">ret</span>))
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+    <span class="doccomment">/// Creates a new pixbuf loader object that always attempts to parse
+    /// image data as if it were an image of type @image_type, instead of
+    /// identifying the type automatically.
+    ///
+    /// This function is useful if you want an error if the image isn&#39;t the
+    /// expected type; for loading image formats that can&#39;t be reliably
+    /// identified by looking at the data; or if the user manually forces
+    /// a specific type.
+    ///
+    /// The list of supported image formats depends on what image loaders
+    /// are installed, but typically &quot;png&quot;, &quot;jpeg&quot;, &quot;gif&quot;, &quot;tiff&quot; and
+    /// &quot;xpm&quot; are among the supported formats. To obtain the full list of
+    /// supported image formats, call gdk_pixbuf_format_get_name() on each
+    /// of the #GdkPixbufFormat structs returned by gdk_pixbuf_get_formats().
+    /// ## `image_type`
+    /// name of the image format to be loaded with the image
+    ///
+    /// # Returns
+    ///
+    /// A newly-created pixbuf loader.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_new_with_type&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;new_with_type&quot;</span>)]
+    </span><span class="kw">pub fn </span>with_type(image_type: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;PixbufLoader, glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>ret = ffi::gdk_pixbuf_loader_new_with_type(image_type.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">if </span>error.is_null() {
+                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PixbufLoader</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
-        <span class="ident"><span class="self">Self</span>::new</span>()
+<span class="kw">impl </span>Default <span class="kw">for </span>PixbufLoader {
+    <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
+        <span class="self">Self</span>::new()
     }
 }
 
-<span class="doccomment">/// Trait containing all [`struct@PixbufLoader`] methods.</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// # Implementors</span>
-<span class="doccomment">///</span>
-<span class="doccomment">/// [`PixbufLoader`][struct@crate::PixbufLoader]</span>
-<span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">PixbufLoaderExt</span>: <span class="lifetime">&#39;static</span> {
-    <span class="doccomment">/// Informs a pixbuf loader that no further writes with</span>
-    <span class="doccomment">/// [`write()`][Self::write()] will occur, so that it can free its</span>
-    <span class="doccomment">/// internal loading structures.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// This function also tries to parse any data that hasn&#39;t yet been parsed;</span>
-    <span class="doccomment">/// if the remaining data is partial or corrupt, an error will be returned.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If `FALSE` is returned, `error` will be set to an error from the</span>
-    <span class="doccomment">/// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If you&#39;re just cancelling a load rather than expecting it to be finished,</span>
-    <span class="doccomment">/// passing `NULL` for `error` to ignore it is reasonable.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Remember that this function does not release a reference on the loader, so</span>
-    <span class="doccomment">/// you will need to explicitly release any reference you hold.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `TRUE` if all image data written so far was successfully</span>
-    <span class="doccomment">///  passed out via the update_area signal</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_close&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+<span class="doccomment">/// Trait containing all [`struct@PixbufLoader`] methods.
+///
+/// # Implementors
+///
+/// [`PixbufLoader`][struct@crate::PixbufLoader]
+</span><span class="kw">pub trait </span>PixbufLoaderExt: <span class="lifetime">&#39;static </span>{
+    <span class="doccomment">/// Informs a pixbuf loader that no further writes with
+    /// gdk_pixbuf_loader_write() will occur, so that it can free its
+    /// internal loading structures.
+    ///
+    /// This function also tries to parse any data that hasn&#39;t yet been parsed;
+    /// if the remaining data is partial or corrupt, an error will be returned.
+    ///
+    /// If `FALSE` is returned, `error` will be set to an error from the
+    /// `GDK_PIXBUF_ERROR` or `G_FILE_ERROR` domains.
+    ///
+    /// If you&#39;re just cancelling a load rather than expecting it to be finished,
+    /// passing `NULL` for `error` to ignore it is reasonable.
+    ///
+    /// Remember that this function does not release a reference on the loader, so
+    /// you will need to explicitly release any reference you hold.
+    ///
+    /// # Returns
+    ///
+    /// `TRUE` if all image data written so far was successfully
+    ///   passed out via the update_area signal
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_close&quot;</span>)]
+    </span><span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// Queries the [`PixbufAnimation`][crate::PixbufAnimation] that a pixbuf loader is currently creating.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In general it only makes sense to call this function after the</span>
-    <span class="doccomment">/// [signal[`Pixbuf`][crate::Pixbuf]::area-prepared] signal has been emitted by</span>
-    <span class="doccomment">/// the loader.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the loader doesn&#39;t have enough bytes yet, and hasn&#39;t emitted the `area-prepared`</span>
-    <span class="doccomment">/// signal, this function will return `NULL`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The animation that the loader is</span>
-    <span class="doccomment">///  currently loading</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_get_animation&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_animation&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">animation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixbufAnimation</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Queries the #GdkPixbufAnimation that a pixbuf loader is currently creating.
+    ///
+    /// In general it only makes sense to call this function after the
+    /// `signal::PixbufLoader::area-prepared` signal has been emitted by
+    /// the loader.
+    ///
+    /// If the loader doesn&#39;t have enough bytes yet, and hasn&#39;t emitted the `area-prepared`
+    /// signal, this function will return `NULL`.
+    ///
+    /// # Returns
+    ///
+    /// The animation that the loader is
+    ///   currently loading
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_animation&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_animation&quot;</span>)]
+    </span><span class="kw">fn </span>animation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufAnimation&gt;;
 
-    <span class="doccomment">/// Obtains the available information about the format of the</span>
-    <span class="doccomment">/// currently loading image file.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// A [`PixbufFormat`][crate::PixbufFormat]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_get_format&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_format&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixbufFormat</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Obtains the available information about the format of the
+    /// currently loading image file.
+    ///
+    /// # Returns
+    ///
+    /// A #GdkPixbufFormat
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_format&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_format&quot;</span>)]
+    </span><span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufFormat&gt;;
 
-    <span class="doccomment">/// Queries the [`Pixbuf`][crate::Pixbuf] that a pixbuf loader is currently creating.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// In general it only makes sense to call this function after the</span>
-    <span class="doccomment">/// [signal[`Pixbuf`][crate::Pixbuf]::area-prepared] signal has been</span>
-    <span class="doccomment">/// emitted by the loader; this means that enough data has been read</span>
-    <span class="doccomment">/// to know the size of the image that will be allocated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// If the loader has not received enough data via [`write()`][Self::write()],</span>
-    <span class="doccomment">/// then this function returns `NULL`.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The returned pixbuf will be the same in all future calls to the loader,</span>
-    <span class="doccomment">/// so if you want to keep using it, you should acquire a reference to it.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Additionally, if the loader is an animation, it will return the &quot;static</span>
-    <span class="doccomment">/// image&quot; of the animation (see [`PixbufAnimationExt::static_image()`][crate::prelude::PixbufAnimationExt::static_image()]).</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The pixbuf that the loader is</span>
-    <span class="doccomment">///  creating</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_get_pixbuf&quot;</span>)]</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;get_pixbuf&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">pixbuf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Pixbuf</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Queries the #GdkPixbuf that a pixbuf loader is currently creating.
+    ///
+    /// In general it only makes sense to call this function after the
+    /// `signal::PixbufLoader::area-prepared` signal has been
+    /// emitted by the loader; this means that enough data has been read
+    /// to know the size of the image that will be allocated.
+    ///
+    /// If the loader has not received enough data via gdk_pixbuf_loader_write(),
+    /// then this function returns `NULL`.
+    ///
+    /// The returned pixbuf will be the same in all future calls to the loader,
+    /// so if you want to keep using it, you should acquire a reference to it.
+    ///
+    /// Additionally, if the loader is an animation, it will return the &quot;static
+    /// image&quot; of the animation (see gdk_pixbuf_animation_get_static_image()).
+    ///
+    /// # Returns
+    ///
+    /// The pixbuf that the loader is
+    ///   creating
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_get_pixbuf&quot;</span>)]
+    #[doc(alias = <span class="string">&quot;get_pixbuf&quot;</span>)]
+    </span><span class="kw">fn </span>pixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt;;
 
-    <span class="doccomment">/// Causes the image to be scaled while it is loaded.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// The desired image size can be determined relative to the original</span>
-    <span class="doccomment">/// size of the image by calling [`set_size()`][Self::set_size()] from a</span>
-    <span class="doccomment">/// signal handler for the ::size-prepared signal.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Attempts to set the desired image size are ignored after the</span>
-    <span class="doccomment">/// emission of the ::size-prepared signal.</span>
-    <span class="doccomment">/// ## `width`</span>
-    <span class="doccomment">/// The desired width of the image being loaded.</span>
-    <span class="doccomment">/// ## `height`</span>
-    <span class="doccomment">/// The desired height of the image being loaded.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_set_size&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">set_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">width</span>: <span class="ident">i32</span>, <span class="ident">height</span>: <span class="ident">i32</span>);
+    <span class="doccomment">/// Causes the image to be scaled while it is loaded.
+    ///
+    /// The desired image size can be determined relative to the original
+    /// size of the image by calling gdk_pixbuf_loader_set_size() from a
+    /// signal handler for the ::size-prepared signal.
+    ///
+    /// Attempts to set the desired image size  are ignored after the
+    /// emission of the ::size-prepared signal.
+    /// ## `width`
+    /// The desired width of the image being loaded.
+    /// ## `height`
+    /// The desired height of the image being loaded.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_set_size&quot;</span>)]
+    </span><span class="kw">fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: i32, height: i32);
 
-    <span class="doccomment">/// Parses the next `count` bytes in the given image buffer.</span>
-    <span class="doccomment">/// ## `buf`</span>
-    <span class="doccomment">/// Pointer to image data.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `TRUE` if the write was successful, or</span>
-    <span class="doccomment">///  `FALSE` if the loader cannot parse the buffer</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_write&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Parses the next `count` bytes in the given image buffer.
+    /// ## `buf`
+    /// Pointer to image data.
+    ///
+    /// # Returns
+    ///
+    /// `TRUE` if the write was successful, or
+    ///   `FALSE` if the loader cannot parse the buffer
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_write&quot;</span>)]
+    </span><span class="kw">fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// Parses the next contents of the given image buffer.</span>
-    <span class="doccomment">/// ## `buffer`</span>
-    <span class="doccomment">/// The image data as a `GBytes` buffer.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// # Returns</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// `TRUE` if the write was successful, or `FALSE` if</span>
-    <span class="doccomment">///  the loader cannot parse the buffer</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;gdk_pixbuf_loader_write_bytes&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="ident">glib::Bytes</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span>;
+    <span class="doccomment">/// Parses the next contents of the given image buffer.
+    /// ## `buffer`
+    /// The image data as a `GBytes` buffer.
+    ///
+    /// # Returns
+    ///
+    /// `TRUE` if the write was successful, or `FALSE` if
+    ///   the loader cannot parse the buffer
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;gdk_pixbuf_loader_write_bytes&quot;</span>)]
+    </span><span class="kw">fn </span>write_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>glib::Bytes) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;;
 
-    <span class="doccomment">/// This signal is emitted when the pixbuf loader has allocated the</span>
-    <span class="doccomment">/// pixbuf in the desired size.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// After this signal is emitted, applications can call</span>
-    <span class="doccomment">/// [`pixbuf()`][Self::pixbuf()] to fetch the partially-loaded</span>
-    <span class="doccomment">/// pixbuf.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;area-prepared&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_area_prepared</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// This signal is emitted when the pixbuf loader has allocated the
+    /// pixbuf in the desired size.
+    ///
+    /// After this signal is emitted, applications can call
+    /// gdk_pixbuf_loader_get_pixbuf() to fetch the partially-loaded
+    /// pixbuf.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;area-prepared&quot;</span>)]
+    </span><span class="kw">fn </span>connect_area_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="doccomment">/// This signal is emitted when a significant area of the image being</span>
-    <span class="doccomment">/// loaded has been updated.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Normally it means that a complete scanline has been read in, but</span>
-    <span class="doccomment">/// it could be a different area as well.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Applications can use this signal to know when to repaint</span>
-    <span class="doccomment">/// areas of an image that is being loaded.</span>
-    <span class="doccomment">/// ## `x`</span>
-    <span class="doccomment">/// X offset of upper-left corner of the updated area.</span>
-    <span class="doccomment">/// ## `y`</span>
-    <span class="doccomment">/// Y offset of upper-left corner of the updated area.</span>
-    <span class="doccomment">/// ## `width`</span>
-    <span class="doccomment">/// Width of updated area.</span>
-    <span class="doccomment">/// ## `height`</span>
-    <span class="doccomment">/// Height of updated area.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;area-updated&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_area_updated</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="doccomment">/// This signal is emitted when a significant area of the image being
+    /// loaded has been updated.
+    ///
+    /// Normally it means that a complete scanline has been read in, but
+    /// it could be a different area as well.
+    ///
+    /// Applications can use this signal to know when to repaint
+    /// areas of an image that is being loaded.
+    /// ## `x`
+    /// X offset of upper-left corner of the updated area.
+    /// ## `y`
+    /// Y offset of upper-left corner of the updated area.
+    /// ## `width`
+    /// Width of updated area.
+    /// ## `height`
+    /// Height of updated area.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;area-updated&quot;</span>)]
+    </span><span class="kw">fn </span>connect_area_updated&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">SignalHandlerId</span>;
+        f: F,
+    ) -&gt; SignalHandlerId;
 
-    <span class="doccomment">/// This signal is emitted when [`close()`][Self::close()] is called.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// It can be used by different parts of an application to receive</span>
-    <span class="doccomment">/// notification when an image loader is closed by the code that</span>
-    <span class="doccomment">/// drives it.</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;closed&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_closed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// This signal is emitted when gdk_pixbuf_loader_close() is called.
+    ///
+    /// It can be used by different parts of an application to receive
+    /// notification when an image loader is closed by the code that
+    /// drives it.
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;closed&quot;</span>)]
+    </span><span class="kw">fn </span>connect_closed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 
-    <span class="doccomment">/// This signal is emitted when the pixbuf loader has been fed the</span>
-    <span class="doccomment">/// initial amount of data that is required to figure out the size</span>
-    <span class="doccomment">/// of the image that it will create.</span>
-    <span class="doccomment">///</span>
-    <span class="doccomment">/// Applications can call [`set_size()`][Self::set_size()] in response</span>
-    <span class="doccomment">/// to this signal to set the desired size to which the image</span>
-    <span class="doccomment">/// should be scaled.</span>
-    <span class="doccomment">/// ## `width`</span>
-    <span class="doccomment">/// the original width of the image</span>
-    <span class="doccomment">/// ## `height`</span>
-    <span class="doccomment">/// the original height of the image</span>
-    <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">alias</span> <span class="op">=</span> <span class="string">&quot;size-prepared&quot;</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">connect_size_prepared</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span>;
+    <span class="doccomment">/// This signal is emitted when the pixbuf loader has been fed the
+    /// initial amount of data that is required to figure out the size
+    /// of the image that it will create.
+    ///
+    /// Applications can call gdk_pixbuf_loader_set_size() in response
+    /// to this signal to set the desired size to which the image
+    /// should be scaled.
+    /// ## `width`
+    /// the original width of the image
+    /// ## `height`
+    /// the original height of the image
+    </span><span class="attribute">#[doc(alias = <span class="string">&quot;size-prepared&quot;</span>)]
+    </span><span class="kw">fn </span>connect_size_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId;
 }
 
-<span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">PixbufLoaderExt</span> <span class="kw">for</span> <span class="ident">O</span> {
-    <span class="kw">fn</span> <span class="ident">close</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::gdk_pixbuf_loader_close</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="kw-2">&amp;mut</span> <span class="ident">error</span>);
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+<span class="kw">impl</span>&lt;O: IsA&lt;PixbufLoader&gt;&gt; PixbufLoaderExt <span class="kw">for </span>O {
+    <span class="kw">fn </span>close(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_close(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">animation</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixbufAnimation</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_none</span>(<span class="ident">ffi::gdk_pixbuf_loader_get_animation</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>animation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufAnimation&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_animation(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">format</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">PixbufFormat</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_none</span>(<span class="ident">ffi::gdk_pixbuf_loader_get_format</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>format(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;PixbufFormat&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_format(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">pixbuf</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Pixbuf</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="ident">from_glib_none</span>(<span class="ident">ffi::gdk_pixbuf_loader_get_pixbuf</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
+    <span class="kw">fn </span>pixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+        <span class="kw">unsafe </span>{
+            from_glib_none(ffi::gdk_pixbuf_loader_get_pixbuf(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
             ))
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">set_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">width</span>: <span class="ident">i32</span>, <span class="ident">height</span>: <span class="ident">i32</span>) {
-        <span class="kw">unsafe</span> {
-            <span class="ident">ffi::gdk_pixbuf_loader_set_size</span>(<span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>, <span class="ident">width</span>, <span class="ident">height</span>);
+    <span class="kw">fn </span>set_size(<span class="kw-2">&amp;</span><span class="self">self</span>, width: i32, height: i32) {
+        <span class="kw">unsafe </span>{
+            ffi::gdk_pixbuf_loader_set_size(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, width, height);
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">let</span> <span class="ident">count</span> <span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>() <span class="kw">as</span> <span class="ident">usize</span>;
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::gdk_pixbuf_loader_write</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">buf</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">count</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;</span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">let </span>count = buf.len() <span class="kw">as </span>usize;
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                buf.to_glib_none().<span class="number">0</span>,
+                count,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">write_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="ident">glib::Bytes</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">glib::Error</span><span class="op">&gt;</span> {
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">error</span> <span class="op">=</span> <span class="ident">ptr::null_mut</span>();
-            <span class="kw">let</span> <span class="ident">is_ok</span> <span class="op">=</span> <span class="ident">ffi::gdk_pixbuf_loader_write_bytes</span>(
-                <span class="self">self</span>.<span class="ident">as_ref</span>().<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="ident">buffer</span>.<span class="ident">to_glib_none</span>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut</span> <span class="ident">error</span>,
+    <span class="kw">fn </span>write_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>, buffer: <span class="kw-2">&amp;</span>glib::Bytes) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_loader_write_bytes(
+                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                buffer.to_glib_none().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span>error,
             );
-            <span class="macro">assert_eq!</span>(<span class="ident">is_ok</span> <span class="op">==</span> <span class="ident">glib::ffi::GFALSE</span>, <span class="op">!</span><span class="ident">error</span>.<span class="ident">is_null</span>());
-            <span class="kw">if</span> <span class="ident">error</span>.<span class="ident">is_null</span>() {
+            <span class="macro">assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
-            } <span class="kw">else</span> {
-                <span class="prelude-val">Err</span>(<span class="ident">from_glib_full</span>(<span class="ident">error</span>))
+            } <span class="kw">else </span>{
+                <span class="prelude-val">Err</span>(from_glib_full(error))
             }
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_area_prepared</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">area_prepared_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GdkPixbufLoader</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_area_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>area_prepared_trampoline&lt;P: IsA&lt;PixbufLoader&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">PixbufLoader::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;area-prepared\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">area_prepared_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;area-prepared\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    area_prepared_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_area_updated</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
+    <span class="kw">fn </span>connect_area_updated&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        <span class="ident">f</span>: <span class="ident">F</span>,
-    ) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">area_updated_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GdkPixbufLoader</span>,
-            <span class="ident">x</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">y</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">width</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">height</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+        f: F,
+    ) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>area_updated_trampoline&lt;
+            P: IsA&lt;PixbufLoader&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, i32, i32, i32, i32) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
+            x: libc::c_int,
+            y: libc::c_int,
+            width: libc::c_int,
+            height: libc::c_int,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(
-                <span class="ident">PixbufLoader::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
-                <span class="ident">x</span>,
-                <span class="ident">y</span>,
-                <span class="ident">width</span>,
-                <span class="ident">height</span>,
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(
+                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
+                x,
+                y,
+                width,
+                height,
             )
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;area-updated\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">area_updated_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;area-updated\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    area_updated_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_closed</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">closed_trampoline</span><span class="op">&lt;</span><span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span><span class="op">&gt;</span>, <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GdkPixbufLoader</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_closed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>closed_trampoline&lt;P: IsA&lt;PixbufLoader&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(<span class="ident">PixbufLoader::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(PixbufLoader::from_glib_borrow(this).unsafe_cast_ref())
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;closed\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">closed_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;closed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    closed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 
-    <span class="kw">fn</span> <span class="ident">connect_size_prepared</span><span class="op">&lt;</span><span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">SignalHandlerId</span> {
-        <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span> <span class="ident">size_prepared_trampoline</span><span class="op">&lt;</span>
-            <span class="ident">P</span>: <span class="ident">IsA</span><span class="op">&lt;</span><span class="ident">PixbufLoader</span><span class="op">&gt;</span>,
-            <span class="ident">F</span>: <span class="ident">Fn</span>(<span class="kw-2">&amp;</span><span class="ident">P</span>, <span class="ident">i32</span>, <span class="ident">i32</span>) <span class="op">+</span> <span class="lifetime">&#39;static</span>,
-        <span class="op">&gt;</span>(
-            <span class="ident">this</span>: <span class="kw-2">*mut</span> <span class="ident">ffi::GdkPixbufLoader</span>,
-            <span class="ident">width</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">height</span>: <span class="ident">libc::c_int</span>,
-            <span class="ident">f</span>: <span class="ident">glib::ffi::gpointer</span>,
+    <span class="kw">fn </span>connect_size_prepared&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, i32, i32) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>size_prepared_trampoline&lt;
+            P: IsA&lt;PixbufLoader&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, i32, i32) + <span class="lifetime">&#39;static</span>,
+        &gt;(
+            this: <span class="kw-2">*mut </span>ffi::GdkPixbufLoader,
+            width: libc::c_int,
+            height: libc::c_int,
+            f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="ident">F</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span>(<span class="ident">f</span> <span class="kw">as</span> <span class="kw-2">*const</span> <span class="ident">F</span>);
-            <span class="ident">f</span>(
-                <span class="ident">PixbufLoader::from_glib_borrow</span>(<span class="ident">this</span>).<span class="ident">unsafe_cast_ref</span>(),
-                <span class="ident">width</span>,
-                <span class="ident">height</span>,
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
+            f(
+                PixbufLoader::from_glib_borrow(this).unsafe_cast_ref(),
+                width,
+                height,
             )
         }
-        <span class="kw">unsafe</span> {
-            <span class="kw">let</span> <span class="ident">f</span>: <span class="ident">Box_</span><span class="op">&lt;</span><span class="ident">F</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Box_::new</span>(<span class="ident">f</span>);
-            <span class="ident">connect_raw</span>(
-                <span class="self">self</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*mut</span> <span class="kw">_</span>,
-                <span class="string">b&quot;size-prepared\0&quot;</span>.<span class="ident">as_ptr</span>() <span class="kw">as</span> <span class="kw-2">*const</span> <span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(<span class="ident">transmute</span>::<span class="op">&lt;</span><span class="kw">_</span>, <span class="kw">unsafe</span> <span class="kw">extern</span> <span class="string">&quot;C&quot;</span> <span class="kw">fn</span>()<span class="op">&gt;</span>(
-                    <span class="ident">size_prepared_trampoline</span>::<span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">F</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="kw-2">*const</span> (),
+        <span class="kw">unsafe </span>{
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
+            connect_raw(
+                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <span class="string">b&quot;size-prepared\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                    size_prepared_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                <span class="ident">Box_::into_raw</span>(<span class="ident">f</span>),
+                Box_::into_raw(f),
             )
         }
     }
 }
 
-<span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">PixbufLoader</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;mut</span> <span class="ident">fmt::Formatter</span>) -&gt; <span class="ident">fmt::Result</span> {
-        <span class="ident">f</span>.<span class="ident">write_str</span>(<span class="string">&quot;PixbufLoader&quot;</span>)
+<span class="kw">impl </span>fmt::Display <span class="kw">for </span>PixbufLoader {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
+        f.write_str(<span class="string">&quot;PixbufLoader&quot;</span>)
     }
 }
 </code></pre></div>
-</section><section id="search" class="content hidden"></section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gdk_pixbuf" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.61.0-nightly (45e2c2881 2022-02-20)" ></div>
-</body></html>
+</section></div></main><div id="rustdoc-vars" data-root-path="../../../" data-current-crate="gdk_pixbuf" data-themes="ayu,dark,light" data-resource-suffix="" data-rustdoc-version="1.66.0-nightly (c97d02cdb 2022-10-05)" ></div></body></html>
