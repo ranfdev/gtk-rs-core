@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-8a01b6a8bf235f0c.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-c8c85693c8a4f9db.css"><script id="default-settings" ></script><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../static.files/ayu-a0090c8b1ced384f.css"><script id="default-settings" ></script><script src="../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -699,6 +699,8 @@
 <a href="#626" id="626">626</a>
 <a href="#627" id="627">627</a>
 <a href="#628" id="628">628</a>
+<a href="#629" id="629">629</a>
+<a href="#630" id="630">630</a>
 </pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span><span class="kw">crate</span>::utils::crate_ident_new;
@@ -706,7 +708,7 @@
 <span class="kw">use </span>proc_macro2::TokenStream <span class="kw">as </span>TokenStream2;
 <span class="kw">use </span>quote::format_ident;
 <span class="kw">use </span>quote::{quote, quote_spanned};
-<span class="kw">use </span>std::str::FromStr;
+<span class="kw">use </span>std::collections::HashMap;
 <span class="kw">use </span>syn::ext::IdentExt;
 <span class="kw">use </span>syn::parenthesized;
 <span class="kw">use </span>syn::parse::Parse;
@@ -750,7 +752,7 @@
             <span class="kw">_ </span>=&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
                     derive_input.span(),
-                    <span class="string">&quot;props can only be derived on structs&quot;</span>,
+                    <span class="string">&quot;Properties can only be derived on structs&quot;</span>,
                 ))
             }
         };
@@ -777,12 +779,6 @@
 }
 
 <span class="kw">enum </span>PropAttr {
-    <span class="comment">// ident
-    </span>Flag(<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str),
-
-    <span class="comment">// path
-    </span>FlagPath(syn::Path),
-
     <span class="comment">// builder(required_params).parameter(value)
     // becomes
     // Builder(Punctuated(required_params), Optionals(TokenStream))
@@ -792,36 +788,25 @@
     </span>Get(<span class="prelude-ty">Option</span>&lt;syn::Expr&gt;),
     Set(<span class="prelude-ty">Option</span>&lt;syn::Expr&gt;),
 
+    <span class="comment">// ident [= expr]
+    </span>OverrideClass(syn::Type),
+    OverrideInterface(syn::Type),
+
     <span class="comment">// ident = expr
     </span>Type(syn::Type),
+
+    <span class="comment">// This will get translated from `ident = value` to `.ident(value)`
+    // and will get appended after the `builder(...)` call.
+    // ident [= expr]
+    </span>BuilderField((syn::Ident, <span class="prelude-ty">Option</span>&lt;syn::Expr&gt;)),
 
     <span class="comment">// ident = ident
     </span>Member(syn::Ident),
 
     <span class="comment">// ident = &quot;literal&quot;
     </span>Name(syn::LitStr),
-    Nick(syn::LitStr),
-    Blurb(syn::LitStr),
 }
 
-<span class="kw">const </span>FLAGS: [<span class="kw-2">&amp;</span>str; <span class="number">16</span>] = [
-    <span class="string">&quot;readable&quot;</span>,
-    <span class="string">&quot;writable&quot;</span>,
-    <span class="string">&quot;readwrite&quot;</span>,
-    <span class="string">&quot;construct&quot;</span>,
-    <span class="string">&quot;construct_only&quot;</span>,
-    <span class="string">&quot;lax_validation&quot;</span>,
-    <span class="string">&quot;user_1&quot;</span>,
-    <span class="string">&quot;user_2&quot;</span>,
-    <span class="string">&quot;user_3&quot;</span>,
-    <span class="string">&quot;user_4&quot;</span>,
-    <span class="string">&quot;user_5&quot;</span>,
-    <span class="string">&quot;user_6&quot;</span>,
-    <span class="string">&quot;user_7&quot;</span>,
-    <span class="string">&quot;user_8&quot;</span>,
-    <span class="string">&quot;explicit_notify&quot;</span>,
-    <span class="string">&quot;deprecated&quot;</span>,
-];
 <span class="kw">impl </span>Parse <span class="kw">for </span>PropAttr {
     <span class="kw">fn </span>parse(input: syn::parse::ParseStream) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>name = input.call(syn::Ident::parse_any)<span class="question-mark">?</span>;
@@ -829,28 +814,21 @@
 
         <span class="kw">let </span>res = <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[=]) {
             <span class="kw">let </span>_assign_token: <span class="macro">Token!</span>[=] = input.parse()<span class="question-mark">?</span>;
-            <span class="kw">if </span>input.peek(syn::LitStr) {
-                <span class="kw">let </span>lit: syn::LitStr = input.parse()<span class="question-mark">?</span>;
-                <span class="comment">// name = &quot;literal&quot;
-                </span><span class="kw">match </span><span class="kw-2">&amp;*</span>name_str {
-                    <span class="string">&quot;name&quot; </span>=&gt; PropAttr::Name(lit),
-                    <span class="string">&quot;nick&quot; </span>=&gt; PropAttr::Nick(lit),
-                    <span class="string">&quot;blurb&quot; </span>=&gt; PropAttr::Blurb(lit),
-                    <span class="kw">_ </span>=&gt; {
-                        <span class="macro">panic!</span>(<span class="string">&quot;Invalid attribute for property&quot;</span>)
-                    }
-                }
-            } <span class="kw">else </span>{
-                <span class="comment">// name = expr | type | ident
-                </span><span class="kw">match </span><span class="kw-2">&amp;*</span>name_str {
-                    <span class="string">&quot;get&quot; </span>=&gt; PropAttr::Get(<span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>)),
-                    <span class="string">&quot;set&quot; </span>=&gt; PropAttr::Set(<span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>)),
-                    <span class="string">&quot;type&quot; </span>=&gt; PropAttr::Type(input.parse()<span class="question-mark">?</span>),
-                    <span class="string">&quot;member&quot; </span>=&gt; PropAttr::Member(input.parse()<span class="question-mark">?</span>),
-                    <span class="kw">_ </span>=&gt; {
-                        <span class="macro">panic!</span>(<span class="string">&quot;Invalid attribute for property&quot;</span>)
-                    }
-                }
+            <span class="comment">// name = expr | type | ident
+            </span><span class="kw">match </span><span class="kw-2">&amp;*</span>name_str {
+                <span class="string">&quot;name&quot; </span>=&gt; PropAttr::Name(input.parse()<span class="question-mark">?</span>),
+                <span class="string">&quot;get&quot; </span>=&gt; PropAttr::Get(<span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>)),
+                <span class="string">&quot;set&quot; </span>=&gt; PropAttr::Set(<span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>)),
+                <span class="string">&quot;override_class&quot; </span>=&gt; PropAttr::OverrideClass(input.parse()<span class="question-mark">?</span>),
+                <span class="string">&quot;override_interface&quot; </span>=&gt; PropAttr::OverrideInterface(input.parse()<span class="question-mark">?</span>),
+                <span class="string">&quot;type&quot; </span>=&gt; PropAttr::Type(input.parse()<span class="question-mark">?</span>),
+                <span class="string">&quot;member&quot; </span>=&gt; PropAttr::Member(input.parse()<span class="question-mark">?</span>),
+                <span class="comment">// Special case &quot;default = ...&quot; and map it to .default_value(...)
+                </span><span class="string">&quot;default&quot; </span>=&gt; PropAttr::BuilderField((
+                    syn::Ident::new(<span class="string">&quot;default_value&quot;</span>, name.span()),
+                    <span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>),
+                )),
+                <span class="kw">_ </span>=&gt; PropAttr::BuilderField((name, <span class="prelude-val">Some</span>(input.parse()<span class="question-mark">?</span>))),
             }
         } <span class="kw">else if </span>input.peek(syn::token::Paren) {
             <span class="kw">match </span><span class="kw-2">&amp;*</span>name_str {
@@ -861,31 +839,28 @@
                     <span class="kw">let </span>rest: TokenStream2 = input.parse()<span class="question-mark">?</span>;
                     PropAttr::Builder(required, rest)
                 }
-                <span class="kw">_ </span>=&gt; <span class="macro">panic!</span>(<span class="string">&quot;Unsupported attribute list {name_str}(...)&quot;</span>),
+                <span class="kw">_ </span>=&gt; {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
+                        name.span(),
+                        <span class="macro">format!</span>(<span class="string">&quot;Unsupported attribute list {name_str}(...)&quot;</span>),
+                    ))
+                }
             }
-        } <span class="kw">else if </span>input.peek(<span class="macro">Token!</span>[::]) {
-            <span class="kw">let </span><span class="kw-2">mut </span>p: syn::Path = input.parse()<span class="question-mark">?</span>;
-            p.segments.insert(
-                <span class="number">0</span>,
-                syn::PathSegment {
-                    ident: <span class="macro">format_ident!</span>(<span class="string">&quot;{}&quot;</span>, name),
-                    arguments: syn::PathArguments::None,
-                },
-            );
-            PropAttr::FlagPath(p)
         } <span class="kw">else </span>{
-            <span class="comment">// attributes with only the identifier
-            // name
+            <span class="comment">// attributes with only the identifier name
             </span><span class="kw">match </span><span class="kw-2">&amp;*</span>name_str {
                 <span class="string">&quot;get&quot; </span>=&gt; PropAttr::Get(<span class="prelude-val">None</span>),
                 <span class="string">&quot;set&quot; </span>=&gt; PropAttr::Set(<span class="prelude-val">None</span>),
-                name =&gt; {
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(flag) = FLAGS.iter().find(|x| <span class="kw-2">*</span>x == <span class="kw-2">&amp;</span>name) {
-                        PropAttr::Flag(flag)
-                    } <span class="kw">else </span>{
-                        <span class="macro">panic!</span>(<span class="string">&quot;Invalid attribute for property&quot;</span>)
-                    }
+                <span class="string">&quot;readwrite&quot; </span>| <span class="string">&quot;read_only&quot; </span>| <span class="string">&quot;write_only&quot; </span>=&gt; {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
+                        name.span(),
+                        <span class="macro">format!</span>(
+                            <span class="string">&quot;{name} is a flag managed by the Properties macro. \
+                            Use `get` and `set` to manage read and write access to a property&quot;</span>,
+                        ),
+                    ))
                 }
+                <span class="kw">_ </span>=&gt; PropAttr::BuilderField((name, <span class="prelude-val">None</span>)),
             }
         };
         <span class="prelude-val">Ok</span>(res)
@@ -896,71 +871,94 @@
 </span><span class="kw">struct </span>ReceivedAttrs {
     get: <span class="prelude-ty">Option</span>&lt;MaybeCustomFn&gt;,
     set: <span class="prelude-ty">Option</span>&lt;MaybeCustomFn&gt;,
+    override_class: <span class="prelude-ty">Option</span>&lt;syn::Type&gt;,
+    override_interface: <span class="prelude-ty">Option</span>&lt;syn::Type&gt;,
     ty: <span class="prelude-ty">Option</span>&lt;syn::Type&gt;,
     member: <span class="prelude-ty">Option</span>&lt;syn::Ident&gt;,
-    flags: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;,
-    flags_paths: Vec&lt;syn::Path&gt;,
     name: <span class="prelude-ty">Option</span>&lt;syn::LitStr&gt;,
-    nick: <span class="prelude-ty">Option</span>&lt;syn::LitStr&gt;,
-    blurb: <span class="prelude-ty">Option</span>&lt;syn::LitStr&gt;,
     builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;syn::Expr, <span class="macro">Token!</span>[,]&gt;, TokenStream2)&gt;,
+    builder_fields: HashMap&lt;syn::Ident, <span class="prelude-ty">Option</span>&lt;syn::Expr&gt;&gt;,
 }
+
 <span class="kw">impl </span>ReceivedAttrs {
-    <span class="kw">fn </span>new(attrs: <span class="kw">impl </span>IntoIterator&lt;Item = PropAttr&gt;) -&gt; <span class="self">Self </span>{
-        attrs.into_iter().fold(<span class="self">Self</span>::default(), |<span class="kw-2">mut </span>this, attr| {
+    <span class="kw">fn </span>new(
+        attrs_span: <span class="kw-2">&amp;</span>proc_macro2::Span,
+        attrs: <span class="kw">impl </span>IntoIterator&lt;Item = PropAttr&gt;,
+    ) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>this = attrs.into_iter().fold(<span class="self">Self</span>::default(), |<span class="kw-2">mut </span>this, attr| {
             this.set_from_attr(attr);
             this
-        })
+        });
+
+        <span class="kw">if </span>this.get.is_none() &amp;&amp; this.set.is_none() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
+                <span class="kw-2">*</span>attrs_span,
+                <span class="string">&quot;No `get` or `set` specified: at least one is required.&quot;</span>.to_string(),
+            ));
+        }
+
+        <span class="kw">if </span>this.override_class.is_some() &amp;&amp; this.override_interface.is_some() {
+            <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
+                <span class="kw-2">*</span>attrs_span,
+                <span class="string">&quot;Both `override_class` and `override_interface` specified.&quot;</span>.to_string(),
+            ));
+        }
+
+        <span class="prelude-val">Ok</span>(this)
     }
+
     <span class="kw">fn </span>set_from_attr(<span class="kw-2">&amp;mut </span><span class="self">self</span>, attr: PropAttr) {
         <span class="kw">match </span>attr {
             PropAttr::Get(some_fn) =&gt; <span class="self">self</span>.get = <span class="prelude-val">Some</span>(some_fn.into()),
             PropAttr::Set(some_fn) =&gt; <span class="self">self</span>.set = <span class="prelude-val">Some</span>(some_fn.into()),
             PropAttr::Name(lit) =&gt; <span class="self">self</span>.name = <span class="prelude-val">Some</span>(lit),
-            PropAttr::Nick(lit) =&gt; <span class="self">self</span>.nick = <span class="prelude-val">Some</span>(lit),
-            PropAttr::Blurb(lit) =&gt; <span class="self">self</span>.blurb = <span class="prelude-val">Some</span>(lit),
+            PropAttr::OverrideClass(ty) =&gt; <span class="self">self</span>.override_class = <span class="prelude-val">Some</span>(ty),
+            PropAttr::OverrideInterface(ty) =&gt; <span class="self">self</span>.override_interface = <span class="prelude-val">Some</span>(ty),
             PropAttr::Type(ty) =&gt; <span class="self">self</span>.ty = <span class="prelude-val">Some</span>(ty),
             PropAttr::Member(member) =&gt; <span class="self">self</span>.member = <span class="prelude-val">Some</span>(member),
-            PropAttr::Flag(flag) =&gt; <span class="self">self</span>.flags.push(flag),
-            PropAttr::FlagPath(flag) =&gt; <span class="self">self</span>.flags_paths.push(flag),
             PropAttr::Builder(required_params, optionals) =&gt; {
                 <span class="self">self</span>.builder = <span class="prelude-val">Some</span>((required_params, optionals))
+            }
+            PropAttr::BuilderField((ident, expr)) =&gt; {
+                <span class="self">self</span>.builder_fields.insert(ident, expr);
             }
         }
     }
 }
-<span class="kw">struct </span>PropDesc {
+
+<span class="comment">// It&#39;s a cleaned up version of `ReceivedAttrs` where some missing attributes get a default,
+// generated value.
+</span><span class="kw">struct </span>PropDesc {
     attrs_span: proc_macro2::Span,
     field_ident: syn::Ident,
     ty: syn::Type,
     name: syn::LitStr,
-    nick: <span class="prelude-ty">Option</span>&lt;syn::LitStr&gt;,
-    blurb: <span class="prelude-ty">Option</span>&lt;syn::LitStr&gt;,
+    override_class: <span class="prelude-ty">Option</span>&lt;syn::Type&gt;,
+    override_interface: <span class="prelude-ty">Option</span>&lt;syn::Type&gt;,
     get: <span class="prelude-ty">Option</span>&lt;MaybeCustomFn&gt;,
     set: <span class="prelude-ty">Option</span>&lt;MaybeCustomFn&gt;,
     member: <span class="prelude-ty">Option</span>&lt;syn::Ident&gt;,
-    flags: Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str&gt;,
-    flags_paths: Vec&lt;syn::Path&gt;,
     builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;syn::Expr, <span class="macro">Token!</span>[,]&gt;, TokenStream2)&gt;,
+    builder_fields: HashMap&lt;syn::Ident, <span class="prelude-ty">Option</span>&lt;syn::Expr&gt;&gt;,
 }
+
 <span class="kw">impl </span>PropDesc {
     <span class="kw">fn </span>new(
         attrs_span: proc_macro2::Span,
         field_ident: syn::Ident,
         field_ty: syn::Type,
         attrs: ReceivedAttrs,
-    ) -&gt; <span class="self">Self </span>{
+    ) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>ReceivedAttrs {
             get,
             set,
+            override_class,
+            override_interface,
             ty,
             member,
-            flags,
             name,
-            nick,
-            blurb,
             builder,
-            flags_paths,
+            builder_fields,
         } = attrs;
 
         <span class="comment">// Fill needed, but missing, attributes with calculated default values
@@ -973,20 +971,19 @@
         <span class="kw">let </span>ty = ty.unwrap_or_else(|| field_ty.clone());
 
         <span class="comment">// Now that everything is set and safe, return the final proprety description
-        </span><span class="self">Self </span>{
+        </span><span class="prelude-val">Ok</span>(<span class="self">Self </span>{
             attrs_span,
             field_ident,
+            ty,
+            name,
+            override_class,
+            override_interface,
             get,
             set,
-            ty,
             member,
-            flags,
-            name,
-            nick,
-            blurb,
             builder,
-            flags_paths,
-        }
+            builder_fields,
+        })
     }
 }
 
@@ -995,32 +992,33 @@
     <span class="kw">let </span>crate_ident = crate_ident_new();
     <span class="kw">let </span>properties_build_phase = props.iter().map(|prop| {
         <span class="kw">let </span>PropDesc {
-            ty,
-            name,
-            nick,
-            blurb,
-            builder,
-            flags_paths,
-            ..
+            ty, name, builder, ..
         } = prop;
 
-        <span class="kw">let </span>flags = {
-            <span class="kw">let </span>write = prop.set.as_ref().map(|<span class="kw">_</span>| <span class="macro">quote!</span>(WRITABLE));
-            <span class="kw">let </span>read = prop.get.as_ref().map(|<span class="kw">_</span>| <span class="macro">quote!</span>(READABLE));
+        <span class="kw">let </span>rw_flags = <span class="kw">match </span>(<span class="kw-2">&amp;</span>prop.get, <span class="kw-2">&amp;</span>prop.set) {
+            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="macro">quote!</span>(.readwrite()),
+            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) =&gt; <span class="macro">quote!</span>(.read_only()),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <span class="macro">quote!</span>(.write_only()),
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;No `get` or `set` specified&quot;</span>),
+        };
 
-            <span class="kw">let </span>flags_iter = [write, read].into_iter().flatten().chain(
-                prop.flags
-                    .iter()
-                    .map(|x| str::to_uppercase(x))
-                    .map(|f| TokenStream2::from_str(<span class="kw-2">&amp;</span>f).unwrap()),
-            );
-            <span class="macro">quote!</span>(#crate_ident::ParamFlags::empty() #(| #crate_ident::ParamFlags::#flags_iter)* #(| #flags_paths)<span class="kw-2">*</span>)
+        <span class="kw">match </span>(<span class="kw-2">&amp;</span>prop.override_class, <span class="kw-2">&amp;</span>prop.override_interface) {
+            (<span class="prelude-val">Some</span>(c), <span class="prelude-val">None</span>) =&gt; {
+                <span class="kw">return </span><span class="macro">quote!</span>(#crate_ident::ParamSpecOverride::for_class::&lt;#c&gt;(#name))
+            }
+            (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(i)) =&gt; {
+                <span class="kw">return </span><span class="macro">quote!</span>(#crate_ident::ParamSpecOverride::for_interface::&lt;#i&gt;(#name))
+            }
+            (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
+                <span class="macro">unreachable!</span>(<span class="string">&quot;Both `override_class` and `override_interface` specified&quot;</span>)
+            }
+            (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; (),
         };
 
         <span class="kw">let </span>builder_call = builder
             .as_ref()
             .cloned()
-            .map(|(<span class="kw-2">mut </span>required_params, opts)| {
+            .map(|(<span class="kw-2">mut </span>required_params, chained_methods)| {
                 <span class="kw">let </span>name_expr = syn::ExprLit {
                     attrs: <span class="macro">vec!</span>[],
                     lit: syn::Lit::Str(name.to_owned()),
@@ -1028,19 +1026,18 @@
                 required_params.insert(<span class="number">0</span>, name_expr.into());
                 <span class="kw">let </span>required_params = required_params.iter();
 
-                <span class="macro">quote!</span>((#(#required_params,)<span class="kw-2">*</span>)#opts)
+                <span class="macro">quote!</span>((#(#required_params,)<span class="kw-2">*</span>)#chained_methods)
             })
             .unwrap_or(<span class="macro">quote!</span>((#name)));
 
-        <span class="kw">let </span>build_nick = nick.as_ref().map(|x| <span class="macro">quote!</span>(.nick(#x)));
-        <span class="kw">let </span>build_blurb = blurb.as_ref().map(|x| <span class="macro">quote!</span>(.blurb(#x)));
+        <span class="kw">let </span>builder_fields = prop.builder_fields.iter().map(|(k, v)| <span class="macro">quote!</span>(.#k(#v)));
+
         <span class="kw">let </span>span = prop.attrs_span;
         <span class="macro">quote_spanned! </span>{span=&gt;
             &lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value <span class="kw">as </span>#crate_ident::HasParamSpec&gt;
                 ::param_spec_builder() #builder_call
-                #build_nick
-                #build_blurb
-                .flags(#flags)
+                #rw_flags
+                #(#builder_fields)*
                 .build()
         }
     });
@@ -1054,6 +1051,7 @@
         }
     )
 }
+
 <span class="kw">fn </span>expand_property_fn(props: <span class="kw-2">&amp;</span>[PropDesc]) -&gt; TokenStream2 {
     <span class="kw">let </span>crate_ident = crate_ident_new();
     <span class="kw">let </span>match_branch_get = props.iter().flat_map(|p| {
@@ -1062,6 +1060,7 @@
             field_ident,
             member,
             get,
+            ty,
             ..
         } = p;
 
@@ -1070,7 +1069,10 @@
         get.as_ref().map(|get| {
             <span class="kw">let </span>body = <span class="kw">match </span>(member, get) {
                 (<span class="kw">_</span>, MaybeCustomFn::Custom(expr)) =&gt; <span class="macro">quote!</span>(
-                    DerivedPropertiesEnum::#enum_ident =&gt; ::std::convert::From::from((#expr)(<span class="kw-2">&amp;</span><span class="self">self</span>))
+                    DerivedPropertiesEnum::#enum_ident =&gt; {
+                        <span class="kw">let </span>value: &lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value = (#expr)(<span class="kw-2">&amp;</span><span class="self">self</span>);
+                        ::std::convert::From::from(value)
+                    }
                 ),
                 (<span class="prelude-val">None</span>, MaybeCustomFn::Default) =&gt; <span class="macro">quote!</span>(
                     DerivedPropertiesEnum::#enum_ident =&gt;
@@ -1101,6 +1103,7 @@
         }
     )
 }
+
 <span class="kw">fn </span>expand_set_property_fn(props: <span class="kw-2">&amp;</span>[PropDesc]) -&gt; TokenStream2 {
     <span class="kw">let </span>crate_ident = crate_ident_new();
     <span class="kw">let </span>match_branch_set = props.iter().flat_map(|p| {
@@ -1174,12 +1177,12 @@
                     <span class="kw">let </span>attrs = attrs.parse_args_with(
                         syn::punctuated::Punctuated::&lt;PropAttr, <span class="macro">Token!</span>[,]&gt;::parse_terminated,
                     )<span class="question-mark">?</span>;
-                    <span class="prelude-val">Ok</span>(PropDesc::new(
+                    PropDesc::new(
                         span,
                         ident.as_ref().unwrap().clone(),
                         ty.clone(),
-                        ReceivedAttrs::new(attrs),
-                    ))
+                        ReceivedAttrs::new(<span class="kw-2">&amp;</span>span, attrs)<span class="question-mark">?</span>,
+                    )
                 })
         })
         .collect::&lt;syn::Result&lt;<span class="kw">_</span>&gt;&gt;()
@@ -1202,7 +1205,8 @@
                  <span class="self">self</span>.property::&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value&gt;(#name)
             })
         });
-        <span class="kw">let </span>setter = (p.set.is_some() &amp;&amp; !p.flags.contains(<span class="kw-2">&amp;</span><span class="string">&quot;construct_only&quot;</span>)).then(|| {
+        <span class="kw">let </span>is_construct_only = p.builder_fields.iter().any(|(k, <span class="kw">_</span>)| <span class="kw-2">*</span>k == <span class="string">&quot;construct_only&quot;</span>);
+        <span class="kw">let </span>setter = (p.set.is_some() &amp;&amp; !is_construct_only).then(|| {
             <span class="kw">let </span>ident = <span class="macro">format_ident!</span>(<span class="string">&quot;set_{}&quot;</span>, ident);
             <span class="macro">quote!</span>(<span class="kw">pub fn </span>#ident&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw">impl </span>std::borrow::Borrow&lt;&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value <span class="kw">as </span>#crate_ident::HasParamSpec&gt;::SetValue&gt;) {
                 <span class="self">self</span>.set_property_from_value(#name, <span class="kw-2">&amp;</span>::std::convert::From::from(std::borrow::Borrow::borrow(<span class="kw-2">&amp;</span>value)))
@@ -1328,4 +1332,4 @@
     proc_macro::TokenStream::from(expanded)
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (11d96b593 2023-02-01)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (e1eaa2d5d 2023-02-06)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>

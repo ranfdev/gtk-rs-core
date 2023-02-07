@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-8a01b6a8bf235f0c.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-c8c85693c8a4f9db.css"><script id="default-settings" ></script><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/collections/strv.rs`."><title>strv.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-0ef3deca4ed45ad8.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-f501212b8b071243.css"><link rel="stylesheet" disabled href="../../../static.files/dark-e92fc12c34ff89d3.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-a0090c8b1ced384f.css"><script id="default-settings" ></script><script src="../../../static.files/storage-3891ce972e3a2bf8.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-364b95f387bc3166.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1385,11 +1385,26 @@
 <a href="#1312" id="1312">1312</a>
 <a href="#1313" id="1313">1313</a>
 <a href="#1314" id="1314">1314</a>
+<a href="#1315" id="1315">1315</a>
+<a href="#1316" id="1316">1316</a>
+<a href="#1317" id="1317">1317</a>
+<a href="#1318" id="1318">1318</a>
+<a href="#1319" id="1319">1319</a>
+<a href="#1320" id="1320">1320</a>
+<a href="#1321" id="1321">1321</a>
+<a href="#1322" id="1322">1322</a>
+<a href="#1323" id="1323">1323</a>
+<a href="#1324" id="1324">1324</a>
+<a href="#1325" id="1325">1325</a>
+<a href="#1326" id="1326">1326</a>
+<a href="#1327" id="1327">1327</a>
+<a href="#1328" id="1328">1328</a>
+<a href="#1329" id="1329">1329</a>
 </pre><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{ffi::c_char, fmt, marker::PhantomData, mem, ptr};
 
-<span class="kw">use crate</span>::{translate::<span class="kw-2">*</span>, GStr, GStrPtr, GString};
+<span class="kw">use crate</span>::{translate::<span class="kw-2">*</span>, GStr, GString, GStringPtr};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Minimum size of the `StrV` allocation.
@@ -1487,25 +1502,25 @@
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;[GStrPtr]&gt; <span class="kw">for </span>StrV {
+<span class="kw">impl </span>AsRef&lt;[GStringPtr]&gt; <span class="kw">for </span>StrV {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStrPtr] {
+    </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStringPtr] {
         <span class="self">self</span>.as_slice()
     }
 }
 
-<span class="kw">impl </span>std::borrow::Borrow&lt;[GStrPtr]&gt; <span class="kw">for </span>StrV {
+<span class="kw">impl </span>std::borrow::Borrow&lt;[GStringPtr]&gt; <span class="kw">for </span>StrV {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStrPtr] {
+    </span><span class="kw">fn </span>borrow(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStringPtr] {
         <span class="self">self</span>.as_slice()
     }
 }
 
 <span class="kw">impl </span>std::ops::Deref <span class="kw">for </span>StrV {
-    <span class="kw">type </span>Target = [GStrPtr];
+    <span class="kw">type </span>Target = [GStringPtr];
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStrPtr] {
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStringPtr] {
         <span class="self">self</span>.as_slice()
     }
 }
@@ -1547,8 +1562,8 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; std::iter::IntoIterator <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>StrV {
-    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GStrPtr;
-    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">&#39;a</span>, GStrPtr&gt;;
+    <span class="kw">type </span>Item = <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>GStringPtr;
+    <span class="kw">type </span>IntoIter = std::slice::Iter&lt;<span class="lifetime">&#39;a</span>, GStringPtr&gt;;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_iter(<span class="self">self</span>) -&gt; <span class="self">Self</span>::IntoIter {
@@ -1588,12 +1603,12 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the remaining items as slice.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStrPtr] {
+    </span><span class="kw">pub const fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStringPtr] {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts(<span class="self">self</span>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>GStrPtr, <span class="self">self</span>.len)
+                std::slice::from_raw_parts(<span class="self">self</span>.idx.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>GStringPtr, <span class="self">self</span>.len)
             }
         }
     }
@@ -1781,7 +1796,7 @@
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::with_capacity(<span class="self">self</span>.len());
             <span class="kw">for </span>(i, item) <span class="kw">in </span><span class="self">self</span>.iter().enumerate() {
-                <span class="kw-2">*</span>s.ptr.as_ptr().add(i) = GString::from(item.as_str()).into_glib_ptr();
+                <span class="kw-2">*</span>s.ptr.as_ptr().add(i) = GString::from(item.to_str()).into_glib_ptr();
             }
             s.len = <span class="self">self</span>.len();
             <span class="kw-2">*</span>s.ptr.as_ptr().add(s.len) = ptr::null_mut();
@@ -1794,7 +1809,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_borrow&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*const *const </span>c_char) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStrPtr] {
+    </span><span class="kw">pub unsafe fn </span>from_glib_borrow&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*const *const </span>c_char) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStringPtr] {
         <span class="kw">let </span><span class="kw-2">mut </span>len = <span class="number">0</span>;
         <span class="kw">if </span>!ptr.is_null() {
             <span class="kw">while </span>!(<span class="kw-2">*</span>ptr.add(len)).is_null() {
@@ -1807,13 +1822,16 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Borrows a C array.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num&lt;<span class="lifetime">&#39;a</span>&gt;(ptr: <span class="kw-2">*const *const </span>c_char, len: usize) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStrPtr] {
+    </span><span class="kw">pub unsafe fn </span>from_glib_borrow_num&lt;<span class="lifetime">&#39;a</span>&gt;(
+        ptr: <span class="kw-2">*const *const </span>c_char,
+        len: usize,
+    ) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStringPtr] {
         <span class="macro">debug_assert!</span>(!ptr.is_null() || len == <span class="number">0</span>);
 
         <span class="kw">if </span>len == <span class="number">0 </span>{
             <span class="kw-2">&amp;</span>[]
         } <span class="kw">else </span>{
-            std::slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>GStrPtr, len)
+            std::slice::from_raw_parts(ptr <span class="kw">as </span><span class="kw-2">*const </span>GStringPtr, len)
         }
     }
 
@@ -1830,11 +1848,23 @@
         <span class="kw">if </span>len == <span class="number">0 </span>{
             StrV::default()
         } <span class="kw">else </span>{
-            <span class="comment">// Need to fully copy the array here.
-            </span><span class="kw">let </span>slice = <span class="self">Self</span>::from_glib_borrow_num(ptr, len);
-            <span class="kw">let </span><span class="kw-2">mut </span>s = <span class="self">Self</span>::new();
-            s.extend_from_slice(slice);
-            s
+            <span class="kw">let </span>new_ptr =
+                ffi::g_malloc(mem::size_of::&lt;<span class="kw-2">*mut </span>c_char&gt;() * len + <span class="number">1</span>) <span class="kw">as </span><span class="kw-2">*mut *mut </span>c_char;
+
+            <span class="comment">// Need to clone every item because we don&#39;t own it here
+            </span><span class="kw">for </span>i <span class="kw">in </span><span class="number">0</span>..len {
+                <span class="kw">let </span>p = ptr.add(i) <span class="kw">as </span><span class="kw-2">*mut *const </span>c_char;
+                <span class="kw">let </span>q = new_ptr.add(i) <span class="kw">as </span><span class="kw-2">*mut *const </span>c_char;
+                <span class="kw-2">*</span>q = ffi::g_strdup(<span class="kw-2">*</span>p);
+            }
+
+            <span class="kw-2">*</span>new_ptr.add(len) = ptr::null_mut();
+
+            StrV {
+                ptr: ptr::NonNull::new_unchecked(new_ptr),
+                len,
+                capacity: len + <span class="number">1</span>,
+            }
         }
     }
 
@@ -2062,14 +2092,14 @@
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
-    </span><span class="doccomment">/// Borrows this slice as a `&amp;[GStrPtr]`.
+    </span><span class="doccomment">/// Borrows this slice as a `&amp;[GStringPtr]`.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStrPtr] {
+    </span><span class="kw">pub const fn </span>as_slice(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[GStringPtr] {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                std::slice::from_raw_parts(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>GStrPtr, <span class="self">self</span>.len)
+                std::slice::from_raw_parts(<span class="self">self</span>.ptr.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span>GStringPtr, <span class="self">self</span>.len)
             }
         }
     }
@@ -2335,7 +2365,7 @@
     }
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::StaticType <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStrPtr] {
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::StaticType <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStringPtr] {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>static_type() -&gt; <span class="kw">crate</span>::Type {
         &lt;Vec&lt;String&gt;&gt;::static_type()
@@ -2355,7 +2385,7 @@
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStrPtr] {
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">crate</span>::value::FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[GStringPtr] {
     <span class="kw">type </span>Checker = <span class="kw">crate</span>::value::GenericValueTypeChecker&lt;<span class="self">Self</span>&gt;;
 
     <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><span class="kw">crate</span>::value::Value) -&gt; <span class="self">Self </span>{
@@ -2700,4 +2730,4 @@
     }
 }
 </code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (11d96b593 2023-02-01)" data-search-js="search-98d53477a794af0b.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
+</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.69.0-nightly (e1eaa2d5d 2023-02-06)" data-search-js="search-28136cea55c34037.js" data-settings-js="settings-f0c5c39777a9a2f6.js" data-settings-css="settings-0bcba95ff279c1db.css" ></div></body></html>
