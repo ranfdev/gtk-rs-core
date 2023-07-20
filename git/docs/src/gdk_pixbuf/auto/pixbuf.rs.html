@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf.rs`."><title>pixbuf.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gdk-pixbuf/src/auto/pixbuf.rs`."><title>pixbuf.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gdk_pixbuf" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1623,15 +1623,24 @@
 <a href="#1550" id="1550">1550</a>
 <a href="#1551" id="1551">1551</a>
 <a href="#1552" id="1552">1552</a>
+<a href="#1553" id="1553">1553</a>
+<a href="#1554" id="1554">1554</a>
+<a href="#1555" id="1555">1555</a>
+<a href="#1556" id="1556">1556</a>
+<a href="#1557" id="1557">1557</a>
+<a href="#1558" id="1558">1558</a>
+<a href="#1559" id="1559">1559</a>
+<a href="#1560" id="1560">1560</a>
+<a href="#1561" id="1561">1561</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Colorspace, InterpType, PixbufFormat, PixbufRotation};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{fmt, ptr};
+</span><span class="kw">use crate</span>::{<a href="enums.rs.html#15-21">Colorspace</a>, <a href="enums.rs.html#125-157">InterpType</a>, <a href="pixbuf_format.rs.html#7-21">PixbufFormat</a>, <a href="enums.rs.html#566-581">PixbufRotation</a>};
+<span class="kw">use </span>glib::{<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A pixel buffer.
     ///
     /// [`Pixbuf`][crate::Pixbuf] contains information about an image&#39;s pixel data,
@@ -1840,14 +1849,14 @@
     ///
     /// [`trait@gio::prelude::IconExt`], [`trait@gio::prelude::LoadableIconExt`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;GdkPixbuf&quot;</span>)]
-    </span><span class="kw">pub struct </span>Pixbuf(Object&lt;ffi::GdkPixbuf&gt;) @implements gio::Icon, gio::LoadableIcon;
+    </span><span class="kw">pub struct </span><a href="../../../gdk_pixbuf/struct.Pixbuf.html">Pixbuf</a>(Object&lt;ffi::GdkPixbuf&gt;) @implements <a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/icon/struct.Icon.html">gio::Icon</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/loadable_icon/struct.LoadableIcon.html">gio::LoadableIcon</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::gdk_pixbuf_get_type(),
     }
 }
 
-<span class="kw">impl </span>Pixbuf {
+<span class="kw">impl </span><a href="#9-223">Pixbuf</a> {
     <span class="doccomment">/// Creates a new [`Pixbuf`][crate::Pixbuf] structure and allocates a buffer for it.
     ///
     /// If the allocation of the buffer failed, this function will return `NULL`.
@@ -1870,19 +1879,19 @@
     /// A newly-created pixel buffer
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new&quot;</span>)]
     </span><span class="kw">pub fn </span>new(
-        colorspace: Colorspace,
-        has_alpha: bool,
-        bits_per_sample: i32,
-        width: i32,
-        height: i32,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+        colorspace: <a href="enums.rs.html#15-21">Colorspace</a>,
+        has_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        bits_per_sample: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_new(
-                colorspace.into_glib(),
-                has_alpha.into_glib(),
-                bits_per_sample,
-                width,
-                height,
+                <a href="#248">colorspace</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#249">has_alpha</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#250">bits_per_sample</a>,
+                <a href="#251">width</a>,
+                <a href="#252">height</a>,
             ))
         }
     }
@@ -1914,23 +1923,23 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_bytes&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_bytes&quot;</span>)]
     </span><span class="kw">pub fn </span>from_bytes(
-        data: <span class="kw-2">&amp;</span>glib::Bytes,
-        colorspace: Colorspace,
-        has_alpha: bool,
-        bits_per_sample: i32,
-        width: i32,
-        height: i32,
-        rowstride: i32,
-    ) -&gt; Pixbuf {
+        data: <span class="kw-2">&amp;</span><a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/bytes/struct.Bytes.html">glib::Bytes</a>,
+        colorspace: <a href="enums.rs.html#15-21">Colorspace</a>,
+        has_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        bits_per_sample: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        rowstride: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <a href="#9-223">Pixbuf</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_new_from_bytes(
-                data.to_glib_none().<span class="number">0</span>,
-                colorspace.into_glib(),
-                has_alpha.into_glib(),
-                bits_per_sample,
-                width,
-                height,
-                rowstride,
+                <a href="#292">data</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#293">colorspace</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#294">has_alpha</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#295">bits_per_sample</a>,
+                <a href="#296">width</a>,
+                <a href="#297">height</a>,
+                <a href="#298">rowstride</a>,
             ))
         }
     }
@@ -1962,14 +1971,14 @@
     /// A newly-created pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_file&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_file&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_file(filename: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+    </span><span class="kw">pub fn </span>from_file(filename: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_file(filename.as_ref().to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_file(<a href="#340">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#342">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#343">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#342">error</a>))
             }
         }
     }
@@ -2012,24 +2021,24 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_file_at_scale&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_file_at_scale&quot;</span>)]
     </span><span class="kw">pub fn </span>from_file_at_scale(
-        filename: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
-        width: i32,
-        height: i32,
-        preserve_aspect_ratio: bool,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+        filename: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        preserve_aspect_ratio: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_file_at_scale(
-                filename.as_ref().to_glib_none().<span class="number">0</span>,
-                width,
-                height,
-                preserve_aspect_ratio.into_glib(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#390">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#391">width</a>,
+                <a href="#392">height</a>,
+                <a href="#393">preserve_aspect_ratio</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#396">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#397">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#396">error</a>))
             }
         }
     }
@@ -2066,22 +2075,22 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_file_at_size&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_file_at_size&quot;</span>)]
     </span><span class="kw">pub fn </span>from_file_at_size(
-        filename: <span class="kw">impl </span>AsRef&lt;std::path::Path&gt;,
-        width: i32,
-        height: i32,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+        filename: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_file_at_size(
-                filename.as_ref().to_glib_none().<span class="number">0</span>,
-                width,
-                height,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#444">filename</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#445">width</a>,
+                <a href="#446">height</a>,
+                <span class="kw-2">&amp;mut </span><a href="#449">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#450">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#449">error</a>))
             }
         }
     }
@@ -2098,14 +2107,14 @@
     /// A newly-created pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_resource&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_resource&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_resource(resource_path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+    </span><span class="kw">pub fn </span>from_resource(resource_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_resource(resource_path.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_resource(<a href="#476">resource_path</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#478">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#479">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#478">error</a>))
             }
         }
     }
@@ -2138,24 +2147,24 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_resource_at_scale&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_resource_at_scale&quot;</span>)]
     </span><span class="kw">pub fn </span>from_resource_at_scale(
-        resource_path: <span class="kw-2">&amp;</span>str,
-        width: i32,
-        height: i32,
-        preserve_aspect_ratio: bool,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+        resource_path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        preserve_aspect_ratio: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_resource_at_scale(
-                resource_path.to_glib_none().<span class="number">0</span>,
-                width,
-                height,
-                preserve_aspect_ratio.into_glib(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#516">resource_path</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#517">width</a>,
+                <a href="#518">height</a>,
+                <a href="#519">preserve_aspect_ratio</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <span class="kw-2">&amp;mut </span><a href="#522">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#523">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#522">error</a>))
             }
         }
     }
@@ -2183,20 +2192,20 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_stream&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_stream&quot;</span>)]
     </span><span class="kw">pub fn </span>from_stream(
-        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::InputStream&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_stream(
-                stream.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#561">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#562">cancellable</a>.map(|p| <a href="#568">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#565">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#566">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#565">error</a>))
             }
         }
     }
@@ -2239,26 +2248,26 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_stream_at_scale&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_stream_at_scale&quot;</span>)]
     </span><span class="kw">pub fn </span>from_stream_at_scale(
-        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::InputStream&gt;,
-        width: i32,
-        height: i32,
-        preserve_aspect_ratio: bool,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;gio::Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Pixbuf, glib::Error&gt; {
+        stream: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/input_stream/struct.InputStream.html">gio::InputStream</a>&gt;,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        preserve_aspect_ratio: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/gio/auto/cancellable/struct.Cancellable.html">gio::Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>ret = ffi::gdk_pixbuf_new_from_stream_at_scale(
-                stream.as_ref().to_glib_none().<span class="number">0</span>,
-                width,
-                height,
-                preserve_aspect_ratio.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#617">stream</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#618">width</a>,
+                <a href="#619">height</a>,
+                <a href="#620">preserve_aspect_ratio</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#621">cancellable</a>.map(|p| <a href="#630">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#624">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#625">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#624">error</a>))
             }
         }
     }
@@ -2275,8 +2284,11 @@
     /// A newly-created pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_from_xpm_data&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_xpm_data&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_xpm_data(data: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>str]) -&gt; Pixbuf {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(data.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>from_xpm_data(data: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.BoolError.html">glib::BoolError</a>&gt; {
+        <span class="kw">unsafe </span>{
+            <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::gdk_pixbuf_new_from_xpm_data(<a href="#653">data</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>))
+                .ok_or_else(|| <a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.bool_error.html">glib::bool_error!</a>(<span class="string">&quot;Invalid XPM data&quot;</span>))
+        }
     }
 
     <span class="doccomment">/// Takes an existing pixbuf and adds an alpha channel to it.
@@ -2305,16 +2317,22 @@
     ///
     /// A newly-created pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_add_alpha&quot;</span>)]
-    #[must_use]
-    </span><span class="kw">pub fn </span>add_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, substitute_color: bool, r: u8, g: u8, b: u8) -&gt; Pixbuf {
+    </span><span class="kw">pub fn </span>add_alpha(
+        <span class="kw-2">&amp;</span><span class="self">self</span>,
+        substitute_color: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        r: <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>,
+        g: <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>,
+        b: <a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-223">Pixbuf</a>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.BoolError.html">glib::BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
-            from_glib_full(ffi::gdk_pixbuf_add_alpha(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                substitute_color.into_glib(),
-                r,
-                g,
-                b,
+            <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::gdk_pixbuf_add_alpha(
+                <a class="self" href="#687">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#688">substitute_color</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#689">r</a>,
+                <a href="#690">g</a>,
+                <a href="#691">b</a>,
             ))
+            .ok_or_else(|| <a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.bool_error.html">glib::bool_error!</a>(<span class="string">&quot;Failed to add alpha channel&quot;</span>))
         }
     }
 
@@ -2334,10 +2352,10 @@
     /// A newly-created pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_apply_embedded_orientation&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>apply_embedded_orientation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+    </span><span class="kw">pub fn </span>apply_embedded_orientation(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_apply_embedded_orientation(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#721">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -2380,32 +2398,32 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_composite&quot;</span>)]
     </span><span class="kw">pub fn </span>composite(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        dest: <span class="kw-2">&amp;</span>Pixbuf,
-        dest_x: i32,
-        dest_y: i32,
-        dest_width: i32,
-        dest_height: i32,
-        offset_x: f64,
-        offset_y: f64,
-        scale_x: f64,
-        scale_y: f64,
-        interp_type: InterpType,
-        overall_alpha: i32,
+        dest: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>,
+        dest_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        offset_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        offset_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        interp_type: <a href="enums.rs.html#125-157">InterpType</a>,
+        overall_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_composite(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest.to_glib_none().<span class="number">0</span>,
-                dest_x,
-                dest_y,
-                dest_width,
-                dest_height,
-                offset_x,
-                offset_y,
-                scale_x,
-                scale_y,
-                interp_type.into_glib(),
-                overall_alpha,
+                <a class="self" href="#766">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#767">dest</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#768">dest_x</a>,
+                <a href="#769">dest_y</a>,
+                <a href="#770">dest_width</a>,
+                <a href="#771">dest_height</a>,
+                <a href="#772">offset_x</a>,
+                <a href="#773">offset_y</a>,
+                <a href="#774">scale_x</a>,
+                <a href="#775">scale_y</a>,
+                <a href="#776">interp_type</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#777">overall_alpha</a>,
             );
         }
     }
@@ -2457,42 +2475,42 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_composite_color&quot;</span>)]
     </span><span class="kw">pub fn </span>composite_color(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        dest: <span class="kw-2">&amp;</span>Pixbuf,
-        dest_x: i32,
-        dest_y: i32,
-        dest_width: i32,
-        dest_height: i32,
-        offset_x: f64,
-        offset_y: f64,
-        scale_x: f64,
-        scale_y: f64,
-        interp_type: InterpType,
-        overall_alpha: i32,
-        check_x: i32,
-        check_y: i32,
-        check_size: i32,
-        color1: u32,
-        color2: u32,
+        dest: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>,
+        dest_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        offset_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        offset_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        interp_type: <a href="enums.rs.html#125-157">InterpType</a>,
+        overall_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        check_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        check_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        check_size: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        color1: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+        color2: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_composite_color(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest.to_glib_none().<span class="number">0</span>,
-                dest_x,
-                dest_y,
-                dest_width,
-                dest_height,
-                offset_x,
-                offset_y,
-                scale_x,
-                scale_y,
-                interp_type.into_glib(),
-                overall_alpha,
-                check_x,
-                check_y,
-                check_size,
-                color1,
-                color2,
+                <a class="self" href="#843">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#844">dest</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#845">dest_x</a>,
+                <a href="#846">dest_y</a>,
+                <a href="#847">dest_width</a>,
+                <a href="#848">dest_height</a>,
+                <a href="#849">offset_x</a>,
+                <a href="#850">offset_y</a>,
+                <a href="#851">scale_x</a>,
+                <a href="#852">scale_y</a>,
+                <a href="#853">interp_type</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#854">overall_alpha</a>,
+                <a href="#855">check_x</a>,
+                <a href="#856">check_y</a>,
+                <a href="#857">check_size</a>,
+                <a href="#858">color1</a>,
+                <a href="#859">color2</a>,
             );
         }
     }
@@ -2522,32 +2540,32 @@
     #[must_use]
     </span><span class="kw">pub fn </span>composite_color_simple(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        dest_width: i32,
-        dest_height: i32,
-        interp_type: InterpType,
-        overall_alpha: i32,
-        check_size: i32,
-        color1: u32,
-        color2: u32,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+        dest_width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        interp_type: <a href="enums.rs.html#125-157">InterpType</a>,
+        overall_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        check_size: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        color1: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+        color2: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_composite_color_simple(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest_width,
-                dest_height,
-                interp_type.into_glib(),
-                overall_alpha,
-                check_size,
-                color1,
-                color2,
+                <a class="self" href="#908">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#909">dest_width</a>,
+                <a href="#910">dest_height</a>,
+                <a href="#911">interp_type</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#912">overall_alpha</a>,
+                <a href="#913">check_size</a>,
+                <a href="#914">color1</a>,
+                <a href="#915">color2</a>,
             ))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_copy&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_copy(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>copy(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_copy(<a class="self" href="#933">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Copies a rectangular area from `src_pixbuf` to `dest_pixbuf`.
@@ -2574,24 +2592,24 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_copy_area&quot;</span>)]
     </span><span class="kw">pub fn </span>copy_area(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        src_x: i32,
-        src_y: i32,
-        width: i32,
-        height: i32,
-        dest_pixbuf: <span class="kw-2">&amp;</span>Pixbuf,
-        dest_x: i32,
-        dest_y: i32,
+        src_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        src_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_pixbuf: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>,
+        dest_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_copy_area(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                src_x,
-                src_y,
-                width,
-                height,
-                dest_pixbuf.to_glib_none().<span class="number">0</span>,
-                dest_x,
-                dest_y,
+                <a class="self" href="#960">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#961">src_x</a>,
+                <a href="#962">src_y</a>,
+                <a href="#963">width</a>,
+                <a href="#964">height</a>,
+                <a href="#965">dest_pixbuf</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#966">dest_x</a>,
+                <a href="#967">dest_y</a>,
             );
         }
     }
@@ -2609,11 +2627,11 @@
     ///
     /// `TRUE` on success.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_copy_options&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy_options(<span class="kw-2">&amp;</span><span class="self">self</span>, dest_pixbuf: <span class="kw-2">&amp;</span>Pixbuf) -&gt; bool {
+    </span><span class="kw">pub fn </span>copy_options(<span class="kw-2">&amp;</span><span class="self">self</span>, dest_pixbuf: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::gdk_pixbuf_copy_options(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest_pixbuf.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#996">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#996">dest_pixbuf</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -2627,9 +2645,9 @@
     /// RGBA pixel to used to clear (`0xffffffff` is opaque white,
     ///   `0x00000000` transparent black)
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_fill&quot;</span>)]
-    </span><span class="kw">pub fn </span>fill(<span class="kw-2">&amp;</span><span class="self">self</span>, pixel: u32) {
+    </span><span class="kw">pub fn </span>fill(<span class="kw-2">&amp;</span><span class="self">self</span>, pixel: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::gdk_pixbuf_fill(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, pixel);
+            ffi::gdk_pixbuf_fill(<a class="self" href="#1014">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#1014">pixel</a>);
         }
     }
 
@@ -2643,11 +2661,11 @@
     /// the new pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_flip&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>flip(<span class="kw-2">&amp;</span><span class="self">self</span>, horizontal: bool) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+    </span><span class="kw">pub fn </span>flip(<span class="kw-2">&amp;</span><span class="self">self</span>, horizontal: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_flip(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                horizontal.into_glib(),
+                <a class="self" href="#1030">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1030">horizontal</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -2659,8 +2677,8 @@
     /// Number of bits per color sample.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_bits_per_sample&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_bits_per_sample&quot;</span>)]
-    </span><span class="kw">pub fn </span>bits_per_sample(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_bits_per_sample(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>bits_per_sample(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_bits_per_sample(<a class="self" href="#1046">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Returns the length of the pixel data, in bytes.
@@ -2670,8 +2688,8 @@
     /// The length of the pixel data.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_byte_length&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_byte_length&quot;</span>)]
-    </span><span class="kw">pub fn </span>byte_length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; usize {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_byte_length(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>byte_length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_byte_length(<a class="self" href="#1057">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Queries the color space of a pixbuf.
@@ -2681,8 +2699,8 @@
     /// Color space.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_colorspace&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_colorspace&quot;</span>)]
-    </span><span class="kw">pub fn </span>colorspace(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Colorspace {
-        <span class="kw">unsafe </span>{ from_glib(ffi::gdk_pixbuf_get_colorspace(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>colorspace(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#15-21">Colorspace</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::gdk_pixbuf_get_colorspace(<a class="self" href="#1068">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Queries whether a pixbuf has an alpha channel (opacity information).
@@ -2692,8 +2710,8 @@
     /// `TRUE` if it has an alpha channel, `FALSE` otherwise.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_has_alpha&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_has_alpha&quot;</span>)]
-    </span><span class="kw">pub fn </span>has_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::gdk_pixbuf_get_has_alpha(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>has_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::gdk_pixbuf_get_has_alpha(<a class="self" href="#1079">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Queries the height of a pixbuf.
@@ -2703,8 +2721,8 @@
     /// Height in pixels.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_height&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_height&quot;</span>)]
-    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_height(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_height(<a class="self" href="#1090">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Queries the number of channels of a pixbuf.
@@ -2714,8 +2732,8 @@
     /// Number of channels.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_n_channels&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_n_channels&quot;</span>)]
-    </span><span class="kw">pub fn </span>n_channels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_n_channels(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>n_channels(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_n_channels(<a class="self" href="#1101">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Looks up @key in the list of options that may have been attached to the
@@ -2741,11 +2759,11 @@
     /// the value associated with `key`
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_option&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_option&quot;</span>)]
-    </span><span class="kw">pub fn </span>option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+    </span><span class="kw">pub fn </span>option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::gdk_pixbuf_get_option(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                key.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#1128">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1128">key</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -2764,8 +2782,8 @@
     /// Distance between row starts.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_rowstride&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_rowstride&quot;</span>)]
-    </span><span class="kw">pub fn </span>rowstride(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_rowstride(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>rowstride(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_rowstride(<a class="self" href="#1151">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Queries the width of a pixbuf.
@@ -2775,8 +2793,8 @@
     /// Width in pixels.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_width&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_width&quot;</span>)]
-    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_width(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::gdk_pixbuf_get_width(<a class="self" href="#1162">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Creates a new pixbuf which represents a sub-region of `src_pixbuf`.
@@ -2802,14 +2820,14 @@
     /// a new pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_new_subpixbuf&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>new_subpixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>, src_x: i32, src_y: i32, width: i32, height: i32) -&gt; Pixbuf {
+    </span><span class="kw">pub fn </span>new_subpixbuf(<span class="kw-2">&amp;</span><span class="self">self</span>, src_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, src_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <a href="#9-223">Pixbuf</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_new_subpixbuf(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                src_x,
-                src_y,
-                width,
-                height,
+                <a class="self" href="#1189">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1189">src_x</a>,
+                <a href="#1189">src_y</a>,
+                <a href="#1189">width</a>,
+                <a href="#1189">height</a>,
             ))
         }
     }
@@ -2827,8 +2845,8 @@
     ///   incur a one-time copy of the pixel data for conversion into the
     ///   returned #GBytes.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_read_pixel_bytes&quot;</span>)]
-    </span><span class="kw">pub fn </span>read_pixel_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::Bytes {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_read_pixel_bytes(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>read_pixel_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/bytes/struct.Bytes.html">glib::Bytes</a> {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::gdk_pixbuf_read_pixel_bytes(<a class="self" href="#1214">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Removes the key/value pair option attached to a [`Pixbuf`][crate::Pixbuf].
@@ -2839,11 +2857,11 @@
     ///
     /// `TRUE` if an option was removed, `FALSE` if not.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_remove_option&quot;</span>)]
-    </span><span class="kw">pub fn </span>remove_option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    </span><span class="kw">pub fn </span>remove_option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::gdk_pixbuf_remove_option(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                key.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#1226">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1226">key</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -2860,11 +2878,11 @@
     /// the new pixbuf
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_rotate_simple&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>rotate_simple(<span class="kw-2">&amp;</span><span class="self">self</span>, angle: PixbufRotation) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+    </span><span class="kw">pub fn </span>rotate_simple(<span class="kw-2">&amp;</span><span class="self">self</span>, angle: <a href="enums.rs.html#566-581">PixbufRotation</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_rotate_simple(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                angle.into_glib(),
+                <a class="self" href="#1247">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1247">angle</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -2890,13 +2908,13 @@
     /// ## `pixelate`
     /// whether to pixelate
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_saturate_and_pixelate&quot;</span>)]
-    </span><span class="kw">pub fn </span>saturate_and_pixelate(<span class="kw-2">&amp;</span><span class="self">self</span>, dest: <span class="kw-2">&amp;</span>Pixbuf, saturation: f32, pixelate: bool) {
+    </span><span class="kw">pub fn </span>saturate_and_pixelate(<span class="kw-2">&amp;</span><span class="self">self</span>, dest: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>, saturation: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, pixelate: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_saturate_and_pixelate(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest.to_glib_none().<span class="number">0</span>,
-                saturation,
-                pixelate.into_glib(),
+                <a class="self" href="#1277">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1277">dest</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1277">saturation</a>,
+                <a href="#1277">pixelate</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -2985,30 +3003,30 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_scale&quot;</span>)]
     </span><span class="kw">pub fn </span>scale(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        dest: <span class="kw-2">&amp;</span>Pixbuf,
-        dest_x: i32,
-        dest_y: i32,
-        dest_width: i32,
-        dest_height: i32,
-        offset_x: f64,
-        offset_y: f64,
-        scale_x: f64,
-        scale_y: f64,
-        interp_type: InterpType,
+        dest: <span class="kw-2">&amp;</span><a href="#9-223">Pixbuf</a>,
+        dest_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        offset_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        offset_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        scale_y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        interp_type: <a href="enums.rs.html#125-157">InterpType</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_scale(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest.to_glib_none().<span class="number">0</span>,
-                dest_x,
-                dest_y,
-                dest_width,
-                dest_height,
-                offset_x,
-                offset_y,
-                scale_x,
-                scale_y,
-                interp_type.into_glib(),
+                <a class="self" href="#1371">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1372">dest</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1373">dest_x</a>,
+                <a href="#1374">dest_y</a>,
+                <a href="#1375">dest_width</a>,
+                <a href="#1376">dest_height</a>,
+                <a href="#1377">offset_x</a>,
+                <a href="#1378">offset_y</a>,
+                <a href="#1379">scale_x</a>,
+                <a href="#1380">scale_y</a>,
+                <a href="#1381">interp_type</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -3045,16 +3063,16 @@
     #[must_use]
     </span><span class="kw">pub fn </span>scale_simple(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        dest_width: i32,
-        dest_height: i32,
-        interp_type: InterpType,
-    ) -&gt; <span class="prelude-ty">Option</span>&lt;Pixbuf&gt; {
+        dest_width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        dest_height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        interp_type: <a href="enums.rs.html#125-157">InterpType</a>,
+    ) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#9-223">Pixbuf</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::gdk_pixbuf_scale_simple(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                dest_width,
-                dest_height,
-                interp_type.into_glib(),
+                <a class="self" href="#1431">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1432">dest_width</a>,
+                <a href="#1433">dest_height</a>,
+                <a href="#1434">interp_type</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -3072,19 +3090,19 @@
     ///
     /// `TRUE` on success
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_set_option&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span>str, value: <span class="kw-2">&amp;</span>str) -&gt; bool {
+    </span><span class="kw">pub fn </span>set_option(<span class="kw-2">&amp;</span><span class="self">self</span>, key: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, value: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::gdk_pixbuf_set_option(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                key.to_glib_none().<span class="number">0</span>,
-                value.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#1459">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1459">key</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#1459">value</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;pixel-bytes&quot;</span>)]
-    </span><span class="kw">pub fn </span>pixel_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>, <span class="string">&quot;pixel-bytes&quot;</span>)
+    </span><span class="kw">pub fn </span>pixel_bytes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt; {
+        <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#1470">self</a>, <span class="string">&quot;pixel-bytes&quot;</span>)
     }
 
     <span class="doccomment">/// Calculates the rowstride that an image created with those values would
@@ -3108,19 +3126,19 @@
     /// the rowstride for the given values, or -1 in case of error.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_calculate_rowstride&quot;</span>)]
     </span><span class="kw">pub fn </span>calculate_rowstride(
-        colorspace: Colorspace,
-        has_alpha: bool,
-        bits_per_sample: i32,
-        width: i32,
-        height: i32,
-    ) -&gt; i32 {
+        colorspace: <a href="enums.rs.html#15-21">Colorspace</a>,
+        has_alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
+        bits_per_sample: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+        height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
             ffi::gdk_pixbuf_calculate_rowstride(
-                colorspace.into_glib(),
-                has_alpha.into_glib(),
-                bits_per_sample,
-                width,
-                height,
+                <a href="#1495">colorspace</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#1496">has_alpha</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#1497">bits_per_sample</a>,
+                <a href="#1498">width</a>,
+                <a href="#1499">height</a>,
             )
         }
     }
@@ -3134,8 +3152,8 @@
     ///   support image formats.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;gdk_pixbuf_get_formats&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_formats&quot;</span>)]
-    </span><span class="kw">pub fn </span>formats() -&gt; Vec&lt;PixbufFormat&gt; {
-        <span class="kw">unsafe </span>{ FromGlibPtrContainer::from_glib_container(ffi::gdk_pixbuf_get_formats()) }
+    </span><span class="kw">pub fn </span>formats() -&gt; Vec&lt;<a href="pixbuf_format.rs.html#7-21">PixbufFormat</a>&gt; {
+        <span class="kw">unsafe </span>{ <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_container</a>(ffi::gdk_pixbuf_get_formats()) }
     }
 
     <span class="doccomment">/// Initalizes the gdk-pixbuf loader modules referenced by the `loaders.cache`
@@ -3156,23 +3174,23 @@
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;v2_40&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_40&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;gdk_pixbuf_init_modules&quot;</span>)]
-    </span><span class="kw">pub fn </span>init_modules(path: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+    </span><span class="kw">pub fn </span>init_modules(path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_init_modules(path.to_glib_none().<span class="number">0</span>, <span class="kw-2">&amp;mut </span>error);
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <span class="kw">let </span>is_ok = ffi::gdk_pixbuf_init_modules(<a href="#1543">path</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#1545">error</a>);
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#1545">error</a>))
             }
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Pixbuf {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Pixbuf&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#9-223">Pixbuf</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#1558">f</a>.write_str(<span class="string">&quot;Pixbuf&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/renderer.rs`."><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/renderer.rs`."><title>renderer.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -549,15 +549,20 @@
 <a href="#476" id="476">476</a>
 <a href="#477" id="477">477</a>
 <a href="#478" id="478">478</a>
+<a href="#479" id="479">479</a>
+<a href="#480" id="480">480</a>
+<a href="#481" id="481">481</a>
+<a href="#482" id="482">482</a>
+<a href="#483" id="483">483</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Color, Font, Glyph, GlyphItem, GlyphString, Layout, LayoutLine, Matrix, RenderPart};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::fmt;
+</span><span class="kw">use crate</span>::{<a href="color.rs.html#8-18">Color</a>, <a href="font.rs.html#18-33">Font</a>, <a href="alias.rs.html#8">Glyph</a>, <a href="glyph_item.rs.html#8-23">GlyphItem</a>, <a href="glyph_string.rs.html#9-23">GlyphString</a>, <a href="layout.rs.html#21-66">Layout</a>, <a href="layout_line.rs.html#12-27">LayoutLine</a>, <a href="matrix.rs.html#8-25">Matrix</a>, <a href="enums.rs.html#1888-1906">RenderPart</a>};
+<span class="kw">use </span>glib::{<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">std::fmt</a>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// [`Renderer`][crate::Renderer] is a base class for objects that can render text
     /// provided as [`GlyphString`][crate::GlyphString] or [`Layout`][crate::Layout].
     ///
@@ -571,15 +576,20 @@
     ///
     /// [`RendererExt`][trait@crate::prelude::RendererExt]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;PangoRenderer&quot;</span>)]
-    </span><span class="kw">pub struct </span>Renderer(Object&lt;ffi::PangoRenderer, ffi::PangoRendererClass&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.Renderer.html">Renderer</a>(Object&lt;ffi::PangoRenderer, ffi::PangoRendererClass&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::pango_renderer_get_type(),
     }
 }
 
-<span class="kw">impl </span>Renderer {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Renderer&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#9-28">Renderer</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="#9-28">Renderer</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#9-28"><span class="kw">super</span>::Renderer</a>&gt;&gt; <a href="#35">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@Renderer`] methods.
@@ -587,7 +597,7 @@
 /// # Implementors
 ///
 /// [`Renderer`][struct@crate::Renderer]
-</span><span class="kw">pub trait </span>RendererExt: IsA&lt;Renderer&gt; + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../pango/prelude/trait.RendererExt.html">RendererExt</a>: IsA&lt;<a href="#9-28">Renderer</a>&gt; + <a href="#35">sealed::Sealed</a> + <span class="lifetime">&#39;static </span>{
     <span class="doccomment">/// Does initial setup before rendering operations on @self.
     ///
     /// [`deactivate()`][Self::deactivate()] should be called when done drawing.
@@ -600,7 +610,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_activate&quot;</span>)]
     </span><span class="kw">fn </span>activate(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_renderer_activate(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::pango_renderer_activate(<a class="self" href="#55">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -610,7 +620,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_deactivate&quot;</span>)]
     </span><span class="kw">fn </span>deactivate(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_renderer_deactivate(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>);
+            ffi::pango_renderer_deactivate(<a class="self" href="#65">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -632,14 +642,14 @@
     /// ## `height`
     /// height of underline, in Pango units in user coordinate system
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_error_underline&quot;</span>)]
-    </span><span class="kw">fn </span>draw_error_underline(<span class="kw-2">&amp;</span><span class="self">self</span>, x: i32, y: i32, width: i32, height: i32) {
+    </span><span class="kw">fn </span>draw_error_underline(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_error_underline(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                x,
-                y,
-                width,
-                height,
+                <a class="self" href="#89">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#89">x</a>,
+                <a href="#89">y</a>,
+                <a href="#89">width</a>,
+                <a href="#89">height</a>,
             );
         }
     }
@@ -654,14 +664,14 @@
     /// ## `y`
     /// Y coordinate of left edge of baseline of glyph
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_glyph&quot;</span>)]
-    </span><span class="kw">fn </span>draw_glyph(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;, glyph: Glyph, x: f64, y: f64) {
+    </span><span class="kw">fn </span>draw_glyph(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font.rs.html#18-33">Font</a>&gt;, glyph: <a href="alias.rs.html#8">Glyph</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_glyph(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                font.as_ref().to_glib_none().<span class="number">0</span>,
-                glyph,
-                x,
-                y,
+                <a class="self" href="#111">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#111">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#111">glyph</a>,
+                <a href="#111">x</a>,
+                <a href="#111">y</a>,
             );
         }
     }
@@ -695,14 +705,14 @@
     /// Y position of left edge of baseline, in user space coordinates
     ///   in Pango units
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_glyph_item&quot;</span>)]
-    </span><span class="kw">fn </span>draw_glyph_item(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;, glyph_item: <span class="kw-2">&amp;mut </span>GlyphItem, x: i32, y: i32) {
+    </span><span class="kw">fn </span>draw_glyph_item(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, glyph_item: <span class="kw-2">&amp;mut </span><a href="glyph_item.rs.html#8-23">GlyphItem</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_glyph_item(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                text.to_glib_none().<span class="number">0</span>,
-                glyph_item.to_glib_none_mut().<span class="number">0</span>,
-                x,
-                y,
+                <a class="self" href="#152">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#152">text</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#152">glyph_item</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#152">x</a>,
+                <a href="#152">y</a>,
             );
         }
     }
@@ -719,14 +729,14 @@
     /// Y position of left edge of baseline, in user space coordinates
     ///   in Pango units.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_glyphs&quot;</span>)]
-    </span><span class="kw">fn </span>draw_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Font&gt;, glyphs: <span class="kw-2">&amp;mut </span>GlyphString, x: i32, y: i32) {
+    </span><span class="kw">fn </span>draw_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, font: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font.rs.html#18-33">Font</a>&gt;, glyphs: <span class="kw-2">&amp;mut </span><a href="glyph_string.rs.html#9-23">GlyphString</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_glyphs(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                font.as_ref().to_glib_none().<span class="number">0</span>,
-                glyphs.to_glib_none_mut().<span class="number">0</span>,
-                x,
-                y,
+                <a class="self" href="#176">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#176">font</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#176">glyphs</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#176">x</a>,
+                <a href="#176">y</a>,
             );
         }
     }
@@ -744,13 +754,13 @@
     /// Y position of left edge of baseline, in user space coordinates
     ///   in Pango units.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_layout&quot;</span>)]
-    </span><span class="kw">fn </span>draw_layout(<span class="kw-2">&amp;</span><span class="self">self</span>, layout: <span class="kw-2">&amp;</span>Layout, x: i32, y: i32) {
+    </span><span class="kw">fn </span>draw_layout(<span class="kw-2">&amp;</span><span class="self">self</span>, layout: <span class="kw-2">&amp;</span><a href="layout.rs.html#21-66">Layout</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_layout(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                layout.to_glib_none().<span class="number">0</span>,
-                x,
-                y,
+                <a class="self" href="#201">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#201">layout</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#201">x</a>,
+                <a href="#201">y</a>,
             );
         }
     }
@@ -769,13 +779,13 @@
     /// Y position of left edge of baseline, in user space coordinates
     ///   in Pango units.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_layout_line&quot;</span>)]
-    </span><span class="kw">fn </span>draw_layout_line(<span class="kw-2">&amp;</span><span class="self">self</span>, line: <span class="kw-2">&amp;</span>LayoutLine, x: i32, y: i32) {
+    </span><span class="kw">fn </span>draw_layout_line(<span class="kw-2">&amp;</span><span class="self">self</span>, line: <span class="kw-2">&amp;</span><a href="layout_line.rs.html#12-27">LayoutLine</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_layout_line(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                line.to_glib_none().<span class="number">0</span>,
-                x,
-                y,
+                <a class="self" href="#226">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#226">line</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#226">x</a>,
+                <a href="#226">y</a>,
             );
         }
     }
@@ -798,15 +808,15 @@
     /// ## `height`
     /// height of rectangle in Pango units
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_rectangle&quot;</span>)]
-    </span><span class="kw">fn </span>draw_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart, x: i32, y: i32, width: i32, height: i32) {
+    </span><span class="kw">fn </span>draw_rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_rectangle(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                part.into_glib(),
-                x,
-                y,
-                width,
-                height,
+                <a class="self" href="#255">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#255">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#255">x</a>,
+                <a href="#255">y</a>,
+                <a href="#255">width</a>,
+                <a href="#255">height</a>,
             );
         }
     }
@@ -830,24 +840,24 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_draw_trapezoid&quot;</span>)]
     </span><span class="kw">fn </span>draw_trapezoid(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        part: RenderPart,
-        y1_: f64,
-        x11: f64,
-        x21: f64,
-        y2: f64,
-        x12: f64,
-        x22: f64,
+        part: <a href="enums.rs.html#1888-1906">RenderPart</a>,
+        y1_: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x11: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x21: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x12: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        x22: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
     ) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_draw_trapezoid(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                part.into_glib(),
-                y1_,
-                x11,
-                x21,
-                y2,
-                x12,
-                x22,
+                <a class="self" href="#286">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#287">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#288">y1_</a>,
+                <a href="#289">x11</a>,
+                <a href="#290">x21</a>,
+                <a href="#291">y2</a>,
+                <a href="#292">x12</a>,
+                <a href="#293">x22</a>,
             );
         }
     }
@@ -863,8 +873,8 @@
     ///   inherited from the environment.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_get_alpha&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_alpha&quot;</span>)]
-    </span><span class="kw">fn </span>alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart) -&gt; u16 {
-        <span class="kw">unsafe </span>{ ffi::pango_renderer_get_alpha(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, part.into_glib()) }
+    </span><span class="kw">fn </span>alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_renderer_get_alpha(<a class="self" href="#320">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#320">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>()) }
     }
 
     <span class="doccomment">/// Gets the current rendering color for the specified part.
@@ -878,11 +888,11 @@
     ///   inherited from the environment.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_get_color&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_color&quot;</span>)]
-    </span><span class="kw">fn </span>color(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart) -&gt; <span class="prelude-ty">Option</span>&lt;Color&gt; {
+    </span><span class="kw">fn </span>color(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="color.rs.html#8-18">Color</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_renderer_get_color(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                part.into_glib(),
+                <a class="self" href="#335">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#335">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -901,10 +911,10 @@
     ///   no layout is being rendered using @self at this time.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_get_layout&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_layout&quot;</span>)]
-    </span><span class="kw">fn </span>layout(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Layout&gt; {
+    </span><span class="kw">fn </span>layout(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="layout.rs.html#21-66">Layout</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_renderer_get_layout(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#358">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -923,10 +933,10 @@
     ///   if no layout line is being rendered using @self at this time.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_get_layout_line&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_layout_line&quot;</span>)]
-    </span><span class="kw">fn </span>layout_line(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;LayoutLine&gt; {
+    </span><span class="kw">fn </span>layout_line(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="layout_line.rs.html#12-27">LayoutLine</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_renderer_get_layout_line(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#380">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -943,10 +953,10 @@
     ///   matrix is owned by Pango and must not be modified or freed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_get_matrix&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_matrix&quot;</span>)]
-    </span><span class="kw">fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Matrix&gt; {
+    </span><span class="kw">fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="matrix.rs.html#8-25">Matrix</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_renderer_get_matrix(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#400">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -969,9 +979,9 @@
     /// ## `part`
     /// the part for which rendering has changed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_part_changed&quot;</span>)]
-    </span><span class="kw">fn </span>part_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart) {
+    </span><span class="kw">fn </span>part_changed(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_renderer_part_changed(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, part.into_glib());
+            ffi::pango_renderer_part_changed(<a class="self" href="#426">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#426">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
@@ -984,9 +994,9 @@
     /// ## `alpha`
     /// an alpha value between 1 and 65536, or 0 to unset the alpha
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_set_alpha&quot;</span>)]
-    </span><span class="kw">fn </span>set_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart, alpha: u16) {
+    </span><span class="kw">fn </span>set_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>, alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.u16.html">u16</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_renderer_set_alpha(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, part.into_glib(), alpha);
+            ffi::pango_renderer_set_alpha(<a class="self" href="#441">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#441">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(), <a href="#441">alpha</a>);
         }
     }
 
@@ -998,12 +1008,12 @@
     /// ## `color`
     /// the new color or [`None`] to unset the current color
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_set_color&quot;</span>)]
-    </span><span class="kw">fn </span>set_color(<span class="kw-2">&amp;</span><span class="self">self</span>, part: RenderPart, color: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Color&gt;) {
+    </span><span class="kw">fn </span>set_color(<span class="kw-2">&amp;</span><span class="self">self</span>, part: <a href="enums.rs.html#1888-1906">RenderPart</a>, color: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="color.rs.html#8-18">Color</a>&gt;) {
         <span class="kw">unsafe </span>{
             ffi::pango_renderer_set_color(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                part.into_glib(),
-                color.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#455">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#455">part</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#455">color</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -1013,18 +1023,18 @@
     /// a [`Matrix`][crate::Matrix], or [`None`] to unset any existing matrix
     ///  (No matrix set is the same as setting the identity matrix.)
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_renderer_set_matrix&quot;</span>)]
-    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;) {
+    </span><span class="kw">fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="matrix.rs.html#8-25">Matrix</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_renderer_set_matrix(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>, matrix.to_glib_none().<span class="number">0</span>);
+            ffi::pango_renderer_set_matrix(<a class="self" href="#470">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#470">matrix</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;Renderer&gt;&gt; RendererExt <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#9-28">Renderer</a>&gt;&gt; <a href="#44-475">RendererExt</a> <span class="kw">for </span>O {}
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Renderer {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Renderer&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#9-28">Renderer</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#480">f</a>.write_str(<span class="string">&quot;Renderer&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

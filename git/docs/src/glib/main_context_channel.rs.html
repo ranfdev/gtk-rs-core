@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_channel.rs`."><title>main_context_channel.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/main_context_channel.rs`."><title>main_context_channel.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -967,13 +967,13 @@
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{
-    collections::VecDeque,
-    fmt, mem, ptr,
-    sync::{mpsc, Arc, Condvar, Mutex},
+    <a href="https://doc.rust-lang.org/nightly/alloc/collections/vec_deque/struct.VecDeque.html">collections::VecDeque</a>,
+    <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>,
+    sync::{<a href="https://doc.rust-lang.org/nightly/std/sync/mpsc/index.html">mpsc</a>, <a href="https://doc.rust-lang.org/nightly/alloc/sync/struct.Arc.html">Arc</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/condvar/struct.Condvar.html">Condvar</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">Mutex</a>},
 };
 
 <span class="kw">use crate</span>::{
-    thread_guard::ThreadGuard, translate::<span class="kw-2">*</span>, Continue, MainContext, Priority, Source, SourceId,
+    <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#14-17">ControlFlow</a>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="source.rs.html#812">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>,
 };
 
 <span class="kw">enum </span>ChannelSourceState {
@@ -982,72 +982,72 @@
     Destroyed,
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>ChannelSourceState {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>ChannelSourceState {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#13-17">ChannelSourceState</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#13-17">ChannelSourceState</a> {}
 
 <span class="kw">struct </span>ChannelInner&lt;T&gt; {
     queue: VecDeque&lt;T&gt;,
-    source: ChannelSourceState,
-    num_senders: usize,
+    source: <a href="#13-17">ChannelSourceState</a>,
+    num_senders: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
 }
 
 <span class="kw">impl</span>&lt;T&gt; ChannelInner&lt;T&gt; {
-    <span class="kw">fn </span>receiver_disconnected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">match </span><span class="self">self</span>.source {
-            ChannelSourceState::Destroyed =&gt; <span class="bool-val">true</span>,
+    <span class="kw">fn </span>receiver_disconnected(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">match </span><a class="self" href="#29">self</a>.source {
+            <a href="#16">ChannelSourceState::Destroyed</a> =&gt; <span class="bool-val">true</span>,
             <span class="comment">// Receiver exists but is already destroyed
-            </span>ChannelSourceState::Attached(source)
-                <span class="kw">if unsafe </span>{ ffi::g_source_is_destroyed(source) } != ffi::GFALSE =&gt;
+            </span><a href="#15">ChannelSourceState::Attached</a>(source)
+                <span class="kw">if unsafe </span>{ ffi::g_source_is_destroyed(<a href="#33">source</a>) } != ffi::GFALSE =&gt;
             {
                 <span class="bool-val">true
             </span>}
             <span class="comment">// Not attached yet so the Receiver still exists
-            </span>ChannelSourceState::NotAttached =&gt; <span class="bool-val">false</span>,
+            </span><a href="#14">ChannelSourceState::NotAttached</a> =&gt; <span class="bool-val">false</span>,
             <span class="comment">// Receiver still running
-            </span>ChannelSourceState::Attached(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
+            </span><a href="#15">ChannelSourceState::Attached</a>(<span class="kw">_</span>) =&gt; <span class="bool-val">false</span>,
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;g_source_set_ready_time&quot;</span>)]
-    </span><span class="kw">fn </span>set_ready_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ready_time: i64) {
-        <span class="kw">if let </span>ChannelSourceState::Attached(source) = <span class="self">self</span>.source {
+    </span><span class="kw">fn </span>set_ready_time(<span class="kw-2">&amp;mut </span><span class="self">self</span>, ready_time: <a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>) {
+        <span class="kw">if let </span><a href="#15">ChannelSourceState::Attached</a>(source) = <a class="self" href="#46">self</a>.source {
             <span class="kw">unsafe </span>{
-                ffi::g_source_set_ready_time(source, ready_time);
+                ffi::g_source_set_ready_time(<a href="#47">source</a>, <a href="#46">ready_time</a>);
             }
         }
     }
 }
 
 <span class="kw">struct </span>ChannelBound {
-    bound: usize,
-    cond: Condvar,
+    bound: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+    cond: <a href="https://doc.rust-lang.org/nightly/std/sync/condvar/struct.Condvar.html">Condvar</a>,
 }
 
-<span class="kw">struct </span>Channel&lt;T&gt;(Arc&lt;(Mutex&lt;ChannelInner&lt;T&gt;&gt;, <span class="prelude-ty">Option</span>&lt;ChannelBound&gt;)&gt;);
+<span class="kw">struct </span>Channel&lt;T&gt;(Arc&lt;(Mutex&lt;ChannelInner&lt;T&gt;&gt;, <span class="prelude-ty">Option</span>&lt;<a href="#55-58">ChannelBound</a>&gt;)&gt;);
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>Channel&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>Channel&lt;T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Channel&lt;T&gt; {
-        Channel(<span class="self">self</span>.<span class="number">0</span>.clone())
+        <a href="#60">Channel</a>(<a class="self" href="#63">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>())
     }
 }
 
 <span class="kw">impl</span>&lt;T&gt; Channel&lt;T&gt; {
-    <span class="kw">fn </span>new(bound: <span class="prelude-ty">Option</span>&lt;usize&gt;) -&gt; Channel&lt;T&gt; {
-        Channel(Arc::new((
-            Mutex::new(ChannelInner {
+    <span class="kw">fn </span>new(bound: <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt;) -&gt; Channel&lt;T&gt; {
+        <a href="#60">Channel</a>(Arc::new((
+            Mutex::new(<a href="#22-26">ChannelInner</a> {
                 queue: VecDeque::new(),
-                source: ChannelSourceState::NotAttached,
+                source: <a href="#14">ChannelSourceState::NotAttached</a>,
                 num_senders: <span class="number">0</span>,
             }),
-            bound.map(|bound| ChannelBound {
-                bound,
+            <a href="#69">bound</a>.map(|bound| <a href="#55-58">ChannelBound</a> {
+                <a href="#76">bound</a>,
                 cond: Condvar::new(),
             }),
         )))
     }
 
     <span class="kw">fn </span>send(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), mpsc::SendError&lt;T&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a class="self" href="#83">self</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
 
         <span class="comment">// If we have a bounded channel then we need to wait here until enough free space is
         // available or the receiver disappears
@@ -1055,7 +1055,7 @@
         // A special case here is a bound of 0: the queue must be empty for accepting
         // new data and then we will again wait later for the data to be actually taken
         // out
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(ChannelBound { bound, <span class="kw-2">ref </span>cond }) = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">1 </span>{
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<a href="#55-58">ChannelBound</a> { bound, <span class="kw-2">ref </span>cond }) = (<a class="self" href="#83">self</a>.<span class="number">0</span>).<span class="number">1 </span>{
             <span class="kw">while </span>inner.queue.len() &gt;= bound
                 &amp;&amp; !inner.queue.is_empty()
                 &amp;&amp; !inner.receiver_disconnected()
@@ -1066,18 +1066,18 @@
 
         <span class="comment">// Error out directly if the receiver is disconnected
         </span><span class="kw">if </span>inner.receiver_disconnected() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::SendError(t));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::SendError(<a href="#83">t</a>));
         }
 
         <span class="comment">// Store the item on our queue
-        </span>inner.queue.push_back(t);
+        </span><a href="#84">inner</a>.queue.push_back(<a href="#83">t</a>);
 
         <span class="comment">// and then wake up the GSource
-        </span>inner.set_ready_time(<span class="number">0</span>);
+        </span><a href="#84">inner</a>.<a href="#46-52">set_ready_time</a>(<span class="number">0</span>);
 
         <span class="comment">// If we have a bound of 0 we need to wait until the receiver actually
         // handled the data
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(ChannelBound { bound: <span class="number">0</span>, <span class="kw-2">ref </span>cond }) = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">1 </span>{
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<a href="#55-58">ChannelBound</a> { bound: <span class="number">0</span>, <span class="kw-2">ref </span>cond }) = (<a class="self" href="#83">self</a>.<span class="number">0</span>).<span class="number">1 </span>{
             <span class="kw">while </span>!inner.queue.is_empty() &amp;&amp; !inner.receiver_disconnected() {
                 inner = cond.wait(inner).unwrap();
             }
@@ -1086,8 +1086,8 @@
             </span><span class="kw">if </span>inner.receiver_disconnected() {
                 <span class="comment">// If the item is not in the queue anymore then the receiver just handled it before
                 // getting disconnected and all is good
-                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = inner.queue.pop_front() {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::SendError(t));
+                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = <a href="#84">inner</a>.queue.pop_front() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::SendError(<a href="#123">t</a>));
                 }
             }
         }
@@ -1096,28 +1096,28 @@
     }
 
     <span class="kw">fn </span>try_send(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), mpsc::TrySendError&lt;T&gt;&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a class="self" href="#132">self</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
 
-        <span class="kw">let </span>ChannelBound { bound, <span class="kw-2">ref </span>cond } = (<span class="self">self</span>.<span class="number">0</span>)
+        <span class="kw">let </span><a href="#55-58">ChannelBound</a> { bound, <span class="kw-2">ref </span>cond } = (<a class="self" href="#132">self</a>.<span class="number">0</span>)
             .<span class="number">1
             </span>.as_ref()
             .expect(<span class="string">&quot;called try_send() on an unbounded channel&quot;</span>);
 
         <span class="comment">// Check if the queue is full and handle the special case of a 0 bound
         </span><span class="kw">if </span>inner.queue.len() &gt;= <span class="kw-2">*</span>bound &amp;&amp; !inner.queue.is_empty() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Full(t));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Full(<a href="#132">t</a>));
         }
 
         <span class="comment">// Error out directly if the receiver is disconnected
         </span><span class="kw">if </span>inner.receiver_disconnected() {
-            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Disconnected(t));
+            <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Disconnected(<a href="#132">t</a>));
         }
 
         <span class="comment">// Store the item on our queue
-        </span>inner.queue.push_back(t);
+        </span><a href="#133">inner</a>.queue.push_back(<a href="#132">t</a>);
 
         <span class="comment">// and then wake up the GSource
-        </span>inner.set_ready_time(<span class="number">0</span>);
+        </span><a href="#133">inner</a>.<a href="#46-52">set_ready_time</a>(<span class="number">0</span>);
 
         <span class="comment">// If we have a bound of 0 we need to wait until the receiver actually
         // handled the data
@@ -1130,8 +1130,8 @@
             </span><span class="kw">if </span>inner.receiver_disconnected() {
                 <span class="comment">// If the item is not in the queue anymore then the receiver just handled it before
                 // getting disconnected and all is good
-                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = inner.queue.pop_front() {
-                    <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Disconnected(t));
+                </span><span class="kw">if let </span><span class="prelude-val">Some</span>(t) = <a href="#133">inner</a>.queue.pop_front() {
+                    <span class="kw">return </span><span class="prelude-val">Err</span>(mpsc::TrySendError::Disconnected(<a href="#167">t</a>));
                 }
             }
         }
@@ -1140,16 +1140,16 @@
     }
 
     <span class="comment">// SAFETY: Must be called from the main context the channel was attached to.
-    </span><span class="kw">unsafe fn </span>try_recv(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;T, mpsc::TryRecvError&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+    </span><span class="kw">unsafe fn </span>try_recv(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;T, <a href="https://doc.rust-lang.org/nightly/std/sync/mpsc/enum.TryRecvError.html">mpsc::TryRecvError</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a class="self" href="#177">self</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
 
         <span class="comment">// Pop item if we have any
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(item) = inner.queue.pop_front() {
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(item) = <a href="#178">inner</a>.queue.pop_front() {
             <span class="comment">// Wake up a sender that is currently waiting, if any
-            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(ChannelBound { <span class="kw-2">ref </span>cond, .. }) = (<span class="self">self</span>.<span class="number">0</span>).<span class="number">1 </span>{
-                cond.notify_one();
+            </span><span class="kw">if let </span><span class="prelude-val">Some</span>(<a href="#55-58">ChannelBound</a> { <span class="kw-2">ref </span>cond, .. }) = (<a class="self" href="#177">self</a>.<span class="number">0</span>).<span class="number">1 </span>{
+                <a href="#183">cond</a>.notify_one();
             }
-            <span class="kw">return </span><span class="prelude-val">Ok</span>(item);
+            <span class="kw">return </span><span class="prelude-val">Ok</span>(<a href="#181">item</a>);
         }
 
         <span class="comment">// If there are no senders left we are disconnected or otherwise empty. That&#39;s the case if
@@ -1163,38 +1163,38 @@
 }
 
 <span class="attr">#[repr(C)]
-</span><span class="kw">struct </span>ChannelSource&lt;T, F: FnMut(T) -&gt; Continue + <span class="lifetime">&#39;static</span>&gt; {
+</span><span class="kw">struct </span>ChannelSource&lt;T, F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt; {
     source: ffi::GSource,
     source_funcs: Box&lt;ffi::GSourceFuncs&gt;,
     channel: Channel&lt;T&gt;,
     callback: ThreadGuard&lt;F&gt;,
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispatch&lt;T, F: FnMut(T) -&gt; Continue + <span class="lifetime">&#39;static</span>&gt;(
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispatch&lt;T, F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(
     source: <span class="kw-2">*mut </span>ffi::GSource,
     callback: ffi::GSourceFunc,
     _user_data: ffi::gpointer,
 ) -&gt; ffi::gboolean {
-    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(source <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
-    <span class="macro">debug_assert!</span>(callback.is_none());
+    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(<a href="#208">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
+    <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(callback.is_none());
 
     <span class="comment">// Set ready-time to -1 so that we won&#39;t get called again before a new item is added
     // to the channel queue.
-    </span>ffi::g_source_set_ready_time(<span class="kw-2">&amp;mut </span>source.source, -<span class="number">1</span>);
+    </span>ffi::g_source_set_ready_time(<span class="kw-2">&amp;mut </span><a href="#212">source</a>.source, -<span class="number">1</span>);
 
     <span class="comment">// Get a reference to the callback. This will panic if we&#39;re called from a different
     // thread than where the source was attached to the main context.
-    </span><span class="kw">let </span>callback = source.callback.get_mut();
+    </span><span class="kw">let </span>callback = <a href="#212">source</a>.callback.<a href="thread_guard.rs.html#70-77">get_mut</a>();
 
     <span class="comment">// Now iterate over all items that we currently have in the channel until it is
     // empty again. If all senders are disconnected at some point we remove the GSource
     // from the main context it was attached to as it will never ever be called again.
     </span><span class="kw">loop </span>{
-        <span class="kw">match </span>source.channel.try_recv() {
+        <span class="kw">match </span><a href="#212">source</a>.channel.<a href="#177-196">try_recv</a>() {
             <span class="prelude-val">Err</span>(mpsc::TryRecvError::Empty) =&gt; <span class="kw">break</span>,
             <span class="prelude-val">Err</span>(mpsc::TryRecvError::Disconnected) =&gt; <span class="kw">return </span>ffi::G_SOURCE_REMOVE,
             <span class="prelude-val">Ok</span>(item) =&gt; {
-                <span class="kw">if </span>callback(item) == Continue(<span class="bool-val">false</span>) {
+                <span class="kw">if </span>callback(item).is_break() {
                     <span class="kw">return </span>ffi::G_SOURCE_REMOVE;
                 }
             }
@@ -1205,20 +1205,20 @@
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;v2_64&quot;</span>)]
-</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispose&lt;T, F: FnMut(T) -&gt; Continue + <span class="lifetime">&#39;static</span>&gt;(source: <span class="kw-2">*mut </span>ffi::GSource) {
-    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(source <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
+</span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>dispose&lt;T, F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(source: <span class="kw-2">*mut </span>ffi::GSource) {
+    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(<a href="#242">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
 
     <span class="comment">// Set the source inside the channel to None so that all senders know that there
     // is no receiver left and wake up the condition variable if any
-    </span><span class="kw">let </span><span class="kw-2">mut </span>inner = (source.channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-    inner.source = ChannelSourceState::Destroyed;
-    <span class="kw">if let </span><span class="prelude-val">Some</span>(ChannelBound { <span class="kw-2">ref </span>cond, .. }) = (source.channel.<span class="number">0</span>).<span class="number">1 </span>{
-        cond.notify_all();
+    </span><span class="kw">let </span><span class="kw-2">mut </span>inner = (<a href="#243">source</a>.channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+    <a href="#247">inner</a>.source = <a href="#16">ChannelSourceState::Destroyed</a>;
+    <span class="kw">if let </span><span class="prelude-val">Some</span>(<a href="#55-58">ChannelBound</a> { <span class="kw-2">ref </span>cond, .. }) = (<a href="#243">source</a>.channel.<span class="number">0</span>).<span class="number">1 </span>{
+        <a href="#249">cond</a>.notify_all();
     }
 }
 
-<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>finalize&lt;T, F: FnMut(T) -&gt; Continue + <span class="lifetime">&#39;static</span>&gt;(source: <span class="kw-2">*mut </span>ffi::GSource) {
-    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(source <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
+<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>finalize&lt;T, F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(source: <span class="kw-2">*mut </span>ffi::GSource) {
+    <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>(<a href="#254">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;);
 
     <span class="comment">// Drop all memory we own by taking it out of the Options
 
@@ -1239,8 +1239,8 @@
             cond.notify_all();
         }
     }
-    ptr::drop_in_place(<span class="kw-2">&amp;mut </span>source.channel);
-    ptr::drop_in_place(<span class="kw-2">&amp;mut </span>source.source_funcs);
+    <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span><a href="#255">source</a>.channel);
+    <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span><a href="#255">source</a>.source_funcs);
 
     <span class="comment">// Take the callback out of the source. This will panic if the value is dropped
     // from a different thread than where the callback was created so try to drop it
@@ -1250,15 +1250,15 @@
     // `SourceId` and sends it to another thread or otherwise retrieves it from the main context,
     // but better safe than sorry.
     </span><span class="kw">if </span>source.callback.is_owner() {
-        ptr::drop_in_place(<span class="kw-2">&amp;mut </span>source.callback);
+        <a href="https://doc.rust-lang.org/nightly/core/ptr/fn.drop_in_place.html">ptr::drop_in_place</a>(<span class="kw-2">&amp;mut </span><a href="#255">source</a>.callback);
     } <span class="kw">else </span>{
-        <span class="kw">let </span>callback = ptr::read(<span class="kw-2">&amp;</span>source.callback);
+        <span class="kw">let </span>callback = ptr::read(<span class="kw-2">&amp;</span><a href="#255">source</a>.callback);
         <span class="kw">let </span>context =
-            ffi::g_source_get_context(source <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt; <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
+            ffi::g_source_get_context(<a href="#255">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt; <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
         <span class="kw">if </span>!context.is_null() {
-            <span class="kw">let </span>context = MainContext::from_glib_none(context);
-            context.invoke(<span class="kw">move </span>|| {
-                drop(callback);
+            <span class="kw">let </span>context = MainContext::from_glib_none(<a href="#290">context</a>);
+            <a href="#293">context</a>.<a href="main_context.rs.html#98-103">invoke</a>(<span class="kw">move </span>|| {
+                <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#289">callback</a>);
             });
         }
     }
@@ -1272,46 +1272,46 @@
 /// See [`MainContext::channel()`] for how to create such a `Sender`.
 ///
 /// [`MainContext::channel()`]: struct.MainContext.html#method.channel
-</span><span class="kw">pub struct </span>Sender&lt;T&gt;(Channel&lt;T&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.Sender.html">Sender</a>&lt;T&gt;(Channel&lt;T&gt;);
 
 <span class="comment">// It&#39;s safe to send the Sender to other threads for attaching it as
 // long as the items to be sent can also be sent between threads.
-</span><span class="kw">unsafe impl</span>&lt;T: Send&gt; Send <span class="kw">for </span>Sender&lt;T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>Sender&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>Sender&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Sender&quot;</span>).finish()
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>Sender&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#316">f</a>.debug_struct(<span class="string">&quot;Sender&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>Sender&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>Sender&lt;T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Sender&lt;T&gt; {
-        <span class="self">Self</span>::new(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)
+        <span class="self">Self</span>::new(<span class="kw-2">&amp;</span><a class="self" href="#322">self</a>.<span class="number">0</span>)
     }
 }
 
 <span class="kw">impl</span>&lt;T&gt; Sender&lt;T&gt; {
     <span class="kw">fn </span>new(channel: <span class="kw-2">&amp;</span>Channel&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = (channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-        inner.num_senders += <span class="number">1</span>;
-        <span class="self">Self</span>(channel.clone())
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a href="#328">channel</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <a href="#329">inner</a>.num_senders += <span class="number">1</span>;
+        <span class="self">Self</span>(<a href="#328">channel</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sends a value to the channel.
     </span><span class="kw">pub fn </span>send(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), mpsc::SendError&lt;T&gt;&gt; {
-        <span class="self">self</span>.<span class="number">0</span>.send(t)
+        <a class="self" href="#336">self</a>.<span class="number">0</span>.<a href="#83-130">send</a>(<a href="#336">t</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; Drop <span class="kw">for </span>Sender&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>Sender&lt;T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// Decrease the number of senders and wake up the channel if this
         // was the last sender that was dropped.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>inner = ((<span class="self">self</span>.<span class="number">0</span>).<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-        inner.num_senders -= <span class="number">1</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>inner = ((<a class="self" href="#342">self</a>.<span class="number">0</span>).<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <a href="#345">inner</a>.num_senders -= <span class="number">1</span>;
         <span class="kw">if </span>inner.num_senders == <span class="number">0 </span>{
-            inner.set_ready_time(<span class="number">0</span>);
+            <a href="#345">inner</a>.<a href="#46-52">set_ready_time</a>(<span class="number">0</span>);
         }
     }
 }
@@ -1324,52 +1324,52 @@
 /// See [`MainContext::sync_channel()`] for how to create such a `SyncSender`.
 ///
 /// [`MainContext::sync_channel()`]: struct.MainContext.html#method.sync_channel
-</span><span class="kw">pub struct </span>SyncSender&lt;T&gt;(Channel&lt;T&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.SyncSender.html">SyncSender</a>&lt;T&gt;(Channel&lt;T&gt;);
 
 <span class="comment">// It&#39;s safe to send the SyncSender to other threads for attaching it as
 // long as the items to be sent can also be sent between threads.
-</span><span class="kw">unsafe impl</span>&lt;T: Send&gt; Send <span class="kw">for </span>SyncSender&lt;T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>SyncSender&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>SyncSender&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;SyncSender&quot;</span>).finish()
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>SyncSender&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#368">f</a>.debug_struct(<span class="string">&quot;SyncSender&quot;</span>).finish()
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; Clone <span class="kw">for </span>SyncSender&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span>SyncSender&lt;T&gt; {
     <span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; SyncSender&lt;T&gt; {
-        <span class="self">Self</span>::new(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>)
+        <span class="self">Self</span>::new(<span class="kw-2">&amp;</span><a class="self" href="#374">self</a>.<span class="number">0</span>)
     }
 }
 
 <span class="kw">impl</span>&lt;T&gt; SyncSender&lt;T&gt; {
     <span class="kw">fn </span>new(channel: <span class="kw-2">&amp;</span>Channel&lt;T&gt;) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span><span class="kw-2">mut </span>inner = (channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-        inner.num_senders += <span class="number">1</span>;
-        <span class="self">Self</span>(channel.clone())
+        <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a href="#380">channel</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <a href="#381">inner</a>.num_senders += <span class="number">1</span>;
+        <span class="self">Self</span>(<a href="#380">channel</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>())
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sends a value to the channel and blocks if the channel is full.
     </span><span class="kw">pub fn </span>send(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), mpsc::SendError&lt;T&gt;&gt; {
-        <span class="self">self</span>.<span class="number">0</span>.send(t)
+        <a class="self" href="#388">self</a>.<span class="number">0</span>.<a href="#83-130">send</a>(<a href="#388">t</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Sends a value to the channel.
     </span><span class="kw">pub fn </span>try_send(<span class="kw-2">&amp;</span><span class="self">self</span>, t: T) -&gt; <span class="prelude-ty">Result</span>&lt;(), mpsc::TrySendError&lt;T&gt;&gt; {
-        <span class="self">self</span>.<span class="number">0</span>.try_send(t)
+        <a class="self" href="#394">self</a>.<span class="number">0</span>.<a href="#132-174">try_send</a>(<a href="#394">t</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T&gt; Drop <span class="kw">for </span>SyncSender&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>SyncSender&lt;T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// Decrease the number of senders and wake up the channel if this
         // was the last sender that was dropped.
-        </span><span class="kw">let </span><span class="kw-2">mut </span>inner = ((<span class="self">self</span>.<span class="number">0</span>).<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-        inner.num_senders -= <span class="number">1</span>;
+        </span><span class="kw">let </span><span class="kw-2">mut </span>inner = ((<a class="self" href="#400">self</a>.<span class="number">0</span>).<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+        <a href="#403">inner</a>.num_senders -= <span class="number">1</span>;
         <span class="kw">if </span>inner.num_senders == <span class="number">0 </span>{
-            inner.set_ready_time(<span class="number">0</span>);
+            <a href="#403">inner</a>.<a href="#46-52">set_ready_time</a>(<span class="number">0</span>);
         }
     }
 }
@@ -1383,26 +1383,26 @@
 ///
 /// [`MainContext::channel()`]: struct.MainContext.html#method.channel
 /// [`MainContext::sync_channel()`]: struct.MainContext.html#method.sync_channel
-</span><span class="kw">pub struct </span>Receiver&lt;T&gt;(<span class="prelude-ty">Option</span>&lt;Channel&lt;T&gt;&gt;, Priority);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.Receiver.html">Receiver</a>&lt;T&gt;(<span class="prelude-ty">Option</span>&lt;Channel&lt;T&gt;&gt;, <a href="source.rs.html#812">Priority</a>);
 
-<span class="kw">impl</span>&lt;T&gt; fmt::Debug <span class="kw">for </span>Receiver&lt;T&gt; {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Receiver&quot;</span>).finish()
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span>Receiver&lt;T&gt; {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#423">f</a>.debug_struct(<span class="string">&quot;Receiver&quot;</span>).finish()
     }
 }
 
 <span class="comment">// It&#39;s safe to send the Receiver to other threads for attaching it as
 // long as the items to be sent can also be sent between threads.
-</span><span class="kw">unsafe impl</span>&lt;T: Send&gt; Send <span class="kw">for </span>Receiver&lt;T&gt; {}
+</span><span class="kw">unsafe impl</span>&lt;T: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span>Receiver&lt;T&gt; {}
 
-<span class="kw">impl</span>&lt;T&gt; Drop <span class="kw">for </span>Receiver&lt;T&gt; {
+<span class="kw">impl</span>&lt;T&gt; <a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span>Receiver&lt;T&gt; {
     <span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="comment">// If the receiver was never attached to a main context we need to let all the senders know
-        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(channel) = <span class="self">self</span>.<span class="number">0</span>.take() {
-            <span class="kw">let </span><span class="kw-2">mut </span>inner = (channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
-            inner.source = ChannelSourceState::Destroyed;
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(ChannelBound { <span class="kw-2">ref </span>cond, .. }) = (channel.<span class="number">0</span>).<span class="number">1 </span>{
-                cond.notify_all();
+        </span><span class="kw">if let </span><span class="prelude-val">Some</span>(channel) = <a class="self" href="#433">self</a>.<span class="number">0</span>.take() {
+            <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a href="#435">channel</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+            <a href="#436">inner</a>.source = <a href="#16">ChannelSourceState::Destroyed</a>;
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(<a href="#55-58">ChannelBound</a> { <span class="kw-2">ref </span>cond, .. }) = (<a href="#435">channel</a>.<span class="number">0</span>).<span class="number">1 </span>{
+                <a href="#438">cond</a>.notify_all();
             }
         }
     }
@@ -1419,13 +1419,13 @@
     ///
     /// This function panics if called from a thread that is not the owner of the provided
     /// `context`, or, if `None` is provided, of the thread default main context.
-    </span><span class="kw">pub fn </span>attach&lt;F: FnMut(T) -&gt; Continue + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>attach&lt;F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
-        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>MainContext&gt;,
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>&gt;,
         func: F,
-    ) -&gt; SourceId {
+    ) -&gt; <a href="source.rs.html#21">SourceId</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>channel = <span class="self">self</span>.<span class="number">0</span>.take().expect(<span class="string">&quot;Receiver without channel&quot;</span>);
+            <span class="kw">let </span>channel = <a class="self" href="#457">self</a>.<span class="number">0</span>.take().expect(<span class="string">&quot;Receiver without channel&quot;</span>);
 
             <span class="kw">let </span>source_funcs = Box::new(ffi::GSourceFuncs {
                 check: <span class="prelude-val">None</span>,
@@ -1437,60 +1437,60 @@
             });
 
             <span class="kw">let </span>source = ffi::g_source_new(
-                mut_override(<span class="kw-2">&amp;*</span>source_funcs),
-                mem::size_of::&lt;ChannelSource&lt;T, F&gt;&gt;() <span class="kw">as </span>u32,
+                <a href="translate.rs.html#198-200">mut_override</a>(<span class="kw-2">&amp;*</span><a href="#464">source_funcs</a>),
+                mem::size_of::&lt;ChannelSource&lt;T, F&gt;&gt;() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
             ) <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt;;
 
             <span class="attr">#[cfg(feature = <span class="string">&quot;v2_64&quot;</span>)]
             </span>{
                 ffi::g_source_set_dispose_function(
-                    source <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource,
+                    <a href="#473">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource,
                     <span class="prelude-val">Some</span>(dispose::&lt;T, F&gt;),
                 );
             }
 
             <span class="comment">// Set up the GSource
             </span>{
-                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>source;
-                <span class="kw">let </span><span class="kw-2">mut </span>inner = (channel.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
+                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span><a href="#473">source</a>;
+                <span class="kw">let </span><span class="kw-2">mut </span>inner = (<a href="#462">channel</a>.<span class="number">0</span>).<span class="number">0</span>.lock().unwrap();
 
-                ffi::g_source_set_priority(mut_override(<span class="kw-2">&amp;</span>source.source), <span class="self">self</span>.<span class="number">1</span>.into_glib());
+                ffi::g_source_set_priority(<a href="translate.rs.html#198-200">mut_override</a>(<span class="kw-2">&amp;</span><a href="#488">source</a>.source), <a class="self" href="#457">self</a>.<span class="number">1</span>.<a href="translate.rs.html#330">into_glib</a>());
 
                 <span class="comment">// We&#39;re immediately ready if the queue is not empty or if no sender is left at this point
                 </span>ffi::g_source_set_ready_time(
-                    mut_override(<span class="kw-2">&amp;</span>source.source),
+                    <a href="translate.rs.html#198-200">mut_override</a>(<span class="kw-2">&amp;</span><a href="#488">source</a>.source),
                     <span class="kw">if </span>!inner.queue.is_empty() || inner.num_senders == <span class="number">0 </span>{
                         <span class="number">0
                     </span>} <span class="kw">else </span>{
                         -<span class="number">1
                     </span>},
                 );
-                inner.source = ChannelSourceState::Attached(<span class="kw-2">&amp;mut </span>source.source);
+                <a href="#489">inner</a>.source = <a href="#15">ChannelSourceState::Attached</a>(<span class="kw-2">&amp;mut </span><a href="#488">source</a>.source);
             }
 
             <span class="comment">// Store all our data inside our part of the GSource
             </span>{
-                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span>source;
-                ptr::write(<span class="macro">ptr::addr_of_mut!</span>(source.channel), channel);
-                ptr::write(<span class="macro">ptr::addr_of_mut!</span>(source.callback), ThreadGuard::new(func));
-                ptr::write(<span class="macro">ptr::addr_of_mut!</span>(source.source_funcs), source_funcs);
+                <span class="kw">let </span>source = <span class="kw-2">&amp;mut *</span><a href="#473">source</a>;
+                ptr::write(<a class="macro" href="https://doc.rust-lang.org/nightly/core/ptr/macro.addr_of_mut.html">ptr::addr_of_mut!</a>(source.channel), <a href="#462">channel</a>);
+                ptr::write(<a class="macro" href="https://doc.rust-lang.org/nightly/core/ptr/macro.addr_of_mut.html">ptr::addr_of_mut!</a>(source.callback), ThreadGuard::new(<a href="#459">func</a>));
+                ptr::write(<a class="macro" href="https://doc.rust-lang.org/nightly/core/ptr/macro.addr_of_mut.html">ptr::addr_of_mut!</a>(source.source_funcs), <a href="#464">source_funcs</a>);
             }
 
-            <span class="kw">let </span>source = Source::from_glib_full(mut_override(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span>source).source));
-            <span class="kw">let </span>context = <span class="kw">match </span>context {
-                <span class="prelude-val">Some</span>(context) =&gt; context.clone(),
+            <span class="kw">let </span>source = Source::from_glib_full(<a href="translate.rs.html#198-200">mut_override</a>(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><a href="#473">source</a>).source));
+            <span class="kw">let </span>context = <span class="kw">match </span><a href="#458">context</a> {
+                <span class="prelude-val">Some</span>(context) =&gt; <a href="#515">context</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>(),
                 <span class="prelude-val">None </span>=&gt; MainContext::ref_thread_default(),
             };
 
-            <span class="kw">let </span>_acquire = context
-                .acquire()
+            <span class="kw">let </span>_acquire = <a href="#514">context</a>
+                .<a href="main_context.rs.html#239-248">acquire</a>()
                 .expect(<span class="string">&quot;main context already acquired by another thread&quot;</span>);
-            source.attach(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>context))
+            <a href="#513">source</a>.<a href="source.rs.html#1069-1076">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#514">context</a>))
         }
     }
 }
 
-<span class="kw">impl </span>MainContext {
+<span class="kw">impl </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a channel for a main context.
     ///
@@ -1505,12 +1505,12 @@
     /// will fail.
     ///
     /// The returned `Sender` behaves the same as `std::sync::mpsc::Sender`.
-    </span><span class="kw">pub fn </span>channel&lt;T&gt;(priority: Priority) -&gt; (Sender&lt;T&gt;, Receiver&lt;T&gt;) {
+    </span><span class="kw">pub fn </span>channel&lt;T&gt;(priority: <a href="source.rs.html#812">Priority</a>) -&gt; (Sender&lt;T&gt;, Receiver&lt;T&gt;) {
         <span class="kw">let </span>channel = Channel::new(<span class="prelude-val">None</span>);
-        <span class="kw">let </span>receiver = Receiver(<span class="prelude-val">Some</span>(channel.clone()), priority);
-        <span class="kw">let </span>sender = Sender::new(<span class="kw-2">&amp;</span>channel);
+        <span class="kw">let </span>receiver = <a href="#420">Receiver</a>(<span class="prelude-val">Some</span>(<a href="#543">channel</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>()), <a href="#542">priority</a>);
+        <span class="kw">let </span>sender = Sender::new(<span class="kw-2">&amp;</span><a href="#543">channel</a>);
 
-        (sender, receiver)
+        (<a href="#545">sender</a>, <a href="#544">receiver</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1528,12 +1528,12 @@
     /// will fail.
     ///
     /// The returned `SyncSender` behaves the same as `std::sync::mpsc::SyncSender`.
-    </span><span class="kw">pub fn </span>sync_channel&lt;T&gt;(priority: Priority, bound: usize) -&gt; (SyncSender&lt;T&gt;, Receiver&lt;T&gt;) {
-        <span class="kw">let </span>channel = Channel::new(<span class="prelude-val">Some</span>(bound));
-        <span class="kw">let </span>receiver = Receiver(<span class="prelude-val">Some</span>(channel.clone()), priority);
-        <span class="kw">let </span>sender = SyncSender::new(<span class="kw-2">&amp;</span>channel);
+    </span><span class="kw">pub fn </span>sync_channel&lt;T&gt;(priority: <a href="source.rs.html#812">Priority</a>, bound: <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>) -&gt; (SyncSender&lt;T&gt;, Receiver&lt;T&gt;) {
+        <span class="kw">let </span>channel = Channel::new(<span class="prelude-val">Some</span>(<a href="#565">bound</a>));
+        <span class="kw">let </span>receiver = <a href="#420">Receiver</a>(<span class="prelude-val">Some</span>(<a href="#566">channel</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>()), <a href="#565">priority</a>);
+        <span class="kw">let </span>sender = SyncSender::new(<span class="kw-2">&amp;</span><a href="#566">channel</a>);
 
-        (sender, receiver)
+        (<a href="#568">sender</a>, <a href="#567">receiver</a>)
     }
 }
 
@@ -1565,9 +1565,9 @@
             <span class="kw-2">*</span>sum_clone.borrow_mut() += item;
             <span class="kw">if </span><span class="kw-2">*</span>sum_clone.borrow() == <span class="number">6 </span>{
                 l_clone.quit();
-                Continue(<span class="bool-val">false</span>)
+                ControlFlow::Break
             } <span class="kw">else </span>{
-                Continue(<span class="bool-val">true</span>)
+                ControlFlow::Continue
             }
         });
 
@@ -1599,7 +1599,7 @@
         <span class="kw">let </span>helper = Helper(l.clone());
         receiver.attach(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>c), <span class="kw">move </span>|<span class="kw">_</span>| {
             <span class="kw">let </span>_helper = <span class="kw-2">&amp;</span>helper;
-            Continue(<span class="bool-val">true</span>)
+            ControlFlow::Continue
         });
 
         drop(sender);
@@ -1623,7 +1623,7 @@
 
         <span class="kw">let </span>(sender, receiver) = MainContext::channel::&lt;i32&gt;(Priority::default());
 
-        <span class="kw">let </span>source_id = receiver.attach(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>c), <span class="kw">move </span>|<span class="kw">_</span>| Continue(<span class="bool-val">true</span>));
+        <span class="kw">let </span>source_id = receiver.attach(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>c), <span class="kw">move </span>|<span class="kw">_</span>| ControlFlow::Continue);
 
         <span class="kw">let </span>source = c.find_source_by_id(<span class="kw-2">&amp;</span>source_id).unwrap();
         source.destroy();
@@ -1650,7 +1650,7 @@
         <span class="kw">let </span>helper = Helper(dropped.clone());
         <span class="kw">let </span>source_id = receiver.attach(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>c), <span class="kw">move </span>|<span class="kw">_</span>| {
             <span class="kw">let </span>_helper = <span class="kw-2">&amp;</span>helper;
-            Continue(<span class="bool-val">true</span>)
+            ControlFlow::Continue
         });
 
         <span class="kw">let </span>source = c.find_source_by_id(<span class="kw-2">&amp;</span>source_id).unwrap();
@@ -1679,9 +1679,9 @@
             <span class="kw-2">*</span>sum_clone.borrow_mut() += item;
             <span class="kw">if </span><span class="kw-2">*</span>sum_clone.borrow() == <span class="number">6 </span>{
                 l_clone.quit();
-                Continue(<span class="bool-val">false</span>)
+                ControlFlow::Break
             } <span class="kw">else </span>{
-                Continue(<span class="bool-val">true</span>)
+                ControlFlow::Continue
             }
         });
 
@@ -1728,9 +1728,9 @@
             <span class="kw-2">*</span>sum_clone.borrow_mut() += item;
             <span class="kw">if </span><span class="kw-2">*</span>sum_clone.borrow() == <span class="number">6 </span>{
                 l_clone.quit();
-                Continue(<span class="bool-val">false</span>)
+                ControlFlow::Break
             } <span class="kw">else </span>{
-                Continue(<span class="bool-val">true</span>)
+                ControlFlow::Continue
             }
         });
 
@@ -1839,7 +1839,7 @@
                     <span class="prelude-val">Err</span>(mpsc::RecvTimeoutError::Disconnected)
                 );
                 l_clone.quit();
-                Continue(<span class="bool-val">false</span>)
+                ControlFlow::Break
             } <span class="kw">else </span>{
                 <span class="comment">// But as we didn&#39;t consume the next one yet, there must be no
                 // other item available yet
@@ -1847,7 +1847,7 @@
                     wait_receiver.recv_timeout(time::Duration::from_millis(<span class="number">50</span>)),
                     <span class="prelude-val">Err</span>(mpsc::RecvTimeoutError::Timeout)
                 );
-                Continue(<span class="bool-val">true</span>)
+                ControlFlow::Continue
             }
         });
         l.run();

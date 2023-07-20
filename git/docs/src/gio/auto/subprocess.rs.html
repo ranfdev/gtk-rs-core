@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/subprocess.rs`."><title>subprocess.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/subprocess.rs`."><title>subprocess.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -817,11 +817,11 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{AsyncResult, Cancellable, Initable, InputStream, OutputStream, SubprocessFlags};
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, pin::Pin, ptr};
+</span><span class="kw">use crate</span>::{<a href="async_result.rs.html#8-107">AsyncResult</a>, <a href="cancellable.rs.html#8-84">Cancellable</a>, <a href="initable.rs.html#9-44">Initable</a>, <a href="input_stream.rs.html#9-33">InputStream</a>, <a href="output_stream.rs.html#9-33">OutputStream</a>, <a href="flags.rs.html#2940-3002">SubprocessFlags</a>};
+<span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// [`Subprocess`][crate::Subprocess] allows the creation of and interaction with child
     /// processes.
     ///
@@ -894,14 +894,14 @@
     ///
     /// [`trait@glib::ObjectExt`], [`InitableExt`][trait@crate::prelude::InitableExt]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;GSubprocess&quot;</span>)]
-    </span><span class="kw">pub struct </span>Subprocess(Object&lt;ffi::GSubprocess&gt;) @implements Initable;
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.Subprocess.html">Subprocess</a>(Object&lt;ffi::GSubprocess&gt;) @implements <a href="initable.rs.html#9-44">Initable</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_subprocess_get_type(),
     }
 }
 
-<span class="kw">impl </span>Subprocess {
+<span class="kw">impl </span><a href="#9-87">Subprocess</a> {
     <span class="comment">//#[doc(alias = &quot;g_subprocess_new&quot;)]
     //pub fn new(flags: SubprocessFlags, error: Option&lt;&amp;mut glib::Error&gt;, argv0: &amp;str, : /*Unknown conversion*//*Unimplemented*/Basic: VarArgs) -&gt; Subprocess {
     //    unsafe { TODO: call ffi:g_subprocess_new() }
@@ -921,16 +921,16 @@
     ///  will be set)
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_newv&quot;</span>)]
     </span><span class="kw">pub fn </span>newv(
-        argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span>std::ffi::OsStr],
-        flags: SubprocessFlags,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Subprocess, glib::Error&gt; {
+        argv: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/ffi/os_str/struct.OsStr.html">std::ffi::OsStr</a>],
+        flags: <a href="flags.rs.html#2940-3002">SubprocessFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#9-87">Subprocess</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_subprocess_newv(argv.to_glib_none().<span class="number">0</span>, flags.into_glib(), <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>ret = ffi::g_subprocess_newv(<a href="#109">argv</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#110">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(), <span class="kw-2">&amp;mut </span><a href="#113">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(ret))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#114">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#113">error</a>))
             }
         }
     }
@@ -993,26 +993,26 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_communicate&quot;</span>)]
     </span><span class="kw">pub fn </span>communicate(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt; {
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_subprocess_communicate(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                stdin_buf.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>stdout_buf,
-                <span class="kw-2">&amp;mut </span>stderr_buf,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#180">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#181">stdin_buf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#182">cancellable</a>.map(|p| <a href="#191">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#185">stdout_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#186">stderr_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#187">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+                <span class="prelude-val">Ok</span>((from_glib_full(<a href="#185">stdout_buf</a>), from_glib_full(<a href="#186">stderr_buf</a>)))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#187">error</a>))
             }
         }
     }
@@ -1027,27 +1027,27 @@
     /// Callback
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_communicate_async&quot;</span>)]
     </span><span class="kw">pub fn </span>communicate_async&lt;
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#222">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#223">is_main_context_owner</a>)
+            .then(|| <a href="#222">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#220">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>communicate_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
@@ -1057,53 +1057,53 @@
             <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
             <span class="kw">let _ </span>= ffi::g_subprocess_communicate_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                <span class="kw-2">&amp;mut </span>stdout_buf,
-                <span class="kw-2">&amp;mut </span>stderr_buf,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#237">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#238">res</a>,
+                <span class="kw-2">&amp;mut </span><a href="#242">stdout_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#243">stderr_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#241">error</a>,
             );
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+                <span class="prelude-val">Ok</span>((from_glib_full(<a href="#242">stdout_buf</a>), from_glib_full(<a href="#243">stderr_buf</a>)))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#241">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#239">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#256">callback</a>.into_inner();
+            <a href="#258">callback</a>(<a href="#251">result</a>);
         }
         <span class="kw">let </span>callback = communicate_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_subprocess_communicate_async(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                stdin_buf.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#217">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#218">stdin_buf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#219">cancellable</a>.map(|p| <a href="#266">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#261">callback</a>),
+                Box_::into_raw(<a href="#232">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">pub fn </span>communicate_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>glib::Bytes&gt;,
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;,
     ) -&gt; Pin&lt;
         Box_&lt;
             <span class="kw">dyn </span>std::future::Future&lt;
-                    Output = <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;, <span class="prelude-ty">Option</span>&lt;glib::Bytes&gt;), glib::Error&gt;,
+                    Output = <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;,
                 &gt; + <span class="lifetime">&#39;static</span>,
         &gt;,
     &gt; {
-        <span class="kw">let </span>stdin_buf = stdin_buf.map(ToOwned::to_owned);
+        <span class="kw">let </span>stdin_buf = <a href="#275">stdin_buf</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#274">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.communicate_async(
-                    stdin_buf.as_ref().map(::std::borrow::Borrow::borrow),
-                    <span class="prelude-val">Some</span>(cancellable),
+                <a href="#286">obj</a>.<a href="#214-271">communicate_async</a>(
+                    <a href="#283">stdin_buf</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <span class="prelude-val">Some</span>(<a href="#286">cancellable</a>),
                     <span class="kw">move </span>|res| {
-                        send.resolve(res);
+                        <a href="#286">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#290">res</a>);
                     },
                 );
             },
@@ -1131,26 +1131,26 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_communicate_utf8&quot;</span>)]
     </span><span class="kw">pub fn </span>communicate_utf8(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>str&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;glib::GString&gt;, <span class="prelude-ty">Option</span>&lt;glib::GString&gt;), glib::Error&gt; {
+        stdin_buf: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt;, <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt;), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>stdout_buf = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>stderr_buf = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_subprocess_communicate_utf8(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                stdin_buf.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>stdout_buf,
-                <span class="kw-2">&amp;mut </span>stderr_buf,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#318">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#319">stdin_buf</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#320">cancellable</a>.map(|p| <a href="#329">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#323">stdout_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#324">stderr_buf</a>,
+                <span class="kw-2">&amp;mut </span><a href="#325">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((from_glib_full(stdout_buf), from_glib_full(stderr_buf)))
+                <span class="prelude-val">Ok</span>((from_glib_full(<a href="#323">stdout_buf</a>), from_glib_full(<a href="#324">stderr_buf</a>)))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#325">error</a>))
             }
         }
     }
@@ -1165,7 +1165,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_force_exit&quot;</span>)]
     </span><span class="kw">pub fn </span>force_exit(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::g_subprocess_force_exit(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
+            ffi::g_subprocess_force_exit(<a class="self" href="#351">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -1183,8 +1183,8 @@
     /// the exit status
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_exit_status&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_exit_status&quot;</span>)]
-    </span><span class="kw">pub fn </span>exit_status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_exit_status(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>exit_status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_exit_status(<a class="self" href="#371">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// On UNIX, returns the process ID as a decimal string.
@@ -1197,8 +1197,8 @@
     ///  has terminated
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_identifier&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_identifier&quot;</span>)]
-    </span><span class="kw">pub fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_identifier(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_identifier(<a class="self" href="#385">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Check if the given subprocess exited normally (ie: by way of `exit()`
@@ -1214,8 +1214,8 @@
     /// [`true`] if the case of a normal exit
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_if_exited&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_if_exited&quot;</span>)]
-    </span><span class="kw">pub fn </span>has_exited(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_exited(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>has_exited(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_exited(<a class="self" href="#402">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Check if the given subprocess terminated in response to a signal.
@@ -1230,8 +1230,8 @@
     /// [`true`] if the case of termination due to a signal
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_if_signaled&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_if_signaled&quot;</span>)]
-    </span><span class="kw">pub fn </span>has_signaled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_signaled(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>has_signaled(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_if_signaled(<a class="self" href="#418">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the raw status code of the process, as from `waitpid()`.
@@ -1251,8 +1251,8 @@
     /// the (meaningless) `waitpid()` exit status from the kernel
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_status&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_status&quot;</span>)]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_status(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_status(<a class="self" href="#439">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stderr output of
@@ -1266,8 +1266,8 @@
     /// the stderr pipe
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_stderr_pipe&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_stderr_pipe&quot;</span>)]
-    </span><span class="kw">pub fn </span>stderr_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;InputStream&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stderr_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>stderr_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="input_stream.rs.html#9-33">InputStream</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stderr_pipe(<a class="self" href="#454">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the [`OutputStream`][crate::OutputStream] that you can write to in order to give data
@@ -1281,8 +1281,8 @@
     /// the stdout pipe
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_stdin_pipe&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_stdin_pipe&quot;</span>)]
-    </span><span class="kw">pub fn </span>stdin_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;OutputStream&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdin_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>stdin_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="output_stream.rs.html#9-33">OutputStream</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdin_pipe(<a class="self" href="#469">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the [`InputStream`][crate::InputStream] from which to read the stdout output of
@@ -1296,8 +1296,8 @@
     /// the stdout pipe
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_stdout_pipe&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_stdout_pipe&quot;</span>)]
-    </span><span class="kw">pub fn </span>stdout_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;InputStream&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdout_pipe(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>stdout_pipe(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="input_stream.rs.html#9-33">InputStream</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_subprocess_get_stdout_pipe(<a class="self" href="#484">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Checks if the process was &quot;successful&quot;. A process is considered
@@ -1312,8 +1312,8 @@
     /// [`true`] if the process exited cleanly with a exit status of 0
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_successful&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_successful&quot;</span>)]
-    </span><span class="kw">pub fn </span>is_successful(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_successful(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>is_successful(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_subprocess_get_successful(<a class="self" href="#500">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Get the signal number that caused the subprocess to terminate, given
@@ -1329,8 +1329,8 @@
     /// the signal causing termination
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_get_term_sig&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_term_sig&quot;</span>)]
-    </span><span class="kw">pub fn </span>term_sig(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_term_sig(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>term_sig(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::g_subprocess_get_term_sig(<a class="self" href="#517">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Sends the UNIX signal `signal_num` to the subprocess, if it is still
@@ -1345,9 +1345,9 @@
     </span><span class="attr">#[cfg(not(windows))]
     #[cfg_attr(docsrs, doc(cfg(not(windows))))]
     #[doc(alias = <span class="string">&quot;g_subprocess_send_signal&quot;</span>)]
-    </span><span class="kw">pub fn </span>send_signal(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_num: i32) {
+    </span><span class="kw">pub fn </span>send_signal(<span class="kw-2">&amp;</span><span class="self">self</span>, signal_num: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) {
         <span class="kw">unsafe </span>{
-            ffi::g_subprocess_send_signal(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, signal_num);
+            ffi::g_subprocess_send_signal(<a class="self" href="#533">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#533">signal_num</a>);
         }
     }
 
@@ -1369,19 +1369,19 @@
     ///
     /// [`true`] on success, [`false`] if `cancellable` was cancelled
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_wait&quot;</span>)]
-    </span><span class="kw">pub fn </span>wait(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+    </span><span class="kw">pub fn </span>wait(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_subprocess_wait(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#557">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#557">cancellable</a>.map(|p| <a href="#562">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#559">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#559">error</a>))
             }
         }
     }
@@ -1394,59 +1394,59 @@
     /// ## `callback`
     /// a `GAsyncReadyCallback` to call when the operation is complete
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_wait_async&quot;</span>)]
-    </span><span class="kw">pub fn </span>wait_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>wait_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#587">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#588">is_main_context_owner</a>)
+            .then(|| <a href="#587">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wait_async_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#585">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wait_async_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>= ffi::g_subprocess_wait_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let _ </span>= ffi::g_subprocess_wait_finish(<a href="#600">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#601">res</a>, <span class="kw-2">&amp;mut </span><a href="#604">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#604">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#602">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#611">callback</a>.into_inner();
+            <a href="#613">callback</a>(<a href="#606">result</a>);
         }
         <span class="kw">let </span>callback = wait_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_subprocess_wait_async(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#583">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#584">cancellable</a>.map(|p| <a href="#620">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#616">callback</a>),
+                Box_::into_raw(<a href="#597">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">pub fn </span>wait_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#628">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.wait_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#632">obj</a>.<a href="#582-625">wait_async</a>(<span class="prelude-val">Some</span>(<a href="#632">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#632">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#633">res</a>);
                 });
             },
         ))
@@ -1463,20 +1463,20 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_wait_check&quot;</span>)]
     </span><span class="kw">pub fn </span>wait_check(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_subprocess_wait_check(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#650">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#651">cancellable</a>.map(|p| <a href="#657">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#654">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#654">error</a>))
             }
         }
     }
@@ -1489,70 +1489,70 @@
     /// ## `callback`
     /// a `GAsyncReadyCallback` to call when the operation is complete
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_subprocess_wait_check_async&quot;</span>)]
-    </span><span class="kw">pub fn </span>wait_check_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">pub fn </span>wait_check_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#682">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#683">is_main_context_owner</a>)
+            .then(|| <a href="#682">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#680">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>wait_check_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>= ffi::g_subprocess_wait_check_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let _ </span>= ffi::g_subprocess_wait_check_finish(<a href="#697">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#698">res</a>, <span class="kw-2">&amp;mut </span><a href="#701">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#701">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#699">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#708">callback</a>.into_inner();
+            <a href="#710">callback</a>(<a href="#703">result</a>);
         }
         <span class="kw">let </span>callback = wait_check_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_subprocess_wait_check_async(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#678">self</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#679">cancellable</a>.map(|p| <a href="#717">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#713">callback</a>),
+                Box_::into_raw(<a href="#692">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">pub fn </span>wait_check_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#725">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.wait_check_async(<span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#729">obj</a>.<a href="#677-722">wait_check_async</a>(<span class="prelude-val">Some</span>(<a href="#729">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#729">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#730">res</a>);
                 });
             },
         ))
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Subprocess {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Subprocess&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#9-87">Subprocess</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#739">f</a>.write_str(<span class="string">&quot;Subprocess&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

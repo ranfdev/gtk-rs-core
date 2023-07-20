@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout_line.rs`."><title>layout_line.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/layout_line.rs`."><title>layout_line.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -324,12 +324,12 @@
 
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;v1_50&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
-</span><span class="kw">use </span><span class="kw">crate</span>::Direction;
-<span class="kw">use </span><span class="kw">crate</span>::Rectangle;
-<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
-<span class="kw">use </span>std::{mem, ptr};
+</span><span class="kw">use </span><a href="enums.rs.html#1046-1072"><span class="kw">crate</span>::Direction</a>;
+<span class="kw">use </span><a href="../rectangle.rs.html#7-15"><span class="kw">crate</span>::Rectangle</a>;
+<span class="kw">use </span><a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`LayoutLine`][crate::LayoutLine] represents one of the lines resulting from laying
     /// out a paragraph via [`Layout`][crate::Layout].
     ///
@@ -337,7 +337,7 @@
     /// [`Layout::line()`][crate::Layout::line()] and are only valid until the text,
     /// attributes, or settings of the parent [`Layout`][crate::Layout] are modified.
     </span><span class="attr">#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
-    </span><span class="kw">pub struct </span>LayoutLine(Shared&lt;ffi::PangoLayoutLine&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.LayoutLine.html">LayoutLine</a>(Shared&lt;ffi::PangoLayoutLine&gt;);
 
     <span class="kw">match fn </span>{
         <span class="kw-2">ref </span>=&gt; |ptr| ffi::pango_layout_line_ref(ptr),
@@ -346,7 +346,7 @@
     }
 }
 
-<span class="kw">impl </span>LayoutLine {
+<span class="kw">impl </span><a href="#12-27">LayoutLine</a> {
     <span class="doccomment">/// Computes the logical and ink extents of a layout line.
     ///
     /// See [`FontExt::glyph_extents()`][crate::prelude::FontExt::glyph_extents()] for details
@@ -364,16 +364,16 @@
     ///   extents of the glyph string
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_get_extents&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="kw">pub fn </span>extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
             <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
             ffi::pango_layout_line_get_extents(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#47">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#49">ink_rect</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#50">logical_rect</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#49">ink_rect</a>, <a href="#50">logical_rect</a>)
         }
     }
 
@@ -394,11 +394,11 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_44&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_layout_line_get_height&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_height&quot;</span>)]
-    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
+    </span><span class="kw">pub fn </span>height(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>height = mem::MaybeUninit::uninit();
-            ffi::pango_layout_line_get_height(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, height.as_mut_ptr());
-            height.assume_init()
+            ffi::pango_layout_line_get_height(<a class="self" href="#77">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#79">height</a>.as_mut_ptr());
+            <a href="#79">height</a>.assume_init()
         }
     }
 
@@ -411,8 +411,8 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_layout_line_get_length&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_length&quot;</span>)]
-    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_layout_line_get_length(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_layout_line_get_length(<a class="self" href="#94">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Computes the logical and ink extents of @self in device units.
@@ -434,16 +434,16 @@
     ///   extents of the glyph string
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_get_pixel_extents&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_pixel_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>pixel_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Rectangle, Rectangle) {
+    </span><span class="kw">pub fn </span>pixel_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="../rectangle.rs.html#7-15">Rectangle</a>, <a href="../rectangle.rs.html#7-15">Rectangle</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>ink_rect = Rectangle::uninitialized();
             <span class="kw">let </span><span class="kw-2">mut </span>logical_rect = Rectangle::uninitialized();
             ffi::pango_layout_line_get_pixel_extents(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                ink_rect.to_glib_none_mut().<span class="number">0</span>,
-                logical_rect.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#117">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#119">ink_rect</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a href="#120">logical_rect</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ink_rect, logical_rect)
+            (<a href="#119">ink_rect</a>, <a href="#120">logical_rect</a>)
         }
     }
 
@@ -456,10 +456,10 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_layout_line_get_resolved_direction&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_resolved_direction&quot;</span>)]
-    </span><span class="kw">pub fn </span>resolved_direction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Direction {
+    </span><span class="kw">pub fn </span>resolved_direction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1046-1072">Direction</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_layout_line_get_resolved_direction(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#139">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -474,8 +474,8 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_layout_line_get_start_index&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_start_index&quot;</span>)]
-    </span><span class="kw">pub fn </span>start_index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::pango_layout_line_get_start_index(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>start_index(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_layout_line_get_start_index(<a class="self" href="#157">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Gets a list of visual ranges corresponding to a given logical range.
@@ -507,18 +507,18 @@
     ///   Pango units.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_get_x_ranges&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_x_ranges&quot;</span>)]
-    </span><span class="kw">pub fn </span>x_ranges(<span class="kw-2">&amp;</span><span class="self">self</span>, start_index: i32, end_index: i32) -&gt; Vec&lt;i32&gt; {
+    </span><span class="kw">pub fn </span>x_ranges(<span class="kw-2">&amp;</span><span class="self">self</span>, start_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, end_index: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>ranges = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>n_ranges = mem::MaybeUninit::uninit();
             ffi::pango_layout_line_get_x_ranges(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                start_index,
-                end_index,
-                <span class="kw-2">&amp;mut </span>ranges,
-                n_ranges.as_mut_ptr(),
+                <a class="self" href="#190">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#190">start_index</a>,
+                <a href="#190">end_index</a>,
+                <span class="kw-2">&amp;mut </span><a href="#192">ranges</a>,
+                <a href="#193">n_ranges</a>.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_full_num(ranges, n_ranges.assume_init() <span class="kw">as _</span>)
+            <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.FromGlibContainer.html">FromGlibContainer::from_glib_full_num</a>(<a href="#192">ranges</a>, <a href="#193">n_ranges</a>.assume_init() <span class="kw">as _</span>)
         }
     }
 
@@ -536,16 +536,16 @@
     /// ## `x_pos`
     /// location to store the x_offset (in Pango units)
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_layout_line_index_to_x&quot;</span>)]
-    </span><span class="kw">pub fn </span>index_to_x(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: i32, trailing: bool) -&gt; i32 {
+    </span><span class="kw">pub fn </span>index_to_x(<span class="kw-2">&amp;</span><span class="self">self</span>, index_: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>, trailing: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>x_pos = mem::MaybeUninit::uninit();
             ffi::pango_layout_line_index_to_x(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                index_,
-                trailing.into_glib(),
-                x_pos.as_mut_ptr(),
+                <a class="self" href="#219">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#219">index_</a>,
+                <a href="#219">trailing</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#221">x_pos</a>.as_mut_ptr(),
             );
-            x_pos.assume_init()
+            <a href="#221">x_pos</a>.assume_init()
         }
     }
 
@@ -557,10 +557,10 @@
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;v1_50&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_50&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_layout_line_is_paragraph_start&quot;</span>)]
-    </span><span class="kw">pub fn </span>is_paragraph_start(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub fn </span>is_paragraph_start(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_layout_line_is_paragraph_start(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#240">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }

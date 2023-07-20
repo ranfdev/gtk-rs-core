@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `pango/src/auto/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="pango" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -534,13 +534,13 @@
 // DO NOT EDIT
 
 </span><span class="kw">use crate</span>::{
-    Direction, Font, FontDescription, FontFamily, FontMap, FontMetrics, Fontset, Gravity,
-    GravityHint, Language, Matrix,
+    <a href="enums.rs.html#1046-1072">Direction</a>, <a href="font.rs.html#18-33">Font</a>, <a href="font_description.rs.html#9-24">FontDescription</a>, <a href="font_family.rs.html#9-41">FontFamily</a>, <a href="font_map.rs.html#9-41">FontMap</a>, <a href="font_metrics.rs.html#7-30">FontMetrics</a>, <a href="fontset.rs.html#9-28">Fontset</a>, <a href="enums.rs.html#1464-1482">Gravity</a>,
+    <a href="enums.rs.html#1638-1655">GravityHint</a>, <a href="language.rs.html#9-23">Language</a>, <a href="matrix.rs.html#8-25">Matrix</a>,
 };
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>};
-<span class="kw">use </span>std::{fmt, mem, ptr};
+<span class="kw">use </span>glib::{<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A [`Context`][crate::Context] stores global information used to control the
     /// itemization process.
     ///
@@ -550,14 +550,14 @@
     ///
     /// To obtain a [`Context`][crate::Context], use [`FontMapExt::create_context()`][crate::prelude::FontMapExt::create_context()].
     </span><span class="attr">#[doc(alias = <span class="string">&quot;PangoContext&quot;</span>)]
-    </span><span class="kw">pub struct </span>Context(Object&lt;ffi::PangoContext, ffi::PangoContextClass&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../pango/struct.Context.html">Context</a>(Object&lt;ffi::PangoContext, ffi::PangoContextClass&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::pango_context_get_type(),
     }
 }
 
-<span class="kw">impl </span>Context {
+<span class="kw">impl </span><a href="#12-27">Context</a> {
     <span class="doccomment">/// Creates a new [`Context`][crate::Context] initialized to default values.
     ///
     /// This function is not particularly useful as it should always
@@ -575,7 +575,7 @@
     /// the newly allocated [`Context`][crate::Context], which should
     ///   be freed with g_object_unref().
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new() -&gt; Context {
+    </span><span class="kw">pub fn </span>new() -&gt; <a href="#12-27">Context</a> {
         <span class="kw">unsafe </span>{ from_glib_full(ffi::pango_context_new()) }
     }
 
@@ -589,7 +589,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_changed&quot;</span>)]
     </span><span class="kw">pub fn </span>changed(<span class="kw-2">&amp;</span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_changed(<span class="self">self</span>.to_glib_none().<span class="number">0</span>);
+            ffi::pango_context_changed(<a class="self" href="#59">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -602,8 +602,8 @@
     /// the base direction for the context.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_base_dir&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_base_dir&quot;</span>)]
-    </span><span class="kw">pub fn </span>base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Direction {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_dir(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1046-1072">Direction</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_dir(<a class="self" href="#74">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the base gravity for the context.
@@ -615,8 +615,8 @@
     /// the base gravity for the context.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_base_gravity&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_base_gravity&quot;</span>)]
-    </span><span class="kw">pub fn </span>base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Gravity {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_gravity(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1464-1482">Gravity</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_base_gravity(<a class="self" href="#87">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieve the default font description for the context.
@@ -627,10 +627,10 @@
     ///   description. This value must not be modified or freed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_font_description&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_font_description&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;FontDescription&gt; {
+    </span><span class="kw">pub fn </span>font_description(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font_description.rs.html#9-24">FontDescription</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::pango_context_get_font_description(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#99">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -644,8 +644,8 @@
     ///   unreferenced.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_font_map&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_font_map&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_map(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;FontMap&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_font_map(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>font_map(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font_map.rs.html#9-41">FontMap</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_font_map(<a class="self" href="#116">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the gravity for the context.
@@ -660,8 +660,8 @@
     /// the resolved gravity for the context.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_gravity&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_gravity&quot;</span>)]
-    </span><span class="kw">pub fn </span>gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Gravity {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>gravity(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1464-1482">Gravity</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity(<a class="self" href="#132">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the gravity hint for the context.
@@ -673,8 +673,8 @@
     /// the gravity hint for the context.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_gravity_hint&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_gravity_hint&quot;</span>)]
-    </span><span class="kw">pub fn </span>gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; GravityHint {
-        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity_hint(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#1638-1655">GravityHint</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::pango_context_get_gravity_hint(<a class="self" href="#145">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Retrieves the global language tag for the context.
@@ -684,8 +684,8 @@
     /// the global language tag.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_language&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_language&quot;</span>)]
-    </span><span class="kw">pub fn </span>language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Language&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_language(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>language(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="language.rs.html#9-23">Language</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_language(<a class="self" href="#156">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the transformation matrix that will be applied when
@@ -701,8 +701,8 @@
     ///   or freed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_matrix&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Matrix&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_matrix(<span class="self">self</span>.to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="matrix.rs.html#8-25">Matrix</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::pango_context_get_matrix(<a class="self" href="#173">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Get overall metric information for a particular font description.
@@ -734,14 +734,14 @@
     #[doc(alias = <span class="string">&quot;get_metrics&quot;</span>)]
     </span><span class="kw">pub fn </span>metrics(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        desc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>FontDescription&gt;,
-        language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Language&gt;,
-    ) -&gt; FontMetrics {
+        desc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="font_description.rs.html#9-24">FontDescription</a>&gt;,
+        language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="language.rs.html#9-23">Language</a>&gt;,
+    ) -&gt; <a href="font_metrics.rs.html#7-30">FontMetrics</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::pango_context_get_metrics(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                desc.to_glib_none().<span class="number">0</span>,
-                mut_override(language.to_glib_none().<span class="number">0</span>),
+                <a class="self" href="#205">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#206">desc</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#207">language</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
             ))
         }
     }
@@ -752,10 +752,10 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_44&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_context_get_round_glyph_positions&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_round_glyph_positions&quot;</span>)]
-    </span><span class="kw">pub fn </span>is_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">pub fn </span>is_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::pango_context_get_round_glyph_positions(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#224">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -778,8 +778,8 @@
     /// The current serial number of @self.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_get_serial&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_serial&quot;</span>)]
-    </span><span class="kw">pub fn </span>serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ ffi::pango_context_get_serial(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>serial(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
+        <span class="kw">unsafe </span>{ ffi::pango_context_get_serial(<a class="self" href="#250">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// List all families for a context.
@@ -792,16 +792,16 @@
     ///   to store a pointer to an array of [`FontFamily`][crate::FontFamily]. This array should
     ///   be freed with g_free().
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_list_families&quot;</span>)]
-    </span><span class="kw">pub fn </span>list_families(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;FontFamily&gt; {
+    </span><span class="kw">pub fn </span>list_families(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="font_family.rs.html#9-41">FontFamily</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>families = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>n_families = mem::MaybeUninit::uninit();
             ffi::pango_context_list_families(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>families,
-                n_families.as_mut_ptr(),
+                <a class="self" href="#264">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#266">families</a>,
+                <a href="#267">n_families</a>.as_mut_ptr(),
             );
-            FromGlibContainer::from_glib_container_num(families, n_families.assume_init() <span class="kw">as _</span>)
+            <a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.FromGlibContainer.html">FromGlibContainer::from_glib_container_num</a>(<a href="#266">families</a>, <a href="#267">n_families</a>.assume_init() <span class="kw">as _</span>)
         }
     }
 
@@ -815,11 +815,11 @@
     /// the newly allocated [`Font`][crate::Font]
     ///   that was loaded, or [`None`] if no font matched.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_load_font&quot;</span>)]
-    </span><span class="kw">pub fn </span>load_font(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span>FontDescription) -&gt; <span class="prelude-ty">Option</span>&lt;Font&gt; {
+    </span><span class="kw">pub fn </span>load_font(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span><a href="font_description.rs.html#9-24">FontDescription</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="font.rs.html#18-33">Font</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::pango_context_load_font(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                desc.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#287">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#287">desc</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -836,12 +836,12 @@
     /// the newly allocated
     ///   [`Fontset`][crate::Fontset] loaded, or [`None`] if no font matched.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_load_fontset&quot;</span>)]
-    </span><span class="kw">pub fn </span>load_fontset(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span>FontDescription, language: <span class="kw-2">&amp;</span>Language) -&gt; <span class="prelude-ty">Option</span>&lt;Fontset&gt; {
+    </span><span class="kw">pub fn </span>load_fontset(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="kw-2">&amp;</span><a href="font_description.rs.html#9-24">FontDescription</a>, language: <span class="kw-2">&amp;</span><a href="language.rs.html#9-23">Language</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="fontset.rs.html#9-28">Fontset</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::pango_context_load_fontset(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                desc.to_glib_none().<span class="number">0</span>,
-                mut_override(language.to_glib_none().<span class="number">0</span>),
+                <a class="self" href="#308">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#308">desc</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#308">language</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
             ))
         }
     }
@@ -857,9 +857,9 @@
     /// ## `direction`
     /// the new base direction
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_base_dir&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>, direction: Direction) {
+    </span><span class="kw">pub fn </span>set_base_dir(<span class="kw-2">&amp;</span><span class="self">self</span>, direction: <a href="enums.rs.html#1046-1072">Direction</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_base_dir(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, direction.into_glib());
+            ffi::pango_context_set_base_dir(<a class="self" href="#329">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#329">direction</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
@@ -869,9 +869,9 @@
     /// ## `gravity`
     /// the new base gravity
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_base_gravity&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>, gravity: Gravity) {
+    </span><span class="kw">pub fn </span>set_base_gravity(<span class="kw-2">&amp;</span><span class="self">self</span>, gravity: <a href="enums.rs.html#1464-1482">Gravity</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_base_gravity(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, gravity.into_glib());
+            ffi::pango_context_set_base_gravity(<a class="self" href="#341">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#341">gravity</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
@@ -879,9 +879,9 @@
     /// ## `desc`
     /// the new pango font description
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_font_description&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_description(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>FontDescription&gt;) {
+    </span><span class="kw">pub fn </span>set_font_description(<span class="kw-2">&amp;</span><span class="self">self</span>, desc: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="font_description.rs.html#9-24">FontDescription</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_font_description(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, desc.to_glib_none().<span class="number">0</span>);
+            ffi::pango_context_set_font_description(<a class="self" href="#351">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#351">desc</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -894,11 +894,11 @@
     /// ## `font_map`
     /// the [`FontMap`][crate::FontMap] to set.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_font_map&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_map(<span class="kw-2">&amp;</span><span class="self">self</span>, font_map: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;FontMap&gt;&gt;) {
+    </span><span class="kw">pub fn </span>set_font_map(<span class="kw-2">&amp;</span><span class="self">self</span>, font_map: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="font_map.rs.html#9-41">FontMap</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             ffi::pango_context_set_font_map(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                font_map.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#366">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#366">font_map</a>.map(|p| <a href="#370">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -912,9 +912,9 @@
     /// ## `hint`
     /// the new gravity hint
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_gravity_hint&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>, hint: GravityHint) {
+    </span><span class="kw">pub fn </span>set_gravity_hint(<span class="kw-2">&amp;</span><span class="self">self</span>, hint: <a href="enums.rs.html#1638-1655">GravityHint</a>) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_gravity_hint(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, hint.into_glib());
+            ffi::pango_context_set_gravity_hint(<a class="self" href="#384">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#384">hint</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>());
         }
     }
 
@@ -925,11 +925,11 @@
     /// ## `language`
     /// the new language tag.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_language&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_language(<span class="kw-2">&amp;</span><span class="self">self</span>, language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Language&gt;) {
+    </span><span class="kw">pub fn </span>set_language(<span class="kw-2">&amp;</span><span class="self">self</span>, language: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="language.rs.html#9-23">Language</a>&gt;) {
         <span class="kw">unsafe </span>{
             ffi::pango_context_set_language(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                mut_override(language.to_glib_none().<span class="number">0</span>),
+                <a class="self" href="#397">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#397">language</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>),
             );
         }
     }
@@ -946,9 +946,9 @@
     /// a [`Matrix`][crate::Matrix], or [`None`] to unset any existing
     /// matrix. (No matrix set is the same as setting the identity matrix.)
     </span><span class="attr">#[doc(alias = <span class="string">&quot;pango_context_set_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>Matrix&gt;) {
+    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="matrix.rs.html#8-25">Matrix</a>&gt;) {
         <span class="kw">unsafe </span>{
-            ffi::pango_context_set_matrix(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, matrix.to_glib_none().<span class="number">0</span>);
+            ffi::pango_context_set_matrix(<a class="self" href="#418">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#418">matrix</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>);
         }
     }
 
@@ -966,25 +966,25 @@
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;v1_44&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_44&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pango_context_set_round_glyph_positions&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>, round_positions: bool) {
+    </span><span class="kw">pub fn </span>set_round_glyph_positions(<span class="kw-2">&amp;</span><span class="self">self</span>, round_positions: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::pango_context_set_round_glyph_positions(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                round_positions.into_glib(),
+                <a class="self" href="#438">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#438">round_positions</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
 }
 
-<span class="kw">impl </span>Default <span class="kw">for </span>Context {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/default/trait.Default.html">Default</a> <span class="kw">for </span><a href="#12-27">Context</a> {
     <span class="kw">fn </span>default() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::new()
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Context {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Context&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#12-27">Context</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#455">f</a>.write_str(<span class="string">&quot;Context&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

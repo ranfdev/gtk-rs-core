@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/point3_d.rs`."><title>point3_d.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/point3_d.rs`."><title>point3_d.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -325,12 +325,12 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{Rect, Vec3};
-<span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+</span><span class="kw">use crate</span>::{<a href="rect.rs.html#8-28">Rect</a>, <a href="vec3.rs.html#8-20">Vec3</a>};
+<span class="kw">use </span><a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A point with three components: X, Y, and Z.
-    </span><span class="kw">pub struct </span>Point3D(BoxedInline&lt;ffi::graphene_point3d_t&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../graphene/struct.Point3D.html">Point3D</a>(BoxedInline&lt;ffi::graphene_point3d_t&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| glib::gobject_ffi::g_boxed_copy(ffi::graphene_point3d_get_type(), ptr <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>) <span class="kw">as </span><span class="kw-2">*mut </span>ffi::graphene_point3d_t,
@@ -339,7 +339,7 @@
     }
 }
 
-<span class="kw">impl </span>Point3D {
+<span class="kw">impl </span><a href="#8-17">Point3D</a> {
     <span class="doccomment">/// Computes the cross product of the two given [`Point3D`][crate::Point3D].
     /// ## `b`
     /// a [`Point3D`][crate::Point3D]
@@ -352,15 +352,15 @@
     ///  product
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_cross&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>cross(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D) -&gt; Point3D {
+    </span><span class="kw">pub fn </span>cross(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>) -&gt; <a href="#8-17">Point3D</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Point3D::uninitialized();
             ffi::graphene_point3d_cross(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                b.to_glib_none().<span class="number">0</span>,
-                res.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#32">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#32">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#34">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            res
+            <a href="#34">res</a>
         }
     }
 
@@ -376,15 +376,15 @@
     /// return location for the distance
     ///  components on the X, Y, and Z axis
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_distance&quot;</span>)]
-    </span><span class="kw">pub fn </span>distance(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D) -&gt; (f32, Vec3) {
+    </span><span class="kw">pub fn </span>distance(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="vec3.rs.html#8-20">Vec3</a>) {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>delta = Vec3::uninitialized();
             <span class="kw">let </span>ret = ffi::graphene_point3d_distance(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                b.to_glib_none().<span class="number">0</span>,
-                delta.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#56">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#56">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#58">delta</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (ret, delta)
+            (<a href="#59">ret</a>, <a href="#58">delta</a>)
         }
     }
 
@@ -396,13 +396,13 @@
     ///
     /// the value of the dot product
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_dot&quot;</span>)]
-    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D) -&gt; f32 {
-        <span class="kw">unsafe </span>{ ffi::graphene_point3d_dot(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_point3d_dot(<a class="self" href="#76">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#76">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_equal&quot;</span>)]
-    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D) -&gt; bool {
-        <span class="kw">unsafe </span>{ ffi::graphene_point3d_equal(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_point3d_equal(<a class="self" href="#81">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#81">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Linearly interpolates each component of `self` and `b` using the
@@ -420,16 +420,16 @@
     ///  interpolated [`Point3D`][crate::Point3D]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_interpolate&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>interpolate(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D, factor: f64) -&gt; Point3D {
+    </span><span class="kw">pub fn </span>interpolate(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <a href="#8-17">Point3D</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Point3D::uninitialized();
             ffi::graphene_point3d_interpolate(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                b.to_glib_none().<span class="number">0</span>,
-                factor,
-                res.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#100">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#100">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#100">factor</a>,
+                <a href="#102">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            res
+            <a href="#102">res</a>
         }
     }
 
@@ -440,8 +440,8 @@
     ///
     /// the length of the vector represented by the point
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_length&quot;</span>)]
-    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f32 {
-        <span class="kw">unsafe </span>{ ffi::graphene_point3d_length(<span class="self">self</span>.to_glib_none().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>length(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_point3d_length(<a class="self" href="#120">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Checks whether the two points are near each other, within
@@ -455,8 +455,8 @@
     ///
     /// `true` if the points are near each other
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_near&quot;</span>)]
-    </span><span class="kw">pub fn </span>near(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span>Point3D, epsilon: f32) -&gt; bool {
-        <span class="kw">unsafe </span>{ ffi::graphene_point3d_near(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, b.to_glib_none().<span class="number">0</span>, epsilon) }
+    </span><span class="kw">pub fn </span>near(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-17">Point3D</a>, epsilon: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_point3d_near(<a class="self" href="#135">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#135">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#135">epsilon</a>) }
     }
 
     <span class="doccomment">/// Computes the normalization of the vector represented by the
@@ -470,11 +470,11 @@
     ///  [`Point3D`][crate::Point3D]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_normalize&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Point3D {
+    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-17">Point3D</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Point3D::uninitialized();
-            ffi::graphene_point3d_normalize(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, res.to_glib_none_mut().<span class="number">0</span>);
-            res
+            ffi::graphene_point3d_normalize(<a class="self" href="#150">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#152">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#152">res</a>
         }
     }
 
@@ -500,17 +500,17 @@
     ///  normalized [`Point3D`][crate::Point3D]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_normalize_viewport&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>normalize_viewport(<span class="kw-2">&amp;</span><span class="self">self</span>, viewport: <span class="kw-2">&amp;</span>Rect, z_near: f32, z_far: f32) -&gt; Point3D {
+    </span><span class="kw">pub fn </span>normalize_viewport(<span class="kw-2">&amp;</span><span class="self">self</span>, viewport: <span class="kw-2">&amp;</span><a href="rect.rs.html#8-28">Rect</a>, z_near: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, z_far: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-17">Point3D</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Point3D::uninitialized();
             ffi::graphene_point3d_normalize_viewport(
-                <span class="self">self</span>.to_glib_none().<span class="number">0</span>,
-                viewport.to_glib_none().<span class="number">0</span>,
-                z_near,
-                z_far,
-                res.to_glib_none_mut().<span class="number">0</span>,
+                <a class="self" href="#180">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#180">viewport</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#180">z_near</a>,
+                <a href="#180">z_far</a>,
+                <a href="#182">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            res
+            <a href="#182">res</a>
         }
     }
 
@@ -526,11 +526,11 @@
     /// return location for the scaled point
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_scale&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: f32) -&gt; Point3D {
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-17">Point3D</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Point3D::uninitialized();
-            ffi::graphene_point3d_scale(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, factor, res.to_glib_none_mut().<span class="number">0</span>);
-            res
+            ffi::graphene_point3d_scale(<a class="self" href="#206">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#206">factor</a>, <a href="#208">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#208">res</a>
         }
     }
 
@@ -543,11 +543,11 @@
     /// ## `v`
     /// return location for a [`Vec3`][crate::Vec3]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_to_vec3&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_vec3(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec3 {
+    </span><span class="kw">pub fn </span>to_vec3(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec3.rs.html#8-20">Vec3</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>v = Vec3::uninitialized();
-            ffi::graphene_point3d_to_vec3(<span class="self">self</span>.to_glib_none().<span class="number">0</span>, v.to_glib_none_mut().<span class="number">0</span>);
-            v
+            ffi::graphene_point3d_to_vec3(<a class="self" href="#223">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#225">v</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#225">v</a>
         }
     }
 
@@ -557,18 +557,18 @@
     ///
     /// a zero point
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_point3d_zero&quot;</span>)]
-    </span><span class="kw">pub fn </span>zero() -&gt; Point3D {
+    </span><span class="kw">pub fn </span>zero() -&gt; <a href="#8-17">Point3D</a> {
         <span class="macro">assert_initialized_main_thread!</span>();
         <span class="kw">unsafe </span>{ from_glib_none(ffi::graphene_point3d_zero()) }
     }
 }
 
-<span class="kw">impl </span>PartialEq <span class="kw">for </span>Point3D {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-17">Point3D</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; bool {
-        <span class="self">self</span>.equal(other)
+    </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#245">self</a>.<a href="#81-83">equal</a>(<a href="#245">other</a>)
     }
 }
 
-<span class="kw">impl </span>Eq <span class="kw">for </span>Point3D {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-17">Point3D</a> {}
 </code></pre></div></section></main></body></html>

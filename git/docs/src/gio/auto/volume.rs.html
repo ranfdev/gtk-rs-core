@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/volume.rs`."><title>volume.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/volume.rs`."><title>volume.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -609,22 +609,27 @@
 <a href="#536" id="536">536</a>
 <a href="#537" id="537">537</a>
 <a href="#538" id="538">538</a>
+<a href="#539" id="539">539</a>
+<a href="#540" id="540">540</a>
+<a href="#541" id="541">541</a>
+<a href="#542" id="542">542</a>
+<a href="#543" id="543">543</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
 </span><span class="kw">use crate</span>::{
-    AsyncResult, Cancellable, Drive, File, Icon, Mount, MountMountFlags, MountOperation,
-    MountUnmountFlags,
+    <a href="async_result.rs.html#8-107">AsyncResult</a>, <a href="cancellable.rs.html#8-84">Cancellable</a>, <a href="drive.rs.html#16-84">Drive</a>, <a href="file.rs.html#14-108">File</a>, <a href="icon.rs.html#8-47">Icon</a>, <a href="mount.rs.html#16-73">Mount</a>, <a href="flags.rs.html#2352-2361">MountMountFlags</a>, <a href="mount_operation.rs.html#13-187">MountOperation</a>,
+    <a href="flags.rs.html#2440-2453">MountUnmountFlags</a>,
 };
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute, pin::Pin, ptr};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// The [`Volume`][crate::Volume] interface represents user-visible objects that can be
     /// mounted. Note, when porting from GnomeVFS, [`Volume`][crate::Volume] is the moral
     /// equivalent of `GnomeVFSDrive`.
@@ -687,15 +692,20 @@
     ///
     /// [`VolumeExt`][trait@crate::prelude::VolumeExt]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;GVolume&quot;</span>)]
-    </span><span class="kw">pub struct </span>Volume(Interface&lt;ffi::GVolume, ffi::GVolumeIface&gt;);
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.Volume.html">Volume</a>(Interface&lt;ffi::GVolume, ffi::GVolumeIface&gt;);
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_volume_get_type(),
     }
 }
 
-<span class="kw">impl </span>Volume {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>Volume&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#16-84">Volume</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="#16-84">Volume</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#16-84"><span class="kw">super</span>::Volume</a>&gt;&gt; <a href="#91">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@Volume`] methods.
@@ -703,15 +713,15 @@
 /// # Implementors
 ///
 /// [`Volume`][struct@crate::Volume]
-</span><span class="kw">pub trait </span>VolumeExt: IsA&lt;Volume&gt; + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.VolumeExt.html">VolumeExt</a>: IsA&lt;<a href="#16-84">Volume</a>&gt; + <a href="#91">sealed::Sealed</a> + <span class="lifetime">&#39;static </span>{
     <span class="doccomment">/// Checks if a volume can be ejected.
     ///
     /// # Returns
     ///
     /// [`true`] if the `self` can be ejected. [`false`] otherwise
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_can_eject&quot;</span>)]
-    </span><span class="kw">fn </span>can_eject(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_eject(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>can_eject(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_eject(<a class="self" href="#107">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Checks if a volume can be mounted.
@@ -720,8 +730,8 @@
     ///
     /// [`true`] if the `self` can be mounted. [`false`] otherwise
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_can_mount&quot;</span>)]
-    </span><span class="kw">fn </span>can_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_mount(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>can_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ from_glib(ffi::g_volume_can_mount(<a class="self" href="#117">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Ejects a volume. This is an asynchronous operation, and is
@@ -737,27 +747,27 @@
     /// ## `callback`
     /// a `GAsyncReadyCallback`, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_eject_with_operation&quot;</span>)]
-    </span><span class="kw">fn </span>eject_with_operation&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>eject_with_operation&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: MountUnmountFlags,
-        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        flags: <a href="flags.rs.html#2440-2453">MountUnmountFlags</a>,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="mount_operation.rs.html#13-187">MountOperation</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#141">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#142">is_main_context_owner</a>)
+            .then(|| <a href="#141">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#139">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>eject_with_operation_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
@@ -765,48 +775,48 @@
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let _ </span>= ffi::g_volume_eject_with_operation_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#156">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#157">res</a>,
+                <span class="kw-2">&amp;mut </span><a href="#160">error</a>,
             );
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#160">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#158">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#171">callback</a>.into_inner();
+            <a href="#173">callback</a>(<a href="#166">result</a>);
         }
         <span class="kw">let </span>callback = eject_with_operation_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_volume_eject_with_operation(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                mount_operation.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#135">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#136">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#137">mount_operation</a>.map(|p| <a href="#181">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#138">cancellable</a>.map(|p| <a href="#182">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#176">callback</a>),
+                Box_::into_raw(<a href="#151">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">fn </span>eject_with_operation_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: MountUnmountFlags,
-        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        <span class="kw">let </span>mount_operation = mount_operation.map(ToOwned::to_owned);
+        flags: <a href="flags.rs.html#2440-2453">MountUnmountFlags</a>,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="mount_operation.rs.html#13-187">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">let </span>mount_operation = <a href="#192">mount_operation</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#190">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.eject_with_operation(
-                    flags,
-                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                    <span class="prelude-val">Some</span>(cancellable),
+                <a href="#197">obj</a>.<a href="#134-187">eject_with_operation</a>(
+                    <a href="#191">flags</a>,
+                    <a href="#194">mount_operation</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <span class="prelude-val">Some</span>(<a href="#197">cancellable</a>),
                     <span class="kw">move </span>|res| {
-                        send.resolve(res);
+                        <a href="#197">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#202">res</a>);
                     },
                 );
             },
@@ -821,10 +831,10 @@
     /// a [`None`]-terminated array
     ///  of strings containing kinds of identifiers. Use `g_strfreev()` to free.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_enumerate_identifiers&quot;</span>)]
-    </span><span class="kw">fn </span>enumerate_identifiers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
+    </span><span class="kw">fn </span>enumerate_identifiers(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
-            FromGlibPtrContainer::from_glib_full(ffi::g_volume_enumerate_identifiers(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+            <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(ffi::g_volume_enumerate_identifiers(
+                <a class="self" href="#218">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -870,10 +880,10 @@
     ///  or [`None`]. Use `g_object_unref()` to free.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_activation_root&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_activation_root&quot;</span>)]
-    </span><span class="kw">fn </span>activation_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;File&gt; {
+    </span><span class="kw">fn </span>activation_root(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="file.rs.html#14-108">File</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_volume_get_activation_root(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#267">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -887,8 +897,8 @@
     ///  with `g_object_unref()` when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_drive&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_drive&quot;</span>)]
-    </span><span class="kw">fn </span>drive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Drive&gt; {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_drive(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>drive(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="drive.rs.html#16-84">Drive</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_drive(<a class="self" href="#284">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the icon for `self`.
@@ -900,8 +910,8 @@
     ///  when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_icon&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_icon&quot;</span>)]
-    </span><span class="kw">fn </span>icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_icon(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="icon.rs.html#8-47">Icon</a> {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_icon(<a class="self" href="#297">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the identifier of the given kind for `self`.
@@ -917,11 +927,11 @@
     ///  doesn&#39;t have this kind of identifier
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_identifier&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_identifier&quot;</span>)]
-    </span><span class="kw">fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>, kind: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+    </span><span class="kw">fn </span>identifier(<span class="kw-2">&amp;</span><span class="self">self</span>, kind: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_volume_get_identifier(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                kind.to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#314">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#314">kind</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -934,8 +944,8 @@
     ///  The returned object should be unreffed with `g_object_unref()`
     ///  when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_mount&quot;</span>)]
-    </span><span class="kw">fn </span>get_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;Mount&gt; {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_mount(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>get_mount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="mount.rs.html#16-73">Mount</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_mount(<a class="self" href="#331">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the name of `self`.
@@ -946,8 +956,8 @@
     ///  be freed with `g_free()` when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_name&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_name&quot;</span>)]
-    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; glib::GString {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_name(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../../../glib/gstring/struct.GString.html">glib::GString</a> {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_name(<a class="self" href="#343">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the sort key for `self`, if any.
@@ -957,8 +967,8 @@
     /// Sorting key for `self` or [`None`] if no such key is available
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_sort_key&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_sort_key&quot;</span>)]
-    </span><span class="kw">fn </span>sort_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_volume_get_sort_key(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>sort_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_none(ffi::g_volume_get_sort_key(<a class="self" href="#354">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Gets the symbolic icon for `self`.
@@ -970,10 +980,10 @@
     ///  when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_symbolic_icon&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_symbolic_icon&quot;</span>)]
-    </span><span class="kw">fn </span>symbolic_icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Icon {
+    </span><span class="kw">fn </span>symbolic_icon(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="icon.rs.html#8-47">Icon</a> {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_volume_get_symbolic_icon(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#367">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -991,8 +1001,8 @@
     ///  when no longer needed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_get_uuid&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_uuid&quot;</span>)]
-    </span><span class="kw">fn </span>uuid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
-        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_uuid(<span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>)) }
+    </span><span class="kw">fn </span>uuid(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <span class="kw">unsafe </span>{ from_glib_full(ffi::g_volume_get_uuid(<a class="self" href="#388">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
     <span class="doccomment">/// Mounts a volume. This is an asynchronous operation, and is
@@ -1007,70 +1017,70 @@
     /// ## `callback`
     /// a `GAsyncReadyCallback`, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_mount&quot;</span>)]
-    </span><span class="kw">fn </span>mount&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>mount&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: MountMountFlags,
-        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;MountOperation&gt;&gt;,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        flags: <a href="flags.rs.html#2352-2361">MountMountFlags</a>,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="mount_operation.rs.html#13-187">MountOperation</a>&gt;&gt;,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#411">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#412">is_main_context_owner</a>)
+            .then(|| <a href="#411">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>mount_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#409">callback</a>));
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>mount_trampoline&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let _ </span>= ffi::g_volume_mount_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let _ </span>= ffi::g_volume_mount_finish(<a href="#424">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#425">res</a>, <span class="kw-2">&amp;mut </span><a href="#428">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#428">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#426">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#435">callback</a>.into_inner();
+            <a href="#437">callback</a>(<a href="#430">result</a>);
         }
         <span class="kw">let </span>callback = mount_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_volume_mount(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                flags.into_glib(),
-                mount_operation.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#405">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#406">flags</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#407">mount_operation</a>.map(|p| <a href="#445">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#408">cancellable</a>.map(|p| <a href="#446">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#440">callback</a>),
+                Box_::into_raw(<a href="#421">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">fn </span>mount_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        flags: MountMountFlags,
-        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;MountOperation&gt; + Clone + <span class="lifetime">&#39;static</span>)&gt;,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
-        <span class="kw">let </span>mount_operation = mount_operation.map(ToOwned::to_owned);
+        flags: <a href="flags.rs.html#2352-2361">MountMountFlags</a>,
+        mount_operation: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>(<span class="kw">impl </span>IsA&lt;<a href="mount_operation.rs.html#13-187">MountOperation</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> + <span class="lifetime">&#39;static</span>)&gt;,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        <span class="kw">let </span>mount_operation = <a href="#456">mount_operation</a>.map(<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">ToOwned::to_owned</a>);
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#454">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.mount(
-                    flags,
-                    mount_operation.as_ref().map(::std::borrow::Borrow::borrow),
-                    <span class="prelude-val">Some</span>(cancellable),
+                <a href="#461">obj</a>.<a href="#404-451">mount</a>(
+                    <a href="#455">flags</a>,
+                    <a href="#458">mount_operation</a>.as_ref().map(<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">::std::borrow::Borrow::borrow</a>),
+                    <span class="prelude-val">Some</span>(<a href="#461">cancellable</a>),
                     <span class="kw">move </span>|res| {
-                        send.resolve(res);
+                        <a href="#461">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#466">res</a>);
                     },
                 );
             },
@@ -1083,33 +1093,33 @@
     ///
     /// [`true`] if the volume should be automatically mounted
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_volume_should_automount&quot;</span>)]
-    </span><span class="kw">fn </span>should_automount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">fn </span>should_automount(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_volume_should_automount(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#480">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="doccomment">/// Emitted when the volume has been changed.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;changed&quot;</span>)]
-    </span><span class="kw">fn </span>connect_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>changed_trampoline&lt;P: IsA&lt;Volume&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>connect_changed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>changed_trampoline&lt;P: IsA&lt;<a href="#16-84">Volume</a>&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
             this: <span class="kw-2">*mut </span>ffi::GVolume,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(Volume::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#493">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#495">f</a>(Volume::from_glib_borrow(<a href="#492">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#490">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#490">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;changed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     changed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#499">f</a>),
             )
         }
     }
@@ -1118,33 +1128,33 @@
     /// the recipient is holding references to the object they should
     /// release them so the object can be finalized.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;removed&quot;</span>)]
-    </span><span class="kw">fn </span>connect_removed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
-        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>removed_trampoline&lt;P: IsA&lt;Volume&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>connect_removed&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
+        <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>removed_trampoline&lt;P: IsA&lt;<a href="#16-84">Volume</a>&gt;, F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>&gt;(
             this: <span class="kw-2">*mut </span>ffi::GVolume,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(Volume::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#518">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#520">f</a>(Volume::from_glib_borrow(<a href="#517">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#515">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#515">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;removed\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     removed_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#524">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;Volume&gt;&gt; VolumeExt <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#16-84">Volume</a>&gt;&gt; <a href="#100-535">VolumeExt</a> <span class="kw">for </span>O {}
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Volume {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;Volume&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#16-84">Volume</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#540">f</a>.write_str(<span class="string">&quot;Volume&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

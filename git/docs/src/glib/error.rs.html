@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/error.rs`."><title>error.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -436,11 +436,11 @@
 // rustdoc-stripper-ignore-next
 </span><span class="doccomment">//! `Error` binding and helper trait.
 
-</span><span class="kw">use </span>std::{borrow::Cow, convert::Infallible, error, ffi::CStr, fmt, str};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/borrow/enum.Cow.html">borrow::Cow</a>, <a href="https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html">convert::Infallible</a>, <a href="https://doc.rust-lang.org/nightly/std/error/index.html">error</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">ffi::CStr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/alloc/str/index.html">str</a>};
 
-<span class="kw">use crate</span>::{translate::<span class="kw-2">*</span>, Quark};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="quark.rs.html#10">Quark</a>};
 
-<span class="macro">wrapper! </span>{
+<a class="macro" href="wrapper.rs.html#277-445">wrapper! </a>{
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// A generic error capable of representing various error domains (types).
     </span><span class="comment">// rustdoc-stripper-ignore-next-stop
@@ -448,7 +448,7 @@
     /// an error that has occurred.
     </span><span class="attr">#[derive(PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc(alias = <span class="string">&quot;GError&quot;</span>)]
-    </span><span class="kw">pub struct </span>Error(Boxed&lt;ffi::GError&gt;);
+    </span><span class="kw">pub struct </span><a href="../../glib/error/struct.Error.html">Error</a>(Boxed&lt;ffi::GError&gt;);
 
     <span class="kw">match fn </span>{
         copy =&gt; |ptr| ffi::g_error_copy(ptr),
@@ -457,10 +457,10 @@
     }
 }
 
-<span class="kw">unsafe impl </span>Send <span class="kw">for </span>Error {}
-<span class="kw">unsafe impl </span>Sync <span class="kw">for </span>Error {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#10-25">Error</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#10-25">Error</a> {}
 
-<span class="kw">impl </span>Error {
+<span class="kw">impl </span><a href="#10-25">Error</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates an error with supplied error enum variant and message.
     </span><span class="comment">// rustdoc-stripper-ignore-next-stop
@@ -478,26 +478,26 @@
     /// a new [`Error`][crate::Error]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_error_new_literal&quot;</span>)]
     #[doc(alias = <span class="string">&quot;g_error_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new&lt;T: ErrorDomain&gt;(error: T, message: <span class="kw-2">&amp;</span>str) -&gt; Error {
+    </span><span class="kw">pub fn </span>new&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(error: T, message: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="#10-25">Error</a> {
         <span class="kw">unsafe </span>{
-            from_glib_full(ffi::g_error_new_literal(
-                T::domain().into_glib(),
-                error.code(),
-                message.to_glib_none().<span class="number">0</span>,
+            <a href="translate.rs.html#1630-1632">from_glib_full</a>(ffi::g_error_new_literal(
+                T::domain().<a href="translate.rs.html#330">into_glib</a>(),
+                <a href="#48">error</a>.<a href="#174">code</a>(),
+                <a href="#48">message</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the error domain matches `T`.
-    </span><span class="kw">pub fn </span>is&lt;T: ErrorDomain&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="self">self</span>.inner.domain == T::domain().into_glib()
+    </span><span class="kw">pub fn </span>is&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#60">self</a>.inner.domain == T::domain().<a href="translate.rs.html#330">into_glib</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the error domain quark
-    </span><span class="kw">pub fn </span>domain(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Quark {
-        <span class="kw">unsafe </span>{ from_glib(<span class="self">self</span>.inner.domain) }
+    </span><span class="kw">pub fn </span>domain(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="quark.rs.html#10">Quark</a> {
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#66">self</a>.inner.domain) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -522,8 +522,8 @@
     ///
     /// whether `self` has `domain` and `code`
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_error_matches&quot;</span>)]
-    </span><span class="kw">pub fn </span>matches&lt;T: ErrorDomain&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, err: T) -&gt; bool {
-        <span class="self">self</span>.is::&lt;T&gt;() &amp;&amp; <span class="self">self</span>.inner.code == err.code()
+    </span><span class="kw">pub fn </span>matches&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, err: T) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <a class="self" href="#92">self</a>.<a href="#60-62">is</a>::&lt;T&gt;() &amp;&amp; <a class="self" href="#92">self</a>.inner.code == <a href="#92">err</a>.<a href="#174">code</a>()
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -543,9 +543,9 @@
     ///     }
     /// }
     /// ```
-    </span><span class="kw">pub fn </span>kind&lt;T: ErrorDomain&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
+    </span><span class="kw">pub fn </span>kind&lt;T: <a href="#165-184">ErrorDomain</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;T&gt; {
         <span class="kw">if </span><span class="self">self</span>.is::&lt;T&gt;() {
-            T::from(<span class="self">self</span>.inner.code)
+            T::from(<a class="self" href="#113">self</a>.inner.code)
         } <span class="kw">else </span>{
             <span class="prelude-val">None
         </span>}
@@ -556,38 +556,38 @@
     ///
     /// Most of the time you can simply print the error since it implements the `Display`
     /// trait, but you can use this method if you need to have the message as a `&amp;str`.
-    </span><span class="kw">pub fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>str {
+    </span><span class="kw">pub fn </span>message(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>bytes = CStr::from_ptr(<span class="self">self</span>.inner.message).to_bytes();
-            str::from_utf8(bytes)
-                .unwrap_or_else(|err| str::from_utf8(<span class="kw-2">&amp;</span>bytes[..err.valid_up_to()]).unwrap())
+            <span class="kw">let </span>bytes = CStr::from_ptr(<a class="self" href="#126">self</a>.inner.message).to_bytes();
+            <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8.html">str::from_utf8</a>(<a href="#128">bytes</a>)
+                .unwrap_or_else(|err| <a href="https://doc.rust-lang.org/nightly/core/str/converts/fn.from_utf8.html">str::from_utf8</a>(<span class="kw-2">&amp;</span><a href="#128">bytes</a>[..<a href="#130">err</a>.valid_up_to()]).unwrap())
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Error {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="self">self</span>.message())
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#10-25">Error</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#136">f</a>.write_str(<a class="self" href="#136">self</a>.<a href="#126-132">message</a>())
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>Error {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.debug_struct(<span class="string">&quot;Error&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#10-25">Error</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#142">f</a>.debug_struct(<span class="string">&quot;Error&quot;</span>)
             .field(<span class="string">&quot;domain&quot;</span>, <span class="kw">unsafe </span>{
-                <span class="kw-2">&amp;</span><span class="kw">crate</span>::Quark::from_glib(<span class="self">self</span>.inner.domain)
+                <span class="kw-2">&amp;</span><span class="kw">crate</span>::Quark::from_glib(<a class="self" href="#142">self</a>.inner.domain)
             })
-            .field(<span class="string">&quot;code&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.inner.code)
-            .field(<span class="string">&quot;message&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.message())
+            .field(<span class="string">&quot;code&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#142">self</a>.inner.code)
+            .field(<span class="string">&quot;message&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#142">self</a>.<a href="#126-132">message</a>())
             .finish()
     }
 }
 
-<span class="kw">impl </span>error::Error <span class="kw">for </span>Error {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">error::Error</a> <span class="kw">for </span><a href="#10-25">Error</a> {}
 
-<span class="kw">impl </span>From&lt;Infallible&gt; <span class="kw">for </span>Error {
-    <span class="kw">fn </span>from(e: Infallible) -&gt; <span class="self">Self </span>{
-        <span class="kw">match </span>e {}
+<span class="kw">impl </span>From&lt;<a href="https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html">Infallible</a>&gt; <span class="kw">for </span><a href="#10-25">Error</a> {
+    <span class="kw">fn </span>from(e: <a href="https://doc.rust-lang.org/nightly/core/convert/enum.Infallible.html">Infallible</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">match </span><a href="#156">e</a> {}
     }
 }
 
@@ -595,31 +595,31 @@
 </span><span class="doccomment">/// `GLib` error domain.
 ///
 /// This trait is implemented by error enums that represent error domains (types).
-</span><span class="kw">pub trait </span>ErrorDomain: Copy {
+</span><span class="kw">pub trait </span><a href="../../glib/error/trait.ErrorDomain.html">ErrorDomain</a>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Copy.html">Copy</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns the quark identifying the error domain.
     ///
     /// As returned from `g_some_error_quark`.
-    </span><span class="kw">fn </span>domain() -&gt; Quark;
+    </span><span class="kw">fn </span>domain() -&gt; <a href="quark.rs.html#10">Quark</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Gets the integer representation of the variant.
-    </span><span class="kw">fn </span>code(<span class="self">self</span>) -&gt; i32;
+    </span><span class="kw">fn </span>code(<span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>;
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Tries to convert an integer code to an enum variant.
     ///
     /// By convention, the `Failed` variant, if present, is a catch-all,
     /// i.e. any unrecognized codes map to it.
-    </span><span class="kw">fn </span>from(code: i32) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;
+    </span><span class="kw">fn </span>from(code: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: Sized;
+        </span><span class="self">Self</span>: <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a>;
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Generic error used for functions that fail without any further information
 </span><span class="attr">#[macro_export]
-</span><span class="macro">macro_rules! </span>bool_error(
+</span><span class="macro">macro_rules! </span><a href="../../glib/macro.bool_error.html">bool_error</a>(
 <span class="comment">// Plain strings
     </span>(<span class="macro-nonterminal">$msg</span>:expr) =&gt; {{
         <span class="macro-nonterminal">$crate::BoolError::new</span>(
@@ -642,7 +642,7 @@
 );
 
 <span class="attr">#[<span class="macro-nonterminal">macro_export</span>]
-</span><span class="macro">macro_rules! </span>result_from_gboolean(
+</span><span class="macro">macro_rules! </span><a href="../../glib/macro.result_from_gboolean.html">result_from_gboolean</a>(
 <span class="comment">// Plain strings
     </span>(<span class="macro-nonterminal">$ffi_bool</span>:expr, <span class="macro-nonterminal">$msg</span>:expr) =&gt; {{
         <span class="macro-nonterminal">$crate::BoolError::from_glib</span>(
@@ -667,52 +667,52 @@
 );
 
 <span class="attr">#[<span class="macro-nonterminal">derive</span>(Debug, Clone)]
-</span><span class="kw">pub struct </span>BoolError {
-    <span class="kw">pub </span>message: Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;,
+</span><span class="kw">pub struct </span><a href="../../glib/error/struct.BoolError.html">BoolError</a> {
+    <span class="kw">pub </span>message: Cow&lt;<span class="lifetime">&#39;static</span>, <a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     <span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub </span>filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    </span><span class="kw">pub </span>filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     <span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub </span>function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
+    </span><span class="kw">pub </span>function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
     <span class="attr">#[doc(hidden)]
-    </span><span class="kw">pub </span>line: u32,
+    </span><span class="kw">pub </span>line: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
 }
 
-<span class="kw">impl </span>BoolError {
+<span class="kw">impl </span><a href="#237-245">BoolError</a> {
     <span class="kw">pub fn </span>new(
-        message: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;,
-        filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        line: u32,
+        message: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, <a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;,
+        filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        line: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
     ) -&gt; <span class="self">Self </span>{
         <span class="self">Self </span>{
-            message: message.into(),
-            filename,
-            function,
-            line,
+            message: <a href="#249">message</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
+            <a href="#250">filename</a>,
+            <a href="#251">function</a>,
+            <a href="#252">line</a>,
         }
     }
 
     <span class="kw">pub fn </span>from_glib(
         b: ffi::gboolean,
-        message: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, str&gt;&gt;,
-        filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>str,
-        line: u32,
+        message: <span class="kw">impl </span>Into&lt;Cow&lt;<span class="lifetime">&#39;static</span>, <a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;&gt;,
+        filename: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        function: <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        line: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
     ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>&gt; {
-        <span class="kw">match </span>b {
-            ffi::GFALSE =&gt; <span class="prelude-val">Err</span>(BoolError::new(message, filename, function, line)),
+        <span class="kw">match </span><a href="#263">b</a> {
+            ffi::GFALSE =&gt; <span class="prelude-val">Err</span>(BoolError::new(<a href="#264">message</a>, <a href="#265">filename</a>, <a href="#266">function</a>, <a href="#267">line</a>)),
             <span class="kw">_ </span>=&gt; <span class="prelude-val">Ok</span>(()),
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>BoolError {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="kw-2">&amp;</span><span class="self">self</span>.message)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#237-245">BoolError</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#277">f</a>.write_str(<span class="kw-2">&amp;</span><a class="self" href="#277">self</a>.message)
     }
 }
 
-<span class="kw">impl </span>error::Error <span class="kw">for </span>BoolError {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">error::Error</a> <span class="kw">for </span><a href="#237-245">BoolError</a> {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {

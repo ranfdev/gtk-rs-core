@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/output_stream.rs`."><title>output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/output_stream.rs`."><title>output_stream.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1071,17 +1071,27 @@
 <a href="#998" id="998">998</a>
 <a href="#999" id="999">999</a>
 <a href="#1000" id="1000">1000</a>
+<a href="#1001" id="1001">1001</a>
+<a href="#1002" id="1002">1002</a>
+<a href="#1003" id="1003">1003</a>
+<a href="#1004" id="1004">1004</a>
+<a href="#1005" id="1005">1005</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">use </span>std::{io, mem, pin::Pin, ptr};
+</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/std/io/index.html">io</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/index.html">mem</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="kw">use </span>glib::{prelude::<span class="kw-2">*</span>, translate::<span class="kw-2">*</span>, Priority};
+<span class="kw">use </span>glib::{<a href="../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>, <a href="../../glib/source/struct.Priority.html">Priority</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
-</span><span class="kw">use </span><span class="kw">crate</span>::OutputVector;
-<span class="kw">use crate</span>::{error::to_std_io_result, prelude::<span class="kw-2">*</span>, Cancellable, OutputStream, Seekable};
+</span><span class="kw">use </span><a href="socket.rs.html#256-259"><span class="kw">crate</span>::OutputVector</a>;
+<span class="kw">use crate</span>::{<a href="error.rs.html#31-36">error::to_std_io_result</a>, <a href="lib.rs.html#112">prelude</a>::<span class="kw-2">*</span>, <a href="auto/cancellable.rs.html#8-84">Cancellable</a>, <a href="auto/output_stream.rs.html#9-33">OutputStream</a>, <a href="auto/seekable.rs.html#9-34">Seekable</a>};
 
-<span class="kw">pub trait </span>OutputStreamExtManual: IsA&lt;OutputStream&gt; + Sized {
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/output_stream.rs.html#9-33"><span class="kw">super</span>::OutputStream</a>&gt;&gt; <a href="#12">Sealed</a> <span class="kw">for </span>T {}
+}
+
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.OutputStreamExtManual.html">OutputStreamExtManual</a>: <a href="#12">sealed::Sealed</a> + IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> {
     <span class="doccomment">/// Request an asynchronous write of `count` bytes from `buffer` into
     /// the stream. When the operation is finished `callback` will be called.
     /// You can then call `g_output_stream_write_finish()` to get the result of the
@@ -1127,68 +1137,68 @@
     /// callback to call when the request is satisfied
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_output_stream_write_async&quot;</span>)]
     </span><span class="kw">fn </span>write_async&lt;
-        B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-        Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, usize), (B, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
-        C: IsA&lt;Cancellable&gt;,
+        B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+        Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
-        io_priority: Priority,
+        io_priority: <a href="../../glib/source/struct.Priority.html">Priority</a>,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
         callback: Q,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#72">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#73">is_main_context_owner</a>)
+            .then(|| <a href="#72">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
-        <span class="kw">let </span>cancellable = cancellable.map(|c| c.as_ref());
-        <span class="kw">let </span>gcancellable = cancellable.to_glib_none();
+        <span class="kw">let </span>cancellable = <a href="#69">cancellable</a>.map(|c| <a href="#82">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#82">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>();
         <span class="kw">let </span>user_data: Box&lt;(glib::thread_guard::ThreadGuard&lt;Q&gt;, B)&gt; =
-            Box::new((glib::thread_guard::ThreadGuard::new(callback), buffer));
+            Box::new((glib::thread_guard::ThreadGuard::new(<a href="#70">callback</a>), <a href="#67">buffer</a>));
         <span class="comment">// Need to do this after boxing as the contents pointer might change by moving into the box
         </span><span class="kw">let </span>(count, buffer_ptr) = {
-            <span class="kw">let </span>buffer = <span class="kw-2">&amp;</span>user_data.<span class="number">1</span>;
-            <span class="kw">let </span>slice = buffer.as_ref();
-            (slice.len(), slice.as_ptr())
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;</span><a href="#84">user_data</a>.<span class="number">1</span>;
+            <span class="kw">let </span>slice = <a href="#88">buffer</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
+            (<a href="#89">slice</a>.len(), <a href="#89">slice</a>.as_ptr())
         };
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>write_async_trampoline&lt;
-            B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-            Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, usize), (B, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+            B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+            Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span>ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             <span class="kw">let </span>user_data: Box&lt;(glib::thread_guard::ThreadGuard&lt;Q&gt;, B)&gt; =
-                Box::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>(callback, buffer) = <span class="kw-2">*</span>user_data;
-            <span class="kw">let </span>callback = callback.into_inner();
+                Box::from_raw(<a href="#98">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>(callback, buffer) = <span class="kw-2">*</span><a href="#100">user_data</a>;
+            <span class="kw">let </span>callback = <a href="#102">callback</a>.into_inner();
 
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
-            <span class="kw">let </span>ret = ffi::g_output_stream_write_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+            <span class="kw">let </span>ret = ffi::g_output_stream_write_finish(<a href="#96">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#97">res</a>, <span class="kw-2">&amp;mut </span><a href="#105">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((buffer, ret <span class="kw">as </span>usize))
+                <span class="prelude-val">Ok</span>((<a href="#102">buffer</a>, <a href="#106">ret</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>((buffer, from_glib_full(error)))
+                <span class="prelude-val">Err</span>((<a href="#102">buffer</a>, from_glib_full(<a href="#105">error</a>)))
             };
-            callback(result);
+            <a href="#103">callback</a>(<a href="#107">result</a>);
         }
         <span class="kw">let </span>callback = write_async_trampoline::&lt;B, Q&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_output_stream_write_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mut_override(buffer_ptr),
-                count,
-                io_priority.into_glib(),
-                gcancellable.<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#66">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#87">buffer_ptr</a>),
+                <a href="#87">count</a>,
+                <a href="#68">io_priority</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#83">gcancellable</a>.<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#114">callback</a>),
+                Box::into_raw(<a href="#84">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
@@ -1225,33 +1235,33 @@
     /// location to store the number of bytes that was
     ///  written to the stream
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_output_stream_write_all&quot;</span>)]
-    </span><span class="kw">fn </span>write_all&lt;C: IsA&lt;Cancellable&gt;&gt;(
+    </span><span class="kw">fn </span>write_all&lt;C: IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        buffer: <span class="kw-2">&amp;</span>[u8],
+        buffer: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>],
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), glib::Error&gt; {
-        <span class="kw">let </span>cancellable = cancellable.map(|c| c.as_ref());
-        <span class="kw">let </span>gcancellable = cancellable.to_glib_none();
-        <span class="kw">let </span>count = buffer.len();
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>cancellable = <a href="#163">cancellable</a>.map(|c| <a href="#165">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#165">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>();
+        <span class="kw">let </span>count = <a href="#162">buffer</a>.len();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let _ </span>= ffi::g_output_stream_write_all(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                buffer.to_glib_none().<span class="number">0</span>,
-                count,
-                bytes_written.as_mut_ptr(),
-                gcancellable.<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#161">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#162">buffer</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#167">count</a>,
+                <a href="#169">bytes_written</a>.as_mut_ptr(),
+                <a href="#166">gcancellable</a>.<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#170">error</a>,
             );
 
-            <span class="kw">let </span>bytes_written = bytes_written.assume_init();
+            <span class="kw">let </span>bytes_written = <a href="#169">bytes_written</a>.assume_init();
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((bytes_written, <span class="prelude-val">None</span>))
+                <span class="prelude-val">Ok</span>((<a href="#180">bytes_written</a>, <span class="prelude-val">None</span>))
             } <span class="kw">else if </span>bytes_written != <span class="number">0 </span>{
-                <span class="prelude-val">Ok</span>((bytes_written, <span class="prelude-val">Some</span>(from_glib_full(error))))
+                <span class="prelude-val">Ok</span>((<a href="#180">bytes_written</a>, <span class="prelude-val">Some</span>(from_glib_full(<a href="#170">error</a>))))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#170">error</a>))
             }
         }
     }
@@ -1281,113 +1291,113 @@
     /// callback to call when the request is satisfied
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_output_stream_write_all_async&quot;</span>)]
     </span><span class="kw">fn </span>write_all_async&lt;
-        B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-        Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (B, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
-        C: IsA&lt;Cancellable&gt;,
+        B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+        Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
+        C: IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
-        io_priority: Priority,
+        io_priority: <a href="../../glib/source/struct.Priority.html">Priority</a>,
         cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span>C&gt;,
         callback: Q,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#226">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#227">is_main_context_owner</a>)
+            .then(|| <a href="#226">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
-        <span class="kw">let </span>cancellable = cancellable.map(|c| c.as_ref());
-        <span class="kw">let </span>gcancellable = cancellable.to_glib_none();
+        <span class="kw">let </span>cancellable = <a href="#223">cancellable</a>.map(|c| <a href="#236">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#236">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>();
         <span class="kw">let </span>user_data: Box&lt;(glib::thread_guard::ThreadGuard&lt;Q&gt;, B)&gt; =
-            Box::new((glib::thread_guard::ThreadGuard::new(callback), buffer));
+            Box::new((glib::thread_guard::ThreadGuard::new(<a href="#224">callback</a>), <a href="#221">buffer</a>));
         <span class="comment">// Need to do this after boxing as the contents pointer might change by moving into the box
         </span><span class="kw">let </span>(count, buffer_ptr) = {
-            <span class="kw">let </span>buffer = <span class="kw-2">&amp;</span>user_data.<span class="number">1</span>;
-            <span class="kw">let </span>slice = buffer.as_ref();
-            (slice.len(), slice.as_ptr())
+            <span class="kw">let </span>buffer = <span class="kw-2">&amp;</span><a href="#238">user_data</a>.<span class="number">1</span>;
+            <span class="kw">let </span>slice = <a href="#242">buffer</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
+            (<a href="#243">slice</a>.len(), <a href="#243">slice</a>.as_ptr())
         };
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>write_all_async_trampoline&lt;
-            B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-            Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (B, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+            B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+            Q: FnOnce(<span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span>ffi::GAsyncResult,
             user_data: glib::ffi::gpointer,
         ) {
             <span class="kw">let </span>user_data: Box&lt;(glib::thread_guard::ThreadGuard&lt;Q&gt;, B)&gt; =
-                Box::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>(callback, buffer) = <span class="kw-2">*</span>user_data;
-            <span class="kw">let </span>callback = callback.into_inner();
+                Box::from_raw(<a href="#252">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>(callback, buffer) = <span class="kw-2">*</span><a href="#254">user_data</a>;
+            <span class="kw">let </span>callback = <a href="#256">callback</a>.into_inner();
 
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
             <span class="kw">let _ </span>= ffi::g_output_stream_write_all_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                bytes_written.as_mut_ptr(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#250">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#251">res</a>,
+                <a href="#260">bytes_written</a>.as_mut_ptr(),
+                <span class="kw-2">&amp;mut </span><a href="#259">error</a>,
             );
-            <span class="kw">let </span>bytes_written = bytes_written.assume_init();
+            <span class="kw">let </span>bytes_written = <a href="#260">bytes_written</a>.assume_init();
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((buffer, bytes_written, <span class="prelude-val">None</span>))
+                <span class="prelude-val">Ok</span>((<a href="#256">buffer</a>, <a href="#267">bytes_written</a>, <span class="prelude-val">None</span>))
             } <span class="kw">else if </span>bytes_written != <span class="number">0 </span>{
-                <span class="prelude-val">Ok</span>((buffer, bytes_written, from_glib_full(error)))
+                <span class="prelude-val">Ok</span>((<a href="#256">buffer</a>, <a href="#267">bytes_written</a>, from_glib_full(<a href="#259">error</a>)))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>((buffer, from_glib_full(error)))
+                <span class="prelude-val">Err</span>((<a href="#256">buffer</a>, from_glib_full(<a href="#259">error</a>)))
             };
-            callback(result);
+            <a href="#257">callback</a>(<a href="#268">result</a>);
         }
         <span class="kw">let </span>callback = write_all_async_trampoline::&lt;B, Q&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_output_stream_write_all_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mut_override(buffer_ptr),
-                count,
-                io_priority.into_glib(),
-                gcancellable.<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#220">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#241">buffer_ptr</a>),
+                <a href="#241">count</a>,
+                <a href="#222">io_priority</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#237">gcancellable</a>.<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#277">callback</a>),
+                Box::into_raw(<a href="#238">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
-    <span class="kw">fn </span>write_future&lt;B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    <span class="kw">fn </span>write_future&lt;B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
-        io_priority: Priority,
-    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(B, usize), (B, glib::Error)&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;
+        io_priority: <a href="../../glib/source/struct.Priority.html">Priority</a>,
+    ) -&gt; Pin&lt;Box&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt;
     {
         Box::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#292">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.write_async(buffer, io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#299">obj</a>.<a href="#61-126">write_async</a>(<a href="#293">buffer</a>, <a href="#294">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#299">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#299">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#300">res</a>);
                 });
             },
         ))
     }
 
-    <span class="kw">fn </span>write_all_future&lt;B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    <span class="kw">fn </span>write_all_future&lt;B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         buffer: B,
-        io_priority: Priority,
+        io_priority: <a href="../../glib/source/struct.Priority.html">Priority</a>,
     ) -&gt; Pin&lt;
         Box&lt;
             <span class="kw">dyn </span>std::future::Future&lt;
-                    Output = <span class="prelude-ty">Result</span>&lt;(B, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (B, glib::Error)&gt;,
+                    Output = <span class="prelude-ty">Result</span>&lt;(B, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (B, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;,
                 &gt; + <span class="lifetime">&#39;static</span>,
         &gt;,
     &gt; {
         Box::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#308">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.write_all_async(buffer, io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#320">obj</a>.<a href="#215-289">write_all_async</a>(<a href="#309">buffer</a>, <a href="#310">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#320">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#320">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#321">res</a>);
                 });
             },
         ))
@@ -1433,25 +1443,25 @@
     #[doc(alias = <span class="string">&quot;g_output_stream_writev&quot;</span>)]
     </span><span class="kw">fn </span>writev(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        vectors: <span class="kw-2">&amp;</span>[OutputVector],
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;usize, glib::Error&gt; {
+        vectors: <span class="kw-2">&amp;</span>[<a href="socket.rs.html#256-259">OutputVector</a>],
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
 
             ffi::g_output_stream_writev(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                vectors.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                vectors.len(),
-                bytes_written.as_mut_ptr(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#367">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#368">vectors</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#368">vectors</a>.len(),
+                <a href="#373">bytes_written</a>.as_mut_ptr(),
+                <a href="#369">cancellable</a>.map(|p| <a href="#380">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#372">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(bytes_written.assume_init())
+                <span class="prelude-val">Ok</span>(<a href="#373">bytes_written</a>.assume_init())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#372">error</a>))
             }
         }
     }
@@ -1498,50 +1508,50 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_output_stream_writev_async&quot;</span>)]
     </span><span class="kw">fn </span>writev_async&lt;
-        B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize), (Vec&lt;B&gt;, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+        B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">&#39;static</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#442">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#443">is_main_context_owner</a>)
+            .then(|| <a href="#442">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
-        <span class="kw">let </span>cancellable = cancellable.map(|c| c.as_ref());
-        <span class="kw">let </span>gcancellable = cancellable.to_glib_none();
-        <span class="kw">let </span>buffers = vectors.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="kw">let </span>vectors = buffers
+        <span class="kw">let </span>cancellable = <a href="#439">cancellable</a>.map(|c| <a href="#452">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#452">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>();
+        <span class="kw">let </span>buffers = <a href="#437">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">let </span>vectors = <a href="#454">buffers</a>
             .iter()
-            .map(|v| ffi::GOutputVector {
-                buffer: v.as_ref().as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                size: v.as_ref().len(),
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| ffi::GOutputVector {
+                buffer: <a href="#457">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                size: <a href="#457">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().len(),
             })
-            .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="kw">let </span>vectors_ptr = vectors.as_ptr();
-        <span class="kw">let </span>num_vectors = vectors.len();
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">let </span>vectors_ptr = <a href="#455">vectors</a>.as_ptr();
+        <span class="kw">let </span>num_vectors = <a href="#455">vectors</a>.len();
         <span class="kw">let </span>user_data: Box&lt;(
             glib::thread_guard::ThreadGuard&lt;P&gt;,
             Vec&lt;B&gt;,
             Vec&lt;ffi::GOutputVector&gt;,
         )&gt; = Box::new((
-            glib::thread_guard::ThreadGuard::new(callback),
-            buffers,
-            vectors,
+            glib::thread_guard::ThreadGuard::new(<a href="#440">callback</a>),
+            <a href="#454">buffers</a>,
+            <a href="#455">vectors</a>,
         ));
 
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>writev_async_trampoline&lt;
-            B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize), (Vec&lt;B&gt;, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+            B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span>ffi::GAsyncResult,
@@ -1551,57 +1561,57 @@
                 glib::thread_guard::ThreadGuard&lt;P&gt;,
                 Vec&lt;B&gt;,
                 Vec&lt;ffi::GOutputVector&gt;,
-            )&gt; = Box::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>(callback, buffers, <span class="kw">_</span>) = <span class="kw-2">*</span>user_data;
-            <span class="kw">let </span>callback = callback.into_inner();
+            )&gt; = Box::from_raw(<a href="#480">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>(callback, buffers, <span class="kw">_</span>) = <span class="kw-2">*</span><a href="#482">user_data</a>;
+            <span class="kw">let </span>callback = <a href="#487">callback</a>.into_inner();
 
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
             ffi::g_output_stream_writev_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                bytes_written.as_mut_ptr(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#478">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#479">res</a>,
+                <a href="#491">bytes_written</a>.as_mut_ptr(),
+                <span class="kw-2">&amp;mut </span><a href="#490">error</a>,
             );
-            <span class="kw">let </span>bytes_written = bytes_written.assume_init();
+            <span class="kw">let </span>bytes_written = <a href="#491">bytes_written</a>.assume_init();
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((buffers, bytes_written))
+                <span class="prelude-val">Ok</span>((<a href="#487">buffers</a>, <a href="#498">bytes_written</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>((buffers, from_glib_full(error)))
+                <span class="prelude-val">Err</span>((<a href="#487">buffers</a>, from_glib_full(<a href="#490">error</a>)))
             };
-            callback(result);
+            <a href="#488">callback</a>(<a href="#499">result</a>);
         }
         <span class="kw">let </span>callback = writev_async_trampoline::&lt;B, P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_output_stream_writev_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                vectors_ptr,
-                num_vectors,
-                io_priority.into_glib(),
-                gcancellable.<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#436">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#462">vectors_ptr</a>,
+                <a href="#463">num_vectors</a>,
+                <a href="#438">io_priority</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#453">gcancellable</a>.<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#506">callback</a>),
+                Box::into_raw(<a href="#464">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>writev_future&lt;B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>writev_future&lt;B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">&#39;static</span>,
-        io_priority: glib::Priority,
+        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; Pin&lt;
         Box&lt;
-            <span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize), (Vec&lt;B&gt;, glib::Error)&gt;&gt;
+            <span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;&gt;
                 + <span class="lifetime">&#39;static</span>,
         &gt;,
     &gt; {
         Box::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#523">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.writev_async(vectors, io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#534">obj</a>.<a href="#432-518">writev_async</a>(<a href="#524">vectors</a>, <a href="#525">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#534">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#534">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#535">res</a>);
                 });
             },
         ))
@@ -1646,28 +1656,28 @@
     #[doc(alias = <span class="string">&quot;g_output_stream_writev_all&quot;</span>)]
     </span><span class="kw">fn </span>writev_all(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        vectors: <span class="kw-2">&amp;</span>[OutputVector],
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), glib::Error&gt; {
+        vectors: <span class="kw-2">&amp;</span>[<a href="socket.rs.html#256-259">OutputVector</a>],
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), <a href="../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
 
             ffi::g_output_stream_writev_all(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mut_override(vectors.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
-                vectors.len(),
-                bytes_written.as_mut_ptr(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#580">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#581">vectors</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>),
+                <a href="#581">vectors</a>.len(),
+                <a href="#586">bytes_written</a>.as_mut_ptr(),
+                <a href="#582">cancellable</a>.map(|p| <a href="#593">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#585">error</a>,
             );
-            <span class="kw">let </span>bytes_written = bytes_written.assume_init();
+            <span class="kw">let </span>bytes_written = <a href="#586">bytes_written</a>.assume_init();
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((bytes_written, <span class="prelude-val">None</span>))
+                <span class="prelude-val">Ok</span>((<a href="#596">bytes_written</a>, <span class="prelude-val">None</span>))
             } <span class="kw">else if </span>bytes_written != <span class="number">0 </span>{
-                <span class="prelude-val">Ok</span>((bytes_written, <span class="prelude-val">Some</span>(from_glib_full(error))))
+                <span class="prelude-val">Ok</span>((<a href="#596">bytes_written</a>, <span class="prelude-val">Some</span>(from_glib_full(<a href="#585">error</a>))))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#585">error</a>))
             }
         }
     }
@@ -1700,50 +1710,50 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_output_stream_writev_all_async&quot;</span>)]
     </span><span class="kw">fn </span>writev_all_async&lt;
-        B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (Vec&lt;B&gt;, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+        B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+        P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">&#39;static</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="auto/cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#644">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#645">is_main_context_owner</a>)
+            .then(|| <a href="#644">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
-        <span class="kw">let </span>cancellable = cancellable.map(|c| c.as_ref());
-        <span class="kw">let </span>gcancellable = cancellable.to_glib_none();
-        <span class="kw">let </span>buffers = vectors.into_iter().collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="kw">let </span>vectors = buffers
+        <span class="kw">let </span>cancellable = <a href="#641">cancellable</a>.map(|c| <a href="#654">c</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>());
+        <span class="kw">let </span>gcancellable = <a href="#654">cancellable</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>();
+        <span class="kw">let </span>buffers = <a href="#639">vectors</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">let </span>vectors = <a href="#656">buffers</a>
             .iter()
-            .map(|v| ffi::GOutputVector {
-                buffer: v.as_ref().as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                size: v.as_ref().len(),
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| ffi::GOutputVector {
+                buffer: <a href="#659">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                size: <a href="#659">v</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().len(),
             })
-            .collect::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="kw">let </span>vectors_ptr = vectors.as_ptr();
-        <span class="kw">let </span>num_vectors = vectors.len();
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
+        <span class="kw">let </span>vectors_ptr = <a href="#657">vectors</a>.as_ptr();
+        <span class="kw">let </span>num_vectors = <a href="#657">vectors</a>.len();
         <span class="kw">let </span>user_data: Box&lt;(
             glib::thread_guard::ThreadGuard&lt;P&gt;,
             Vec&lt;B&gt;,
             Vec&lt;ffi::GOutputVector&gt;,
         )&gt; = Box::new((
-            glib::thread_guard::ThreadGuard::new(callback),
-            buffers,
-            vectors,
+            glib::thread_guard::ThreadGuard::new(<a href="#642">callback</a>),
+            <a href="#656">buffers</a>,
+            <a href="#657">vectors</a>,
         ));
 
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>writev_all_async_trampoline&lt;
-            B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>,
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (Vec&lt;B&gt;, glib::Error)&gt;) + <span class="lifetime">&#39;static</span>,
+            B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span>ffi::GAsyncResult,
@@ -1753,60 +1763,60 @@
                 glib::thread_guard::ThreadGuard&lt;P&gt;,
                 Vec&lt;B&gt;,
                 Vec&lt;ffi::GOutputVector&gt;,
-            )&gt; = Box::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>(callback, buffers, <span class="kw">_</span>) = <span class="kw-2">*</span>user_data;
-            <span class="kw">let </span>callback = callback.into_inner();
+            )&gt; = Box::from_raw(<a href="#682">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>(callback, buffers, <span class="kw">_</span>) = <span class="kw-2">*</span><a href="#684">user_data</a>;
+            <span class="kw">let </span>callback = <a href="#689">callback</a>.into_inner();
 
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span><span class="kw-2">mut </span>bytes_written = mem::MaybeUninit::uninit();
             ffi::g_output_stream_writev_all_finish(
-                _source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
-                res,
-                bytes_written.as_mut_ptr(),
-                <span class="kw-2">&amp;mut </span>error,
+                <a href="#680">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#681">res</a>,
+                <a href="#693">bytes_written</a>.as_mut_ptr(),
+                <span class="kw-2">&amp;mut </span><a href="#692">error</a>,
             );
-            <span class="kw">let </span>bytes_written = bytes_written.assume_init();
+            <span class="kw">let </span>bytes_written = <a href="#693">bytes_written</a>.assume_init();
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>((buffers, bytes_written, <span class="prelude-val">None</span>))
+                <span class="prelude-val">Ok</span>((<a href="#689">buffers</a>, <a href="#700">bytes_written</a>, <span class="prelude-val">None</span>))
             } <span class="kw">else if </span>bytes_written != <span class="number">0 </span>{
-                <span class="prelude-val">Ok</span>((buffers, bytes_written, from_glib_full(error)))
+                <span class="prelude-val">Ok</span>((<a href="#689">buffers</a>, <a href="#700">bytes_written</a>, from_glib_full(<a href="#692">error</a>)))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>((buffers, from_glib_full(error)))
+                <span class="prelude-val">Err</span>((<a href="#689">buffers</a>, from_glib_full(<a href="#692">error</a>)))
             };
-            callback(result);
+            <a href="#690">callback</a>(<a href="#701">result</a>);
         }
         <span class="kw">let </span>callback = writev_all_async_trampoline::&lt;B, P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_output_stream_writev_all_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mut_override(vectors_ptr),
-                num_vectors,
-                io_priority.into_glib(),
-                gcancellable.<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#638">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                mut_override(<a href="#664">vectors_ptr</a>),
+                <a href="#665">num_vectors</a>,
+                <a href="#640">io_priority</a>.<a href="../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#655">gcancellable</a>.<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#710">callback</a>),
+                Box::into_raw(<a href="#666">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>writev_all_future&lt;B: AsRef&lt;[u8]&gt; + Send + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>writev_all_future&lt;B: AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         vectors: <span class="kw">impl </span>IntoIterator&lt;Item = B&gt; + <span class="lifetime">&#39;static</span>,
-        io_priority: glib::Priority,
+        io_priority: <a href="../../glib/source/struct.Priority.html">glib::Priority</a>,
     ) -&gt; Pin&lt;
         Box&lt;
             <span class="kw">dyn </span>std::future::Future&lt;
-                    Output = <span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, usize, <span class="prelude-ty">Option</span>&lt;glib::Error&gt;), (Vec&lt;B&gt;, glib::Error)&gt;,
+                    Output = <span class="prelude-ty">Result</span>&lt;(Vec&lt;B&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>, <span class="prelude-ty">Option</span>&lt;<a href="../../glib/error/struct.Error.html">glib::Error</a>&gt;), (Vec&lt;B&gt;, <a href="../../glib/error/struct.Error.html">glib::Error</a>)&gt;,
                 &gt; + <span class="lifetime">&#39;static</span>,
         &gt;,
     &gt; {
         Box::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#727">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.writev_all_async(vectors, io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#739">obj</a>.<a href="#634-722">writev_all_async</a>(<a href="#728">vectors</a>, <a href="#729">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#739">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#739">send</a>.<a href="gio_future.rs.html#28-30">resolve</a>(<a href="#740">res</a>);
                 });
             },
         ))
@@ -1814,75 +1824,75 @@
 
     <span class="kw">fn </span>into_write(<span class="self">self</span>) -&gt; OutputStreamWrite&lt;<span class="self">Self</span>&gt;
     <span class="kw">where
-        </span><span class="self">Self</span>: IsA&lt;OutputStream&gt;,
+        </span><span class="self">Self</span>: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt;,
     {
-        OutputStreamWrite(<span class="self">self</span>)
+        <a href="#758">OutputStreamWrite</a>(<a class="self" href="#747">self</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;OutputStream&gt;&gt; OutputStreamExtManual <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt;&gt; <a href="#16-753">OutputStreamExtManual</a> <span class="kw">for </span>O {}
 
 <span class="attr">#[derive(Debug)]
-</span><span class="kw">pub struct </span>OutputStreamWrite&lt;T: IsA&lt;OutputStream&gt;&gt;(T);
+</span><span class="kw">pub struct </span><a href="../../gio/struct.OutputStreamWrite.html">OutputStreamWrite</a>&lt;T: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt;&gt;(T);
 
-<span class="kw">impl</span>&lt;T: IsA&lt;OutputStream&gt;&gt; OutputStreamWrite&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt;&gt; OutputStreamWrite&lt;T&gt; {
     <span class="kw">pub fn </span>into_output_stream(<span class="self">self</span>) -&gt; T {
-        <span class="self">self</span>.<span class="number">0
+        <a class="self" href="#761">self</a>.<span class="number">0
     </span>}
 
     <span class="kw">pub fn </span>output_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>T {
-        <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#765">self</a>.<span class="number">0
     </span>}
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;OutputStream&gt;&gt; io::Write <span class="kw">for </span>OutputStreamWrite&lt;T&gt; {
-    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;usize&gt; {
-        <span class="kw">let </span>result = <span class="self">self
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/std/io/trait.Write.html">io::Write</a> <span class="kw">for </span>OutputStreamWrite&lt;T&gt; {
+    <span class="kw">fn </span>write(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+        <span class="kw">let </span>result = <span class="self"><a href="#771">self</a>
             </span>.<span class="number">0
-            </span>.as_ref()
-            .write(buf, <span class="kw">crate</span>::Cancellable::NONE)
-            .map(|size| size <span class="kw">as </span>usize);
-        to_std_io_result(result)
+            </span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
+            .<a href="auto/output_stream.rs.html#534-555">write</a>(<a href="#771">buf</a>, <span class="kw">crate</span>::Cancellable::NONE)
+            .map(|size| <a href="#776">size</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>);
+        <a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#772">result</a>)
     }
 
-    <span class="kw">fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[u8]) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">let </span>result = <span class="self">self
+    <span class="kw">fn </span>write_all(<span class="kw-2">&amp;mut </span><span class="self">self</span>, buf: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]) -&gt; io::Result&lt;()&gt; {
+        <span class="kw">let </span>result = <span class="self"><a href="#780">self</a>
             </span>.<span class="number">0
-            </span>.as_ref()
-            .write_all(buf, <span class="kw">crate</span>::Cancellable::NONE)
-            .and_then(|(<span class="kw">_</span>, e)| e.map(<span class="prelude-val">Err</span>).unwrap_or(<span class="prelude-val">Ok</span>(())));
-        to_std_io_result(result)
+            </span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()
+            .<a href="#160-189">write_all</a>(<a href="#780">buf</a>, <span class="kw">crate</span>::Cancellable::NONE)
+            .and_then(|(<span class="kw">_</span>, e)| <a href="#785">e</a>.map(<span class="prelude-val">Err</span>).unwrap_or(<span class="prelude-val">Ok</span>(())));
+        <a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#781">result</a>)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
-    </span><span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;usize&gt; {
-        <span class="kw">let </span>vectors = bufs
+    </span><span class="kw">fn </span>write_vectored(<span class="kw-2">&amp;mut </span><span class="self">self</span>, bufs: <span class="kw-2">&amp;</span>[io::IoSlice&lt;<span class="lifetime">&#39;_</span>&gt;]) -&gt; io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>&gt; {
+        <span class="kw">let </span>vectors = <a href="#791">bufs</a>
             .iter()
-            .map(|v| OutputVector::new(v))
-            .collect::&lt;smallvec::SmallVec&lt;[<span class="kw">_</span>; <span class="number">2</span>]&gt;&gt;();
-        <span class="kw">let </span>result = <span class="self">self</span>.<span class="number">0</span>.as_ref().writev(<span class="kw-2">&amp;</span>vectors, <span class="kw">crate</span>::Cancellable::NONE);
-        to_std_io_result(result)
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| OutputVector::new(<a href="#794">v</a>))
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;smallvec::SmallVec&lt;[<span class="kw">_</span>; <span class="number">2</span>]&gt;&gt;();
+        <span class="kw">let </span>result = <a class="self" href="#791">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="#366-389">writev</a>(<span class="kw-2">&amp;</span><a href="#792">vectors</a>, <span class="kw">crate</span>::Cancellable::NONE);
+        <a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#796">result</a>)
     }
 
     <span class="kw">fn </span>flush(<span class="kw-2">&amp;mut </span><span class="self">self</span>) -&gt; io::Result&lt;()&gt; {
-        <span class="kw">let </span>gio_result = <span class="self">self</span>.<span class="number">0</span>.as_ref().flush(<span class="kw">crate</span>::Cancellable::NONE);
-        to_std_io_result(gio_result)
+        <span class="kw">let </span>gio_result = <a class="self" href="#800">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="auto/output_stream.rs.html#207-222">flush</a>(<span class="kw">crate</span>::Cancellable::NONE);
+        <a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#801">gio_result</a>)
     }
 }
 
-<span class="kw">impl</span>&lt;T: IsA&lt;OutputStream&gt; + IsA&lt;Seekable&gt;&gt; io::Seek <span class="kw">for </span>OutputStreamWrite&lt;T&gt; {
-    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: io::SeekFrom) -&gt; io::Result&lt;u64&gt; {
-        <span class="kw">let </span>(pos, type_) = <span class="kw">match </span>pos {
-            io::SeekFrom::Start(pos) =&gt; (pos <span class="kw">as </span>i64, glib::SeekType::Set),
-            io::SeekFrom::End(pos) =&gt; (pos, glib::SeekType::End),
-            io::SeekFrom::Current(pos) =&gt; (pos, glib::SeekType::Cur),
+<span class="kw">impl</span>&lt;T: IsA&lt;<a href="auto/output_stream.rs.html#9-33">OutputStream</a>&gt; + IsA&lt;<a href="auto/seekable.rs.html#9-34">Seekable</a>&gt;&gt; <a href="https://doc.rust-lang.org/nightly/std/io/trait.Seek.html">io::Seek</a> <span class="kw">for </span>OutputStreamWrite&lt;T&gt; {
+    <span class="kw">fn </span>seek(<span class="kw-2">&amp;mut </span><span class="self">self</span>, pos: <a href="https://doc.rust-lang.org/nightly/std/io/enum.SeekFrom.html">io::SeekFrom</a>) -&gt; io::Result&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>&gt; {
+        <span class="kw">let </span>(pos, type_) = <span class="kw">match </span><a href="#807">pos</a> {
+            io::SeekFrom::Start(pos) =&gt; (<a href="#809">pos</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i64.html">i64</a>, glib::SeekType::Set),
+            io::SeekFrom::End(pos) =&gt; (<a href="#810">pos</a>, glib::SeekType::End),
+            io::SeekFrom::Current(pos) =&gt; (<a href="#811">pos</a>, glib::SeekType::Cur),
         };
-        <span class="kw">let </span>seekable: <span class="kw-2">&amp;</span>Seekable = <span class="self">self</span>.<span class="number">0</span>.as_ref();
-        <span class="kw">let </span>gio_result = seekable
-            .seek(pos, type_, <span class="kw">crate</span>::Cancellable::NONE)
-            .map(|<span class="kw">_</span>| seekable.tell() <span class="kw">as </span>u64);
-        to_std_io_result(gio_result)
+        <span class="kw">let </span>seekable: <span class="kw-2">&amp;</span><a href="auto/seekable.rs.html#9-34">Seekable</a> = <a class="self" href="#807">self</a>.<span class="number">0</span>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
+        <span class="kw">let </span>gio_result = <a href="#813">seekable</a>
+            .<a href="auto/seekable.rs.html#99-121">seek</a>(<a href="#808">pos</a>, <a href="#808">type_</a>, <span class="kw">crate</span>::Cancellable::NONE)
+            .map(|<span class="kw">_</span>| <a href="#813">seekable</a>.<a href="auto/seekable.rs.html#130-132">tell</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u64.html">u64</a>);
+        <a href="error.rs.html#31-36">to_std_io_result</a>(<a href="#814">gio_result</a>)
     }
 }
 

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/lib.rs`."><title>lib.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1150,29 +1150,46 @@
 <a href="#1077" id="1077">1077</a>
 <a href="#1078" id="1078">1078</a>
 <a href="#1079" id="1079">1079</a>
+<a href="#1080" id="1080">1080</a>
+<a href="#1081" id="1081">1081</a>
+<a href="#1082" id="1082">1082</a>
+<a href="#1083" id="1083">1083</a>
+<a href="#1084" id="1084">1084</a>
+<a href="#1085" id="1085">1085</a>
+<a href="#1086" id="1086">1086</a>
+<a href="#1087" id="1087">1087</a>
+<a href="#1088" id="1088">1088</a>
+<a href="#1089" id="1089">1089</a>
+<a href="#1090" id="1090">1090</a>
+<a href="#1091" id="1091">1091</a>
+<a href="#1092" id="1092">1092</a>
+<a href="#1093" id="1093">1093</a>
+<a href="#1094" id="1094">1094</a>
+<a href="#1095" id="1095">1095</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
-</span><span class="kw">mod </span>boxed_derive;
-<span class="kw">mod </span>clone;
-<span class="kw">mod </span>closure;
-<span class="kw">mod </span>downgrade_derive;
-<span class="kw">mod </span>enum_derive;
-<span class="kw">mod </span>error_domain_derive;
-<span class="kw">mod </span>flags_attribute;
-<span class="kw">mod </span>object_interface_attribute;
-<span class="kw">mod </span>object_subclass_attribute;
-<span class="kw">mod </span>properties;
-<span class="kw">mod </span>shared_boxed_derive;
-<span class="kw">mod </span>value_delegate_derive;
-<span class="kw">mod </span>variant_derive;
+</span><span class="kw">mod </span><a href="boxed_derive.rs.html#3-284">boxed_derive</a>;
+<span class="kw">mod </span><a href="clone.rs.html#3-951">clone</a>;
+<span class="kw">mod </span><a href="closure.rs.html#3-278">closure</a>;
+<span class="kw">mod </span><a href="derived_properties_attribute.rs.html#3-76">derived_properties_attribute</a>;
+<span class="kw">mod </span><a href="downgrade_derive/mod.rs.html#3-22">downgrade_derive</a>;
+<span class="kw">mod </span><a href="enum_derive.rs.html#3-202">enum_derive</a>;
+<span class="kw">mod </span><a href="error_domain_derive.rs.html#3-64">error_domain_derive</a>;
+<span class="kw">mod </span><a href="flags_attribute.rs.html#3-233">flags_attribute</a>;
+<span class="kw">mod </span><a href="object_interface_attribute.rs.html#3-72">object_interface_attribute</a>;
+<span class="kw">mod </span><a href="object_subclass_attribute.rs.html#3-164">object_subclass_attribute</a>;
+<span class="kw">mod </span><a href="properties.rs.html#3-689">properties</a>;
+<span class="kw">mod </span><a href="shared_boxed_derive.rs.html#3-319">shared_boxed_derive</a>;
+<span class="kw">mod </span><a href="value_delegate_derive.rs.html#3-200">value_delegate_derive</a>;
+<span class="kw">mod </span><a href="variant_derive.rs.html#3-688">variant_derive</a>;
 
-<span class="kw">mod </span>utils;
+<span class="kw">mod </span><a href="utils.rs.html#3-276">utils</a>;
 
-<span class="kw">use </span>flags_attribute::AttrInput;
-<span class="kw">use </span>proc_macro::TokenStream;
+<span class="kw">use </span><a href="flags_attribute.rs.html#14-16">flags_attribute::AttrInput</a>;
+<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
 <span class="kw">use </span>proc_macro_error::proc_macro_error;
-<span class="kw">use </span>syn::{parse_macro_input, DeriveInput};
-<span class="kw">use </span>utils::{parse_nested_meta_items_from_stream, NestedMetaItem};
+<span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.26/syn/macro.parse_macro_input.html">parse_macro_input</a>, <a href="https://docs.rs/syn/2.0.26/syn/derive/struct.DeriveInput.html">DeriveInput</a>};
+<span class="kw">use </span>utils::{<a href="utils.rs.html#136-148">parse_nested_meta_items_from_stream</a>, <a href="utils.rs.html#19-25">NestedMetaItem</a>};
 
 <span class="doccomment">/// Macro for passing variables as strong or weak references into a closure.
 ///
@@ -1435,7 +1452,7 @@
 /// ```
 </span><span class="attr">#[proc_macro]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>clone(item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/macro.clone.html">clone</a>(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     clone::clone_inner(item)
 }
 
@@ -1575,7 +1592,7 @@
 /// ```
 </span><span class="attr">#[proc_macro]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>closure(item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/macro.closure.html">closure</a>(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     closure::closure_inner(item, <span class="string">&quot;new&quot;</span>)
 }
 
@@ -1586,7 +1603,7 @@
 /// [`Closure::new_local`]: ../glib/closure/struct.Closure.html#method.new_local
 </span><span class="attr">#[proc_macro]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>closure_local(item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/macro.closure_local.html">closure_local</a>(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     closure::closure_inner(item, <span class="string">&quot;new_local&quot;</span>)
 }
 
@@ -1613,7 +1630,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_derive(Enum, attributes(enum_type, enum_value))]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>enum_derive(input: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Enum.html">enum_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
     <span class="kw">let </span>gen = enum_derive::impl_enum(<span class="kw-2">&amp;</span>input);
     gen.into()
@@ -1651,7 +1668,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_attribute]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>flags(attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/attr.flags.html">flags</a>(attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span><span class="kw-2">mut </span>name = NestedMetaItem::&lt;syn::LitStr&gt;::new(<span class="string">&quot;name&quot;</span>)
         .required()
         .value_required();
@@ -1688,7 +1705,7 @@
 /// [`ErrorDomain`]: ../glib/error/trait.ErrorDomain.html
 </span><span class="attr">#[proc_macro_derive(ErrorDomain, attributes(error_domain))]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>error_domain_derive(input: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ErrorDomain.html">error_domain_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
     <span class="kw">let </span>gen = error_domain_derive::impl_error_domain(<span class="kw-2">&amp;</span>input);
     gen.into()
@@ -1717,7 +1734,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_derive(Boxed, attributes(boxed_type))]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>boxed_derive(input: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Boxed.html">boxed_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
     <span class="kw">let </span>gen = boxed_derive::impl_boxed(<span class="kw-2">&amp;</span>input);
     gen.into()
@@ -1751,7 +1768,7 @@
 /// [`glib::Value`]: ../glib/value/struct.Value.html
 </span><span class="attr">#[proc_macro_derive(SharedBoxed, attributes(shared_boxed_type))]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>shared_boxed_derive(input: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.SharedBoxed.html">shared_boxed_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
     <span class="kw">let </span>gen = shared_boxed_derive::impl_shared_boxed(<span class="kw-2">&amp;</span>input);
     gen.into()
@@ -1788,7 +1805,7 @@
 /// [`ObjectSubclass`]: ../glib/subclass/types/trait.ObjectSubclass.html
 </span><span class="attr">#[proc_macro_attribute]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>object_subclass(_attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/attr.object_subclass.html">object_subclass</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">use </span>proc_macro_error::abort_call_site;
     <span class="kw">match </span>syn::parse::&lt;syn::ItemImpl&gt;(item) {
         <span class="prelude-val">Ok</span>(input) =&gt; object_subclass_attribute::impl_object_subclass(<span class="kw-2">&amp;</span>input).into(),
@@ -1813,7 +1830,7 @@
 /// [`ObjectInterface`]: ../glib/subclass/interface/trait.ObjectInterface.html
 </span><span class="attr">#[proc_macro_attribute]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>object_interface(_attr: TokenStream, item: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/attr.object_interface.html">object_interface</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">use </span>proc_macro_error::abort_call_site;
     <span class="kw">match </span>syn::parse::&lt;syn::ItemImpl&gt;(item) {
         <span class="prelude-val">Ok</span>(input) =&gt; object_interface_attribute::impl_object_interface(<span class="kw-2">&amp;</span>input).into(),
@@ -1881,9 +1898,9 @@
 /// [`glib::clone::Downgrade`]: ../glib/clone/trait.Downgrade.html
 /// [`glib::clone::Upgrade`]: ../glib/clone/trait.Upgrade.html
 </span><span class="attr">#[proc_macro_derive(Downgrade)]
-</span><span class="kw">pub fn </span>downgrade(input: TokenStream) -&gt; TokenStream {
-    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
-    downgrade_derive::impl_downgrade(input)
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Downgrade.html">downgrade</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>DeriveInput);
+    <a href="downgrade_derive/mod.rs.html#10-22">downgrade_derive::impl_downgrade</a>(<a href="#734">input</a>)
 }
 
 <span class="doccomment">/// Derive macro for serializing/deserializing custom structs/enums as [`glib::Variant`]s.
@@ -1992,25 +2009,25 @@
 /// [kebab case]: https://docs.rs/heck/0.4.0/heck/trait.ToKebabCase.html
 </span><span class="attr">#[proc_macro_derive(Variant, attributes(variant_enum))]
 #[proc_macro_error]
-</span><span class="kw">pub fn </span>variant_derive(input: TokenStream) -&gt; TokenStream {
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Variant.html">variant_derive</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
     <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>DeriveInput);
     variant_derive::impl_variant(input)
 }
 <span class="attr">#[proc_macro]
-</span><span class="kw">pub fn </span>cstr_bytes(item: TokenStream) -&gt; TokenStream {
-    syn::parse::Parser::parse2(
+</span><span class="kw">pub fn </span><a href="../../glib_macros/macro.cstr_bytes.html">cstr_bytes</a>(item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+    <a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parser.html">syn::parse::Parser::parse2</a>(
         |stream: syn::parse::ParseStream&lt;<span class="lifetime">&#39;_</span>&gt;| {
             <span class="kw">let </span>literal = stream.parse::&lt;syn::LitStr&gt;()<span class="question-mark">?</span>;
             stream.parse::&lt;syn::parse::Nothing&gt;()<span class="question-mark">?</span>;
             <span class="kw">let </span>bytes = std::ffi::CString::new(literal.value())
                 .map_err(|e| syn::Error::new_spanned(<span class="kw-2">&amp;</span>literal, <span class="macro">format!</span>(<span class="string">&quot;{e}&quot;</span>)))<span class="question-mark">?
                 </span>.into_bytes_with_nul();
-            <span class="kw">let </span>bytes = proc_macro2::Literal::byte_string(<span class="kw-2">&amp;</span>bytes);
-            <span class="prelude-val">Ok</span>(<span class="macro">quote::quote! </span>{ #bytes }.into())
+            <span class="kw">let </span>bytes = proc_macro2::Literal::byte_string(<span class="kw-2">&amp;</span><a href="#854">bytes</a>);
+            <span class="prelude-val">Ok</span>(<a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote::quote! </a>{ #bytes }.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())
         },
-        item.into(),
+        <a href="#849">item</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
     )
-    .unwrap_or_else(|e| e.into_compile_error().into())
+    .unwrap_or_else(|e| <a href="#862">e</a>.into_compile_error().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())
 }
 
 <span class="doccomment">/// This macro enables you to derive object properties in a quick way.
@@ -2094,7 +2111,6 @@
 /// }
 ///
 /// pub mod imp {
-///     use glib::{ParamSpec, Value};
 ///     use std::rc::Rc;
 ///
 ///     use super::*;
@@ -2118,18 +2134,9 @@
 ///         #[property(get, set)]
 ///         smart_pointer: Rc&lt;RefCell&lt;String&gt;&gt;,
 ///     }
-///
-///     impl ObjectImpl for Foo {
-///         fn properties() -&gt; &amp;&#39;static [ParamSpec] {
-///             Self::derived_properties()
-///         }
-///         fn set_property(&amp;self, id: usize, value: &amp;Value, pspec: &amp;ParamSpec) {
-///             self.derived_set_property(id, value, pspec)
-///         }
-///         fn property(&amp;self, id: usize, pspec: &amp;ParamSpec) -&gt; Value {
-///             self.derived_property(id, pspec)
-///         }
-///     }
+///     
+///     #[glib::derived_properties]
+///     impl ObjectImpl for Foo {}
 ///
 ///     #[glib::object_subclass]
 ///     impl ObjectSubclass for Foo {
@@ -2157,9 +2164,34 @@
 /// ```
 </span><span class="attr">#[allow(clippy::needless_doctest_main)]
 #[proc_macro_derive(Properties, attributes(properties, property))]
-</span><span class="kw">pub fn </span>derive_props(input: TokenStream) -&gt; TokenStream {
-    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>properties::PropsMacroInput);
-    properties::impl_derive_props(input)
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.Properties.html">derive_props</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>properties::PropsMacroInput);
+    <a href="properties.rs.html#657-689">properties::impl_derive_props</a>(<a href="#1000">input</a>)
+}
+
+<span class="doccomment">/// This macro is shorteng for:
+///
+/// ```ignore
+///     fn properties() -&gt; &amp;&#39;static [glib::ParamSpec] {
+///         Self::derived_properties()
+///     }
+///     fn set_property(&amp;self, id: usize, value: &amp;glib::Value, pspec: &amp;glib::ParamSpec) {
+///         self.derived_set_property(id, value, pspec)
+///     }
+///     fn property(&amp;self, id: usize, pspec: &amp;glib::ParamSpec) -&gt; glib::Value {
+///         self.derived_property(id, pspec)
+///     }
+/// ```
+///
+/// for ObjectImpl trait implementation
+</span><span class="attr">#[proc_macro_attribute]
+#[proc_macro_error]
+</span><span class="kw">pub fn </span><a href="../../glib_macros/attr.derived_properties.html">derived_properties</a>(_attr: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>, item: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">use </span>proc_macro_error::abort_call_site;
+    <span class="kw">match </span>syn::parse::&lt;syn::ItemImpl&gt;(item) {
+        <span class="prelude-val">Ok</span>(input) =&gt; derived_properties_attribute::impl_derived_properties(<span class="kw-2">&amp;</span>input).into(),
+        <span class="prelude-val">Err</span>(<span class="kw">_</span>) =&gt; <span class="macro">abort_call_site!</span>(derived_properties_attribute::WRONG_PLACE_MSG),
+    }
 }
 
 <span class="doccomment">/// # Example
@@ -2225,8 +2257,8 @@
 /// assert_eq!(convertedv.get::&lt;Option&lt;MyString&gt;&gt;(), Ok(None::&lt;MyString&gt;));
 /// ```
 </span><span class="attr">#[proc_macro_derive(ValueDelegate, attributes(value_delegate))]
-</span><span class="kw">pub fn </span>derive_value_delegate(input: TokenStream) -&gt; TokenStream {
-    <span class="kw">let </span>input = <span class="macro">parse_macro_input!</span>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
-    value_delegate_derive::impl_value_delegate(input).unwrap()
+</span><span class="kw">pub fn </span><a href="../../glib_macros/derive.ValueDelegate.html">derive_value_delegate</a>(input: <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">TokenStream</a> {
+    <span class="kw">let </span>input = <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.parse_macro_input.html">parse_macro_input!</a>(input <span class="kw">as </span>value_delegate_derive::ValueDelegateInput);
+    <a href="value_delegate_derive.rs.html#114-200">value_delegate_derive::impl_value_delegate</a>(<a href="#1093">input</a>).unwrap()
 }
 </code></pre></div></section></main></body></html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_connection.rs`."><title>tls_connection.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1209,6 +1209,11 @@
 <a href="#1136" id="1136">1136</a>
 <a href="#1137" id="1137">1137</a>
 <a href="#1138" id="1138">1138</a>
+<a href="#1139" id="1139">1139</a>
+<a href="#1140" id="1140">1140</a>
+<a href="#1141" id="1141">1141</a>
+<a href="#1142" id="1142">1142</a>
+<a href="#1143" id="1143">1143</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
@@ -1216,19 +1221,19 @@
 
 #[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-</span><span class="kw">use </span><span class="kw">crate</span>::TlsProtocolVersion;
+</span><span class="kw">use </span><a href="enums.rs.html#4960-4987"><span class="kw">crate</span>::TlsProtocolVersion</a>;
 <span class="kw">use crate</span>::{
-    AsyncResult, Cancellable, IOStream, TlsCertificate, TlsCertificateFlags, TlsDatabase,
-    TlsInteraction, TlsRehandshakeMode,
+    <a href="async_result.rs.html#8-107">AsyncResult</a>, <a href="cancellable.rs.html#8-84">Cancellable</a>, <a href="io_stream.rs.html#13-86">IOStream</a>, <a href="tls_certificate.rs.html#18-193">TlsCertificate</a>, <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a>, <a href="tls_database.rs.html#12-34">TlsDatabase</a>,
+    <a href="tls_interaction.rs.html#12-43">TlsInteraction</a>, <a href="enums.rs.html#5130-5142">TlsRehandshakeMode</a>,
 };
 <span class="kw">use </span>glib::{
-    prelude::<span class="kw-2">*</span>,
-    signal::{connect_raw, SignalHandlerId},
-    translate::<span class="kw-2">*</span>,
+    <a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>,
+    signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>},
+    <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>,
 };
-<span class="kw">use </span>std::{boxed::Box <span class="kw">as </span>Box_, fmt, mem::transmute, pin::Pin, ptr};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>, <a href="https://doc.rust-lang.org/nightly/core/pin/struct.Pin.html">pin::Pin</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
 
-<span class="macro">glib::wrapper! </span>{
+<a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// [`TlsConnection`][crate::TlsConnection] is the base TLS connection class type, which wraps
     /// a [`IOStream`][crate::IOStream] and provides TLS encryption on top of it. Its
     /// subclasses, [`TlsClientConnection`][crate::TlsClientConnection] and [`TlsServerConnection`][crate::TlsServerConnection],
@@ -1432,15 +1437,20 @@
     ///
     /// [`TlsConnectionExt`][trait@crate::prelude::TlsConnectionExt], [`IOStreamExt`][trait@crate::prelude::IOStreamExt], [`trait@glib::ObjectExt`], [`TlsConnectionExtManual`][trait@crate::prelude::TlsConnectionExtManual], [`IOStreamExtManual`][trait@crate::prelude::IOStreamExtManual]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;GTlsConnection&quot;</span>)]
-    </span><span class="kw">pub struct </span>TlsConnection(Object&lt;ffi::GTlsConnection, ffi::GTlsConnectionClass&gt;) @extends IOStream;
+    </span><span class="kw">pub struct </span><a href="../../../gio/struct.TlsConnection.html">TlsConnection</a>(Object&lt;ffi::GTlsConnection, ffi::GTlsConnectionClass&gt;) @extends <a href="io_stream.rs.html#13-86">IOStream</a>;
 
     <span class="kw">match fn </span>{
         type_ =&gt; || ffi::g_tls_connection_get_type(),
     }
 }
 
-<span class="kw">impl </span>TlsConnection {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>TlsConnection&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#20-229">TlsConnection</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="#20-229">TlsConnection</a>&gt; = <span class="prelude-val">None</span>;
+}
+
+<span class="kw">mod </span>sealed {
+    <span class="kw">pub trait </span>Sealed {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#20-229"><span class="kw">super</span>::TlsConnection</a>&gt;&gt; <a href="#236">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TlsConnection`] methods.
@@ -1448,7 +1458,7 @@
 /// # Implementors
 ///
 /// [`TlsClientConnection`][struct@crate::TlsClientConnection], [`TlsConnection`][struct@crate::TlsConnection], [`TlsServerConnection`][struct@crate::TlsServerConnection]
-</span><span class="kw">pub trait </span>TlsConnectionExt: IsA&lt;TlsConnection&gt; + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsConnectionExt.html">TlsConnectionExt</a>: IsA&lt;<a href="#20-229">TlsConnection</a>&gt; + <a href="#236">sealed::Sealed</a> + <span class="lifetime">&#39;static </span>{
     <span class="doccomment">/// Used by [`TlsConnection`][crate::TlsConnection] implementations to emit the
     /// [`accept-certificate`][struct@crate::TlsConnection#accept-certificate] signal.
     /// ## `peer_cert`
@@ -1463,14 +1473,14 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_emit_accept_certificate&quot;</span>)]
     </span><span class="kw">fn </span>emit_accept_certificate(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        peer_cert: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;,
-        errors: TlsCertificateFlags,
-    ) -&gt; bool {
+        peer_cert: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#18-193">TlsCertificate</a>&gt;,
+        errors: <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a>,
+    ) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_connection_emit_accept_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                peer_cert.as_ref().to_glib_none().<span class="number">0</span>,
-                errors.into_glib(),
+                <a class="self" href="#259">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#260">peer_cert</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#261">errors</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             ))
         }
     }
@@ -1483,10 +1493,10 @@
     /// `self`&#39;s certificate, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_certificate&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt; {
+    </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_certificate.rs.html#18-193">TlsCertificate</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_connection_get_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#280">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1507,10 +1517,10 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_tls_connection_get_ciphersuite_name&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_ciphersuite_name&quot;</span>)]
-    </span><span class="kw">fn </span>ciphersuite_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+    </span><span class="kw">fn </span>ciphersuite_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_tls_connection_get_ciphersuite_name(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#304">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1523,10 +1533,10 @@
     /// the certificate database that `self` uses or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_database&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_database&quot;</span>)]
-    </span><span class="kw">fn </span>database(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsDatabase&gt; {
+    </span><span class="kw">fn </span>database(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_connection_get_database(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#320">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1540,10 +1550,10 @@
     /// The interaction object.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_interaction&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_interaction&quot;</span>)]
-    </span><span class="kw">fn </span>interaction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsInteraction&gt; {
+    </span><span class="kw">fn </span>interaction(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_connection_get_interaction(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#337">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1563,10 +1573,10 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_tls_connection_get_negotiated_protocol&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_negotiated_protocol&quot;</span>)]
-    </span><span class="kw">fn </span>negotiated_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;glib::GString&gt; {
+    </span><span class="kw">fn </span>negotiated_protocol(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_connection_get_negotiated_protocol(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#360">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1580,10 +1590,10 @@
     /// `self`&#39;s peer&#39;s certificate, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_peer_certificate&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_peer_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>peer_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;TlsCertificate&gt; {
+    </span><span class="kw">fn </span>peer_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="tls_certificate.rs.html#18-193">TlsCertificate</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_connection_get_peer_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#377">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1599,10 +1609,10 @@
     /// `self`&#39;s peer&#39;s certificate errors
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_peer_certificate_errors&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_peer_certificate_errors&quot;</span>)]
-    </span><span class="kw">fn </span>peer_certificate_errors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsCertificateFlags {
+    </span><span class="kw">fn </span>peer_certificate_errors(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_connection_get_peer_certificate_errors(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#396">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1619,10 +1629,10 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_tls_connection_get_protocol_version&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_protocol_version&quot;</span>)]
-    </span><span class="kw">fn </span>protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsProtocolVersion {
+    </span><span class="kw">fn </span>protocol_version(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#4960-4987">TlsProtocolVersion</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_connection_get_protocol_version(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#416">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1643,10 +1653,10 @@
     #[allow(deprecated)]
     #[doc(alias = <span class="string">&quot;g_tls_connection_get_rehandshake_mode&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_rehandshake_mode&quot;</span>)]
-    </span><span class="kw">fn </span>rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; TlsRehandshakeMode {
+    </span><span class="kw">fn </span>rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#5130-5142">TlsRehandshakeMode</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_connection_get_rehandshake_mode(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#440">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1661,10 +1671,10 @@
     /// notification.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_get_require_close_notify&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_require_close_notify&quot;</span>)]
-    </span><span class="kw">fn </span>requires_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
+    </span><span class="kw">fn </span>requires_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_connection_get_require_close_notify(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#458">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1707,19 +1717,19 @@
     ///
     /// success or failure
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_handshake&quot;</span>)]
-    </span><span class="kw">fn </span>handshake(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt; {
+    </span><span class="kw">fn </span>handshake(<span class="kw-2">&amp;</span><span class="self">self</span>, cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let </span>is_ok = ffi::g_tls_connection_handshake(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span>error,
+                <a class="self" href="#504">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#504">cancellable</a>.map(|p| <a href="#509">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#506">error</a>,
             );
-            <span class="macro">debug_assert_eq!</span>(is_ok == glib::ffi::GFALSE, !error.is_null());
+            <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert_eq.html">debug_assert_eq!</a>(is_ok == glib::ffi::GFALSE, !error.is_null());
             <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#506">error</a>))
             }
         }
     }
@@ -1733,26 +1743,26 @@
     /// ## `callback`
     /// callback to call when the handshake is complete
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_handshake_async&quot;</span>)]
-    </span><span class="kw">fn </span>handshake_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>&gt;(
+    </span><span class="kw">fn </span>handshake_async&lt;P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;Cancellable&gt;&gt;,
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+        cancellable: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="cancellable.rs.html#8-84">Cancellable</a>&gt;&gt;,
         callback: P,
     ) {
         <span class="kw">let </span>main_context = glib::MainContext::ref_thread_default();
-        <span class="kw">let </span>is_main_context_owner = main_context.is_owner();
-        <span class="kw">let </span>has_acquired_main_context = (!is_main_context_owner)
-            .then(|| main_context.acquire().ok())
+        <span class="kw">let </span>is_main_context_owner = <a href="#536">main_context</a>.is_owner();
+        <span class="kw">let </span>has_acquired_main_context = (!<a href="#537">is_main_context_owner</a>)
+            .then(|| <a href="#536">main_context</a>.acquire().ok())
             .flatten();
-        <span class="macro">assert!</span>(
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
             is_main_context_owner || has_acquired_main_context.is_some(),
             <span class="string">&quot;Async operations only allowed if the thread is owning the MainContext&quot;
         </span>);
 
         <span class="kw">let </span>user_data: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-            Box_::new(glib::thread_guard::ThreadGuard::new(callback));
+            Box_::new(glib::thread_guard::ThreadGuard::new(<a href="#534">callback</a>));
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>handshake_async_trampoline&lt;
-            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;) + <span class="lifetime">&#39;static</span>,
+            P: FnOnce(<span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;) + <span class="lifetime">&#39;static</span>,
         &gt;(
             _source_object: <span class="kw-2">*mut </span>glib::gobject_ffi::GObject,
             res: <span class="kw-2">*mut </span><span class="kw">crate</span>::ffi::GAsyncResult,
@@ -1760,38 +1770,38 @@
         ) {
             <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
             <span class="kw">let _ </span>=
-                ffi::g_tls_connection_handshake_finish(_source_object <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, res, <span class="kw-2">&amp;mut </span>error);
+                ffi::g_tls_connection_handshake_finish(<a href="#551">_source_object</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#552">res</a>, <span class="kw-2">&amp;mut </span><a href="#555">error</a>);
             <span class="kw">let </span>result = <span class="kw">if </span>error.is_null() {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(error))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#555">error</a>))
             };
             <span class="kw">let </span>callback: Box_&lt;glib::thread_guard::ThreadGuard&lt;P&gt;&gt; =
-                Box_::from_raw(user_data <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="kw">let </span>callback: P = callback.into_inner();
-            callback(result);
+                Box_::from_raw(<a href="#553">user_data</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <span class="kw">let </span>callback: P = <a href="#563">callback</a>.into_inner();
+            <a href="#565">callback</a>(<a href="#558">result</a>);
         }
         <span class="kw">let </span>callback = handshake_async_trampoline::&lt;P&gt;;
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_handshake_async(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                io_priority.into_glib(),
-                cancellable.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
-                <span class="prelude-val">Some</span>(callback),
-                Box_::into_raw(user_data) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#531">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#532">io_priority</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
+                <a href="#533">cancellable</a>.map(|p| <a href="#573">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="prelude-val">Some</span>(<a href="#568">callback</a>),
+                Box_::into_raw(<a href="#546">user_data</a>) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
         }
     }
 
     <span class="kw">fn </span>handshake_future(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        io_priority: glib::Priority,
-    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), glib::Error&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
+        io_priority: <a href="../../../glib/source/struct.Priority.html">glib::Priority</a>,
+    ) -&gt; Pin&lt;Box_&lt;<span class="kw">dyn </span>std::future::Future&lt;Output = <span class="prelude-ty">Result</span>&lt;(), <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt;&gt; + <span class="lifetime">&#39;static</span>&gt;&gt; {
         Box_::pin(<span class="kw">crate</span>::GioFuture::new(
-            <span class="self">self</span>,
+            <a class="self" href="#581">self</a>,
             <span class="kw">move </span>|obj, cancellable, send| {
-                obj.handshake_async(io_priority, <span class="prelude-val">Some</span>(cancellable), <span class="kw">move </span>|res| {
-                    send.resolve(res);
+                <a href="#586">obj</a>.<a href="#530-578">handshake_async</a>(<a href="#582">io_priority</a>, <span class="prelude-val">Some</span>(<a href="#586">cancellable</a>), <span class="kw">move </span>|res| {
+                    <a href="#586">send</a>.<a href="../gio_future.rs.html#28-30">resolve</a>(<a href="#587">res</a>);
                 });
             },
         ))
@@ -1818,11 +1828,11 @@
     /// ## `certificate`
     /// the certificate to use for `self`
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_certificate&quot;</span>)]
-    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsCertificate&gt;) {
+    </span><span class="kw">fn </span>set_certificate(<span class="kw-2">&amp;</span><span class="self">self</span>, certificate: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_certificate.rs.html#18-193">TlsCertificate</a>&gt;) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_set_certificate(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                certificate.as_ref().to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#615">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#615">certificate</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -1841,11 +1851,11 @@
     /// ## `database`
     /// a [`TlsDatabase`][crate::TlsDatabase]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_database&quot;</span>)]
-    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsDatabase&gt;&gt;) {
+    </span><span class="kw">fn </span>set_database(<span class="kw-2">&amp;</span><span class="self">self</span>, database: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_database.rs.html#12-34">TlsDatabase</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_set_database(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                database.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#638">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#638">database</a>.map(|p| <a href="#642">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -1859,11 +1869,11 @@
     /// ## `interaction`
     /// an interaction object, or [`None`]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_interaction&quot;</span>)]
-    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;TlsInteraction&gt;&gt;) {
+    </span><span class="kw">fn </span>set_interaction(<span class="kw-2">&amp;</span><span class="self">self</span>, interaction: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="tls_interaction.rs.html#12-43">TlsInteraction</a>&gt;&gt;) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_set_interaction(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                interaction.map(|p| p.as_ref()).to_glib_none().<span class="number">0</span>,
+                <a class="self" href="#656">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#656">interaction</a>.map(|p| <a href="#660">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             );
         }
     }
@@ -1883,11 +1893,11 @@
     </span><span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_60&quot;</span>, deprecated = <span class="string">&quot;Since 2.60&quot;</span>)]
     #[allow(deprecated)]
     #[doc(alias = <span class="string">&quot;g_tls_connection_set_rehandshake_mode&quot;</span>)]
-    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: TlsRehandshakeMode) {
+    </span><span class="kw">fn </span>set_rehandshake_mode(<span class="kw-2">&amp;</span><span class="self">self</span>, mode: <a href="enums.rs.html#5130-5142">TlsRehandshakeMode</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_set_rehandshake_mode(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                mode.into_glib(),
+                <a class="self" href="#680">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#680">mode</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -1922,11 +1932,11 @@
     /// ## `require_close_notify`
     /// whether or not to require close notification
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_connection_set_require_close_notify&quot;</span>)]
-    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: bool) {
+    </span><span class="kw">fn </span>set_require_close_notify(<span class="kw-2">&amp;</span><span class="self">self</span>, require_close_notify: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
         <span class="kw">unsafe </span>{
             ffi::g_tls_connection_set_require_close_notify(
-                <span class="self">self</span>.as_ref().to_glib_none().<span class="number">0</span>,
-                require_close_notify.into_glib(),
+                <a class="self" href="#719">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#719">require_close_notify</a>.<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>(),
             );
         }
     }
@@ -1937,8 +1947,8 @@
     </span><span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;advertised-protocols&quot;</span>)]
-    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;glib::GString&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;advertised-protocols&quot;</span>)
+    </span><span class="kw">fn </span>advertised_protocols(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#734">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;advertised-protocols&quot;</span>)
     }
 
     <span class="doccomment">/// The [`IOStream`][crate::IOStream] that the connection wraps. The connection holds a reference
@@ -1947,8 +1957,8 @@
     /// constructed, application code may only run its own operations on this
     /// stream when no [`IOStream`][crate::IOStream] operations are running.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;base-io-stream&quot;</span>)]
-    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;IOStream&gt; {
-        glib::ObjectExt::property(<span class="self">self</span>.as_ref(), <span class="string">&quot;base-io-stream&quot;</span>)
+    </span><span class="kw">fn </span>base_io_stream(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="io_stream.rs.html#13-86">IOStream</a>&gt; {
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#744">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;base-io-stream&quot;</span>)
     }
 
     <span class="doccomment">/// Emitted during the TLS handshake after the peer certificate has
@@ -2006,37 +2016,37 @@
     /// no one else overrides it.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;accept-certificate&quot;</span>)]
     </span><span class="kw">fn </span>connect_accept_certificate&lt;
-        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span>TlsCertificate, TlsCertificateFlags) -&gt; bool + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#18-193">TlsCertificate</a>, <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId {
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>accept_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
-            F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span>TlsCertificate, TlsCertificateFlags) -&gt; bool + <span class="lifetime">&#39;static</span>,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
+            F: Fn(<span class="kw-2">&amp;</span>P, <span class="kw-2">&amp;</span><a href="tls_certificate.rs.html#18-193">TlsCertificate</a>, <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             peer_cert: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             errors: ffi::GTlsCertificateFlags,
             f: glib::ffi::gpointer,
         ) -&gt; glib::ffi::gboolean {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(
-                TlsConnection::from_glib_borrow(this).unsafe_cast_ref(),
-                <span class="kw-2">&amp;</span>from_glib_borrow(peer_cert),
-                from_glib(errors),
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#815">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#817">f</a>(
+                TlsConnection::from_glib_borrow(<a href="#812">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>(),
+                <span class="kw-2">&amp;</span>from_glib_borrow(<a href="#813">peer_cert</a>),
+                from_glib(<a href="#814">errors</a>),
             )
-            .into_glib()
+            .<a href="../../../glib/translate/trait.IntoGlib.html">into_glib</a>()
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#806">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#805">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;accept-certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     accept_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#826">f</a>),
             )
         }
     }
@@ -2044,53 +2054,53 @@
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;advertised-protocols&quot;</span>)]
-    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_advertised_protocols_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_advertised_protocols_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#848">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#850">f</a>(TlsConnection::from_glib_borrow(<a href="#846">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#841">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#841">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::advertised-protocols\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_advertised_protocols_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#854">f</a>),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;certificate&quot;</span>)]
-    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#874">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#876">f</a>(TlsConnection::from_glib_borrow(<a href="#872">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#867">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#867">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#880">f</a>),
             )
         }
     }
@@ -2098,79 +2108,79 @@
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;ciphersuite-name&quot;</span>)]
-    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_ciphersuite_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_ciphersuite_name_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#902">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#904">f</a>(TlsConnection::from_glib_borrow(<a href="#900">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#895">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#895">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::ciphersuite-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_ciphersuite_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#908">f</a>),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;database&quot;</span>)]
-    </span><span class="kw">fn </span>connect_database_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_database_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_database_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#928">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#930">f</a>(TlsConnection::from_glib_borrow(<a href="#926">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#921">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#921">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::database\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_database_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#934">f</a>),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;interaction&quot;</span>)]
-    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_interaction_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_interaction_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#954">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#956">f</a>(TlsConnection::from_glib_borrow(<a href="#952">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#947">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#947">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::interaction\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_interaction_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#960">f</a>),
             )
         }
     }
@@ -2178,53 +2188,53 @@
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_60&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_60&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;negotiated-protocol&quot;</span>)]
-    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_negotiated_protocol_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_negotiated_protocol_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#982">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#984">f</a>(TlsConnection::from_glib_borrow(<a href="#980">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#975">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#975">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::negotiated-protocol\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_negotiated_protocol_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#988">f</a>),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;peer-certificate&quot;</span>)]
-    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_peer_certificate_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_peer_certificate_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1008">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1010">f</a>(TlsConnection::from_glib_borrow(<a href="#1006">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1001">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1001">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::peer-certificate\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_peer_certificate_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1014">f</a>),
             )
         }
     }
@@ -2233,27 +2243,27 @@
     </span><span class="kw">fn </span>connect_peer_certificate_errors_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         f: F,
-    ) -&gt; SignalHandlerId {
+    ) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_peer_certificate_errors_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1037">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1039">f</a>(TlsConnection::from_glib_borrow(<a href="#1035">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1029">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1028">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::peer-certificate-errors\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_peer_certificate_errors_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1043">f</a>),
             )
         }
     }
@@ -2261,90 +2271,90 @@
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;protocol-version&quot;</span>)]
-    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_protocol_version_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_protocol_version_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1065">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1067">f</a>(TlsConnection::from_glib_borrow(<a href="#1063">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1058">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1058">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::protocol-version\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_protocol_version_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1071">f</a>),
             )
         }
     }
 
     <span class="attr">#[cfg_attr(feature = <span class="string">&quot;v2_60&quot;</span>, deprecated = <span class="string">&quot;Since 2.60&quot;</span>)]
     #[doc(alias = <span class="string">&quot;rehandshake-mode&quot;</span>)]
-    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_rehandshake_mode_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_rehandshake_mode_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1092">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1094">f</a>(TlsConnection::from_glib_borrow(<a href="#1090">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1085">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1085">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::rehandshake-mode\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_rehandshake_mode_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1098">f</a>),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;require-close-notify&quot;</span>)]
-    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; SignalHandlerId {
+    </span><span class="kw">fn </span>connect_require_close_notify_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_require_close_notify_trampoline&lt;
-            P: IsA&lt;TlsConnection&gt;,
+            P: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsConnection,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(f <span class="kw">as </span><span class="kw-2">*const </span>F);
-            f(TlsConnection::from_glib_borrow(this).unsafe_cast_ref())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#1118">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#1120">f</a>(TlsConnection::from_glib_borrow(<a href="#1116">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(f);
-            connect_raw(
-                <span class="self">self</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#1111">f</a>);
+            <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
+                <a class="self" href="#1111">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::require-close-notify\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
                 <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_require_close_notify_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(f),
+                Box_::into_raw(<a href="#1124">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;TlsConnection&gt;&gt; TlsConnectionExt <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#20-229">TlsConnection</a>&gt;&gt; <a href="#245-1135">TlsConnectionExt</a> <span class="kw">for </span>O {}
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>TlsConnection {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        f.write_str(<span class="string">&quot;TlsConnection&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#20-229">TlsConnection</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a href="#1140">f</a>.write_str(<span class="string">&quot;TlsConnection&quot;</span>)
     }
 }
 </code></pre></div></section></main></body></html>

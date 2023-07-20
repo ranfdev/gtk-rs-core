@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-f3501f0f5ae15dfb.css" id="mainThemeStyle"><div id="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.71.0-nightly (2a8221dbd 2023-05-11)" data-search-js="search-4926e5fc22a5646a.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-6f6ffb5395b17c6e.css" data-theme-light-css="light-0f8c037637f9eb3e.css" data-theme-dark-css="dark-1097f8e92a01e3cf.css" data-theme-ayu-css="ayu-614652228113ac93.css" ></div><script src="../../static.files/storage-62ce34ea385b278a.js"></script><script defer src="../../static.files/source-script-11255107d0a65077.js"></script><script defer src="../../source-files.js"></script><script defer src="../../static.files/main-f0540c1d82cde29b.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-0f8c037637f9eb3e.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-1097f8e92a01e3cf.css"><link rel="stylesheet" href="../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `cairo/src/context.rs`."><title>context.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="cairo" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -1094,962 +1094,962 @@
 
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 </span><span class="kw">use </span>std::marker::PhantomData;
-<span class="kw">use </span>std::{ffi::CString, fmt, mem::MaybeUninit, ops, ptr, slice};
+<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/ffi/c_str/struct.CString.html">ffi::CString</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/mem/maybe_uninit/union.MaybeUninit.html">mem::MaybeUninit</a>, <a href="https://doc.rust-lang.org/nightly/core/ops/index.html">ops</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>};
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
-</span><span class="kw">use </span>glib::translate::<span class="kw-2">*</span>;
+</span><span class="kw">use </span><a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
 <span class="kw">use crate</span>::{
     ffi::{cairo_rectangle_list_t, cairo_t},
-    utils::status_to_result,
-    Antialias, Content, Error, FillRule, FontExtents, FontFace, FontOptions, FontSlant, FontWeight,
-    Glyph, LineCap, LineJoin, Matrix, Operator, Path, Pattern, Rectangle, ScaledFont, Surface,
-    TextCluster, TextClusterFlags, TextExtents,
+    <a href="utils.rs.html#21-26">utils::status_to_result</a>,
+    <a href="enums.rs.html#59-80">Antialias</a>, <a href="enums.rs.html#556-565">Content</a>, <a href="error.rs.html#10-150">Error</a>, <a href="enums.rs.html#139-146">FillRule</a>, <a href="font/font_extents.rs.html#8">FontExtents</a>, <a href="font/font_face.rs.html#20-30">FontFace</a>, <a href="font/font_options.rs.html#17-32">FontOptions</a>, <a href="enums.rs.html#818-827">FontSlant</a>, <a href="enums.rs.html#874-881">FontWeight</a>,
+    <a href="font/glyph.rs.html#8">Glyph</a>, <a href="enums.rs.html#190-199">LineCap</a>, <a href="enums.rs.html#246-255">LineJoin</a>, <a href="matrices.rs.html#12">Matrix</a>, <a href="enums.rs.html#302-367">Operator</a>, <a href="paths.rs.html#8">Path</a>, <a href="patterns.rs.html#15-17">Pattern</a>, <a href="rectangle.rs.html#13">Rectangle</a>, <a href="font/scaled_font.rs.html#14-24">ScaledFont</a>, <a href="surface.rs.html#19">Surface</a>,
+    <a href="font/text_cluster.rs.html#8">TextCluster</a>, <a href="enums.rs.html#925-932">TextClusterFlags</a>, <a href="font/text_extents.rs.html#8">TextExtents</a>,
 };
 
-<span class="kw">pub struct </span>RectangleList {
+<span class="kw">pub struct </span><a href="../../cairo/struct.RectangleList.html">RectangleList</a> {
     ptr: <span class="kw-2">*mut </span>cairo_rectangle_list_t,
 }
 
-<span class="kw">impl </span>ops::Deref <span class="kw">for </span>RectangleList {
-    <span class="kw">type </span>Target = [Rectangle];
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">ops::Deref</a> <span class="kw">for </span><a href="#18-20">RectangleList</a> {
+    <span class="kw">type </span>Target = [<a href="rectangle.rs.html#13">Rectangle</a>];
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[Rectangle] {
+    </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="rectangle.rs.html#13">Rectangle</a>] {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>ptr = (<span class="kw-2">*</span><span class="self">self</span>.ptr).rectangles <span class="kw">as </span><span class="kw-2">*mut </span>Rectangle;
-            <span class="kw">let </span>len = (<span class="kw-2">*</span><span class="self">self</span>.ptr).num_rectangles;
+            <span class="kw">let </span>ptr = (<span class="kw-2">*</span><a class="self" href="#26">self</a>.ptr).rectangles <span class="kw">as </span><span class="kw-2">*mut </span><a href="rectangle.rs.html#13">Rectangle</a>;
+            <span class="kw">let </span>len = (<span class="kw-2">*</span><a class="self" href="#26">self</a>.ptr).num_rectangles;
 
             <span class="kw">if </span>ptr.is_null() || len == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                slice::from_raw_parts(ptr, len <span class="kw">as </span>usize)
+                slice::from_raw_parts(<a href="#28">ptr</a>, <a href="#29">len</a> <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>)
             }
         }
     }
 }
 
-<span class="kw">impl </span>Drop <span class="kw">for </span>RectangleList {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#18-20">RectangleList</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_rectangle_list_destroy(<span class="self">self</span>.ptr);
+            ffi::cairo_rectangle_list_destroy(<a class="self" href="#42">self</a>.ptr);
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Debug <span class="kw">for </span>RectangleList {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="kw">use </span>std::ops::Deref;
-        f.debug_tuple(<span class="string">&quot;RectangleList&quot;</span>).field(<span class="kw-2">&amp;</span><span class="self">self</span>.deref()).finish()
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#18-20">RectangleList</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">std::ops::Deref</a>;
+        <a href="#50">f</a>.debug_tuple(<span class="string">&quot;RectangleList&quot;</span>).field(<span class="kw-2">&amp;</span><a class="self" href="#50">self</a>.<a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">deref</a>()).finish()
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>RectangleList {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;RectangleList&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#18-20">RectangleList</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#57">f</a>, <span class="string">&quot;RectangleList&quot;</span>)
     }
 }
 
 <span class="attr">#[derive(Debug)]
 #[repr(transparent)]
-</span><span class="kw">pub struct </span>Context(ptr::NonNull&lt;cairo_t&gt;);
+</span><span class="kw">pub struct </span><a href="../../cairo/struct.Context.html">Context</a>(ptr::NonNull&lt;cairo_t&gt;);
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;use_glib&quot;</span>)))]
-</span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span>Context {
+</span><span class="kw">impl </span>IntoGlibPtr&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>into_glib_ptr(<span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::cairo_t {
-        (<span class="kw-2">&amp;*</span>std::mem::ManuallyDrop::new(<span class="self">self</span>)).to_glib_none().<span class="number">0
+        (<span class="kw-2">&amp;*</span>std::mem::ManuallyDrop::new(<a class="self" href="#70">self</a>)).<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0
     </span>}
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;use_glib&quot;</span>)))]
-</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Context {
-    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Context&gt;;
+</span><span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; ToGlibPtr&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#64">Context</a> {
+    <span class="kw">type </span>Storage = PhantomData&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#64">Context</a>&gt;;
 
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>ffi::cairo_t, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>Context&gt; {
-        Stash(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), PhantomData)
+    </span><span class="kw">fn </span>to_glib_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Stash&lt;<span class="lifetime">&#39;a</span>, <span class="kw-2">*mut </span>ffi::cairo_t, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#64">Context</a>&gt; {
+        Stash(<a class="self" href="#81">self</a>.<span class="number">0</span>.as_ptr(), PhantomData)
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>to_glib_full(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::cairo_t {
-        <span class="kw">unsafe </span>{ ffi::cairo_reference(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_reference(<a class="self" href="#86">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;use_glib&quot;</span>)))]
-</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span>Context {
+</span><span class="kw">impl </span>FromGlibPtrNone&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; Context {
-        <span class="self">Self</span>::from_raw_none(ptr)
+    </span><span class="kw">unsafe fn </span>from_glib_none(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <a href="#64">Context</a> {
+        <span class="self">Self</span>::from_raw_none(<a href="#95">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;use_glib&quot;</span>)))]
-</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span>Context {
+</span><span class="kw">impl </span>FromGlibPtrBorrow&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <span class="kw">crate</span>::Borrowed&lt;Context&gt; {
-        <span class="self">Self</span>::from_raw_borrow(ptr)
+    </span><span class="kw">unsafe fn </span>from_glib_borrow(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#64">Context</a>&gt; {
+        <span class="self">Self</span>::from_raw_borrow(<a href="#104">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;use_glib&quot;</span>)))]
-</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span>Context {
+</span><span class="kw">impl </span>FromGlibPtrFull&lt;<span class="kw-2">*mut </span>ffi::cairo_t&gt; <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; Context {
-        <span class="self">Self</span>::from_raw_full(ptr)
+    </span><span class="kw">unsafe fn </span>from_glib_full(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <a href="#64">Context</a> {
+        <span class="self">Self</span>::from_raw_full(<a href="#113">ptr</a>)
     }
 }
 
 <span class="attr">#[cfg(feature = <span class="string">&quot;use_glib&quot;</span>)]
-</span><span class="macro">gvalue_impl!</span>(
-    Context,
+</span><a class="macro" href="lib.rs.html#40-122">gvalue_impl!</a>(
+    <a href="#64">Context</a>,
     cairo_t,
     ffi::gobject::cairo_gobject_context_get_type
 );
 
-<span class="kw">impl </span>Clone <span class="kw">for </span>Context {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Context {
-        <span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_none(<span class="self">self</span>.to_raw_none()) }
+    </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#64">Context</a> {
+        <span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_none(<a class="self" href="#127">self</a>.<a href="#162-164">to_raw_none</a>()) }
     }
 }
 
-<span class="kw">impl </span>Drop <span class="kw">for </span>Context {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_destroy(<span class="self">self</span>.<span class="number">0</span>.as_ptr());
+            ffi::cairo_destroy(<a class="self" href="#134">self</a>.<span class="number">0</span>.as_ptr());
         }
     }
 }
 
-<span class="kw">impl </span>Context {
+<span class="kw">impl </span><a href="#64">Context</a> {
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; Context {
-        <span class="macro">debug_assert!</span>(!ptr.is_null());
-        ffi::cairo_reference(ptr);
-        Context(ptr::NonNull::new_unchecked(ptr))
+    </span><span class="kw">pub unsafe fn </span>from_raw_none(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <a href="#64">Context</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
+        ffi::cairo_reference(<a href="#143">ptr</a>);
+        <a href="#64">Context</a>(ptr::NonNull::new_unchecked(<a href="#143">ptr</a>))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <span class="kw">crate</span>::Borrowed&lt;Context&gt; {
-        <span class="macro">debug_assert!</span>(!ptr.is_null());
-        <span class="kw">crate</span>::Borrowed::new(Context(ptr::NonNull::new_unchecked(ptr)))
+    </span><span class="kw">pub unsafe fn </span>from_raw_borrow(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <span class="kw">crate</span>::Borrowed&lt;<a href="#64">Context</a>&gt; {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
+        <span class="kw">crate</span>::Borrowed::new(<a href="#64">Context</a>(ptr::NonNull::new_unchecked(<a href="#150">ptr</a>)))
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; Context {
-        <span class="macro">debug_assert!</span>(!ptr.is_null());
-        Context(ptr::NonNull::new_unchecked(ptr))
+    </span><span class="kw">pub unsafe fn </span>from_raw_full(ptr: <span class="kw-2">*mut </span>ffi::cairo_t) -&gt; <a href="#64">Context</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null());
+        <a href="#64">Context</a>(ptr::NonNull::new_unchecked(<a href="#156">ptr</a>))
     }
 
     <span class="attr">#[inline]
     </span><span class="kw">pub fn </span>to_raw_none(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">*mut </span>ffi::cairo_t {
-        <span class="self">self</span>.<span class="number">0</span>.as_ptr()
+        <a class="self" href="#162">self</a>.<span class="number">0</span>.as_ptr()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_status&quot;</span>)]
     #[inline]
-    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_status(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        status_to_result(status)
+    </span><span class="kw">pub fn </span>status(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>status = <span class="kw">unsafe </span>{ ffi::cairo_status(<a class="self" href="#168">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a href="utils.rs.html#21-26">status_to_result</a>(<a href="#169">status</a>)
     }
 
-    <span class="kw">pub fn </span>new(target: <span class="kw">impl </span>AsRef&lt;Surface&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;Context, Error&gt; {
-        <span class="kw">let </span>ctx = <span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_full(ffi::cairo_create(target.as_ref().to_raw_none())) };
-        ctx.status().map(|<span class="kw">_</span>| ctx)
+    <span class="kw">pub fn </span>new(target: <span class="kw">impl </span>AsRef&lt;<a href="surface.rs.html#19">Surface</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#64">Context</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>ctx = <span class="kw">unsafe </span>{ <span class="self">Self</span>::from_raw_full(ffi::cairo_create(<a href="#173">target</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="surface.rs.html#44-46">to_raw_none</a>())) };
+        <a href="#174">ctx</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#174">ctx</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_save&quot;</span>)]
-    </span><span class="kw">pub fn </span>save(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_save(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>save(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_save(<a class="self" href="#179">self</a>.<span class="number">0</span>.as_ptr()) }
+        <a class="self" href="#179">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_restore&quot;</span>)]
-    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_restore(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>restore(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_restore(<a class="self" href="#185">self</a>.<span class="number">0</span>.as_ptr()) }
+        <a class="self" href="#185">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_target&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_target&quot;</span>)]
-    </span><span class="kw">pub fn </span>target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Surface {
-        <span class="kw">unsafe </span>{ Surface::from_raw_none(ffi::cairo_get_target(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="surface.rs.html#19">Surface</a> {
+        <span class="kw">unsafe </span>{ Surface::from_raw_none(ffi::cairo_get_target(<a class="self" href="#192">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_push_group&quot;</span>)]
     </span><span class="kw">pub fn </span>push_group(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_push_group(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_push_group(<a class="self" href="#197">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_push_group_with_content&quot;</span>)]
-    </span><span class="kw">pub fn </span>push_group_with_content(<span class="kw-2">&amp;</span><span class="self">self</span>, content: Content) {
-        <span class="kw">unsafe </span>{ ffi::cairo_push_group_with_content(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), content.into()) }
+    </span><span class="kw">pub fn </span>push_group_with_content(<span class="kw-2">&amp;</span><span class="self">self</span>, content: <a href="enums.rs.html#556-565">Content</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_push_group_with_content(<a class="self" href="#202">self</a>.<span class="number">0</span>.as_ptr(), <a href="#202">content</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_pop_group&quot;</span>)]
-    </span><span class="kw">pub fn </span>pop_group(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Pattern, Error&gt; {
-        <span class="kw">let </span>pattern = <span class="kw">unsafe </span>{ Pattern::from_raw_full(ffi::cairo_pop_group(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| pattern)
+    </span><span class="kw">pub fn </span>pop_group(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="patterns.rs.html#15-17">Pattern</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>pattern = <span class="kw">unsafe </span>{ Pattern::from_raw_full(ffi::cairo_pop_group(<a class="self" href="#207">self</a>.<span class="number">0</span>.as_ptr())) };
+        <a class="self" href="#207">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#208">pattern</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_pop_group_to_source&quot;</span>)]
-    </span><span class="kw">pub fn </span>pop_group_to_source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_pop_group_to_source(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>pop_group_to_source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_pop_group_to_source(<a class="self" href="#213">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#213">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_group_target&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_group_target&quot;</span>)]
-    </span><span class="kw">pub fn </span>group_target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Surface {
-        <span class="kw">unsafe </span>{ Surface::from_raw_none(ffi::cairo_get_group_target(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>group_target(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="surface.rs.html#19">Surface</a> {
+        <span class="kw">unsafe </span>{ Surface::from_raw_none(ffi::cairo_get_group_target(<a class="self" href="#220">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_source_rgb&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_source_rgb(<span class="kw-2">&amp;</span><span class="self">self</span>, red: f64, green: f64, blue: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_source_rgb(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), red, green, blue) }
+    </span><span class="kw">pub fn </span>set_source_rgb(<span class="kw-2">&amp;</span><span class="self">self</span>, red: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, green: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, blue: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_source_rgb(<a class="self" href="#225">self</a>.<span class="number">0</span>.as_ptr(), <a href="#225">red</a>, <a href="#225">green</a>, <a href="#225">blue</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_source_rgba&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_source_rgba(<span class="kw-2">&amp;</span><span class="self">self</span>, red: f64, green: f64, blue: f64, alpha: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_source_rgba(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), red, green, blue, alpha) }
+    </span><span class="kw">pub fn </span>set_source_rgba(<span class="kw-2">&amp;</span><span class="self">self</span>, red: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, green: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, blue: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_source_rgba(<a class="self" href="#230">self</a>.<span class="number">0</span>.as_ptr(), <a href="#230">red</a>, <a href="#230">green</a>, <a href="#230">blue</a>, <a href="#230">alpha</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_source&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_source(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw">impl </span>AsRef&lt;Pattern&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>source = source.as_ref();
+    </span><span class="kw">pub fn </span>set_source(<span class="kw-2">&amp;</span><span class="self">self</span>, source: <span class="kw">impl </span>AsRef&lt;<a href="patterns.rs.html#15-17">Pattern</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>source = <a href="#235">source</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
         source.status()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
-            ffi::cairo_set_source(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), source.to_raw_none());
+            ffi::cairo_set_source(<a class="self" href="#235">self</a>.<span class="number">0</span>.as_ptr(), <a href="#236">source</a>.<a href="patterns.rs.html#32-34">to_raw_none</a>());
         }
-        <span class="self">self</span>.status()
+        <a class="self" href="#235">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_source&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_source&quot;</span>)]
-    </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Pattern {
-        <span class="kw">unsafe </span>{ Pattern::from_raw_none(ffi::cairo_get_source(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>source(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="patterns.rs.html#15-17">Pattern</a> {
+        <span class="kw">unsafe </span>{ Pattern::from_raw_none(ffi::cairo_get_source(<a class="self" href="#246">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_source_surface&quot;</span>)]
     </span><span class="kw">pub fn </span>set_source_surface(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        surface: <span class="kw">impl </span>AsRef&lt;Surface&gt;,
-        x: f64,
-        y: f64,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>surface = surface.as_ref();
+        surface: <span class="kw">impl </span>AsRef&lt;<a href="surface.rs.html#19">Surface</a>&gt;,
+        x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+        y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>surface = <a href="#253">surface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
         surface.status()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
-            ffi::cairo_set_source_surface(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), surface.to_raw_none(), x, y);
+            ffi::cairo_set_source_surface(<a class="self" href="#252">self</a>.<span class="number">0</span>.as_ptr(), <a href="#257">surface</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#254">x</a>, <a href="#255">y</a>);
         }
-        <span class="self">self</span>.status()
+        <a class="self" href="#252">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_antialias&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_antialias(<span class="kw-2">&amp;</span><span class="self">self</span>, antialias: Antialias) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_antialias(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), antialias.into()) }
+    </span><span class="kw">pub fn </span>set_antialias(<span class="kw-2">&amp;</span><span class="self">self</span>, antialias: <a href="enums.rs.html#59-80">Antialias</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_antialias(<a class="self" href="#266">self</a>.<span class="number">0</span>.as_ptr(), <a href="#266">antialias</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_antialias&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_antialias&quot;</span>)]
-    </span><span class="kw">pub fn </span>antialias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Antialias {
-        <span class="kw">unsafe </span>{ Antialias::from(ffi::cairo_get_antialias(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>antialias(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#59-80">Antialias</a> {
+        <span class="kw">unsafe </span>{ Antialias::from(ffi::cairo_get_antialias(<a class="self" href="#272">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_dash&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_dash(<span class="kw-2">&amp;</span><span class="self">self</span>, dashes: <span class="kw-2">&amp;</span>[f64], offset: f64) {
+    </span><span class="kw">pub fn </span>set_dash(<span class="kw-2">&amp;</span><span class="self">self</span>, dashes: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>], offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
             ffi::cairo_set_dash(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                dashes.as_ptr(),
-                dashes.len() <span class="kw">as </span>i32,
-                offset,
+                <a class="self" href="#277">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#277">dashes</a>.as_ptr(),
+                <a href="#277">dashes</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
+                <a href="#277">offset</a>,
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_dash_count&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_dash_count&quot;</span>)]
-    </span><span class="kw">pub fn </span>dash_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; i32 {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_dash_count(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+    </span><span class="kw">pub fn </span>dash_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_dash_count(<a class="self" href="#290">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_dash&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_dash&quot;</span>)]
-    </span><span class="kw">pub fn </span>dash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Vec&lt;f64&gt;, f64) {
-        <span class="kw">let </span>dash_count = <span class="self">self</span>.dash_count() <span class="kw">as </span>usize;
-        <span class="kw">let </span><span class="kw-2">mut </span>dashes: Vec&lt;f64&gt; = Vec::with_capacity(dash_count);
-        <span class="kw">let </span><span class="kw-2">mut </span>offset: f64 = <span class="number">0.0</span>;
+    </span><span class="kw">pub fn </span>dash(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>&gt;, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">let </span>dash_count = <a class="self" href="#296">self</a>.<a href="#290-292">dash_count</a>() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
+        <span class="kw">let </span><span class="kw-2">mut </span>dashes: Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>&gt; = Vec::with_capacity(<a href="#297">dash_count</a>);
+        <span class="kw">let </span><span class="kw-2">mut </span>offset: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_get_dash(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), dashes.as_mut_ptr(), <span class="kw-2">&amp;mut </span>offset);
-            dashes.set_len(dash_count);
-            (dashes, offset)
+            ffi::cairo_get_dash(<a class="self" href="#296">self</a>.<span class="number">0</span>.as_ptr(), <a href="#298">dashes</a>.as_mut_ptr(), <span class="kw-2">&amp;mut </span><a href="#299">offset</a>);
+            <a href="#298">dashes</a>.set_len(<a href="#297">dash_count</a>);
+            (<a href="#298">dashes</a>, <a href="#299">offset</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_dash_dashes&quot;</span>)]
-    </span><span class="kw">pub fn </span>dash_dashes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;f64&gt; {
-        <span class="kw">let </span>(dashes, <span class="kw">_</span>) = <span class="self">self</span>.dash();
-        dashes
+    </span><span class="kw">pub fn </span>dash_dashes(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>&gt; {
+        <span class="kw">let </span>(dashes, <span class="kw">_</span>) = <a class="self" href="#309">self</a>.<a href="#296-306">dash</a>();
+        <a href="#310">dashes</a>
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_dash_offset&quot;</span>)]
-    </span><span class="kw">pub fn </span>dash_offset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">let </span>(<span class="kw">_</span>, offset) = <span class="self">self</span>.dash();
-        offset
+    </span><span class="kw">pub fn </span>dash_offset(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">let </span>(<span class="kw">_</span>, offset) = <a class="self" href="#315">self</a>.<a href="#296-306">dash</a>();
+        <a href="#316">offset</a>
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_fill_rule&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_fill_rule(<span class="kw-2">&amp;</span><span class="self">self</span>, fill_rule: FillRule) {
+    </span><span class="kw">pub fn </span>set_fill_rule(<span class="kw-2">&amp;</span><span class="self">self</span>, fill_rule: <a href="enums.rs.html#139-146">FillRule</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_set_fill_rule(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), fill_rule.into());
+            ffi::cairo_set_fill_rule(<a class="self" href="#321">self</a>.<span class="number">0</span>.as_ptr(), <a href="#321">fill_rule</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_fill_rule&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_fill_rule&quot;</span>)]
-    </span><span class="kw">pub fn </span>fill_rule(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FillRule {
-        <span class="kw">unsafe </span>{ FillRule::from(ffi::cairo_get_fill_rule(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>fill_rule(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#139-146">FillRule</a> {
+        <span class="kw">unsafe </span>{ FillRule::from(ffi::cairo_get_fill_rule(<a class="self" href="#329">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_line_cap&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_line_cap(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: LineCap) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_line_cap(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), arg.into()) }
+    </span><span class="kw">pub fn </span>set_line_cap(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: <a href="enums.rs.html#190-199">LineCap</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_line_cap(<a class="self" href="#334">self</a>.<span class="number">0</span>.as_ptr(), <a href="#334">arg</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_line_cap&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_line_cap&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_cap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; LineCap {
-        <span class="kw">unsafe </span>{ LineCap::from(ffi::cairo_get_line_cap(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>line_cap(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#190-199">LineCap</a> {
+        <span class="kw">unsafe </span>{ LineCap::from(ffi::cairo_get_line_cap(<a class="self" href="#340">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_line_join&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_line_join(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: LineJoin) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_line_join(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), arg.into()) }
+    </span><span class="kw">pub fn </span>set_line_join(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: <a href="enums.rs.html#246-255">LineJoin</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_line_join(<a class="self" href="#345">self</a>.<span class="number">0</span>.as_ptr(), <a href="#345">arg</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_line_join&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_line_join&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_join(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; LineJoin {
-        <span class="kw">unsafe </span>{ LineJoin::from(ffi::cairo_get_line_join(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>line_join(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#246-255">LineJoin</a> {
+        <span class="kw">unsafe </span>{ LineJoin::from(ffi::cairo_get_line_join(<a class="self" href="#351">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_line_width&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_line_width(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_line_width(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), arg) }
+    </span><span class="kw">pub fn </span>set_line_width(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_line_width(<a class="self" href="#356">self</a>.<span class="number">0</span>.as_ptr(), <a href="#356">arg</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_line_width&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_line_width&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_line_width(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+    </span><span class="kw">pub fn </span>line_width(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_line_width(<a class="self" href="#362">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v1_18&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_18&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;cairo_set_hairline&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_hairline(<span class="kw-2">&amp;</span><span class="self">self</span>, set_hairline: bool) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_hairline(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), set_hairline.into()) }
+    </span><span class="kw">pub fn </span>set_hairline(<span class="kw-2">&amp;</span><span class="self">self</span>, set_hairline: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_hairline(<a class="self" href="#369">self</a>.<span class="number">0</span>.as_ptr(), <a href="#369">set_hairline</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>()) }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v1_18&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_18&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;get_hairline&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_hairline&quot;</span>)]
-    </span><span class="kw">pub fn </span>hairline(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; bool {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_hairline(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }.as_bool()
+    </span><span class="kw">pub fn </span>hairline(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_hairline(<a class="self" href="#377">self</a>.<span class="number">0</span>.as_ptr()) }.as_bool()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_miter_limit&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_miter_limit(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_miter_limit(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), arg) }
+    </span><span class="kw">pub fn </span>set_miter_limit(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_miter_limit(<a class="self" href="#382">self</a>.<span class="number">0</span>.as_ptr(), <a href="#382">arg</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_miter_limit&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_miter_limit&quot;</span>)]
-    </span><span class="kw">pub fn </span>miter_limit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_miter_limit(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+    </span><span class="kw">pub fn </span>miter_limit(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_miter_limit(<a class="self" href="#388">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_operator&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_operator(<span class="kw-2">&amp;</span><span class="self">self</span>, op: Operator) {
+    </span><span class="kw">pub fn </span>set_operator(<span class="kw-2">&amp;</span><span class="self">self</span>, op: <a href="enums.rs.html#302-367">Operator</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_set_operator(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), op.into());
+            ffi::cairo_set_operator(<a class="self" href="#393">self</a>.<span class="number">0</span>.as_ptr(), <a href="#393">op</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_operator&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_operator&quot;</span>)]
-    </span><span class="kw">pub fn </span>operator(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Operator {
-        <span class="kw">unsafe </span>{ Operator::from(ffi::cairo_get_operator(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>operator(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="enums.rs.html#302-367">Operator</a> {
+        <span class="kw">unsafe </span>{ Operator::from(ffi::cairo_get_operator(<a class="self" href="#401">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_tolerance&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_tolerance(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_tolerance(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), arg) }
+    </span><span class="kw">pub fn </span>set_tolerance(<span class="kw-2">&amp;</span><span class="self">self</span>, arg: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_tolerance(<a class="self" href="#406">self</a>.<span class="number">0</span>.as_ptr(), <a href="#406">arg</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_tolerance&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_tolerance&quot;</span>)]
-    </span><span class="kw">pub fn </span>tolerance(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; f64 {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_tolerance(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+    </span><span class="kw">pub fn </span>tolerance(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_tolerance(<a class="self" href="#412">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_clip&quot;</span>)]
     </span><span class="kw">pub fn </span>clip(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_clip(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_clip(<a class="self" href="#417">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_clip_preserve&quot;</span>)]
     </span><span class="kw">pub fn </span>clip_preserve(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_clip_preserve(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_clip_preserve(<a class="self" href="#422">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_clip_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>clip_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64, f64, f64), Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>x1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>x2: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y2: f64 = <span class="number">0.0</span>;
+    </span><span class="kw">pub fn </span>clip_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>x1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>x2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_clip_extents(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x1, <span class="kw-2">&amp;mut </span>y1, <span class="kw-2">&amp;mut </span>x2, <span class="kw-2">&amp;mut </span>y2);
+            ffi::cairo_clip_extents(<a class="self" href="#427">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#428">x1</a>, <span class="kw-2">&amp;mut </span><a href="#429">y1</a>, <span class="kw-2">&amp;mut </span><a href="#430">x2</a>, <span class="kw-2">&amp;mut </span><a href="#431">y2</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x1, y1, x2, y2))
+        <a class="self" href="#427">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#428">x1</a>, <a href="#429">y1</a>, <a href="#430">x2</a>, <a href="#431">y2</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_in_clip&quot;</span>)]
-    </span><span class="kw">pub fn </span>in_clip(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) -&gt; <span class="prelude-ty">Result</span>&lt;bool, Error&gt; {
-        <span class="kw">let </span>in_clip = <span class="kw">unsafe </span>{ ffi::cairo_in_clip(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y).as_bool() };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| in_clip)
+    </span><span class="kw">pub fn </span>in_clip(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>in_clip = <span class="kw">unsafe </span>{ ffi::cairo_in_clip(<a class="self" href="#440">self</a>.<span class="number">0</span>.as_ptr(), <a href="#440">x</a>, <a href="#440">y</a>).as_bool() };
+        <a class="self" href="#440">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#441">in_clip</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_reset_clip&quot;</span>)]
     </span><span class="kw">pub fn </span>reset_clip(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_reset_clip(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_reset_clip(<a class="self" href="#446">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_copy_clip_rectangle_list&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy_clip_rectangle_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;RectangleList, Error&gt; {
+    </span><span class="kw">pub fn </span>copy_clip_rectangle_list(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-20">RectangleList</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>rectangle_list = ffi::cairo_copy_clip_rectangle_list(<span class="self">self</span>.<span class="number">0</span>.as_ptr());
+            <span class="kw">let </span>rectangle_list = ffi::cairo_copy_clip_rectangle_list(<a class="self" href="#451">self</a>.<span class="number">0</span>.as_ptr());
 
             status_to_result((<span class="kw-2">*</span>rectangle_list).status)<span class="question-mark">?</span>;
 
-            <span class="prelude-val">Ok</span>(RectangleList {
-                ptr: rectangle_list,
+            <span class="prelude-val">Ok</span>(<a href="#18-20">RectangleList</a> {
+                ptr: <a href="#453">rectangle_list</a>,
             })
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_fill&quot;</span>)]
-    </span><span class="kw">pub fn </span>fill(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_fill(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>fill(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_fill(<a class="self" href="#464">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#464">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_fill_preserve&quot;</span>)]
-    </span><span class="kw">pub fn </span>fill_preserve(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_fill_preserve(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>fill_preserve(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_fill_preserve(<a class="self" href="#470">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#470">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_fill_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>fill_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64, f64, f64), Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>x1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>x2: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y2: f64 = <span class="number">0.0</span>;
+    </span><span class="kw">pub fn </span>fill_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>x1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>x2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_fill_extents(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x1, <span class="kw-2">&amp;mut </span>y1, <span class="kw-2">&amp;mut </span>x2, <span class="kw-2">&amp;mut </span>y2);
+            ffi::cairo_fill_extents(<a class="self" href="#476">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#477">x1</a>, <span class="kw-2">&amp;mut </span><a href="#478">y1</a>, <span class="kw-2">&amp;mut </span><a href="#479">x2</a>, <span class="kw-2">&amp;mut </span><a href="#480">y2</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x1, y1, x2, y2))
+        <a class="self" href="#476">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#477">x1</a>, <a href="#478">y1</a>, <a href="#479">x2</a>, <a href="#480">y2</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_in_fill&quot;</span>)]
-    </span><span class="kw">pub fn </span>in_fill(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) -&gt; <span class="prelude-ty">Result</span>&lt;bool, Error&gt; {
-        <span class="kw">let </span>in_fill = <span class="kw">unsafe </span>{ ffi::cairo_in_fill(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y).as_bool() };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| in_fill)
+    </span><span class="kw">pub fn </span>in_fill(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>in_fill = <span class="kw">unsafe </span>{ ffi::cairo_in_fill(<a class="self" href="#489">self</a>.<span class="number">0</span>.as_ptr(), <a href="#489">x</a>, <a href="#489">y</a>).as_bool() };
+        <a class="self" href="#489">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#490">in_fill</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_mask&quot;</span>)]
-    </span><span class="kw">pub fn </span>mask(<span class="kw-2">&amp;</span><span class="self">self</span>, pattern: <span class="kw">impl </span>AsRef&lt;Pattern&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>pattern = pattern.as_ref();
+    </span><span class="kw">pub fn </span>mask(<span class="kw-2">&amp;</span><span class="self">self</span>, pattern: <span class="kw">impl </span>AsRef&lt;<a href="patterns.rs.html#15-17">Pattern</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>pattern = <a href="#495">pattern</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
         pattern.status()<span class="question-mark">?</span>;
-        <span class="kw">unsafe </span>{ ffi::cairo_mask(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), pattern.to_raw_none()) };
-        <span class="self">self</span>.status()
+        <span class="kw">unsafe </span>{ ffi::cairo_mask(<a class="self" href="#495">self</a>.<span class="number">0</span>.as_ptr(), <a href="#496">pattern</a>.<a href="patterns.rs.html#32-34">to_raw_none</a>()) };
+        <a class="self" href="#495">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_mask_surface&quot;</span>)]
-    </span><span class="kw">pub fn </span>mask_surface(<span class="kw-2">&amp;</span><span class="self">self</span>, surface: <span class="kw">impl </span>AsRef&lt;Surface&gt;, x: f64, y: f64) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">let </span>surface = surface.as_ref();
+    </span><span class="kw">pub fn </span>mask_surface(<span class="kw-2">&amp;</span><span class="self">self</span>, surface: <span class="kw">impl </span>AsRef&lt;<a href="surface.rs.html#19">Surface</a>&gt;, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>surface = <a href="#503">surface</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>();
         surface.status()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
-            ffi::cairo_mask_surface(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), surface.to_raw_none(), x, y);
+            ffi::cairo_mask_surface(<a class="self" href="#503">self</a>.<span class="number">0</span>.as_ptr(), <a href="#504">surface</a>.<a href="surface.rs.html#44-46">to_raw_none</a>(), <a href="#503">x</a>, <a href="#503">y</a>);
         };
-        <span class="self">self</span>.status()
+        <a class="self" href="#503">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_paint&quot;</span>)]
-    </span><span class="kw">pub fn </span>paint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_paint(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>paint(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_paint(<a class="self" href="#513">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#513">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_paint_with_alpha&quot;</span>)]
-    </span><span class="kw">pub fn </span>paint_with_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, alpha: f64) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_paint_with_alpha(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), alpha) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>paint_with_alpha(<span class="kw-2">&amp;</span><span class="self">self</span>, alpha: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_paint_with_alpha(<a class="self" href="#519">self</a>.<span class="number">0</span>.as_ptr(), <a href="#519">alpha</a>) };
+        <a class="self" href="#519">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_stroke&quot;</span>)]
-    </span><span class="kw">pub fn </span>stroke(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_stroke(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>stroke(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_stroke(<a class="self" href="#525">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#525">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_stroke_preserve&quot;</span>)]
-    </span><span class="kw">pub fn </span>stroke_preserve(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_stroke_preserve(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>stroke_preserve(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_stroke_preserve(<a class="self" href="#531">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#531">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_stroke_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>stroke_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64, f64, f64), Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>x1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>x2: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y2: f64 = <span class="number">0.0</span>;
+    </span><span class="kw">pub fn </span>stroke_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>x1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>x2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_stroke_extents(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x1, <span class="kw-2">&amp;mut </span>y1, <span class="kw-2">&amp;mut </span>x2, <span class="kw-2">&amp;mut </span>y2);
+            ffi::cairo_stroke_extents(<a class="self" href="#537">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#538">x1</a>, <span class="kw-2">&amp;mut </span><a href="#539">y1</a>, <span class="kw-2">&amp;mut </span><a href="#540">x2</a>, <span class="kw-2">&amp;mut </span><a href="#541">y2</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x1, y1, x2, y2))
+        <a class="self" href="#537">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#538">x1</a>, <a href="#539">y1</a>, <a href="#540">x2</a>, <a href="#541">y2</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_in_stroke&quot;</span>)]
-    </span><span class="kw">pub fn </span>in_stroke(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) -&gt; <span class="prelude-ty">Result</span>&lt;bool, Error&gt; {
-        <span class="kw">let </span>in_stroke = <span class="kw">unsafe </span>{ ffi::cairo_in_stroke(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y).as_bool() };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| in_stroke)
+    </span><span class="kw">pub fn </span>in_stroke(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>in_stroke = <span class="kw">unsafe </span>{ ffi::cairo_in_stroke(<a class="self" href="#550">self</a>.<span class="number">0</span>.as_ptr(), <a href="#550">x</a>, <a href="#550">y</a>).as_bool() };
+        <a class="self" href="#550">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#551">in_stroke</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_copy_page&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy_page(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_copy_page(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>copy_page(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_copy_page(<a class="self" href="#556">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#556">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_show_page&quot;</span>)]
-    </span><span class="kw">pub fn </span>show_page(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
-        <span class="kw">unsafe </span>{ ffi::cairo_show_page(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) };
-        <span class="self">self</span>.status()
+    </span><span class="kw">pub fn </span>show_page(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">unsafe </span>{ ffi::cairo_show_page(<a class="self" href="#562">self</a>.<span class="number">0</span>.as_ptr()) };
+        <a class="self" href="#562">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_reference_count&quot;</span>)]
-    </span><span class="kw">pub fn </span>reference_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; u32 {
-        <span class="kw">unsafe </span>{ ffi::cairo_get_reference_count(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+    </span><span class="kw">pub fn </span>reference_count(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
+        <span class="kw">unsafe </span>{ ffi::cairo_get_reference_count(<a class="self" href="#568">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="comment">// transformations stuff
 
     </span><span class="attr">#[doc(alias = <span class="string">&quot;cairo_translate&quot;</span>)]
-    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;</span><span class="self">self</span>, tx: f64, ty: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_translate(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), tx, ty) }
+    </span><span class="kw">pub fn </span>translate(<span class="kw-2">&amp;</span><span class="self">self</span>, tx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, ty: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_translate(<a class="self" href="#575">self</a>.<span class="number">0</span>.as_ptr(), <a href="#575">tx</a>, <a href="#575">ty</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_scale&quot;</span>)]
-    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, sx: f64, sy: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_scale(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), sx, sy) }
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, sx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, sy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_scale(<a class="self" href="#580">self</a>.<span class="number">0</span>.as_ptr(), <a href="#580">sx</a>, <a href="#580">sy</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_rotate&quot;</span>)]
-    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;</span><span class="self">self</span>, angle: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_rotate(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), angle) }
+    </span><span class="kw">pub fn </span>rotate(<span class="kw-2">&amp;</span><span class="self">self</span>, angle: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_rotate(<a class="self" href="#585">self</a>.<span class="number">0</span>.as_ptr(), <a href="#585">angle</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_transform&quot;</span>)]
-    </span><span class="kw">pub fn </span>transform(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: Matrix) {
+    </span><span class="kw">pub fn </span>transform(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <a href="matrices.rs.html#12">Matrix</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_transform(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), matrix.ptr());
+            ffi::cairo_transform(<a class="self" href="#590">self</a>.<span class="number">0</span>.as_ptr(), <a href="#590">matrix</a>.<a href="matrices.rs.html#22-24">ptr</a>());
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: Matrix) {
+    </span><span class="kw">pub fn </span>set_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <a href="matrices.rs.html#12">Matrix</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_set_matrix(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), matrix.ptr());
+            ffi::cairo_set_matrix(<a class="self" href="#597">self</a>.<span class="number">0</span>.as_ptr(), <a href="#597">matrix</a>.<a href="matrices.rs.html#22-24">ptr</a>());
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_matrix&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Matrix {
+    </span><span class="kw">pub fn </span>matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrices.rs.html#12">Matrix</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = Matrix::null();
         <span class="kw">unsafe </span>{
-            ffi::cairo_get_matrix(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), matrix.mut_ptr());
+            ffi::cairo_get_matrix(<a class="self" href="#605">self</a>.<span class="number">0</span>.as_ptr(), <a href="#606">matrix</a>.<a href="matrices.rs.html#27-29">mut_ptr</a>());
         }
-        matrix
+        <a href="#606">matrix</a>
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_identity_matrix&quot;</span>)]
     </span><span class="kw">pub fn </span>identity_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_identity_matrix(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_identity_matrix(<a class="self" href="#614">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_user_to_device&quot;</span>)]
-    </span><span class="kw">pub fn </span>user_to_device(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>x: f64, <span class="kw-2">mut </span>y: f64) -&gt; (f64, f64) {
+    </span><span class="kw">pub fn </span>user_to_device(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <span class="kw-2">mut </span>y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
         <span class="kw">unsafe </span>{
-            ffi::cairo_user_to_device(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x, <span class="kw-2">&amp;mut </span>y);
-            (x, y)
+            ffi::cairo_user_to_device(<a class="self" href="#619">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#619">x</a>, <span class="kw-2">&amp;mut </span><a href="#619">y</a>);
+            (<a href="#619">x</a>, <a href="#619">y</a>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_user_to_device_distance&quot;</span>)]
-    </span><span class="kw">pub fn </span>user_to_device_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>dx: f64, <span class="kw-2">mut </span>dy: f64) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64), Error&gt; {
+    </span><span class="kw">pub fn </span>user_to_device_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>dx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <span class="kw-2">mut </span>dy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            ffi::cairo_user_to_device_distance(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>dx, <span class="kw-2">&amp;mut </span>dy);
+            ffi::cairo_user_to_device_distance(<a class="self" href="#627">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#627">dx</a>, <span class="kw-2">&amp;mut </span><a href="#627">dy</a>);
         };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (dx, dy))
+        <a class="self" href="#627">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#627">dx</a>, <a href="#627">dy</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_device_to_user&quot;</span>)]
-    </span><span class="kw">pub fn </span>device_to_user(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>x: f64, <span class="kw-2">mut </span>y: f64) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64), Error&gt; {
+    </span><span class="kw">pub fn </span>device_to_user(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <span class="kw-2">mut </span>y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            ffi::cairo_device_to_user(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x, <span class="kw-2">&amp;mut </span>y);
+            ffi::cairo_device_to_user(<a class="self" href="#635">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#635">x</a>, <span class="kw-2">&amp;mut </span><a href="#635">y</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x, y))
+        <a class="self" href="#635">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#635">x</a>, <a href="#635">y</a>))
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_device_to_user_distance&quot;</span>)]
-    </span><span class="kw">pub fn </span>device_to_user_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>dx: f64, <span class="kw-2">mut </span>dy: f64) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64), Error&gt; {
+    </span><span class="kw">pub fn </span>device_to_user_distance(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>dx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <span class="kw-2">mut </span>dy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            ffi::cairo_device_to_user_distance(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>dx, <span class="kw-2">&amp;mut </span>dy);
+            ffi::cairo_device_to_user_distance(<a class="self" href="#643">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#643">dx</a>, <span class="kw-2">&amp;mut </span><a href="#643">dy</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (dx, dy))
+        <a class="self" href="#643">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#643">dx</a>, <a href="#643">dy</a>))
     }
 
     <span class="comment">// font stuff
 
     </span><span class="attr">#[doc(alias = <span class="string">&quot;cairo_select_font_face&quot;</span>)]
-    </span><span class="kw">pub fn </span>select_font_face(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <span class="kw-2">&amp;</span>str, slant: FontSlant, weight: FontWeight) {
+    </span><span class="kw">pub fn </span>select_font_face(<span class="kw-2">&amp;</span><span class="self">self</span>, family: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, slant: <a href="enums.rs.html#818-827">FontSlant</a>, weight: <a href="enums.rs.html#874-881">FontWeight</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>family = CString::new(family).unwrap();
+            <span class="kw">let </span>family = CString::new(<a href="#653">family</a>).unwrap();
             ffi::cairo_select_font_face(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                family.as_ptr(),
-                slant.into(),
-                weight.into(),
+                <a class="self" href="#653">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#655">family</a>.as_ptr(),
+                <a href="#653">slant</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
+                <a href="#653">weight</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_font_size&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_font_size(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), size) }
+    </span><span class="kw">pub fn </span>set_font_size(<span class="kw-2">&amp;</span><span class="self">self</span>, size: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_font_size(<a class="self" href="#666">self</a>.<span class="number">0</span>.as_ptr(), <a href="#666">size</a>) }
     }
 
     <span class="comment">// FIXME probably needs a heap allocation
     </span><span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_font_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: Matrix) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_font_matrix(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), matrix.ptr()) }
+    </span><span class="kw">pub fn </span>set_font_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>, matrix: <a href="matrices.rs.html#12">Matrix</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_font_matrix(<a class="self" href="#672">self</a>.<span class="number">0</span>.as_ptr(), <a href="#672">matrix</a>.<a href="matrices.rs.html#22-24">ptr</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_font_matrix&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_font_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Matrix {
+    </span><span class="kw">pub fn </span>font_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrices.rs.html#12">Matrix</a> {
         <span class="kw">let </span><span class="kw-2">mut </span>matrix = Matrix::null();
         <span class="kw">unsafe </span>{
-            ffi::cairo_get_font_matrix(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), matrix.mut_ptr());
+            ffi::cairo_get_font_matrix(<a class="self" href="#678">self</a>.<span class="number">0</span>.as_ptr(), <a href="#679">matrix</a>.<a href="matrices.rs.html#27-29">mut_ptr</a>());
         }
-        matrix
+        <a href="#679">matrix</a>
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_font_options&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_options(<span class="kw-2">&amp;</span><span class="self">self</span>, options: <span class="kw-2">&amp;</span>FontOptions) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_font_options(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), options.to_raw_none()) }
+    </span><span class="kw">pub fn </span>set_font_options(<span class="kw-2">&amp;</span><span class="self">self</span>, options: <span class="kw-2">&amp;</span><a href="font/font_options.rs.html#17-32">FontOptions</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_font_options(<a class="self" href="#687">self</a>.<span class="number">0</span>.as_ptr(), <a href="#687">options</a>.<a href="font/font_options.rs.html#73-75">to_raw_none</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_font_options&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_font_options&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_options(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FontOptions, Error&gt; {
+    </span><span class="kw">pub fn </span>font_options(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font/font_options.rs.html#17-32">FontOptions</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">let </span>out = FontOptions::new()<span class="question-mark">?</span>;
         <span class="kw">unsafe </span>{
-            ffi::cairo_get_font_options(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), out.to_raw_none());
+            ffi::cairo_get_font_options(<a class="self" href="#693">self</a>.<span class="number">0</span>.as_ptr(), <a href="#694">out</a>.<a href="font/font_options.rs.html#73-75">to_raw_none</a>());
         }
-        <span class="prelude-val">Ok</span>(out)
+        <span class="prelude-val">Ok</span>(<a href="#694">out</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_font_face&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_font_face(<span class="kw-2">&amp;</span><span class="self">self</span>, font_face: <span class="kw-2">&amp;</span>FontFace) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_font_face(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), font_face.to_raw_none()) }
+    </span><span class="kw">pub fn </span>set_font_face(<span class="kw-2">&amp;</span><span class="self">self</span>, font_face: <span class="kw-2">&amp;</span><a href="font/font_face.rs.html#20-30">FontFace</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_font_face(<a class="self" href="#702">self</a>.<span class="number">0</span>.as_ptr(), <a href="#702">font_face</a>.<a href="font/font_face.rs.html#139-141">to_raw_none</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_font_face&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_font_face&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_face(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; FontFace {
-        <span class="kw">unsafe </span>{ FontFace::from_raw_none(ffi::cairo_get_font_face(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>font_face(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="font/font_face.rs.html#20-30">FontFace</a> {
+        <span class="kw">unsafe </span>{ FontFace::from_raw_none(ffi::cairo_get_font_face(<a class="self" href="#708">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_set_scaled_font&quot;</span>)]
-    </span><span class="kw">pub fn </span>set_scaled_font(<span class="kw-2">&amp;</span><span class="self">self</span>, scaled_font: <span class="kw-2">&amp;</span>ScaledFont) {
-        <span class="kw">unsafe </span>{ ffi::cairo_set_scaled_font(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), scaled_font.to_raw_none()) }
+    </span><span class="kw">pub fn </span>set_scaled_font(<span class="kw-2">&amp;</span><span class="self">self</span>, scaled_font: <span class="kw-2">&amp;</span><a href="font/scaled_font.rs.html#14-24">ScaledFont</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_set_scaled_font(<a class="self" href="#713">self</a>.<span class="number">0</span>.as_ptr(), <a href="#713">scaled_font</a>.<a href="font/scaled_font.rs.html#55-57">to_raw_none</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_scaled_font&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_scaled_font&quot;</span>)]
-    </span><span class="kw">pub fn </span>scaled_font(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; ScaledFont {
-        <span class="kw">unsafe </span>{ ScaledFont::from_raw_none(ffi::cairo_get_scaled_font(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) }
+    </span><span class="kw">pub fn </span>scaled_font(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="font/scaled_font.rs.html#14-24">ScaledFont</a> {
+        <span class="kw">unsafe </span>{ ScaledFont::from_raw_none(ffi::cairo_get_scaled_font(<a class="self" href="#719">self</a>.<span class="number">0</span>.as_ptr())) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_show_text&quot;</span>)]
-    </span><span class="kw">pub fn </span>show_text(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    </span><span class="kw">pub fn </span>show_text(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>text = CString::new(text).unwrap();
-            ffi::cairo_show_text(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), text.as_ptr())
+            <span class="kw">let </span>text = CString::new(<a href="#724">text</a>).unwrap();
+            ffi::cairo_show_text(<a class="self" href="#724">self</a>.<span class="number">0</span>.as_ptr(), <a href="#726">text</a>.as_ptr())
         };
-        <span class="self">self</span>.status()
+        <a class="self" href="#724">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_show_glyphs&quot;</span>)]
-    </span><span class="kw">pub fn </span>show_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[Glyph]) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+    </span><span class="kw">pub fn </span>show_glyphs(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[<a href="font/glyph.rs.html#8">Glyph</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             ffi::cairo_show_glyphs(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                glyphs.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                glyphs.len() <span class="kw">as _</span>,
+                <a class="self" href="#733">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#733">glyphs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#733">glyphs</a>.len() <span class="kw">as _</span>,
             )
         };
-        <span class="self">self</span>.status()
+        <a class="self" href="#733">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_show_text_glyphs&quot;</span>)]
     </span><span class="kw">pub fn </span>show_text_glyphs(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        text: <span class="kw-2">&amp;</span>str,
-        glyphs: <span class="kw-2">&amp;</span>[Glyph],
-        clusters: <span class="kw-2">&amp;</span>[TextCluster],
-        cluster_flags: TextClusterFlags,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), Error&gt; {
+        text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
+        glyphs: <span class="kw-2">&amp;</span>[<a href="font/glyph.rs.html#8">Glyph</a>],
+        clusters: <span class="kw-2">&amp;</span>[<a href="font/text_cluster.rs.html#8">TextCluster</a>],
+        cluster_flags: <a href="enums.rs.html#925-932">TextClusterFlags</a>,
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;(), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>text = CString::new(text).unwrap();
+            <span class="kw">let </span>text = CString::new(<a href="#747">text</a>).unwrap();
             ffi::cairo_show_text_glyphs(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                text.as_ptr(),
+                <a class="self" href="#746">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#753">text</a>.as_ptr(),
                 -<span class="number">1_i32</span>, <span class="comment">//NULL terminated
-                </span>glyphs.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                glyphs.len() <span class="kw">as _</span>,
-                clusters.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                clusters.len() <span class="kw">as _</span>,
-                cluster_flags.into(),
+                </span><a href="#748">glyphs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#748">glyphs</a>.len() <span class="kw">as _</span>,
+                <a href="#749">clusters</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#749">clusters</a>.len() <span class="kw">as _</span>,
+                <a href="#750">cluster_flags</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
             )
         };
-        <span class="self">self</span>.status()
+        <a class="self" href="#746">self</a>.<a href="#168-171">status</a>()
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_font_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>font_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;FontExtents, Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;FontExtents&gt;::uninit();
+    </span><span class="kw">pub fn </span>font_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font/font_extents.rs.html#8">FontExtents</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="font/font_extents.rs.html#8">FontExtents</a>&gt;::uninit();
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_font_extents(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), extents.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
-            <span class="self">self</span>.status().map(|<span class="kw">_</span>| extents.assume_init() <span class="kw">as _</span>)
+            ffi::cairo_font_extents(<a class="self" href="#769">self</a>.<span class="number">0</span>.as_ptr(), <a href="#770">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            <a class="self" href="#769">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#770">extents</a>.assume_init() <span class="kw">as _</span>)
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_text_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>text_extents(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span>str) -&gt; <span class="prelude-ty">Result</span>&lt;TextExtents, Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;TextExtents&gt;::uninit();
+    </span><span class="kw">pub fn </span>text_extents(<span class="kw-2">&amp;</span><span class="self">self</span>, text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font/text_extents.rs.html#8">TextExtents</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="font/text_extents.rs.html#8">TextExtents</a>&gt;::uninit();
 
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>text = CString::new(text).unwrap();
+            <span class="kw">let </span>text = CString::new(<a href="#779">text</a>).unwrap();
             ffi::cairo_text_extents(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                text.as_ptr(),
-                extents.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#779">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#783">text</a>.as_ptr(),
+                <a href="#780">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <span class="self">self</span>.status().map(|<span class="kw">_</span>| extents.assume_init())
+            <a class="self" href="#779">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#780">extents</a>.assume_init())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_glyph_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>glyph_extents(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[Glyph]) -&gt; <span class="prelude-ty">Result</span>&lt;TextExtents, Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;TextExtents&gt;::uninit();
+    </span><span class="kw">pub fn </span>glyph_extents(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[<a href="font/glyph.rs.html#8">Glyph</a>]) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="font/text_extents.rs.html#8">TextExtents</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>extents = MaybeUninit::&lt;<a href="font/text_extents.rs.html#8">TextExtents</a>&gt;::uninit();
 
         <span class="kw">unsafe </span>{
             ffi::cairo_glyph_extents(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                glyphs.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                glyphs.len() <span class="kw">as _</span>,
-                extents.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#794">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#794">glyphs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#794">glyphs</a>.len() <span class="kw">as _</span>,
+                <a href="#795">extents</a>.as_mut_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <span class="self">self</span>.status().map(|<span class="kw">_</span>| extents.assume_init())
+            <a class="self" href="#794">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#795">extents</a>.assume_init())
         }
     }
 
     <span class="comment">// paths stuff
 
     </span><span class="attr">#[doc(alias = <span class="string">&quot;cairo_copy_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Path, Error&gt; {
-        <span class="kw">let </span>path = <span class="kw">unsafe </span>{ Path::from_raw_full(ffi::cairo_copy_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| path)
+    </span><span class="kw">pub fn </span>copy_path(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="paths.rs.html#8">Path</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>path = <span class="kw">unsafe </span>{ Path::from_raw_full(ffi::cairo_copy_path(<a class="self" href="#811">self</a>.<span class="number">0</span>.as_ptr())) };
+        <a class="self" href="#811">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#812">path</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_copy_path_flat&quot;</span>)]
-    </span><span class="kw">pub fn </span>copy_path_flat(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;Path, Error&gt; {
-        <span class="kw">let </span>path = <span class="kw">unsafe </span>{ Path::from_raw_full(ffi::cairo_copy_path_flat(<span class="self">self</span>.<span class="number">0</span>.as_ptr())) };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| path)
+    </span><span class="kw">pub fn </span>copy_path_flat(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="paths.rs.html#8">Path</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>path = <span class="kw">unsafe </span>{ Path::from_raw_full(ffi::cairo_copy_path_flat(<a class="self" href="#817">self</a>.<span class="number">0</span>.as_ptr())) };
+        <a class="self" href="#817">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#818">path</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_append_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>append_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span>Path) {
-        <span class="kw">unsafe </span>{ ffi::cairo_append_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), path.as_ptr()) }
+    </span><span class="kw">pub fn </span>append_path(<span class="kw-2">&amp;</span><span class="self">self</span>, path: <span class="kw-2">&amp;</span><a href="paths.rs.html#8">Path</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_append_path(<a class="self" href="#823">self</a>.<span class="number">0</span>.as_ptr(), <a href="#823">path</a>.<a href="paths.rs.html#12-14">as_ptr</a>()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_has_current_point&quot;</span>)]
-    </span><span class="kw">pub fn </span>has_current_point(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;bool, Error&gt; {
-        <span class="kw">let </span>has_current_point = <span class="kw">unsafe </span>{ ffi::cairo_has_current_point(<span class="self">self</span>.<span class="number">0</span>.as_ptr()).as_bool() };
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| has_current_point)
+    </span><span class="kw">pub fn </span>has_current_point(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>, <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span>has_current_point = <span class="kw">unsafe </span>{ ffi::cairo_has_current_point(<a class="self" href="#828">self</a>.<span class="number">0</span>.as_ptr()).as_bool() };
+        <a class="self" href="#828">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| <a href="#829">has_current_point</a>)
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;get_current_point&quot;</span>)]
     #[doc(alias = <span class="string">&quot;cairo_get_current_point&quot;</span>)]
-    </span><span class="kw">pub fn </span>current_point(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64), Error&gt; {
+    </span><span class="kw">pub fn </span>current_point(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>x = <span class="number">0.0</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>y = <span class="number">0.0</span>;
-            ffi::cairo_get_current_point(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x, <span class="kw-2">&amp;mut </span>y);
-            <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x, y))
+            ffi::cairo_get_current_point(<a class="self" href="#835">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#837">x</a>, <span class="kw-2">&amp;mut </span><a href="#838">y</a>);
+            <a class="self" href="#835">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#837">x</a>, <a href="#838">y</a>))
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_new_path&quot;</span>)]
     </span><span class="kw">pub fn </span>new_path(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_new_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_new_path(<a class="self" href="#845">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_new_sub_path&quot;</span>)]
     </span><span class="kw">pub fn </span>new_sub_path(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_new_sub_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_new_sub_path(<a class="self" href="#850">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_close_path&quot;</span>)]
     </span><span class="kw">pub fn </span>close_path(<span class="kw-2">&amp;</span><span class="self">self</span>) {
-        <span class="kw">unsafe </span>{ ffi::cairo_close_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr()) }
+        <span class="kw">unsafe </span>{ ffi::cairo_close_path(<a class="self" href="#855">self</a>.<span class="number">0</span>.as_ptr()) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_arc&quot;</span>)]
-    </span><span class="kw">pub fn </span>arc(<span class="kw-2">&amp;</span><span class="self">self</span>, xc: f64, yc: f64, radius: f64, angle1: f64, angle2: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_arc(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), xc, yc, radius, angle1, angle2) }
+    </span><span class="kw">pub fn </span>arc(<span class="kw-2">&amp;</span><span class="self">self</span>, xc: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, yc: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, radius: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, angle1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, angle2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_arc(<a class="self" href="#860">self</a>.<span class="number">0</span>.as_ptr(), <a href="#860">xc</a>, <a href="#860">yc</a>, <a href="#860">radius</a>, <a href="#860">angle1</a>, <a href="#860">angle2</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_arc_negative&quot;</span>)]
-    </span><span class="kw">pub fn </span>arc_negative(<span class="kw-2">&amp;</span><span class="self">self</span>, xc: f64, yc: f64, radius: f64, angle1: f64, angle2: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_arc_negative(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), xc, yc, radius, angle1, angle2) }
+    </span><span class="kw">pub fn </span>arc_negative(<span class="kw-2">&amp;</span><span class="self">self</span>, xc: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, yc: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, radius: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, angle1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, angle2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_arc_negative(<a class="self" href="#865">self</a>.<span class="number">0</span>.as_ptr(), <a href="#865">xc</a>, <a href="#865">yc</a>, <a href="#865">radius</a>, <a href="#865">angle1</a>, <a href="#865">angle2</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_curve_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>curve_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x1: f64, y1: f64, x2: f64, y2: f64, x3: f64, y3: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_curve_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x1, y1, x2, y2, x3, y3) }
+    </span><span class="kw">pub fn </span>curve_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, x2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, x3: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y3: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_curve_to(<a class="self" href="#870">self</a>.<span class="number">0</span>.as_ptr(), <a href="#870">x1</a>, <a href="#870">y1</a>, <a href="#870">x2</a>, <a href="#870">y2</a>, <a href="#870">x3</a>, <a href="#870">y3</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_line_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>line_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_line_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y) }
+    </span><span class="kw">pub fn </span>line_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_line_to(<a class="self" href="#875">self</a>.<span class="number">0</span>.as_ptr(), <a href="#875">x</a>, <a href="#875">y</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_move_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>move_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_move_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y) }
+    </span><span class="kw">pub fn </span>move_to(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_move_to(<a class="self" href="#880">self</a>.<span class="number">0</span>.as_ptr(), <a href="#880">x</a>, <a href="#880">y</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_rectangle&quot;</span>)]
-    </span><span class="kw">pub fn </span>rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, x: f64, y: f64, width: f64, height: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_rectangle(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), x, y, width, height) }
+    </span><span class="kw">pub fn </span>rectangle(<span class="kw-2">&amp;</span><span class="self">self</span>, x: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, y: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, width: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, height: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_rectangle(<a class="self" href="#885">self</a>.<span class="number">0</span>.as_ptr(), <a href="#885">x</a>, <a href="#885">y</a>, <a href="#885">width</a>, <a href="#885">height</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_text_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>text_path(<span class="kw-2">&amp;</span><span class="self">self</span>, str_: <span class="kw-2">&amp;</span>str) {
+    </span><span class="kw">pub fn </span>text_path(<span class="kw-2">&amp;</span><span class="self">self</span>, str_: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>str_ = CString::new(str_).unwrap();
-            ffi::cairo_text_path(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), str_.as_ptr())
+            <span class="kw">let </span>str_ = CString::new(<a href="#890">str_</a>).unwrap();
+            ffi::cairo_text_path(<a class="self" href="#890">self</a>.<span class="number">0</span>.as_ptr(), <a href="#892">str_</a>.as_ptr())
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_glyph_path&quot;</span>)]
-    </span><span class="kw">pub fn </span>glyph_path(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[Glyph]) {
+    </span><span class="kw">pub fn </span>glyph_path(<span class="kw-2">&amp;</span><span class="self">self</span>, glyphs: <span class="kw-2">&amp;</span>[<a href="font/glyph.rs.html#8">Glyph</a>]) {
         <span class="kw">unsafe </span>{
             ffi::cairo_glyph_path(
-                <span class="self">self</span>.<span class="number">0</span>.as_ptr(),
-                glyphs.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                glyphs.len() <span class="kw">as _</span>,
+                <a class="self" href="#898">self</a>.<span class="number">0</span>.as_ptr(),
+                <a href="#898">glyphs</a>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
+                <a href="#898">glyphs</a>.len() <span class="kw">as _</span>,
             )
         }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_rel_curve_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>rel_curve_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx1: f64, dy1: f64, dx2: f64, dy2: f64, dx3: f64, dy3: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_rel_curve_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), dx1, dy1, dx2, dy2, dx3, dy3) }
+    </span><span class="kw">pub fn </span>rel_curve_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dx2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dx3: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy3: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_rel_curve_to(<a class="self" href="#909">self</a>.<span class="number">0</span>.as_ptr(), <a href="#909">dx1</a>, <a href="#909">dy1</a>, <a href="#909">dx2</a>, <a href="#909">dy2</a>, <a href="#909">dx3</a>, <a href="#909">dy3</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_rel_line_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>rel_line_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: f64, dy: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_rel_line_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), dx, dy) }
+    </span><span class="kw">pub fn </span>rel_line_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_rel_line_to(<a class="self" href="#914">self</a>.<span class="number">0</span>.as_ptr(), <a href="#914">dx</a>, <a href="#914">dy</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_rel_move_to&quot;</span>)]
-    </span><span class="kw">pub fn </span>rel_move_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: f64, dy: f64) {
-        <span class="kw">unsafe </span>{ ffi::cairo_rel_move_to(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), dx, dy) }
+    </span><span class="kw">pub fn </span>rel_move_to(<span class="kw-2">&amp;</span><span class="self">self</span>, dx: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, dy: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>) {
+        <span class="kw">unsafe </span>{ ffi::cairo_rel_move_to(<a class="self" href="#919">self</a>.<span class="number">0</span>.as_ptr(), <a href="#919">dx</a>, <a href="#919">dy</a>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;cairo_path_extents&quot;</span>)]
-    </span><span class="kw">pub fn </span>path_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(f64, f64, f64, f64), Error&gt; {
-        <span class="kw">let </span><span class="kw-2">mut </span>x1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y1: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>x2: f64 = <span class="number">0.0</span>;
-        <span class="kw">let </span><span class="kw-2">mut </span>y2: f64 = <span class="number">0.0</span>;
+    </span><span class="kw">pub fn </span>path_extents(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span>&lt;(<a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a>), <a href="error.rs.html#10-150">Error</a>&gt; {
+        <span class="kw">let </span><span class="kw-2">mut </span>x1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y1: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>x2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
+        <span class="kw">let </span><span class="kw-2">mut </span>y2: <a href="https://doc.rust-lang.org/nightly/std/primitive.f64.html">f64</a> = <span class="number">0.0</span>;
 
         <span class="kw">unsafe </span>{
-            ffi::cairo_path_extents(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span>x1, <span class="kw-2">&amp;mut </span>y1, <span class="kw-2">&amp;mut </span>x2, <span class="kw-2">&amp;mut </span>y2);
+            ffi::cairo_path_extents(<a class="self" href="#924">self</a>.<span class="number">0</span>.as_ptr(), <span class="kw-2">&amp;mut </span><a href="#925">x1</a>, <span class="kw-2">&amp;mut </span><a href="#926">y1</a>, <span class="kw-2">&amp;mut </span><a href="#927">x2</a>, <span class="kw-2">&amp;mut </span><a href="#928">y2</a>);
         }
-        <span class="self">self</span>.status().map(|<span class="kw">_</span>| (x1, y1, x2, y2))
+        <a class="self" href="#924">self</a>.<a href="#168-171">status</a>().map(|<span class="kw">_</span>| (<a href="#925">x1</a>, <a href="#926">y1</a>, <a href="#927">x2</a>, <a href="#928">y2</a>))
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v1_16&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_16&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;cairo_tag_begin&quot;</span>)]
-    </span><span class="kw">pub fn </span>tag_begin(<span class="kw-2">&amp;</span><span class="self">self</span>, tag_name: <span class="kw-2">&amp;</span>str, attributes: <span class="kw-2">&amp;</span>str) {
+    </span><span class="kw">pub fn </span>tag_begin(<span class="kw-2">&amp;</span><span class="self">self</span>, tag_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, attributes: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>tag_name = CString::new(tag_name).unwrap();
-            <span class="kw">let </span>attributes = CString::new(attributes).unwrap();
-            ffi::cairo_tag_begin(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), tag_name.as_ptr(), attributes.as_ptr())
+            <span class="kw">let </span>tag_name = CString::new(<a href="#939">tag_name</a>).unwrap();
+            <span class="kw">let </span>attributes = CString::new(<a href="#939">attributes</a>).unwrap();
+            ffi::cairo_tag_begin(<a class="self" href="#939">self</a>.<span class="number">0</span>.as_ptr(), <a href="#941">tag_name</a>.as_ptr(), <a href="#942">attributes</a>.as_ptr())
         }
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v1_16&quot;</span>)]
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v1_16&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;cairo_tag_end&quot;</span>)]
-    </span><span class="kw">pub fn </span>tag_end(<span class="kw-2">&amp;</span><span class="self">self</span>, tag_name: <span class="kw-2">&amp;</span>str) {
+    </span><span class="kw">pub fn </span>tag_end(<span class="kw-2">&amp;</span><span class="self">self</span>, tag_name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>tag_name = CString::new(tag_name).unwrap();
-            ffi::cairo_tag_end(<span class="self">self</span>.<span class="number">0</span>.as_ptr(), tag_name.as_ptr())
+            <span class="kw">let </span>tag_name = CString::new(<a href="#950">tag_name</a>).unwrap();
+            ffi::cairo_tag_end(<a class="self" href="#950">self</a>.<span class="number">0</span>.as_ptr(), <a href="#952">tag_name</a>.as_ptr())
         }
     }
 }
 
-<span class="kw">impl </span>fmt::Display <span class="kw">for </span>Context {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter) -&gt; fmt::Result {
-        <span class="macro">write!</span>(f, <span class="string">&quot;Context&quot;</span>)
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#64">Context</a> {
+    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#959">f</a>, <span class="string">&quot;Context&quot;</span>)
     }
 }
 
