@@ -441,6 +441,9 @@
 <a href="#368" id="368">368</a>
 <a href="#369" id="369">369</a>
 <a href="#370" id="370">370</a>
+<a href="#371" id="371">371</a>
+<a href="#372" id="372">372</a>
+<a href="#373" id="373">373</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cell/struct.Cell.html">cell::Cell</a>, <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>, <a href="https://doc.rust-lang.org/nightly/alloc/rc/struct.Rc.html">rc::Rc</a>};
@@ -791,22 +794,25 @@
             signal_count_clone.set(signal_count_clone.get() + <span class="number">1</span>);
         });
 
-        <span class="kw">let </span>to_remove = [
-            list.item(<span class="number">0</span>).unwrap(),
-            list.item(<span class="number">2</span>).unwrap(),
-            list.item(<span class="number">4</span>).unwrap(),
-            list.item(<span class="number">5</span>).unwrap(),
-            list.item(<span class="number">6</span>).unwrap(),
-            list.item(<span class="number">8</span>).unwrap(),
-            list.item(<span class="number">9</span>).unwrap(),
-        ];
-        list.retain(|item| !to_remove.contains(<span class="kw-2">&amp;</span>item));
+        <span class="kw">let </span>to_keep = [
+            <span class="comment">// list.item(0).unwrap(),
+            </span>list.item(<span class="number">1</span>).unwrap(),
+            <span class="comment">// list.item(2).unwrap(),
+            </span>list.item(<span class="number">3</span>).unwrap(),
+            <span class="comment">// list.item(4).unwrap(),
+            // list.item(5).unwrap(),
+            // list.item(6).unwrap(),
+            </span>list.item(<span class="number">7</span>).unwrap(),
+            <span class="comment">// list.item(8).unwrap(),
+            // list.item(9).unwrap(),
+        </span>];
+        list.retain(|item| to_keep.contains(<span class="kw-2">&amp;</span>item));
 
         <span class="comment">// Check that we removed the correct items
         </span><span class="macro">assert_eq!</span>(list.n_items(), <span class="number">3</span>);
-        <span class="kw">for </span>item <span class="kw">in </span><span class="kw-2">&amp;</span>to_remove {
-            <span class="macro">assert!</span>(list.find(item).is_none());
-        }
+        <span class="macro">assert_eq!</span>(list.item(<span class="number">0</span>).as_ref(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>to_keep[<span class="number">0</span>]));
+        <span class="macro">assert_eq!</span>(list.item(<span class="number">1</span>).as_ref(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>to_keep[<span class="number">1</span>]));
+        <span class="macro">assert_eq!</span>(list.item(<span class="number">2</span>).as_ref(), <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span>to_keep[<span class="number">2</span>]));
 
         <span class="macro">assert_eq!</span>(signal_count.get(), <span class="number">4</span>);
     }

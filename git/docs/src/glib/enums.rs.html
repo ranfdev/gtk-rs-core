@@ -1037,13 +1037,6 @@
 <a href="#964" id="964">964</a>
 <a href="#965" id="965">965</a>
 <a href="#966" id="966">966</a>
-<a href="#967" id="967">967</a>
-<a href="#968" id="968">968</a>
-<a href="#969" id="969">969</a>
-<a href="#970" id="970">970</a>
-<a href="#971" id="971">971</a>
-<a href="#972" id="972">972</a>
-<a href="#973" id="973">973</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/core/cmp/index.html">cmp</a>, <a href="https://doc.rust-lang.org/nightly/core/ffi/c_str/struct.CStr.html">ffi::CStr</a>, <a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
@@ -1051,17 +1044,10 @@
 <span class="kw">use crate</span>::{
     <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>,
     value::{<a href="value.rs.html#269-280">FromValue</a>, <a href="value.rs.html#94-98">ValueTypeChecker</a>},
-    <a href="param_spec.rs.html#2215-2223">HasParamSpec</a>, <a href="param_spec.rs.html#1130">ParamSpecEnum</a>, <a href="param_spec.rs.html#1278">ParamSpecFlags</a>, <a href="types.rs.html#247-251">StaticType</a>, <a href="types.rs.html#21">Type</a>, <a href="value.rs.html#475-520">Value</a>,
+    <a href="param_spec.rs.html#2138-2146">HasParamSpec</a>, <a href="param_spec.rs.html#1053">ParamSpecEnum</a>, <a href="param_spec.rs.html#1201">ParamSpecFlags</a>, <a href="types.rs.html#247-251">StaticType</a>, <a href="types.rs.html#21">Type</a>, <a href="value.rs.html#475-509">Value</a>,
 };
 
-<span class="doccomment">/// These are logical ids for special directories which are defined
-/// depending on the platform used. You should use [`user_special_dir()`][crate::user_special_dir()]
-/// to retrieve the full path associated to the logical id.
-///
-/// The [`UserDirectory`][crate::UserDirectory] enumeration can be extended at later date. Not
-/// every platform has a directory for every logical id in this
-/// enumeration.
-</span><span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
+<span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
 </span><span class="kw">pub enum </span><a href="../../glib/enum.UserDirectory.html">UserDirectory</a> {
     <span class="attr">#[doc(alias = <span class="string">&quot;G_USER_DIRECTORY_DESKTOP&quot;</span>)]
     </span>Desktop,
@@ -1082,12 +1068,12 @@
 }
 
 <span class="attr">#[doc(hidden)]
-</span><span class="kw">impl </span><a href="translate.rs.html#327-331">IntoGlib</a> <span class="kw">for </span><a href="#19-36">UserDirectory</a> {
+</span><span class="kw">impl </span><a href="translate.rs.html#327-331">IntoGlib</a> <span class="kw">for </span><a href="#12-29">UserDirectory</a> {
     <span class="kw">type </span>GlibType = ffi::GUserDirectory;
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GUserDirectory {
-        <span class="kw">match </span><span class="self"><a href="#43">self</a> </span>{
+        <span class="kw">match </span><span class="self"><a href="#36">self</a> </span>{
             <span class="self">Self</span>::Desktop =&gt; ffi::G_USER_DIRECTORY_DESKTOP,
             <span class="self">Self</span>::Documents =&gt; ffi::G_USER_DIRECTORY_DOCUMENTS,
             <span class="self">Self</span>::Downloads =&gt; ffi::G_USER_DIRECTORY_DOWNLOAD,
@@ -1107,24 +1093,24 @@
 #[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.EnumClass.html">EnumClass</a>(ptr::NonNull&lt;gobject_ffi::GEnumClass&gt;);
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#62">EnumClass</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#62">EnumClass</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#55">EnumClass</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#55">EnumClass</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#62">EnumClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#55">EnumClass</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#68">f</a>.debug_struct(<span class="string">&quot;EnumClass&quot;</span>)
-            .field(<span class="string">&quot;type&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#68">self</a>.<a href="#107-109">type_</a>())
-            .field(<span class="string">&quot;values&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#68">self</a>.<a href="#168-178">values</a>())
+        <a href="#61">f</a>.debug_struct(<span class="string">&quot;EnumClass&quot;</span>)
+            .field(<span class="string">&quot;type&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#61">self</a>.<a href="#100-102">type_</a>())
+            .field(<span class="string">&quot;values&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#61">self</a>.<a href="#161-171">values</a>())
             .finish()
     }
 }
 
-<span class="kw">impl </span><a href="#62">EnumClass</a> {
+<span class="kw">impl </span><a href="#55">EnumClass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `EnumClass` from a static type `T`.
     ///
     /// Panics if `T` is not representing an enum.
-    </span><span class="kw">pub fn </span>new&lt;T: <a href="types.rs.html#247-251">StaticType</a> + HasParamSpec&lt;ParamSpec = <a href="param_spec.rs.html#1130">ParamSpecEnum</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;T: <a href="types.rs.html#247-251">StaticType</a> + HasParamSpec&lt;ParamSpec = <a href="param_spec.rs.html#1053">ParamSpecEnum</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::with_type(T::static_type()).expect(<span class="string">&quot;invalid enum class&quot;</span>)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1134,15 +1120,15 @@
     </span><span class="kw">pub fn </span>with_type(type_: <a href="types.rs.html#21">Type</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>is_enum: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1413-1415">from_glib</a>(gobject_ffi::g_type_is_a(
-                <a href="#88">type_</a>.<a href="translate.rs.html#330">into_glib</a>(),
+                <a href="#81">type_</a>.<a href="translate.rs.html#330">into_glib</a>(),
                 gobject_ffi::G_TYPE_ENUM,
             ));
             <span class="kw">if </span>!is_enum {
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
 
-            <span class="prelude-val">Some</span>(<a href="#62">EnumClass</a>(
-                ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a href="#88">type_</a>.<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)
+            <span class="prelude-val">Some</span>(<a href="#55">EnumClass</a>(
+                ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a href="#81">type_</a>.<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)
                     .unwrap(),
             ))
         }
@@ -1151,7 +1137,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// `Type` of the enum.
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#21">Type</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#107">self</a>.<span class="number">0</span>.as_ref().g_type_class.g_type) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#100">self</a>.<span class="number">0</span>.as_ref().g_type_class.g_type) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1161,13 +1147,13 @@
     /// with `value`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_enum_get_value&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value&quot;</span>)]
-    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#221">EnumValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#214">EnumValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value(<a class="self" href="#118">self</a>.<span class="number">0</span>.as_ptr(), <a href="#118">value</a>);
+            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value(<a class="self" href="#111">self</a>.<span class="number">0</span>.as_ptr(), <a href="#111">value</a>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#120">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#221">EnumValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#113">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#214">EnumValue</a>))
             }
         }
     }
@@ -1179,13 +1165,13 @@
     /// with name `name`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_enum_get_value_by_name&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value_by_name&quot;</span>)]
-    </span><span class="kw">pub fn </span>value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#221">EnumValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#214">EnumValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value_by_name(<a class="self" href="#136">self</a>.<span class="number">0</span>.as_ptr(), <a href="#136">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value_by_name(<a class="self" href="#129">self</a>.<span class="number">0</span>.as_ptr(), <a href="#129">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#138">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#221">EnumValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#131">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#214">EnumValue</a>))
             }
         }
     }
@@ -1197,13 +1183,13 @@
     /// with nick `nick`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_enum_get_value_by_nick&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value_by_nick&quot;</span>)]
-    </span><span class="kw">pub fn </span>value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#221">EnumValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#214">EnumValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value_by_nick(<a class="self" href="#154">self</a>.<span class="number">0</span>.as_ptr(), <a href="#154">nick</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>v = gobject_ffi::g_enum_get_value_by_nick(<a class="self" href="#147">self</a>.<span class="number">0</span>.as_ptr(), <a href="#147">nick</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#156">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#221">EnumValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#149">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#214">EnumValue</a>))
             }
         }
     }
@@ -1211,51 +1197,51 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Gets all `EnumValue` of this `EnumClass`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_values&quot;</span>)]
-    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="#221">EnumValue</a>] {
+    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="#214">EnumValue</a>] {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>.as_ref().n_values == <span class="number">0 </span>{
                 <span class="kw">return </span><span class="kw-2">&amp;</span>[];
             }
             std::slice::from_raw_parts(
-                <a class="self" href="#168">self</a>.<span class="number">0</span>.as_ref().values <span class="kw">as </span><span class="kw-2">*const </span><a href="#221">EnumValue</a>,
-                <a class="self" href="#168">self</a>.<span class="number">0</span>.as_ref().n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+                <a class="self" href="#161">self</a>.<span class="number">0</span>.as_ref().values <span class="kw">as </span><span class="kw-2">*const </span><a href="#214">EnumValue</a>,
+                <a class="self" href="#161">self</a>.<span class="number">0</span>.as_ref().n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             )
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts integer `value` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#182">self</a>.<a href="#118-127">value</a>(<a href="#182">value</a>).map(|v| <a href="#183">v</a>.<a href="#260-266">to_value</a>(<a class="self" href="#182">self</a>))
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#175">self</a>.<a href="#111-120">value</a>(<a href="#175">value</a>).map(|v| <a href="#176">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#175">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string name `name` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#188">self</a>.<a href="#136-145">value_by_name</a>(<a href="#188">name</a>).map(|v| <a href="#189">v</a>.<a href="#260-266">to_value</a>(<a class="self" href="#188">self</a>))
+    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#181">self</a>.<a href="#129-138">value_by_name</a>(<a href="#181">name</a>).map(|v| <a href="#182">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#181">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string nick `nick` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#194">self</a>.<a href="#154-163">value_by_nick</a>(<a href="#194">nick</a>).map(|v| <a href="#195">v</a>.<a href="#260-266">to_value</a>(<a class="self" href="#194">self</a>))
+    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#187">self</a>.<a href="#147-156">value_by_nick</a>(<a href="#187">nick</a>).map(|v| <a href="#188">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#187">self</a>))
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#62">EnumClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#55">EnumClass</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_class_unref(<a class="self" href="#201">self</a>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            gobject_ffi::g_type_class_unref(<a class="self" href="#194">self</a>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#62">EnumClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#55">EnumClass</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="self">Self</span>(ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a class="self" href="#210">self</a>.<a href="#107-109">type_</a>().<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>).unwrap())
+            <span class="self">Self</span>(ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a class="self" href="#203">self</a>.<a href="#100-102">type_</a>().<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>).unwrap())
         }
     }
 }
@@ -1266,103 +1252,103 @@
 #[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.EnumValue.html">EnumValue</a>(gobject_ffi::GEnumValue);
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#221">EnumValue</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#221">EnumValue</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#214">EnumValue</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#214">EnumValue</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#221">EnumValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#214">EnumValue</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#227">f</a>.debug_struct(<span class="string">&quot;EnumValue&quot;</span>)
-            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#227">self</a>.<a href="#240-242">value</a>())
-            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#227">self</a>.<a href="#247-249">name</a>())
-            .field(<span class="string">&quot;nick&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#227">self</a>.<a href="#254-256">nick</a>())
+        <a href="#220">f</a>.debug_struct(<span class="string">&quot;EnumValue&quot;</span>)
+            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#220">self</a>.<a href="#233-235">value</a>())
+            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#220">self</a>.<a href="#240-242">name</a>())
+            .field(<span class="string">&quot;nick&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#220">self</a>.<a href="#247-249">nick</a>())
             .finish()
     }
 }
 
-<span class="kw">impl </span><a href="#221">EnumValue</a> {
+<span class="kw">impl </span><a href="#214">EnumValue</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get integer value corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_value&quot;</span>)]
     </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a> {
-        <a class="self" href="#240">self</a>.<span class="number">0</span>.value
+        <a class="self" href="#233">self</a>.<span class="number">0</span>.value
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get name corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_name&quot;</span>)]
     </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#247">self</a>.<span class="number">0</span>.value_name).to_str().unwrap() }
+        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#240">self</a>.<span class="number">0</span>.value_name).to_str().unwrap() }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get nick corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_nick&quot;</span>)]
     </span><span class="kw">pub fn </span>nick(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#254">self</a>.<span class="number">0</span>.value_nick).to_str().unwrap() }
+        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#247">self</a>.<span class="number">0</span>.value_nick).to_str().unwrap() }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert enum value to a `Value`.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, enum_: <span class="kw-2">&amp;</span><a href="#62">EnumClass</a>) -&gt; <a href="value.rs.html#475-520">Value</a> {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, enum_: <span class="kw-2">&amp;</span><a href="#55">EnumClass</a>) -&gt; <a href="value.rs.html#475-509">Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#260">enum_</a>.<a href="#107-109">type_</a>());
-            gobject_ffi::g_value_set_enum(<a href="#262">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#260">self</a>.<span class="number">0</span>.value);
-            <a href="#262">v</a>
+            <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#253">enum_</a>.<a href="#100-102">type_</a>());
+            gobject_ffi::g_value_set_enum(<a href="#255">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#253">self</a>.<span class="number">0</span>.value);
+            <a href="#255">v</a>
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert enum value from a `Value`.
-    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#62">EnumClass</a>, <span class="kw-2">&amp;</span><a href="#221">EnumValue</a>)&gt; {
+    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#55">EnumClass</a>, <span class="kw-2">&amp;</span><a href="#214">EnumValue</a>)&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>enum_class = EnumClass::with_type(value.type_())<span class="question-mark">?</span>;
             <span class="kw">let </span>v = enum_class.value(gobject_ffi::g_value_get_enum(value.to_glib_none().<span class="number">0</span>))<span class="question-mark">?</span>;
-            <span class="kw">let </span>v = <span class="kw-2">&amp;*</span>(<a href="#273">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#221">EnumValue</a>);
-            <span class="prelude-val">Some</span>((<a href="#272">enum_class</a>, <a href="#274">v</a>))
+            <span class="kw">let </span>v = <span class="kw-2">&amp;*</span>(<a href="#266">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#214">EnumValue</a>);
+            <span class="prelude-val">Some</span>((<a href="#265">enum_class</a>, <a href="#267">v</a>))
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#221">EnumValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#214">EnumValue</a> {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#281">self</a>.<a href="#240-242">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">eq</a>(<span class="kw-2">&amp;</span><a href="#281">other</a>.<a href="#240-242">value</a>())
+        <a class="self" href="#274">self</a>.<a href="#233-235">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">eq</a>(<span class="kw-2">&amp;</span><a href="#274">other</a>.<a href="#233-235">value</a>())
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#221">EnumValue</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#214">EnumValue</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span><a href="#221">EnumValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">PartialOrd</a> <span class="kw">for </span><a href="#214">EnumValue</a> {
     <span class="kw">fn </span>partial_cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a>&gt; {
-        <a class="self" href="#289">self</a>.<a href="#240-242">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">partial_cmp</a>(<span class="kw-2">&amp;</span><a href="#289">other</a>.<a href="#240-242">value</a>())
+        <a class="self" href="#282">self</a>.<a href="#233-235">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialOrd.html">partial_cmp</a>(<span class="kw-2">&amp;</span><a href="#282">other</a>.<a href="#233-235">value</a>())
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span><a href="#221">EnumValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">Ord</a> <span class="kw">for </span><a href="#214">EnumValue</a> {
     <span class="kw">fn </span>cmp(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/cmp/enum.Ordering.html">cmp::Ordering</a> {
-        <a class="self" href="#295">self</a>.<a href="#240-242">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<span class="kw-2">&amp;</span><a href="#295">other</a>.<a href="#240-242">value</a>())
+        <a class="self" href="#288">self</a>.<a href="#233-235">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Ord.html">cmp</a>(<span class="kw-2">&amp;</span><a href="#288">other</a>.<a href="#233-235">value</a>())
     }
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#221">EnumValue</a> {
-    <span class="kw">type </span>Checker = <a href="#310">EnumTypeChecker</a>;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#214">EnumValue</a> {
+    <span class="kw">type </span>Checker = <a href="#303">EnumTypeChecker</a>;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>(<span class="kw">_</span>, v) = EnumValue::from_value(<a href="#303">value</a>).unwrap();
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(<span class="kw">_</span>, v) = EnumValue::from_value(<a href="#296">value</a>).unwrap();
         <span class="comment">// SAFETY: The enum class and its values live forever
-        </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#304">v</a>)
+        </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#297">v</a>)
     }
 }
 
 <span class="kw">pub struct </span>EnumTypeChecker();
-<span class="kw">unsafe impl </span><a href="value.rs.html#94-98">ValueTypeChecker</a> <span class="kw">for </span><a href="#310">EnumTypeChecker</a> {
-    <span class="kw">type </span>Error = <a href="#328">InvalidEnumError</a>;
+<span class="kw">unsafe impl </span><a href="value.rs.html#94-98">ValueTypeChecker</a> <span class="kw">for </span><a href="#303">EnumTypeChecker</a> {
+    <span class="kw">type </span>Error = <a href="#321">InvalidEnumError</a>;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="kw">let </span>t = <a href="#314">value</a>.<a href="value.rs.html#608-610">type_</a>();
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>t = <a href="#307">value</a>.<a href="value.rs.html#597-599">type_</a>();
         <span class="kw">if </span>t.is_a(Type::ENUM) {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="#328">InvalidEnumError</a>)
+            <span class="prelude-val">Err</span>(<a href="#321">InvalidEnumError</a>)
         }
     }
 }
@@ -1373,13 +1359,13 @@
 </span><span class="attr">#[derive(Clone, PartialEq, Eq, Debug)]
 </span><span class="kw">pub struct </span>InvalidEnumError;
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#328">InvalidEnumError</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#321">InvalidEnumError</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#331">f</a>, <span class="string">&quot;Value is not an enum&quot;</span>)
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#324">f</a>, <span class="string">&quot;Value is not an enum&quot;</span>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#328">InvalidEnumError</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#321">InvalidEnumError</a> {}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Representation of a `flags` for dynamically, at runtime, querying the values of the enum and
@@ -1388,24 +1374,24 @@
 #[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsClass.html">FlagsClass</a>(ptr::NonNull&lt;gobject_ffi::GFlagsClass&gt;);
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#343">FlagsClass</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#343">FlagsClass</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#336">FlagsClass</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#336">FlagsClass</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#343">FlagsClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#336">FlagsClass</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#349">f</a>.debug_struct(<span class="string">&quot;FlagsClass&quot;</span>)
-            .field(<span class="string">&quot;type&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#349">self</a>.<a href="#388-390">type_</a>())
-            .field(<span class="string">&quot;values&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#349">self</a>.<a href="#449-459">values</a>())
+        <a href="#342">f</a>.debug_struct(<span class="string">&quot;FlagsClass&quot;</span>)
+            .field(<span class="string">&quot;type&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#342">self</a>.<a href="#381-383">type_</a>())
+            .field(<span class="string">&quot;values&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#342">self</a>.<a href="#442-452">values</a>())
             .finish()
     }
 }
 
-<span class="kw">impl </span><a href="#343">FlagsClass</a> {
+<span class="kw">impl </span><a href="#336">FlagsClass</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Create a new `FlagsClass` from a static type `T`.
     ///
     /// Panics if `T` is not representing an flags type.
-    </span><span class="kw">pub fn </span>new&lt;T: <a href="types.rs.html#247-251">StaticType</a> + HasParamSpec&lt;ParamSpec = <a href="param_spec.rs.html#1278">ParamSpecFlags</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
+    </span><span class="kw">pub fn </span>new&lt;T: <a href="types.rs.html#247-251">StaticType</a> + HasParamSpec&lt;ParamSpec = <a href="param_spec.rs.html#1201">ParamSpecFlags</a>&gt;&gt;() -&gt; <span class="self">Self </span>{
         <span class="self">Self</span>::with_type(T::static_type()).expect(<span class="string">&quot;invalid flags class&quot;</span>)
     }
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1415,15 +1401,15 @@
     </span><span class="kw">pub fn </span>with_type(type_: <a href="types.rs.html#21">Type</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>is_flags: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="translate.rs.html#1413-1415">from_glib</a>(gobject_ffi::g_type_is_a(
-                <a href="#369">type_</a>.<a href="translate.rs.html#330">into_glib</a>(),
+                <a href="#362">type_</a>.<a href="translate.rs.html#330">into_glib</a>(),
                 gobject_ffi::G_TYPE_FLAGS,
             ));
             <span class="kw">if </span>!is_flags {
                 <span class="kw">return </span><span class="prelude-val">None</span>;
             }
 
-            <span class="prelude-val">Some</span>(<a href="#343">FlagsClass</a>(
-                ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a href="#369">type_</a>.<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)
+            <span class="prelude-val">Some</span>(<a href="#336">FlagsClass</a>(
+                ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a href="#362">type_</a>.<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>)
                     .unwrap(),
             ))
         }
@@ -1432,7 +1418,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// `Type` of the flags.
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="types.rs.html#21">Type</a> {
-        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#388">self</a>.<span class="number">0</span>.as_ref().g_type_class.g_type) }
+        <span class="kw">unsafe </span>{ <a href="translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#381">self</a>.<span class="number">0</span>.as_ref().g_type_class.g_type) }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1442,13 +1428,13 @@
     /// with `value`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_flags_get_first_value&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value&quot;</span>)]
-    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#744">FlagsValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_flags_get_first_value(<a class="self" href="#399">self</a>.<span class="number">0</span>.as_ptr(), <a href="#399">value</a>);
+            <span class="kw">let </span>v = gobject_ffi::g_flags_get_first_value(<a class="self" href="#392">self</a>.<span class="number">0</span>.as_ptr(), <a href="#392">value</a>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#401">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#744">FlagsValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#394">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#737">FlagsValue</a>))
             }
         }
     }
@@ -1460,13 +1446,13 @@
     /// with name `name`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_flags_get_value_by_name&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value_by_name&quot;</span>)]
-    </span><span class="kw">pub fn </span>value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#744">FlagsValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_flags_get_value_by_name(<a class="self" href="#417">self</a>.<span class="number">0</span>.as_ptr(), <a href="#417">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>v = gobject_ffi::g_flags_get_value_by_name(<a class="self" href="#410">self</a>.<span class="number">0</span>.as_ptr(), <a href="#410">name</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#419">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#744">FlagsValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#412">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#737">FlagsValue</a>))
             }
         }
     }
@@ -1478,13 +1464,13 @@
     /// with nick `nick`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_flags_get_value_by_nick&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_value_by_nick&quot;</span>)]
-    </span><span class="kw">pub fn </span>value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#744">FlagsValue</a>&gt; {
+    </span><span class="kw">pub fn </span>value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>v = gobject_ffi::g_flags_get_value_by_nick(<a class="self" href="#435">self</a>.<span class="number">0</span>.as_ptr(), <a href="#435">nick</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>v = gobject_ffi::g_flags_get_value_by_nick(<a class="self" href="#428">self</a>.<span class="number">0</span>.as_ptr(), <a href="#428">nick</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">if </span>v.is_null() {
                 <span class="prelude-val">None
             </span>} <span class="kw">else </span>{
-                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#437">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#744">FlagsValue</a>))
+                <span class="prelude-val">Some</span>(<span class="kw-2">&amp;*</span>(<a href="#430">v</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="#737">FlagsValue</a>))
             }
         }
     }
@@ -1492,60 +1478,60 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Gets all `FlagsValue` of this `FlagsClass`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_values&quot;</span>)]
-    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="#744">FlagsValue</a>] {
+    </span><span class="kw">pub fn </span>values(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="#737">FlagsValue</a>] {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.<span class="number">0</span>.as_ref().n_values == <span class="number">0 </span>{
                 <span class="kw">return </span><span class="kw-2">&amp;</span>[];
             }
             std::slice::from_raw_parts(
-                <a class="self" href="#449">self</a>.<span class="number">0</span>.as_ref().values <span class="kw">as </span><span class="kw-2">*const </span><a href="#744">FlagsValue</a>,
-                <a class="self" href="#449">self</a>.<span class="number">0</span>.as_ref().n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
+                <a class="self" href="#442">self</a>.<span class="number">0</span>.as_ref().values <span class="kw">as </span><span class="kw-2">*const </span><a href="#737">FlagsValue</a>,
+                <a class="self" href="#442">self</a>.<span class="number">0</span>.as_ref().n_values <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             )
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts integer `value` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#463">self</a>.<a href="#399-408">value</a>(<a href="#463">value</a>).map(|v| <a href="#464">v</a>.<a href="#783-789">to_value</a>(<a class="self" href="#463">self</a>))
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#456">self</a>.<a href="#392-401">value</a>(<a href="#456">value</a>).map(|v| <a href="#457">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#456">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string name `name` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#469">self</a>.<a href="#417-426">value_by_name</a>(<a href="#469">name</a>).map(|v| <a href="#470">v</a>.<a href="#783-789">to_value</a>(<a class="self" href="#469">self</a>))
+    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#462">self</a>.<a href="#410-419">value_by_name</a>(<a href="#462">name</a>).map(|v| <a href="#463">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#462">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string nick `nick` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#475">self</a>.<a href="#435-444">value_by_nick</a>(<a href="#475">nick</a>).map(|v| <a href="#476">v</a>.<a href="#783-789">to_value</a>(<a class="self" href="#475">self</a>))
+    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#468">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#468">nick</a>).map(|v| <a href="#469">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#468">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to integer `f` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
 
-            <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#481">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-            <a href="#487">flags</a> &amp; <a href="#481">f</a> != <span class="number">0
+            <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#474">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <a href="#480">flags</a> &amp; <a href="#474">f</a> != <span class="number">0
         </span>}
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to string name `name` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#494">self</a>.<a href="#417-426">value_by_name</a>(<a href="#494">name</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#494">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                <a href="#501">flags</a> &amp; <a href="#500">f</a>.<a href="#763-765">value</a>() != <span class="number">0
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#487">self</a>.<a href="#410-419">value_by_name</a>(<a href="#487">name</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#487">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                <a href="#494">flags</a> &amp; <a href="#493">f</a>.<a href="#756-758">value</a>() != <span class="number">0
             </span>} <span class="kw">else </span>{
                 <span class="bool-val">false
             </span>}
@@ -1554,15 +1540,15 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to string nick `nick` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#511">self</a>.<a href="#435-444">value_by_nick</a>(<a href="#511">nick</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#511">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                <a href="#518">flags</a> &amp; <a href="#517">f</a>.<a href="#763-765">value</a>() != <span class="number">0
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#504">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#504">nick</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#504">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                <a href="#511">flags</a> &amp; <a href="#510">f</a>.<a href="#756-758">value</a>() != <span class="number">0
             </span>} <span class="kw">else </span>{
                 <span class="bool-val">false
             </span>}
@@ -1576,18 +1562,18 @@
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_value_set_flags&quot;</span>)]
-    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#533">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#526">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#533">self</a>.<a href="#399-408">value</a>(<a href="#533">f</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#533">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#533">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#540">flags</a> | <a href="#539">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#533">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#526">self</a>.<a href="#392-401">value</a>(<a href="#526">f</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#526">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#526">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#533">flags</a> | <a href="#532">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#526">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#533">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#526">value</a>)
             }
         }
     }
@@ -1598,18 +1584,18 @@
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#555">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#548">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#555">self</a>.<a href="#417-426">value_by_name</a>(<a href="#555">name</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#555">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#555">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#562">flags</a> | <a href="#561">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#555">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#548">self</a>.<a href="#410-419">value_by_name</a>(<a href="#548">name</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#548">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#548">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#555">flags</a> | <a href="#554">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#548">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#555">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#548">value</a>)
             }
         }
     }
@@ -1620,18 +1606,18 @@
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#577">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#570">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#577">self</a>.<a href="#435-444">value_by_nick</a>(<a href="#577">nick</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#577">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#577">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#584">flags</a> | <a href="#583">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#577">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#570">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#570">nick</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#570">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#570">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#577">flags</a> | <a href="#576">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#570">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#577">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#570">value</a>)
             }
         }
     }
@@ -1642,18 +1628,18 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#599">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#592">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#599">self</a>.<a href="#399-408">value</a>(<a href="#599">f</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#599">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#599">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#606">flags</a> &amp; !<a href="#605">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#599">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#592">self</a>.<a href="#392-401">value</a>(<a href="#592">f</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#592">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#592">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#599">flags</a> &amp; !<a href="#598">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#592">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#599">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#592">value</a>)
             }
         }
     }
@@ -1664,18 +1650,18 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#621">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#614">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#621">self</a>.<a href="#417-426">value_by_name</a>(<a href="#621">name</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#621">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#621">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#628">flags</a> &amp; !<a href="#627">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#621">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#614">self</a>.<a href="#410-419">value_by_name</a>(<a href="#614">name</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#614">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#614">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#621">flags</a> &amp; !<a href="#620">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#614">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#621">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#614">value</a>)
             }
         }
     }
@@ -1686,18 +1672,18 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-520">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-520">Value</a>, <a href="value.rs.html#475-520">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#475-509">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#475-509">Value</a>, <a href="value.rs.html#475-509">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
-                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#643">value</a>);
+                <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#636">value</a>);
             }
 
-            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#643">self</a>.<a href="#435-444">value_by_nick</a>(<a href="#643">nick</a>) {
-                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#643">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                gobject_ffi::g_value_set_flags(<a href="#643">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#650">flags</a> &amp; !<a href="#649">f</a>.<a href="#763-765">value</a>());
-                <span class="prelude-val">Ok</span>(<a href="#643">value</a>)
+            <span class="kw">if let </span><span class="prelude-val">Some</span>(f) = <a class="self" href="#636">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#636">nick</a>) {
+                <span class="kw">let </span>flags = gobject_ffi::g_value_get_flags(<a href="#636">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                gobject_ffi::g_value_set_flags(<a href="#636">value</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a href="#643">flags</a> &amp; !<a href="#642">f</a>.<a href="#756-758">value</a>());
+                <span class="prelude-val">Ok</span>(<a href="#636">value</a>)
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(<a href="#643">value</a>)
+                <span class="prelude-val">Err</span>(<a href="#636">value</a>)
             }
         }
     }
@@ -1716,52 +1702,52 @@
                 s.push_str(val.nick());
             }
         }
-        <a href="#662">s</a>
+        <a href="#655">s</a>
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts a string of nicks `s` separated by `|` to an integer value.
-    </span><span class="kw">pub fn </span>from_nick_string(<span class="kw-2">&amp;</span><span class="self">self</span>, s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a href="#724">ParseFlagsError</a>&gt; {
-        <a href="#678">s</a>.split(<span class="string">&#39;|&#39;</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">try_fold</a>(<span class="number">0u32</span>, |acc, flag| {
-            <a class="self" href="#678">self</a>.<a href="#435-444">value_by_nick</a>(<a href="#679">flag</a>.trim())
-                .map(|v| <a href="#679">acc</a> + <a href="#681">v</a>.<a href="#763-765">value</a>())
-                .ok_or_else(|| <a href="#724">ParseFlagsError</a>(<a href="#679">flag</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>()))
+    </span><span class="kw">pub fn </span>from_nick_string(<span class="kw-2">&amp;</span><span class="self">self</span>, s: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>, <a href="#717">ParseFlagsError</a>&gt; {
+        <a href="#671">s</a>.split(<span class="string">&#39;|&#39;</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">try_fold</a>(<span class="number">0u32</span>, |acc, flag| {
+            <a class="self" href="#671">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#672">flag</a>.trim())
+                .map(|v| <a href="#672">acc</a> + <a href="#674">v</a>.<a href="#756-758">value</a>())
+                .ok_or_else(|| <a href="#717">ParseFlagsError</a>(<a href="#672">flag</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>()))
         })
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`.
-    </span><span class="kw">pub fn </span>builder(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#835">FlagsBuilder</a> {
-        FlagsBuilder::new(<a class="self" href="#689">self</a>)
+    </span><span class="kw">pub fn </span>builder(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#828">FlagsBuilder</a> {
+        FlagsBuilder::new(<a class="self" href="#682">self</a>)
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`. The `Value` is initialized with `value`.
-    </span><span class="kw">pub fn </span>builder_with_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="value.rs.html#475-520">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#835">FlagsBuilder</a>&gt; {
+    </span><span class="kw">pub fn </span>builder_with_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="value.rs.html#475-509">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#828">FlagsBuilder</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
 
-        <span class="prelude-val">Some</span>(FlagsBuilder::with_value(<a class="self" href="#696">self</a>, <a href="#696">value</a>))
+        <span class="prelude-val">Some</span>(FlagsBuilder::with_value(<a class="self" href="#689">self</a>, <a href="#689">value</a>))
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#343">FlagsClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/drop/trait.Drop.html">Drop</a> <span class="kw">for </span><a href="#336">FlagsClass</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>drop(<span class="kw-2">&amp;mut </span><span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            gobject_ffi::g_type_class_unref(<a class="self" href="#707">self</a>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
+            gobject_ffi::g_type_class_unref(<a class="self" href="#700">self</a>.<span class="number">0</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>);
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#343">FlagsClass</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">Clone</a> <span class="kw">for </span><a href="#336">FlagsClass</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>clone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
         <span class="kw">unsafe </span>{
-            <span class="self">Self</span>(ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a class="self" href="#716">self</a>.<a href="#388-390">type_</a>().<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>).unwrap())
+            <span class="self">Self</span>(ptr::NonNull::new(gobject_ffi::g_type_class_ref(<a class="self" href="#709">self</a>.<a href="#381-383">type_</a>().<a href="translate.rs.html#330">into_glib</a>()) <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>).unwrap())
         }
     }
 }
@@ -1769,17 +1755,17 @@
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub struct </span>ParseFlagsError(<a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#724">ParseFlagsError</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#717">ParseFlagsError</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#724">ParseFlagsError</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#717">ParseFlagsError</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#729">f</a>, <span class="string">&quot;Unknown flag: &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#722">f</a>, <span class="string">&quot;Unknown flag: &#39;{}&#39;&quot;</span>, <span class="self">self</span>.<span class="number">0</span>)
     }
 }
 
-<span class="kw">impl </span><a href="#724">ParseFlagsError</a> {
+<span class="kw">impl </span><a href="#717">ParseFlagsError</a> {
     <span class="kw">pub fn </span>flag(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw-2">&amp;</span><a class="self" href="#735">self</a>.<span class="number">0
+        <span class="kw-2">&amp;</span><a class="self" href="#728">self</a>.<span class="number">0
     </span>}
 }
 
@@ -1789,75 +1775,75 @@
 #[repr(transparent)]
 </span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsValue.html">FlagsValue</a>(gobject_ffi::GFlagsValue);
 
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#744">FlagsValue</a> {}
-<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#744">FlagsValue</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> <span class="kw">for </span><a href="#737">FlagsValue</a> {}
+<span class="kw">unsafe impl </span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> <span class="kw">for </span><a href="#737">FlagsValue</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#744">FlagsValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#737">FlagsValue</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#750">f</a>.debug_struct(<span class="string">&quot;FlagsValue&quot;</span>)
-            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#750">self</a>.<a href="#763-765">value</a>())
-            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#750">self</a>.<a href="#770-772">name</a>())
-            .field(<span class="string">&quot;nick&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#750">self</a>.<a href="#777-779">nick</a>())
+        <a href="#743">f</a>.debug_struct(<span class="string">&quot;FlagsValue&quot;</span>)
+            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#743">self</a>.<a href="#756-758">value</a>())
+            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#743">self</a>.<a href="#763-765">name</a>())
+            .field(<span class="string">&quot;nick&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#743">self</a>.<a href="#770-772">nick</a>())
             .finish()
     }
 }
 
-<span class="kw">impl </span><a href="#744">FlagsValue</a> {
+<span class="kw">impl </span><a href="#737">FlagsValue</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get integer value corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_value&quot;</span>)]
     </span><span class="kw">pub fn </span>value(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a> {
-        <a class="self" href="#763">self</a>.<span class="number">0</span>.value
+        <a class="self" href="#756">self</a>.<span class="number">0</span>.value
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get name corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_name&quot;</span>)]
     </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#770">self</a>.<span class="number">0</span>.value_name).to_str().unwrap() }
+        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#763">self</a>.<span class="number">0</span>.value_name).to_str().unwrap() }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Get nick corresponding to the value.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;get_nick&quot;</span>)]
     </span><span class="kw">pub fn </span>nick(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#777">self</a>.<span class="number">0</span>.value_nick).to_str().unwrap() }
+        <span class="kw">unsafe </span>{ CStr::from_ptr(<a class="self" href="#770">self</a>.<span class="number">0</span>.value_nick).to_str().unwrap() }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert flags value to a `Value`.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <span class="kw-2">&amp;</span><a href="#343">FlagsClass</a>) -&gt; <a href="value.rs.html#475-520">Value</a> {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>) -&gt; <a href="value.rs.html#475-509">Value</a> {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#783">flags</a>.<a href="#388-390">type_</a>());
-            gobject_ffi::g_value_set_flags(<a href="#785">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#783">self</a>.<span class="number">0</span>.value);
-            <a href="#785">v</a>
+            <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#776">flags</a>.<a href="#381-383">type_</a>());
+            gobject_ffi::g_value_set_flags(<a href="#778">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#776">self</a>.<span class="number">0</span>.value);
+            <a href="#778">v</a>
         }
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert flags values from a `Value`. This returns all flags that are set.
-    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#343">FlagsClass</a>, Vec&lt;<span class="kw-2">&amp;</span><a href="#744">FlagsValue</a>&gt;)&gt; {
+    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#336">FlagsClass</a>, Vec&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt;)&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>flags_class = FlagsClass::with_type(value.type_())<span class="question-mark">?</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>res = Vec::new();
-            <span class="kw">let </span>f = gobject_ffi::g_value_get_flags(<a href="#793">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+            <span class="kw">let </span>f = gobject_ffi::g_value_get_flags(<a href="#786">value</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
             <span class="kw">for </span>v <span class="kw">in </span>flags_class.values() {
                 <span class="kw">if </span>v.value() &amp; f != <span class="number">0 </span>{
                     res.push(<span class="kw-2">&amp;*</span>(v <span class="kw">as </span><span class="kw-2">*const </span>FlagsValue));
                 }
             }
-            <span class="prelude-val">Some</span>((<a href="#795">flags_class</a>, <a href="#796">res</a>))
+            <span class="prelude-val">Some</span>((<a href="#788">flags_class</a>, <a href="#789">res</a>))
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#744">FlagsValue</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#737">FlagsValue</a> {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#809">self</a>.<a href="#763-765">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">eq</a>(<span class="kw-2">&amp;</span><a href="#809">other</a>.<a href="#763-765">value</a>())
+        <a class="self" href="#802">self</a>.<a href="#756-758">value</a>().<a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">eq</a>(<span class="kw-2">&amp;</span><a href="#802">other</a>.<a href="#756-758">value</a>())
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#744">FlagsValue</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#737">FlagsValue</a> {}
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// Builder for conveniently setting/unsetting flags and returning a `Value`.
@@ -1878,105 +1864,105 @@
 ///
 /// If setting/unsetting any value fails, `build()` returns `None`.
 </span><span class="attr">#[must_use = <span class="string">&quot;The builder must be built to be used&quot;</span>]
-</span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsBuilder.html">FlagsBuilder</a>&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#343">FlagsClass</a>, <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsBuilder.html">FlagsBuilder</a>&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#336">FlagsClass</a>, <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt;);
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FlagsBuilder&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>new(flags_class: <span class="kw-2">&amp;</span><a href="#343">FlagsClass</a>) -&gt; <a href="#835">FlagsBuilder</a> {
-        <span class="kw">let </span>value = <span class="kw">unsafe </span>{ Value::from_type_unchecked(<a href="#837">flags_class</a>.<a href="#388-390">type_</a>()) };
-        <a href="#835">FlagsBuilder</a>(<a href="#837">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#838">value</a>))
+    <span class="kw">fn </span>new(flags_class: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>) -&gt; <a href="#828">FlagsBuilder</a> {
+        <span class="kw">let </span>value = <span class="kw">unsafe </span>{ Value::from_type_unchecked(<a href="#830">flags_class</a>.<a href="#381-383">type_</a>()) };
+        <a href="#828">FlagsBuilder</a>(<a href="#830">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#831">value</a>))
     }
 
-    <span class="kw">fn </span>with_value(flags_class: <span class="kw-2">&amp;</span><a href="#343">FlagsClass</a>, value: <a href="value.rs.html#475-520">Value</a>) -&gt; <a href="#835">FlagsBuilder</a> {
-        <a href="#835">FlagsBuilder</a>(<a href="#842">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#842">value</a>))
+    <span class="kw">fn </span>with_value(flags_class: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>, value: <a href="value.rs.html#475-509">Value</a>) -&gt; <a href="#828">FlagsBuilder</a> {
+        <a href="#828">FlagsBuilder</a>(<a href="#835">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#835">value</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set flags corresponding to integer value `f`.
     </span><span class="kw">pub fn </span>set(<span class="kw-2">mut </span><span class="self">self</span>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#848">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#848">self</a>.<span class="number">1 </span>= <a class="self" href="#848">self</a>.<span class="number">0</span>.<a href="#533-547">set</a>(<a href="#849">value</a>, <a href="#848">f</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#841">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#841">self</a>.<span class="number">1 </span>= <a class="self" href="#841">self</a>.<span class="number">0</span>.<a href="#526-540">set</a>(<a href="#842">value</a>, <a href="#841">f</a>).ok();
         }
 
-        <span class="self"><a href="#848">self</a>
+        <span class="self"><a href="#841">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set flags corresponding to string name `name`.
     </span><span class="kw">pub fn </span>set_by_name(<span class="kw-2">mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#858">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#858">self</a>.<span class="number">1 </span>= <a class="self" href="#858">self</a>.<span class="number">0</span>.<a href="#555-569">set_by_name</a>(<a href="#859">value</a>, <a href="#858">name</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#851">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#851">self</a>.<span class="number">1 </span>= <a class="self" href="#851">self</a>.<span class="number">0</span>.<a href="#548-562">set_by_name</a>(<a href="#852">value</a>, <a href="#851">name</a>).ok();
         }
 
-        <span class="self"><a href="#858">self</a>
+        <span class="self"><a href="#851">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Set flags corresponding to string nick `nick`.
     </span><span class="kw">pub fn </span>set_by_nick(<span class="kw-2">mut </span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#868">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#868">self</a>.<span class="number">1 </span>= <a class="self" href="#868">self</a>.<span class="number">0</span>.<a href="#577-591">set_by_nick</a>(<a href="#869">value</a>, <a href="#868">nick</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#861">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#861">self</a>.<span class="number">1 </span>= <a class="self" href="#861">self</a>.<span class="number">0</span>.<a href="#570-584">set_by_nick</a>(<a href="#862">value</a>, <a href="#861">nick</a>).ok();
         }
 
-        <span class="self"><a href="#868">self</a>
+        <span class="self"><a href="#861">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Unsets flags corresponding to integer value `f`.
     </span><span class="kw">pub fn </span>unset(<span class="kw-2">mut </span><span class="self">self</span>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#878">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#878">self</a>.<span class="number">1 </span>= <a class="self" href="#878">self</a>.<span class="number">0</span>.<a href="#599-613">unset</a>(<a href="#879">value</a>, <a href="#878">f</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#871">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#871">self</a>.<span class="number">1 </span>= <a class="self" href="#871">self</a>.<span class="number">0</span>.<a href="#592-606">unset</a>(<a href="#872">value</a>, <a href="#871">f</a>).ok();
         }
 
-        <span class="self"><a href="#878">self</a>
+        <span class="self"><a href="#871">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Unset flags corresponding to string name `name`.
     </span><span class="kw">pub fn </span>unset_by_name(<span class="kw-2">mut </span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#888">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#888">self</a>.<span class="number">1 </span>= <a class="self" href="#888">self</a>.<span class="number">0</span>.<a href="#621-635">unset_by_name</a>(<a href="#889">value</a>, <a href="#888">name</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#881">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#881">self</a>.<span class="number">1 </span>= <a class="self" href="#881">self</a>.<span class="number">0</span>.<a href="#614-628">unset_by_name</a>(<a href="#882">value</a>, <a href="#881">name</a>).ok();
         }
 
-        <span class="self"><a href="#888">self</a>
+        <span class="self"><a href="#881">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Unset flags corresponding to string nick `nick`.
     </span><span class="kw">pub fn </span>unset_by_nick(<span class="kw-2">mut </span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#898">self</a>.<span class="number">1</span>.take() {
-            <a class="self" href="#898">self</a>.<span class="number">1 </span>= <a class="self" href="#898">self</a>.<span class="number">0</span>.<a href="#643-657">unset_by_nick</a>(<a href="#899">value</a>, <a href="#898">nick</a>).ok();
+        <span class="kw">if let </span><span class="prelude-val">Some</span>(value) = <a class="self" href="#891">self</a>.<span class="number">1</span>.take() {
+            <a class="self" href="#891">self</a>.<span class="number">1 </span>= <a class="self" href="#891">self</a>.<span class="number">0</span>.<a href="#636-650">unset_by_nick</a>(<a href="#892">value</a>, <a href="#891">nick</a>).ok();
         }
 
-        <span class="self"><a href="#898">self</a>
+        <span class="self"><a href="#891">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts to the final `Value`, unless any previous setting/unsetting of flags failed.
     </span><span class="attr">#[must_use = <span class="string">&quot;Value returned from the builder should probably be used&quot;</span>]
-    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-520">Value</a>&gt; {
-        <a class="self" href="#909">self</a>.<span class="number">1
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#475-509">Value</a>&gt; {
+        <a class="self" href="#902">self</a>.<span class="number">1
     </span>}
 }
 
-<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#744">FlagsValue</a>&gt; {
-    <span class="kw">type </span>Checker = <a href="#924">FlagsTypeChecker</a>;
+<span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#737">FlagsValue</a>&gt; {
+    <span class="kw">type </span>Checker = <a href="#917">FlagsTypeChecker</a>;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="self">Self </span>{
-        <span class="kw">let </span>(<span class="kw">_</span>, v) = FlagsValue::from_value(<a href="#917">value</a>).unwrap();
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="self">Self </span>{
+        <span class="kw">let </span>(<span class="kw">_</span>, v) = FlagsValue::from_value(<a href="#910">value</a>).unwrap();
         <span class="comment">// SAFETY: The enum class and its values live forever
-        </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#918">v</a>)
+        </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#911">v</a>)
     }
 }
 
 <span class="kw">pub struct </span>FlagsTypeChecker();
-<span class="kw">unsafe impl </span><a href="value.rs.html#94-98">ValueTypeChecker</a> <span class="kw">for </span><a href="#924">FlagsTypeChecker</a> {
-    <span class="kw">type </span>Error = <a href="#942">InvalidFlagsError</a>;
+<span class="kw">unsafe impl </span><a href="value.rs.html#94-98">ValueTypeChecker</a> <span class="kw">for </span><a href="#917">FlagsTypeChecker</a> {
+    <span class="kw">type </span>Error = <a href="#935">InvalidFlagsError</a>;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-520">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="kw">let </span>t = <a href="#928">value</a>.<a href="value.rs.html#608-610">type_</a>();
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#475-509">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>t = <a href="#921">value</a>.<a href="value.rs.html#597-599">type_</a>();
         <span class="kw">if </span>t.is_a(Type::FLAGS) {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
-            <span class="prelude-val">Err</span>(<a href="#942">InvalidFlagsError</a>)
+            <span class="prelude-val">Err</span>(<a href="#935">InvalidFlagsError</a>)
         }
     }
 }
@@ -1987,13 +1973,13 @@
 </span><span class="attr">#[derive(Clone, PartialEq, Eq, Debug)]
 </span><span class="kw">pub struct </span>InvalidFlagsError;
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#942">InvalidFlagsError</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#935">InvalidFlagsError</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#945">f</a>, <span class="string">&quot;Value is not a flags&quot;</span>)
+        <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.write.html">write!</a>(<a href="#938">f</a>, <span class="string">&quot;Value is not a flags&quot;</span>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#942">InvalidFlagsError</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/error/trait.Error.html">std::error::Error</a> <span class="kw">for </span><a href="#935">InvalidFlagsError</a> {}
 
 <span class="attr">#[cfg(test)]
 </span><span class="kw">mod </span>tests {
