@@ -791,8 +791,8 @@
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">sync::Mutex</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#127-133">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>, <a href="../gstring.rs.html#2280-2282">IntoGStr</a>, <a href="../gobject/auto/flags.rs.html#119-168">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>,
-    <a href="../value.rs.html#476-510">Value</a>,
+    <a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#220-226">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>, <a href="../gstring.rs.html#2280-2282">IntoGStr</a>, <a href="../gobject/auto/flags.rs.html#119-168">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>,
+    <a href="../value.rs.html#476-499">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -805,10 +805,10 @@
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     class_handler: <span class="prelude-ty">Option</span>&lt;
-        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-499">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-499">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
     &gt;,
     accumulator: <span class="prelude-ty">Option</span>&lt;
-        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-499">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-499">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
     &gt;,
 }
 
@@ -833,7 +833,7 @@
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <a href="../types.rs.html#22">Type</a>,
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Arguments value array.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*const </span><a href="../value.rs.html#476-510">Value</a>,
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*const </span><a href="../value.rs.html#476-499">Value</a>,
 );
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#39-49">SignalClassHandlerToken</a> {
@@ -1152,11 +1152,11 @@
     Unregistered {
         class_handler: <span class="prelude-ty">Option</span>&lt;
             Box&lt;
-                <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+                <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-499">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-499">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
             &gt;,
         &gt;,
         accumulator: <span class="prelude-ty">Option</span>&lt;
-            Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+            Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-499">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-499">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
         &gt;,
     },
     Registered {
@@ -1271,7 +1271,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Class handler for this signal.
     </span><span class="kw">pub fn </span>class_handler&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-499">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-499">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         func: F,
@@ -1286,7 +1286,7 @@
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
     /// return values into a single value.
     </span><span class="kw">pub fn </span>accumulator&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-499">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-499">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         func: F,
@@ -1440,15 +1440,15 @@
             <span class="kw">let </span>accumulator = <span class="kw-2">&amp;*</span>(<a href="#650">data</a> <span class="kw">as </span><span class="kw-2">*const </span>(
                 <a href="#281">SignalType</a>,
                 Box&lt;
-                    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>
+                    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-499">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-499">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>
                         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
                         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>
                         + <span class="lifetime">&#39;static</span>,
                 &gt;,
             ));
 
-            <span class="kw">let </span>return_accu = <span class="kw-2">&amp;mut *</span>(<a href="#648">return_accu</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#476-510">Value</a>);
-            <span class="kw">let </span>handler_return = <span class="kw-2">&amp;*</span>(<a href="#649">handler_return</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#476-510">Value</a>);
+            <span class="kw">let </span>return_accu = <span class="kw-2">&amp;mut *</span>(<a href="#648">return_accu</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#476-499">Value</a>);
+            <span class="kw">let </span>handler_return = <span class="kw-2">&amp;*</span>(<a href="#649">handler_return</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#476-499">Value</a>);
             <span class="kw">let </span>return_type = <a href="#652">accumulator</a>.<span class="number">0</span>;
 
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(

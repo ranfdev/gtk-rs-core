@@ -1044,7 +1044,7 @@
 <span class="kw">use crate</span>::{
     <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>,
     value::{<a href="value.rs.html#270-281">FromValue</a>, <a href="value.rs.html#95-99">ValueTypeChecker</a>},
-    <a href="param_spec.rs.html#2139-2147">HasParamSpec</a>, <a href="param_spec.rs.html#1054">ParamSpecEnum</a>, <a href="param_spec.rs.html#1202">ParamSpecFlags</a>, <a href="types.rs.html#248-252">StaticType</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#476-510">Value</a>,
+    <a href="param_spec.rs.html#2139-2147">HasParamSpec</a>, <a href="param_spec.rs.html#1054">ParamSpecEnum</a>, <a href="param_spec.rs.html#1202">ParamSpecFlags</a>, <a href="types.rs.html#248-252">StaticType</a>, <a href="types.rs.html#22">Type</a>, <a href="value.rs.html#476-499">Value</a>,
 };
 
 <span class="attr">#[derive(Clone, Copy, Debug, Eq, PartialEq, Hash)]
@@ -1211,19 +1211,19 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts integer `value` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#175">self</a>.<a href="#111-120">value</a>(<a href="#175">value</a>).map(|v| <a href="#176">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#175">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string name `name` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#181">self</a>.<a href="#129-138">value_by_name</a>(<a href="#181">name</a>).map(|v| <a href="#182">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#181">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string nick `nick` to a `Value`, if part of the enum.
-    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#187">self</a>.<a href="#147-156">value_by_nick</a>(<a href="#187">nick</a>).map(|v| <a href="#188">v</a>.<a href="#253-259">to_value</a>(<a class="self" href="#187">self</a>))
     }
 }
@@ -1289,7 +1289,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert enum value to a `Value`.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, enum_: <span class="kw-2">&amp;</span><a href="#55">EnumClass</a>) -&gt; <a href="value.rs.html#476-510">Value</a> {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, enum_: <span class="kw-2">&amp;</span><a href="#55">EnumClass</a>) -&gt; <a href="value.rs.html#476-499">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#253">enum_</a>.<a href="#100-102">type_</a>());
             gobject_ffi::g_value_set_enum(<a href="#255">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#253">self</a>.<span class="number">0</span>.value);
@@ -1299,7 +1299,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert enum value from a `Value`.
-    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#55">EnumClass</a>, <span class="kw-2">&amp;</span><a href="#214">EnumValue</a>)&gt; {
+    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#55">EnumClass</a>, <span class="kw-2">&amp;</span><a href="#214">EnumValue</a>)&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>enum_class = EnumClass::with_type(value.type_())<span class="question-mark">?</span>;
             <span class="kw">let </span>v = enum_class.value(gobject_ffi::g_value_get_enum(value.to_glib_none().<span class="number">0</span>))<span class="question-mark">?</span>;
@@ -1332,7 +1332,7 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span><span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#214">EnumValue</a> {
     <span class="kw">type </span>Checker = <a href="#303">EnumTypeChecker</a>;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(<span class="kw">_</span>, v) = EnumValue::from_value(<a href="#296">value</a>).unwrap();
         <span class="comment">// SAFETY: The enum class and its values live forever
         </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#297">v</a>)
@@ -1343,8 +1343,8 @@
 <span class="kw">unsafe impl </span><a href="value.rs.html#95-99">ValueTypeChecker</a> <span class="kw">for </span><a href="#303">EnumTypeChecker</a> {
     <span class="kw">type </span>Error = <a href="#321">InvalidEnumError</a>;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="kw">let </span>t = <a href="#307">value</a>.<a href="value.rs.html#598-600">type_</a>();
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>t = <a href="#307">value</a>.<a href="value.rs.html#587-589">type_</a>();
         <span class="kw">if </span>t.is_a(Type::ENUM) {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
@@ -1492,25 +1492,25 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts integer `value` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#456">self</a>.<a href="#392-401">value</a>(<a href="#456">value</a>).map(|v| <a href="#457">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#456">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string name `name` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#462">self</a>.<a href="#410-419">value_by_name</a>(<a href="#462">name</a>).map(|v| <a href="#463">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#462">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts string nick `nick` to a `Value`, if part of the flags.
-    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>to_value_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#468">self</a>.<a href="#428-437">value_by_nick</a>(<a href="#468">nick</a>).map(|v| <a href="#469">v</a>.<a href="#776-782">to_value</a>(<a class="self" href="#468">self</a>))
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to integer `f` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
@@ -1523,7 +1523,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to string name `name` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
@@ -1540,7 +1540,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Checks if the flags corresponding to string nick `nick` is set in `value`.
-    </span><span class="kw">pub fn </span>is_set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">pub fn </span>is_set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="bool-val">false</span>;
@@ -1562,7 +1562,7 @@
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_value_set_flags&quot;</span>)]
-    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#526">value</a>);
@@ -1584,7 +1584,7 @@
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#548">value</a>);
@@ -1606,7 +1606,7 @@
     ///
     /// Returns `Ok(value)` with the flag set if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>set_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#570">value</a>);
@@ -1628,7 +1628,7 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, f: <a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#592">value</a>);
@@ -1650,7 +1650,7 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset_by_name(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#614">value</a>);
@@ -1672,7 +1672,7 @@
     ///
     /// Returns `Ok(value)` with the flag unset if successful, or `Err(value)` with the original
     /// value otherwise.
-    </span><span class="kw">pub fn </span>unset_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-510">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-510">Value</a>, <a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>unset_by_nick(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="kw-2">mut </span>value: <a href="value.rs.html#476-499">Value</a>, nick: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="value.rs.html#476-499">Value</a>, <a href="value.rs.html#476-499">Value</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(<a href="#636">value</a>);
@@ -1725,7 +1725,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Returns a new `FlagsBuilder` for conveniently setting/unsetting flags
     /// and building a `Value`. The `Value` is initialized with `value`.
-    </span><span class="kw">pub fn </span>builder_with_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="value.rs.html#476-510">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#828">FlagsBuilder</a>&gt; {
+    </span><span class="kw">pub fn </span>builder_with_value(<span class="kw-2">&amp;</span><span class="self">self</span>, value: <a href="value.rs.html#476-499">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#828">FlagsBuilder</a>&gt; {
         <span class="kw">if </span><span class="self">self</span>.type_() != value.type_() {
             <span class="kw">return </span><span class="prelude-val">None</span>;
         }
@@ -1812,7 +1812,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert flags value to a `Value`.
-    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>) -&gt; <a href="value.rs.html#476-510">Value</a> {
+    </span><span class="kw">pub fn </span>to_value(<span class="kw-2">&amp;</span><span class="self">self</span>, flags: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>) -&gt; <a href="value.rs.html#476-499">Value</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>v = Value::from_type_unchecked(<a href="#776">flags</a>.<a href="#381-383">type_</a>());
             gobject_ffi::g_value_set_flags(<a href="#778">v</a>.<a href="translate.rs.html#467">to_glib_none_mut</a>().<span class="number">0</span>, <a class="self" href="#776">self</a>.<span class="number">0</span>.value);
@@ -1822,7 +1822,7 @@
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Convert flags values from a `Value`. This returns all flags that are set.
-    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#336">FlagsClass</a>, Vec&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt;)&gt; {
+    </span><span class="kw">pub fn </span>from_value(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="prelude-ty">Option</span>&lt;(<a href="#336">FlagsClass</a>, Vec&lt;<span class="kw-2">&amp;</span><a href="#737">FlagsValue</a>&gt;)&gt; {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>flags_class = FlagsClass::with_type(value.type_())<span class="question-mark">?</span>;
             <span class="kw">let </span><span class="kw-2">mut </span>res = Vec::new();
@@ -1864,14 +1864,14 @@
 ///
 /// If setting/unsetting any value fails, `build()` returns `None`.
 </span><span class="attr">#[must_use = <span class="string">&quot;The builder must be built to be used&quot;</span>]
-</span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsBuilder.html">FlagsBuilder</a>&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#336">FlagsClass</a>, <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt;);
+</span><span class="kw">pub struct </span><a href="../../glib/struct.FlagsBuilder.html">FlagsBuilder</a>&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#336">FlagsClass</a>, <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt;);
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; FlagsBuilder&lt;<span class="lifetime">&#39;a</span>&gt; {
     <span class="kw">fn </span>new(flags_class: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>) -&gt; <a href="#828">FlagsBuilder</a> {
         <span class="kw">let </span>value = <span class="kw">unsafe </span>{ Value::from_type_unchecked(<a href="#830">flags_class</a>.<a href="#381-383">type_</a>()) };
         <a href="#828">FlagsBuilder</a>(<a href="#830">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#831">value</a>))
     }
 
-    <span class="kw">fn </span>with_value(flags_class: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>, value: <a href="value.rs.html#476-510">Value</a>) -&gt; <a href="#828">FlagsBuilder</a> {
+    <span class="kw">fn </span>with_value(flags_class: <span class="kw-2">&amp;</span><a href="#336">FlagsClass</a>, value: <a href="value.rs.html#476-499">Value</a>) -&gt; <a href="#828">FlagsBuilder</a> {
         <a href="#828">FlagsBuilder</a>(<a href="#835">flags_class</a>, <span class="prelude-val">Some</span>(<a href="#835">value</a>))
     }
 
@@ -1938,7 +1938,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Converts to the final `Value`, unless any previous setting/unsetting of flags failed.
     </span><span class="attr">#[must_use = <span class="string">&quot;Value returned from the builder should probably be used&quot;</span>]
-    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-510">Value</a>&gt; {
+    </span><span class="kw">pub fn </span>build(<span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="value.rs.html#476-499">Value</a>&gt; {
         <a class="self" href="#902">self</a>.<span class="number">1
     </span>}
 }
@@ -1946,7 +1946,7 @@
 <span class="kw">unsafe impl</span>&lt;<span class="lifetime">&#39;a</span>, <span class="lifetime">&#39;b</span>&gt; FromValue&lt;<span class="lifetime">&#39;a</span>&gt; <span class="kw">for </span>Vec&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;b </span><a href="#737">FlagsValue</a>&gt; {
     <span class="kw">type </span>Checker = <a href="#917">FlagsTypeChecker</a>;
 
-    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="self">Self </span>{
+    <span class="kw">unsafe fn </span>from_value(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="self">Self </span>{
         <span class="kw">let </span>(<span class="kw">_</span>, v) = FlagsValue::from_value(<a href="#910">value</a>).unwrap();
         <span class="comment">// SAFETY: The enum class and its values live forever
         </span><a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">std::mem::transmute</a>(<a href="#911">v</a>)
@@ -1957,8 +1957,8 @@
 <span class="kw">unsafe impl </span><a href="value.rs.html#95-99">ValueTypeChecker</a> <span class="kw">for </span><a href="#917">FlagsTypeChecker</a> {
     <span class="kw">type </span>Error = <a href="#935">InvalidFlagsError</a>;
 
-    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-510">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
-        <span class="kw">let </span>t = <a href="#921">value</a>.<a href="value.rs.html#598-600">type_</a>();
+    <span class="kw">fn </span>check(value: <span class="kw-2">&amp;</span><a href="value.rs.html#476-499">Value</a>) -&gt; <span class="prelude-ty">Result</span>&lt;(), <span class="self">Self</span>::Error&gt; {
+        <span class="kw">let </span>t = <a href="#921">value</a>.<a href="value.rs.html#587-589">type_</a>();
         <span class="kw">if </span>t.is_a(Type::FLAGS) {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else </span>{
