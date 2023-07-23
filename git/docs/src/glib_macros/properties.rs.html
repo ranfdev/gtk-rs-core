@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-4fd87876916c981b.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (39f42ad9e 2023-07-19)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (1d56e3a6d 2023-07-22)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -768,28 +768,28 @@
 <span class="kw">use </span><a href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">quote::format_ident</a>;
 <span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned</a>};
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">std::collections::HashMap</a>;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/ext/trait.IdentExt.html">syn::ext::IdentExt</a>;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/macro.parenthesized.html">syn::parenthesized</a>;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parse.html">syn::parse::Parse</a>;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/punctuated/struct.Punctuated.html">syn::punctuated::Punctuated</a>;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/spanned/trait.Spanned.html">syn::spanned::Spanned</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/ext/trait.IdentExt.html">syn::ext::IdentExt</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/macro.parenthesized.html">syn::parenthesized</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">syn::parse::Parse</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/punctuated/struct.Punctuated.html">syn::punctuated::Punctuated</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/spanned/trait.Spanned.html">syn::spanned::Spanned</a>;
 <span class="kw">use </span>syn::LitStr;
-<span class="kw">use </span><a href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">syn::Token</a>;
+<span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">syn::Token</a>;
 
 <span class="kw">pub struct </span>PropsMacroInput {
-    wrapper_ty: <a href="https://docs.rs/syn/2.0.26/syn/path/struct.Path.html">syn::Path</a>,
+    wrapper_ty: <a href="https://docs.rs/syn/2.0.27/syn/path/struct.Path.html">syn::Path</a>,
     ident: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>,
     props: Vec&lt;<a href="#226-240">PropDesc</a>&gt;,
 }
 
 <span class="kw">pub struct </span>PropertiesAttr {
     _wrapper_ty_token: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    _eq: <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">Token!</a>[=],
-    wrapper_ty: <a href="https://docs.rs/syn/2.0.26/syn/path/struct.Path.html">syn::Path</a>,
+    _eq: <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token!</a>[=],
+    wrapper_ty: <a href="https://docs.rs/syn/2.0.27/syn/path/struct.Path.html">syn::Path</a>,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#23-27">PropertiesAttr</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.26/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#23-27">PropertiesAttr</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.27/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="prelude-val">Ok</span>(<span class="self">Self </span>{
             _wrapper_ty_token: input.parse()<span class="question-mark">?</span>,
             _eq: input.parse()<span class="question-mark">?</span>,
@@ -798,9 +798,9 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#17-21">PropsMacroInput</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.26/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
-        <span class="kw">let </span>derive_input: <a href="https://docs.rs/syn/2.0.26/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a> = input.parse()<span class="question-mark">?</span>;
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#17-21">PropsMacroInput</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.27/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+        <span class="kw">let </span>derive_input: <a href="https://docs.rs/syn/2.0.27/syn/derive/struct.DeriveInput.html">syn::DeriveInput</a> = input.parse()<span class="question-mark">?</span>;
         <span class="kw">let </span>wrapper_ty = derive_input
             .attrs
             .iter()
@@ -816,7 +816,7 @@
             syn::Data::Struct(struct_data) =&gt; parse_fields(struct_data.fields)<span class="question-mark">?</span>,
             <span class="kw">_ </span>=&gt; {
                 <span class="kw">return </span><span class="prelude-val">Err</span>(syn::Error::new(
-                    <a href="#41">derive_input</a>.<a href="https://docs.rs/syn/2.0.26/syn/spanned/trait.Spanned.html">span</a>(),
+                    <a href="#41">derive_input</a>.<a href="https://docs.rs/syn/2.0.27/syn/spanned/trait.Spanned.html">span</a>(),
                     <span class="string">&quot;Properties can only be derived on structs&quot;</span>,
                 ))
             }
@@ -830,12 +830,12 @@
 }
 
 <span class="kw">enum </span>MaybeCustomFn {
-    Custom(Box&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
+    Custom(Box&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
     Default,
 }
 
-<span class="kw">impl </span>std::convert::From&lt;<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt; <span class="kw">for </span><a href="#70-73">MaybeCustomFn</a> {
-    <span class="kw">fn </span>from(item: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;) -&gt; <span class="self">Self </span>{
+<span class="kw">impl </span>std::convert::From&lt;<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt; <span class="kw">for </span><a href="#70-73">MaybeCustomFn</a> {
+    <span class="kw">fn </span>from(item: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;) -&gt; <span class="self">Self </span>{
         <span class="kw">match </span><a href="#76">item</a> {
             <span class="prelude-val">Some</span>(expr) =&gt; <span class="self">Self</span>::Custom(Box::new(<a href="#78">expr</a>)),
             <span class="prelude-val">None </span>=&gt; <span class="self">Self</span>::Default,
@@ -847,41 +847,41 @@
     <span class="comment">// builder(required_params).parameter(value)
     // becomes
     // Builder(Punctuated(required_params), Optionals(TokenStream))
-    </span>Builder(Punctuated&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>),
+    </span>Builder(Punctuated&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>),
 
     <span class="comment">// ident
     </span>Nullable,
 
     <span class="comment">// ident [= expr]
-    </span>Get(<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
-    Set(<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
+    </span>Get(<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
+    Set(<span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;),
 
     <span class="comment">// ident = expr
-    </span>OverrideClass(<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>),
-    OverrideInterface(<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>),
+    </span>OverrideClass(<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>),
+    OverrideInterface(<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>),
 
     <span class="comment">// ident = expr
-    </span>Type(<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>),
+    </span>Type(<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>),
 
     <span class="comment">// This will get translated from `ident = value` to `.ident(value)`
     // and will get appended after the `builder(...)` call.
     // ident [= expr]
-    </span>BuilderField((<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;)),
+    </span>BuilderField((<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;)),
 
     <span class="comment">// ident = ident
     </span>Member(<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>),
 
     <span class="comment">// ident = &quot;literal&quot;
-    </span>Name(<a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">syn::LitStr</a>),
+    </span>Name(<a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">syn::LitStr</a>),
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#84-114">PropAttr</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.26/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#84-114">PropAttr</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.27/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>name = input.call(syn::Ident::parse_any)<span class="question-mark">?</span>;
         <span class="kw">let </span>name_str = <a href="#118">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>();
 
         <span class="kw">let </span>res = <span class="kw">if </span>input.peek(<span class="macro">Token!</span>[=]) {
-            <span class="kw">let </span>_assign_token: <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">Token!</a>[=] = input.parse()<span class="question-mark">?</span>;
+            <span class="kw">let </span>_assign_token: <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token!</a>[=] = input.parse()<span class="question-mark">?</span>;
             <span class="comment">// name = expr | type | ident
             </span><span class="kw">match </span><span class="kw-2">&amp;*</span><a href="#119">name_str</a> {
                 <span class="string">&quot;name&quot; </span>=&gt; <a href="#113">PropAttr::Name</a>(input.parse()<span class="question-mark">?</span>),
@@ -902,7 +902,7 @@
             <span class="kw">match </span><span class="kw-2">&amp;*</span><a href="#119">name_str</a> {
                 <span class="string">&quot;builder&quot; </span>=&gt; {
                     <span class="kw">let </span>content;
-                    <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.parenthesized.html">parenthesized!</a>(content <span class="kw">in </span>input);
+                    <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.parenthesized.html">parenthesized!</a>(content <span class="kw">in </span>input);
                     <span class="kw">let </span>required = content.parse_terminated(syn::Expr::parse, <span class="macro">Token!</span>[,])<span class="question-mark">?</span>;
                     <span class="kw">let </span>rest: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a> = input.parse()<span class="question-mark">?</span>;
                     <a href="#88">PropAttr::Builder</a>(<a href="#144">required</a>, <a href="#145">rest</a>)
@@ -941,17 +941,17 @@
     nullable: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
     get: <span class="prelude-ty">Option</span>&lt;<a href="#70-73">MaybeCustomFn</a>&gt;,
     set: <span class="prelude-ty">Option</span>&lt;<a href="#70-73">MaybeCustomFn</a>&gt;,
-    override_class: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>&gt;,
-    override_interface: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>&gt;,
-    ty: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>&gt;,
+    override_class: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>&gt;,
+    override_interface: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>&gt;,
+    ty: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>&gt;,
     member: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
-    name: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;,
-    builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>)&gt;,
-    builder_fields: HashMap&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt;,
+    name: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">syn::LitStr</a>&gt;,
+    builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>)&gt;,
+    builder_fields: HashMap&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt;,
 }
 
-<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.26/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#178-189">ReceivedAttrs</a> {
-    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.26/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
+<span class="kw">impl </span><a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> <span class="kw">for </span><a href="#178-189">ReceivedAttrs</a> {
+    <span class="kw">fn </span>parse(input: <a href="https://docs.rs/syn/2.0.27/syn/parse/type.ParseStream.html">syn::parse::ParseStream</a>) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span>attrs = syn::punctuated::Punctuated::&lt;PropAttr, <span class="macro">Token!</span>[,]&gt;::parse_terminated(input)<span class="question-mark">?</span>;
         <span class="kw">let </span>this = <a href="#193">attrs</a>.<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">fold</a>(<span class="self">Self</span>::default(), |<span class="kw-2">mut </span>this, attr| {
             <a href="#194">this</a>.<a href="#204-221">set_from_attr</a>(<a href="#194">attr</a>);
@@ -988,16 +988,16 @@
 </span><span class="kw">struct </span>PropDesc {
     attrs_span: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Span.html">proc_macro2::Span</a>,
     field_ident: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>,
-    ty: <a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>,
-    name: <a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">syn::LitStr</a>,
-    override_class: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>&gt;,
-    override_interface: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>&gt;,
+    ty: <a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>,
+    name: <a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">syn::LitStr</a>,
+    override_class: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>&gt;,
+    override_interface: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>&gt;,
     nullable: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
     get: <span class="prelude-ty">Option</span>&lt;<a href="#70-73">MaybeCustomFn</a>&gt;,
     set: <span class="prelude-ty">Option</span>&lt;<a href="#70-73">MaybeCustomFn</a>&gt;,
     member: <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>&gt;,
-    builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.26/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>)&gt;,
-    builder_fields: HashMap&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.26/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt;,
+    builder: <span class="prelude-ty">Option</span>&lt;(Punctuated&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>, <a class="macro" href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token!</a>[,]&gt;, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a>)&gt;,
+    builder_fields: HashMap&lt;<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>, <span class="prelude-ty">Option</span>&lt;<a href="https://docs.rs/syn/2.0.27/syn/expr/enum.Expr.html">syn::Expr</a>&gt;&gt;,
     is_construct_only: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>,
 }
 
@@ -1005,7 +1005,7 @@
     <span class="kw">fn </span>new(
         attrs_span: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Span.html">proc_macro2::Span</a>,
         field_ident: <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a>,
-        field_ty: <a href="https://docs.rs/syn/2.0.26/syn/ty/enum.Type.html">syn::Type</a>,
+        field_ty: <a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">syn::Type</a>,
         attrs: <a href="#178-189">ReceivedAttrs</a>,
     ) -&gt; syn::Result&lt;<span class="self">Self</span>&gt; {
         <span class="kw">let </span><a href="#178-189">ReceivedAttrs</a> {
@@ -1100,7 +1100,7 @@
         .as_ref()
         .cloned()
         .map(|(<span class="kw-2">mut </span>required_params, chained_methods)| {
-            <span class="kw">let </span>name_expr = <a href="https://docs.rs/syn/2.0.26/syn/expr/struct.ExprLit.html">syn::ExprLit</a> {
+            <span class="kw">let </span>name_expr = <a href="https://docs.rs/syn/2.0.27/syn/expr/struct.ExprLit.html">syn::ExprLit</a> {
                 attrs: <a class="macro" href="https://doc.rust-lang.org/nightly/alloc/macro.vec.html">vec!</a>[],
                 lit: syn::Lit::Str(<a href="#315">stripped_name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>()),
             };
@@ -1255,18 +1255,18 @@
     )
 }
 
-<span class="kw">fn </span>parse_fields(fields: <a href="https://docs.rs/syn/2.0.26/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; syn::Result&lt;Vec&lt;<a href="#226-240">PropDesc</a>&gt;&gt; {
+<span class="kw">fn </span>parse_fields(fields: <a href="https://docs.rs/syn/2.0.27/syn/data/enum.Fields.html">syn::Fields</a>) -&gt; syn::Result&lt;Vec&lt;<a href="#226-240">PropDesc</a>&gt;&gt; {
     <a href="#496">fields</a>
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>()
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">flat_map</a>(|field| {
-            <span class="kw">let </span><a href="https://docs.rs/syn/2.0.26/syn/data/struct.Field.html">syn::Field</a> {
+            <span class="kw">let </span><a href="https://docs.rs/syn/2.0.27/syn/data/struct.Field.html">syn::Field</a> {
                 ident, attrs, ty, ..
             } = <a href="#499">field</a>;
             <a href="#501">attrs</a>
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>()
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">filter</a>(|a| <a href="#505">a</a>.path().is_ident(<span class="string">&quot;property&quot;</span>))
                 .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(<span class="kw">move </span>|prop_attrs| {
-                    <span class="kw">let </span>span = <a href="#506">prop_attrs</a>.<a href="https://docs.rs/syn/2.0.26/syn/spanned/trait.Spanned.html">span</a>();
+                    <span class="kw">let </span>span = <a href="#506">prop_attrs</a>.<a href="https://docs.rs/syn/2.0.27/syn/spanned/trait.Spanned.html">span</a>();
                     PropDesc::new(
                         <a href="#507">span</a>,
                         <a href="#501">ident</a>.as_ref().unwrap().<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>(),
@@ -1279,12 +1279,12 @@
 }
 
 <span class="doccomment">/// Converts a glib property name to a correct rust ident
-</span><span class="kw">fn </span>name_to_ident(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">syn::LitStr</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a> {
+</span><span class="kw">fn </span>name_to_ident(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">syn::LitStr</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a> {
     <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;{}&quot;</span>, name.value().replace(<span class="string">&#39;-&#39;</span>, <span class="string">&quot;_&quot;</span>))
 }
 
 <span class="doccomment">/// Strips out raw identifier prefix (`r#`) from literal string items
-</span><span class="kw">fn </span>strip_raw_prefix_from_name(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">LitStr</a>) -&gt; <a href="https://docs.rs/syn/2.0.26/syn/lit/struct.LitStr.html">LitStr</a> {
+</span><span class="kw">fn </span>strip_raw_prefix_from_name(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">LitStr</a>) -&gt; <a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">LitStr</a> {
     LitStr::new(
         <a href="#525">name</a>.value().strip_prefix(<span class="string">&quot;r#&quot;</span>).unwrap_or(<span class="kw-2">&amp;</span><a href="#525">name</a>.value()),
         <a href="#525">name</a>.span(),
