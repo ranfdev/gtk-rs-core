@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/variant_derive.rs`."><title>variant_derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (1d56e3a6d 2023-07-22)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/variant_derive.rs`."><title>variant_derive.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -764,7 +764,7 @@
 </span><span class="kw">use </span>heck::ToKebabCase;
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
 <span class="kw">use </span>proc_macro_error::abort;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident</a>, <a href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote</a>};
 <span class="kw">use </span>syn::{<a href="https://docs.rs/syn/2.0.27/syn/derive/enum.Data.html">Data</a>, <a href="https://docs.rs/syn/2.0.27/syn/derive/struct.DeriveInput.html">DeriveInput</a>, <a href="https://docs.rs/syn/2.0.27/syn/data/enum.Fields.html">Fields</a>, <a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsNamed.html">FieldsNamed</a>, <a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>, <a href="https://docs.rs/syn/2.0.27/syn/generics/struct.Generics.html">Generics</a>, Ident, <a href="https://docs.rs/syn/2.0.27/syn/ty/enum.Type.html">Type</a>};
 
 <span class="kw">use </span><a href="utils.rs.html#167-194"><span class="kw">crate</span>::utils::crate_ident_new</a>;
@@ -810,7 +810,7 @@
             <span class="kw">let </span>idents = (<span class="number">0</span>..<a href="#43">types</a>.len()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(syn::Index::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
             <span class="kw">let </span>idents_len = <a href="#49">idents</a>.len();
 
-            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="attr">#[inline]
                     </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;static</span>, #glib::VariantTy&gt; {
@@ -834,7 +834,7 @@
                 }
             };
 
-            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::array::IntoIter::&lt;#glib::Variant, #idents_len&gt;::new([
@@ -856,7 +856,7 @@
                 }
             };
 
-            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
                         <span class="kw">if </span>!variant.is_container() {
@@ -887,7 +887,7 @@
             <span class="kw">let </span>types: Vec&lt;<span class="kw">_</span>&gt; = <a href="#119">fields</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(_ident, ty)| <a href="#126">ty</a>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>();
             <span class="kw">let </span>counts = (<span class="number">0</span>..<a href="#126">types</a>.len()).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(syn::Index::from).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
 
-            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="attr">#[inline]
                     </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;static</span>, #glib::VariantTy&gt; {
@@ -917,7 +917,7 @@
                 }
             };
 
-            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -939,7 +939,7 @@
                 }
             };
 
-            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
                         <span class="kw">if </span>!variant.is_container() {
@@ -960,7 +960,7 @@
             (<a href="#129">static_variant_type</a>, <a href="#159">to_variant</a>, <a href="#181">from_variant</a>)
         }
         Fields::Unit =&gt; {
-            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>static_variant_type = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="attr">#[inline]
                     </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;static</span>, #glib::VariantTy&gt; {
@@ -969,7 +969,7 @@
                 }
             };
 
-            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>to_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::ToVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="attr">#[inline]
                     </span><span class="kw">fn </span>to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; #glib::Variant {
@@ -985,7 +985,7 @@
                 }
             };
 
-            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <span class="kw">let </span>from_variant = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">impl </span>#impl_generics #glib::FromVariant <span class="kw">for </span>#ident #type_generics #where_clause {
                     <span class="kw">fn </span>from_variant(variant: <span class="kw-2">&amp;</span>#glib::Variant) -&gt; ::core::option::Option&lt;<span class="self">Self</span>&gt; {
                         ::core::option::Option::Some(<span class="self">Self</span>)
@@ -997,7 +997,7 @@
         }
     };
 
-    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         #static_variant_type
 
         #to_variant
@@ -1062,9 +1062,9 @@
         <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#293">mode</a> {
             <a href="#251">EnumMode::String</a> =&gt; {
                 <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#300">ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>().as_str());
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #nick }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #nick }
             },
-            <a href="#252">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #index <span class="kw">as </span>#repr },
+            <a href="#252">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #index <span class="kw">as </span>#repr },
             <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
         };
         <span class="kw">if </span>!<span class="macro">matches!</span>(v.fields, syn::Fields::Unit) {
@@ -1080,7 +1080,7 @@
             syn::Fields::Named(<a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsNamed.html">FieldsNamed</a> { named, .. }) =&gt; {
                 <span class="kw">let </span>field_names = <a href="#319">named</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|f| <a href="#320">f</a>.ident.as_ref().unwrap());
                 <span class="kw">let </span>field_names2 = <a href="#320">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     <span class="self">Self</span>::#ident { #(#field_names),* } =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -1091,10 +1091,10 @@
             },
             syn::Fields::Unnamed(<a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a>  { unnamed, .. }) =&gt; {
                 <span class="kw">let </span>field_names = <a href="#331">unnamed</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(i, <span class="kw">_</span>)| {
-                    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;field{}&quot;</span>, i)
+                    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;field{}&quot;</span>, i)
                 });
                 <span class="kw">let </span>field_names2 = <a href="#332">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     <span class="self">Self</span>::#ident(#(#field_names),<span class="kw-2">*</span>) =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -1104,7 +1104,7 @@
                 }
             },
             syn::Fields::Unit =&gt; {
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     <span class="self">Self</span>::#ident =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>())
@@ -1118,16 +1118,16 @@
         <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#293">mode</a> {
             <a href="#251">EnumMode::String</a> =&gt; {
                 <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#356">field_ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>().as_str());
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #nick }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #nick }
             }
-            <a href="#252">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #index <span class="kw">as </span>#repr },
+            <a href="#252">EnumMode::Repr</a>(repr) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #index <span class="kw">as </span>#repr },
             <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
         };
         <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#355">v</a>.fields {
             syn::Fields::Named(<a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsNamed.html">FieldsNamed</a> { named, .. }) =&gt; {
                 <span class="kw">let </span>field_names = <a href="#366">named</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|f| <a href="#367">f</a>.ident.as_ref().unwrap());
                 <span class="kw">let </span>field_names2 = <a href="#367">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #ident::#field_ident { #(#field_names),* } =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -1140,9 +1140,9 @@
                 <span class="kw">let </span>field_names = <a href="#378">unnamed</a>
                     .iter()
                     .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">enumerate</a>()
-                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(i, <span class="kw">_</span>)| <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;field{}&quot;</span>, i));
+                    .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(i, <span class="kw">_</span>)| <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;field{}&quot;</span>, i));
                 <span class="kw">let </span>field_names2 = <a href="#379">field_names</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #ident::#field_ident(#(#field_names),<span class="kw-2">*</span>) =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::Variant::tuple_from_iter(::std::iter::IntoIterator::into_iter([
@@ -1152,7 +1152,7 @@
                 }
             }
             syn::Fields::Unit =&gt; {
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #ident::#field_ident =&gt; #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(
                         #tag,
                         #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>())
@@ -1166,9 +1166,9 @@
         <span class="kw">let </span>tag = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#293">mode</a> {
             <a href="#251">EnumMode::String</a> =&gt; {
                 <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#404">ident</a>.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>().as_str());
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #nick }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #nick }
             }
-            <a href="#252">EnumMode::Repr</a>(<span class="kw">_</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #index },
+            <a href="#252">EnumMode::Repr</a>(<span class="kw">_</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #index },
             <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
         };
         <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#403">v</a>.fields {
@@ -1176,18 +1176,18 @@
                 <span class="kw">let </span>fields = <a href="#414">named</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">enumerate</a>().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(index, f)| {
                     <span class="kw">let </span>name = <a href="#415">f</a>.ident.as_ref().unwrap();
                     <span class="kw">let </span>repr = <span class="kw-2">&amp;</span><a href="#415">f</a>.ty;
-                    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                         #name: &lt;#repr <span class="kw">as </span>#glib::FromVariant&gt;::from_variant(
                             <span class="kw-2">&amp;</span>#glib::Variant::try_child_value(<span class="kw-2">&amp;</span>value, #index)<span class="question-mark">?
                         </span>)<span class="question-mark">?
                     </span>}
                 });
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident { #(#fields),* }), }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident { #(#fields),* }), }
             }
             syn::Fields::Unnamed(<a href="https://docs.rs/syn/2.0.27/syn/data/struct.FieldsUnnamed.html">FieldsUnnamed</a> { unnamed, .. }) =&gt; {
                 <span class="kw">let </span>indices = <span class="number">0</span>..<a href="#426">unnamed</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">count</a>();
                 <span class="kw">let </span>repr = <a href="#426">unnamed</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|f| <span class="kw-2">&amp;</span><a href="#428">f</a>.ty);
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident(
                         #(
                             &lt;#repr <span class="kw">as </span>#glib::FromVariant&gt;::from_variant(
@@ -1198,18 +1198,18 @@
                 }
             }
             syn::Fields::Unit =&gt; {
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident), }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #tag =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#ident), }
             }
         }
     });
 
     <span class="kw">let </span>(repr, tag_match) = <span class="kw">match </span><span class="kw-2">&amp;</span><a href="#293">mode</a> {
-        <a href="#251">EnumMode::String</a> =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ String }, <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ tag.as_str() }),
-        <a href="#252">EnumMode::Repr</a>(repr) =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #repr }, <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ tag <span class="kw">as </span>usize }),
+        <a href="#251">EnumMode::String</a> =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ String }, <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ tag.as_str() }),
+        <a href="#252">EnumMode::Repr</a>(repr) =&gt; (<a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #repr }, <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ tag <span class="kw">as </span>usize }),
         <span class="kw">_ </span>=&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unimplemented.html">unimplemented!</a>(),
     };
 
-    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         <span class="kw">impl </span>#impl_generics #glib::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;static</span>, #glib::VariantTy&gt; {
@@ -1268,17 +1268,17 @@
             <span class="kw">let </span>idents = <a href="#498">data_enum</a>.variants.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| <span class="kw-2">&amp;</span><a href="#507">v</a>.ident);
             <span class="kw">let </span>nicks = <a href="#498">data_enum</a>.variants.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| {
                 <span class="kw">let </span>nick = ToKebabCase::to_kebab_case(<a href="#508">v</a>.ident.<a href="https://doc.rust-lang.org/nightly/alloc/string/trait.ToString.html">to_string</a>().as_str());
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{ #nick }
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{ #nick }
             });
             <span class="kw">let </span>idents2 = <a href="#507">idents</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
             <span class="kw">let </span>nicks2 = <a href="#508">nicks</a>.<a href="https://doc.rust-lang.org/nightly/core/clone/trait.Clone.html">clone</a>();
             (
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #glib::ToVariant::to_variant(<span class="kw">match </span><span class="self">self </span>{
                         #(<span class="self">Self</span>::#idents =&gt; #nicks),*
                     })
                 },
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     <span class="kw">let </span>tag = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                     <span class="kw">match </span>tag {
                         #(#nicks2 =&gt; ::core::option::Option::Some(<span class="self">Self</span>::#idents2),)*
@@ -1290,10 +1290,10 @@
         <a href="#252">EnumMode::Repr</a>(repr) =&gt; {
             <span class="kw">let </span>idents = <a href="#498">data_enum</a>.variants.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| <span class="kw-2">&amp;</span><a href="#530">v</a>.ident);
             (
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>#repr))
                 },
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                     <span class="kw">let </span>value = &lt;#repr <span class="kw">as </span>#glib::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                     #(<span class="kw">if </span>value == <span class="self">Self</span>::#idents <span class="kw">as </span>#repr {
                         <span class="kw">return </span>::core::option::Option::Some(<span class="self">Self</span>::#idents);
@@ -1303,16 +1303,16 @@
             )
         }
         <a href="#253">EnumMode::Enum</a> { repr: <span class="bool-val">true </span>} =&gt; (
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>(<span class="kw-2">*</span><span class="self">self </span><span class="kw">as </span>i32))
             },
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>value = &lt;i32 <span class="kw">as </span>#glib::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                 <span class="kw">unsafe </span>{ #glib::translate::try_from_glib(value) }.ok()
             },
         ),
         <a href="#253">EnumMode::Enum</a> { repr: <span class="bool-val">false </span>} =&gt; (
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>enum_class = #glib::EnumClass::new::&lt;<span class="self">Self</span>&gt;();
                 <span class="kw">let </span>value = &lt;<span class="self">Self </span><span class="kw">as </span>#glib::translate::IntoGlib&gt;::into_glib(<span class="kw-2">*</span><span class="self">self</span>);
                 <span class="kw">let </span>value = #glib::EnumClass::value(<span class="kw-2">&amp;</span>enum_class, value);
@@ -1320,7 +1320,7 @@
                 <span class="kw">let </span>nick = #glib::EnumValue::nick(<span class="kw-2">&amp;</span>value);
                 #glib::ToVariant::to_variant(nick)
             },
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>enum_class = #glib::EnumClass::new::&lt;<span class="self">Self</span>&gt;();
                 <span class="kw">let </span>tag = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                 <span class="kw">let </span>value = #glib::EnumClass::value_by_nick(<span class="kw-2">&amp;</span>enum_class, tag)<span class="question-mark">?</span>;
@@ -1329,22 +1329,22 @@
             },
         ),
         <a href="#254">EnumMode::Flags</a> { repr: <span class="bool-val">true </span>} =&gt; (
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span><span class="self">self</span>.bits())
             },
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>value = &lt;u32 <span class="kw">as </span>#glib::FromVariant&gt;::from_variant(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                 <span class="self">Self</span>::from_bits(value)
             },
         ),
         <a href="#254">EnumMode::Flags</a> { repr: <span class="bool-val">false </span>} =&gt; (
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>flags_class = #glib::FlagsClass::new::&lt;<span class="self">Self</span>&gt;();
                 <span class="kw">let </span>value = &lt;<span class="self">Self </span><span class="kw">as </span>#glib::translate::IntoGlib&gt;::into_glib(<span class="kw-2">*</span><span class="self">self</span>);
                 <span class="kw">let </span>s = #glib::FlagsClass::to_nick_string(<span class="kw-2">&amp;</span>flags_class, value);
                 #glib::ToVariant::to_variant(<span class="kw-2">&amp;</span>s)
             },
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
                 <span class="kw">let </span>flags_class = #glib::FlagsClass::new::&lt;<span class="self">Self</span>&gt;();
                 <span class="kw">let </span>s = #glib::Variant::str(<span class="kw-2">&amp;</span>variant)<span class="question-mark">?</span>;
                 <span class="kw">let </span>value = #glib::FlagsClass::from_nick_string(<span class="kw-2">&amp;</span>flags_class, s).ok()<span class="question-mark">?</span>;
@@ -1353,7 +1353,7 @@
         ),
     };
 
-    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <span class="kw">let </span>derived = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         <span class="kw">impl </span>#impl_generics #glib::StaticVariantType <span class="kw">for </span>#ident #type_generics #where_clause {
             <span class="attr">#[inline]
             </span><span class="kw">fn </span>static_variant_type() -&gt; ::std::borrow::Cow&lt;<span class="lifetime">&#39;static</span>, #glib::VariantTy&gt; {

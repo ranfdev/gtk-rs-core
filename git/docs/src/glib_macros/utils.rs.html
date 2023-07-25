@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (1d56e3a6d 2023-07-22)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/utils.rs`."><title>utils.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -351,7 +351,7 @@
 
 </span><span class="kw">use </span>proc_macro2::{<a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">Ident</a>, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Span.html">Span</a>, <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream</a>};
 <span class="kw">use </span>proc_macro_crate::crate_name;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.31/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned</a>, <a href="https://docs.rs/quote/1.0.32/quote/to_tokens/trait.ToTokens.html">ToTokens</a>};
 <span class="kw">use </span>syn::{
     <a href="https://docs.rs/syn/2.0.27/syn/meta/struct.ParseNestedMeta.html">meta::ParseNestedMeta</a>, <a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">parse::Parse</a>, <a href="https://docs.rs/syn/2.0.27/syn/punctuated/struct.Punctuated.html">punctuated::Punctuated</a>, <a href="https://docs.rs/syn/2.0.27/syn/spanned/trait.Spanned.html">spanned::Spanned</a>, token::Comma,
     <a href="https://docs.rs/syn/2.0.27/syn/macro.Token.html">Token</a>, <a href="https://docs.rs/syn/2.0.27/syn/data/struct.Variant.html">Variant</a>,
@@ -373,14 +373,14 @@
     <span class="kw">pub </span>value: <span class="prelude-ty">Option</span>&lt;T&gt;,
 }
 
-<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.31/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
+<span class="kw">impl</span>&lt;T: <a href="https://docs.rs/syn/2.0.27/syn/parse/trait.Parse.html">Parse</a> + <a href="https://docs.rs/quote/1.0.32/quote/to_tokens/trait.ToTokens.html">ToTokens</a>&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">std::fmt::Debug</a> <span class="kw">for </span>NestedMetaItem&lt;T&gt; {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span>std::fmt::Formatter&lt;<span class="lifetime">&#39;_</span>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
         <a href="#28">f</a>.debug_struct(<span class="string">&quot;NestedMetaItem&quot;</span>)
             .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.name)
             .field(<span class="string">&quot;required&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.required)
             .field(<span class="string">&quot;value_required&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value_required)
             .field(<span class="string">&quot;found&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.found)
-            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value.as_ref().map(|v| <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#v)))
+            .field(<span class="string">&quot;value&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#28">self</a>.value.as_ref().map(|v| <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#v)))
             .finish()
     }
 }
@@ -523,7 +523,7 @@
     }
     .map(|s| {
         <span class="kw">let </span>glib = Ident::new(<span class="kw-2">&amp;</span><a href="#175">s</a>, Span::call_site());
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#glib)
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#glib)
     })
     .unwrap_or_else(|| {
         <span class="comment">// We couldn&#39;t find the glib crate (renamed or not) so let&#39;s just hope it&#39;s in scope!
@@ -538,7 +538,7 @@
         //
         // Then we can use proc_macro to parse the file and check if glib is imported somehow.
         </span><span class="kw">let </span>glib = Ident::new(<span class="string">&quot;glib&quot;</span>, Span::call_site());
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#glib)
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#glib)
     })
 }
 
@@ -555,13 +555,13 @@
     <span class="comment">// FIXME: can we express this with a match()?
     </span><span class="kw">let </span>recurse = <a href="#204">enum_variants</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|v| {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#207">v</a>.ident;
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned! </a>{ v.span() =&gt;
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned! </a>{ v.span() =&gt;
             <span class="kw">if </span>value == #enum_name::#name <span class="kw">as </span>i32 {
                 <span class="kw">return </span>::core::option::Option::Some(#enum_name::#name);
             }
         }
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         #(#recurse)*
         ::core::option::Option::None
     }

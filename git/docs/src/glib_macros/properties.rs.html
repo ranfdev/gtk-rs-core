@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (1d56e3a6d 2023-07-22)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib-macros/src/properties.rs`."><title>properties.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib_macros" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -765,8 +765,8 @@
 </span><span class="kw">use </span><a href="utils.rs.html#167-194"><span class="kw">crate</span>::utils::crate_ident_new</a>;
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/proc_macro/struct.TokenStream.html">proc_macro::TokenStream</a>;
 <span class="kw">use </span><a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">proc_macro2::TokenStream</a> <span class="kw">as </span>TokenStream2;
-<span class="kw">use </span><a href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">quote::format_ident</a>;
-<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned</a>};
+<span class="kw">use </span><a href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">quote::format_ident</a>;
+<span class="kw">use </span>quote::{<a href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote</a>, <a href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned</a>};
 <span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/std/collections/hash/map/struct.HashMap.html">std::collections::HashMap</a>;
 <span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/ext/trait.IdentExt.html">syn::ext::IdentExt</a>;
 <span class="kw">use </span><a href="https://docs.rs/syn/2.0.27/syn/macro.parenthesized.html">syn::parenthesized</a>;
@@ -1078,10 +1078,10 @@
 
     <span class="kw">match </span>(<span class="kw-2">&amp;</span><a href="#310">prop</a>.override_class, <span class="kw-2">&amp;</span><a href="#310">prop</a>.override_interface) {
         (<span class="prelude-val">Some</span>(c), <span class="prelude-val">None</span>) =&gt; {
-            <span class="kw">return </span><a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#crate_ident::ParamSpecOverride::for_class::&lt;#c&gt;(#stripped_name))
+            <span class="kw">return </span><a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#crate_ident::ParamSpecOverride::for_class::&lt;#c&gt;(#stripped_name))
         }
         (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(i)) =&gt; {
-            <span class="kw">return </span><a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#crate_ident::ParamSpecOverride::for_interface::&lt;#i&gt;(#stripped_name))
+            <span class="kw">return </span><a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#crate_ident::ParamSpecOverride::for_interface::&lt;#i&gt;(#stripped_name))
         }
         (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; {
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(<span class="string">&quot;Both `override_class` and `override_interface` specified&quot;</span>)
@@ -1090,9 +1090,9 @@
     };
 
     <span class="kw">let </span>rw_flags = <span class="kw">match </span>(<span class="kw-2">&amp;</span><a href="#310">prop</a>.get, <span class="kw-2">&amp;</span><a href="#310">prop</a>.set) {
-        (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(.readwrite()),
-        (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(.read_only()),
-        (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(.write_only()),
+        (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(.readwrite()),
+        (<span class="prelude-val">Some</span>(<span class="kw">_</span>), <span class="prelude-val">None</span>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(.read_only()),
+        (<span class="prelude-val">None</span>, <span class="prelude-val">Some</span>(<span class="kw">_</span>)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(.write_only()),
         (<span class="prelude-val">None</span>, <span class="prelude-val">None</span>) =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(<span class="string">&quot;No `get` or `set` specified&quot;</span>),
     };
 
@@ -1107,14 +1107,14 @@
             <a href="#340">required_params</a>.insert(<span class="number">0</span>, <a href="#341">name_expr</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>());
             <span class="kw">let </span>required_params = <a href="#340">required_params</a>.iter();
 
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>((#(#required_params,)<span class="kw-2">*</span>)#chained_methods)
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>((#(#required_params,)<span class="kw-2">*</span>)#chained_methods)
         })
-        .unwrap_or(<a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>((#stripped_name)));
+        .unwrap_or(<a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>((#stripped_name)));
 
-    <span class="kw">let </span>builder_fields = <a href="#310">prop</a>.builder_fields.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(k, v)| <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(.#k(#v)));
+    <span class="kw">let </span>builder_fields = <a href="#310">prop</a>.builder_fields.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|(k, v)| <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(.#k(#v)));
 
     <span class="kw">let </span>span = <a href="#310">prop</a>.attrs_span;
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned! </a>{span=&gt;
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned! </a>{span=&gt;
         &lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value <span class="kw">as </span>#crate_ident::HasParamSpec&gt;
             ::param_spec_builder() #builder_call
             #rw_flags
@@ -1127,7 +1127,7 @@
     <span class="kw">let </span>n_props = <a href="#364">props</a>.len();
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#167-194">crate_ident_new</a>();
     <span class="kw">let </span>param_specs = <a href="#364">props</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(<a href="#310-362">expand_param_spec</a>);
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>derived_properties() -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span>[#crate_ident::ParamSpec] {
             <span class="kw">use </span>#crate_ident::ParamSpecBuilderExt;
             <span class="kw">use </span>#crate_ident::once_cell::sync::Lazy;
@@ -1155,27 +1155,27 @@
         <span class="kw">let </span>span = <a href="#382">p</a>.attrs_span;
         <a href="#387">get</a>.as_ref().map(|get| {
             <span class="kw">let </span>body = <span class="kw">match </span>(<a href="#386">member</a>, <a href="#394">get</a>) {
-                (<span class="kw">_</span>, <a href="#71">MaybeCustomFn::Custom</a>(expr)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="kw">_</span>, <a href="#71">MaybeCustomFn::Custom</a>(expr)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt; {
                         <span class="kw">let </span>value: &lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value = (#expr)(<span class="kw-2">&amp;</span><span class="self">self</span>);
                         ::std::convert::From::from(value)
                     }
                 ),
-                (<span class="prelude-val">None</span>, <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="prelude-val">None</span>, <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt;
                         #crate_ident::PropertyGet::get(<span class="kw-2">&amp;</span><span class="self">self</span>.#field_ident, |v| ::std::convert::From::from(v))
 
                 ),
-                (<span class="prelude-val">Some</span>(member), <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="prelude-val">Some</span>(member), <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt;
                         #crate_ident::PropertyGet::get(<span class="kw-2">&amp;</span><span class="self">self</span>.#field_ident, |v| ::std::convert::From::from(<span class="kw-2">&amp;</span>v.#member))
 
                 ),
             };
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; #body)
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; #body)
         })
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>derived_property(
             <span class="kw-2">&amp;</span><span class="self">self</span>,
             id: usize,
@@ -1206,7 +1206,7 @@
         <span class="kw">let </span>crate_ident = <a href="utils.rs.html#167-194">crate_ident_new</a>();
         <span class="kw">let </span>enum_ident = <a href="#610-625">name_to_enum_ident</a>(<a href="#436">name</a>.value());
         <span class="kw">let </span>span = <a href="#434">p</a>.attrs_span;
-        <span class="kw">let </span>expect = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(.unwrap_or_else(
+        <span class="kw">let </span>expect = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(.unwrap_or_else(
             |err| <span class="macro">panic!</span>(
                 <span class="string">&quot;Invalid conversion from `glib::value::Value` to `{}` inside setter for property `{}`: {:?}&quot;</span>,
                 ::std::any::type_name::&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value&gt;(), #stripped_name, err
@@ -1214,12 +1214,12 @@
         ));
         <a href="#439">set</a>.as_ref().map(|set| {
             <span class="kw">let </span>body = <span class="kw">match </span>(<a href="#438">member</a>, <a href="#453">set</a>) {
-                (<span class="kw">_</span>, <a href="#71">MaybeCustomFn::Custom</a>(expr)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="kw">_</span>, <a href="#71">MaybeCustomFn::Custom</a>(expr)) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt; {
                         (#expr)(<span class="kw-2">&amp;</span><span class="self">self</span>, #crate_ident::Value::get(value)#expect);
                     }
                 ),
-                (<span class="prelude-val">None</span>, <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="prelude-val">None</span>, <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt; {
                         #crate_ident::PropertySet::set(
                             <span class="kw-2">&amp;</span><span class="self">self</span>.#field_ident,
@@ -1227,7 +1227,7 @@
                         );
                     }
                 ),
-                (<span class="prelude-val">Some</span>(member), <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                (<span class="prelude-val">Some</span>(member), <a href="#72">MaybeCustomFn::Default</a>) =&gt; <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     DerivedPropertiesEnum::#enum_ident =&gt; {
                         #crate_ident::PropertySetNested::set_nested(
                             <span class="kw-2">&amp;</span><span class="self">self</span>.#field_ident,
@@ -1236,10 +1236,10 @@
                     }
                 ),
             };
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; #body)
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; #body)
         })
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
         <span class="kw">fn </span>derived_set_property(<span class="kw-2">&amp;</span><span class="self">self</span>,
             id: usize,
             value: <span class="kw-2">&amp;</span>#crate_ident::Value,
@@ -1280,7 +1280,7 @@
 
 <span class="doccomment">/// Converts a glib property name to a correct rust ident
 </span><span class="kw">fn </span>name_to_ident(name: <span class="kw-2">&amp;</span><a href="https://docs.rs/syn/2.0.27/syn/lit/struct.LitStr.html">syn::LitStr</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a> {
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;{}&quot;</span>, name.value().replace(<span class="string">&#39;-&#39;</span>, <span class="string">&quot;_&quot;</span>))
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;{}&quot;</span>, name.value().replace(<span class="string">&#39;-&#39;</span>, <span class="string">&quot;_&quot;</span>))
 }
 
 <span class="doccomment">/// Strips out raw identifier prefix (`r#`) from literal string items
@@ -1300,39 +1300,39 @@
         <span class="kw">let </span>ty = <span class="kw-2">&amp;</span><a href="#534">p</a>.ty;
 
         <span class="kw">let </span>getter = <a href="#534">p</a>.get.is_some().then(|| {
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(<span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; &lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value {
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(<span class="kw">pub fn </span>#ident(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; &lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value {
                  <span class="self">self</span>.property::&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value&gt;(#stripped_name)
             })
         });
 
         <span class="kw">let </span>setter = (<a href="#534">p</a>.set.is_some() &amp;&amp; !<a href="#534">p</a>.is_construct_only).then(|| {
-            <span class="kw">let </span>ident = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;set_{}&quot;</span>, ident);
-            <span class="kw">let </span>target_ty = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value <span class="kw">as </span>#crate_ident::HasParamSpec&gt;::SetValue);
+            <span class="kw">let </span>ident = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;set_{}&quot;</span>, ident);
+            <span class="kw">let </span>target_ty = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(&lt;&lt;#ty <span class="kw">as </span>#crate_ident::Property&gt;::Value <span class="kw">as </span>#crate_ident::HasParamSpec&gt;::SetValue);
             <span class="kw">let </span>set_ty = <span class="kw">if </span>p.nullable {
-               <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(::core::option::Option&lt;<span class="kw">impl </span>std::borrow::Borrow&lt;#target_ty&gt;&gt;)
+               <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(::core::option::Option&lt;<span class="kw">impl </span>std::borrow::Borrow&lt;#target_ty&gt;&gt;)
             } <span class="kw">else </span>{
-               <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(<span class="kw">impl </span>std::borrow::Borrow&lt;#target_ty&gt;)
+               <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(<span class="kw">impl </span>std::borrow::Borrow&lt;#target_ty&gt;)
             };
             <span class="kw">let </span>upcasted_borrowed_value = <span class="kw">if </span>p.nullable {
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     value.as_ref().map(|v| std::borrow::Borrow::borrow(v))
                 )
             } <span class="kw">else </span>{
-                <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(
+                <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(
                     std::borrow::Borrow::borrow(<span class="kw-2">&amp;</span>value)
                 )
             };
-            <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(<span class="kw">pub fn </span>#ident&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, value: #set_ty) {
+            <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(<span class="kw">pub fn </span>#ident&lt;<span class="lifetime">&#39;a</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, value: #set_ty) {
                 <span class="self">self</span>.set_property_from_value(#stripped_name, <span class="kw-2">&amp;</span>::std::convert::From::from(#upcasted_borrowed_value))
             })
         });
         <span class="kw">let </span>span = <a href="#534">p</a>.attrs_span;
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt;
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt;
             #getter
             #setter
         )
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#(#defs)<span class="kw-2">*</span>)
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#(#defs)<span class="kw-2">*</span>)
 }
 
 <span class="kw">fn </span>expand_wrapper_connect_prop_notify(props: <span class="kw-2">&amp;</span>[<a href="#226-240">PropDesc</a>]) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a> {
@@ -1340,25 +1340,25 @@
     <span class="kw">let </span>connection_fns = <a href="#576">props</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|p| {
         <span class="kw">let </span>name = <span class="kw-2">&amp;</span><a href="#578">p</a>.name;
         <span class="kw">let </span>stripped_name = <a href="#525-530">strip_raw_prefix_from_name</a>(<a href="#579">name</a>);
-        <span class="kw">let </span>fn_ident = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;connect_{}_notify&quot;</span>, name_to_ident(name));
+        <span class="kw">let </span>fn_ident = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;connect_{}_notify&quot;</span>, name_to_ident(name));
         <span class="kw">let </span>span = <a href="#578">p</a>.attrs_span;
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; <span class="kw">pub fn </span>#fn_ident&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; #crate_ident::SignalHandlerId {
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; <span class="kw">pub fn </span>#fn_ident&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; #crate_ident::SignalHandlerId {
             <span class="self">self</span>.connect_notify_local(::core::option::Option::Some(#stripped_name), <span class="kw">move </span>|this, <span class="kw">_</span>| {
                 f(this)
             })
         })
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#(#connection_fns)<span class="kw-2">*</span>)
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#(#connection_fns)<span class="kw-2">*</span>)
 }
 
 <span class="kw">fn </span>expand_wrapper_notify_prop(props: <span class="kw-2">&amp;</span>[<a href="#226-240">PropDesc</a>]) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a> {
     <span class="kw">let </span>crate_ident = <a href="utils.rs.html#167-194">crate_ident_new</a>();
     <span class="kw">let </span>emit_fns = <a href="#592">props</a>.iter().<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|p| {
         <span class="kw">let </span>name = <a href="#525-530">strip_raw_prefix_from_name</a>(<span class="kw-2">&amp;</span><a href="#594">p</a>.name);
-        <span class="kw">let </span>fn_ident = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;notify_{}&quot;</span>, name_to_ident(<span class="kw-2">&amp;</span>name));
+        <span class="kw">let </span>fn_ident = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;notify_{}&quot;</span>, name_to_ident(<span class="kw-2">&amp;</span>name));
         <span class="kw">let </span>span = <a href="#594">p</a>.attrs_span;
         <span class="kw">let </span>enum_ident = <a href="#610-625">name_to_enum_ident</a>(<a href="#595">name</a>.value());
-        <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; <span class="kw">pub fn </span>#fn_ident(<span class="kw-2">&amp;</span><span class="self">self</span>) {
+        <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote_spanned.html">quote_spanned!</a>(span=&gt; <span class="kw">pub fn </span>#fn_ident(<span class="kw-2">&amp;</span><span class="self">self</span>) {
             <span class="self">self</span>.notify_by_pspec(
                 <span class="kw-2">&amp;</span>&lt;&lt;<span class="self">Self </span><span class="kw">as </span>#crate_ident::object::ObjectSubclassIs&gt;::Subclass
                     <span class="kw">as </span>#crate_ident::subclass::object::DerivedObjectProperties&gt;::derived_properties()
@@ -1366,7 +1366,7 @@
             );
         })
     });
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote!</a>(#(#emit_fns)<span class="kw-2">*</span>)
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote!</a>(#(#emit_fns)<span class="kw-2">*</span>)
 }
 
 <span class="kw">fn </span>name_to_enum_ident(name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.Ident.html">syn::Ident</a> {
@@ -1383,7 +1383,7 @@
         <a href="#620">c</a>.make_ascii_uppercase();
     }
     <span class="kw">let </span>enum_member: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a> = <a href="#611">name</a>.split(<span class="string">&#39;-&#39;</span>).<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>();
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;{}&quot;</span>, enum_member)
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.format_ident.html">format_ident!</a>(<span class="string">&quot;{}&quot;</span>, enum_member)
 }
 
 <span class="kw">fn </span>expand_properties_enum(props: <span class="kw-2">&amp;</span>[<a href="#226-240">PropDesc</a>]) -&gt; <a href="https://docs.rs/proc-macro2/1.0.66/proc_macro2/struct.TokenStream.html">TokenStream2</a> {
@@ -1397,7 +1397,7 @@
         .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>();
     <span class="kw">let </span>props = <a href="#628">properties</a>.iter();
     <span class="kw">let </span>indices = <span class="number">0</span>..<a href="#628">properties</a>.len();
-    <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         <span class="attr">#[repr(usize)]
         #[derive(Debug, Copy, Clone)]
         </span><span class="kw">enum </span>DerivedPropertiesEnum {
@@ -1428,7 +1428,7 @@
     <span class="kw">let </span>notify_prop = <a href="#592-608">expand_wrapper_notify_prop</a>(<span class="kw-2">&amp;</span><a href="#657">input</a>.props);
     <span class="kw">let </span>properties_enum = <a href="#627-655">expand_properties_enum</a>(<span class="kw-2">&amp;</span><a href="#657">input</a>.props);
 
-    <span class="kw">let </span>expanded = <a class="macro" href="https://docs.rs/quote/1.0.31/quote/macro.quote.html">quote! </a>{
+    <span class="kw">let </span>expanded = <a class="macro" href="https://docs.rs/quote/1.0.32/quote/macro.quote.html">quote! </a>{
         <span class="kw">use </span>#crate_ident::{PropertyGet, PropertySet, ToValue};
 
         #properties_enum
