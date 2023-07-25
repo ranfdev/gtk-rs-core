@@ -973,7 +973,7 @@
 };
 
 <span class="kw">use crate</span>::{
-    <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#14-17">ControlFlow</a>, <a href="auto/main_context.rs.html#10-19">MainContext</a>, <a href="source.rs.html#812">Priority</a>, <a href="auto/source.rs.html#7-16">Source</a>, <a href="source.rs.html#21">SourceId</a>,
+    <a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#14-17">ControlFlow</a>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="source.rs.html#812">Priority</a>, <a href="auto/source.rs.html#7-18">Source</a>, <a href="source.rs.html#21">SourceId</a>,
 };
 
 <span class="kw">enum </span>ChannelSourceState {
@@ -1257,7 +1257,7 @@
             ffi::g_source_get_context(<a href="#255">source</a> <span class="kw">as </span><span class="kw-2">*mut </span>ChannelSource&lt;T, F&gt; <span class="kw">as </span><span class="kw-2">*mut </span>ffi::GSource);
         <span class="kw">if </span>!context.is_null() {
             <span class="kw">let </span>context = MainContext::from_glib_none(<a href="#290">context</a>);
-            <a href="#293">context</a>.<a href="main_context.rs.html#42-47">invoke</a>(<span class="kw">move </span>|| {
+            <a href="#293">context</a>.<a href="main_context.rs.html#98-103">invoke</a>(<span class="kw">move </span>|| {
                 <a href="https://doc.rust-lang.org/nightly/core/mem/fn.drop.html">drop</a>(<a href="#289">callback</a>);
             });
         }
@@ -1421,7 +1421,7 @@
     /// `context`, or, if `None` is provided, of the thread default main context.
     </span><span class="kw">pub fn </span>attach&lt;F: FnMut(T) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
-        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-19">MainContext</a>&gt;,
+        context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>&gt;,
         func: F,
     ) -&gt; <a href="source.rs.html#21">SourceId</a> {
         <span class="kw">unsafe </span>{
@@ -1483,14 +1483,14 @@
             };
 
             <span class="kw">let </span>_acquire = <a href="#514">context</a>
-                .<a href="main_context.rs.html#164-173">acquire</a>()
+                .<a href="main_context.rs.html#239-248">acquire</a>()
                 .expect(<span class="string">&quot;main context already acquired by another thread&quot;</span>);
             <a href="#513">source</a>.<a href="source.rs.html#1069-1076">attach</a>(<span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><a href="#514">context</a>))
         }
     }
 }
 
-<span class="kw">impl </span><a href="auto/main_context.rs.html#10-19">MainContext</a> {
+<span class="kw">impl </span><a href="auto/main_context.rs.html#10-21">MainContext</a> {
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Creates a channel for a main context.
     ///

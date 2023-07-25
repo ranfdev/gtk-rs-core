@@ -1159,8 +1159,8 @@
 </span><span class="kw">use </span>libc::c_int <span class="kw">as </span>RawFd;
 
 <span class="attr">#[cfg(any(unix, docsrs))]
-</span><span class="kw">use </span><a href="auto/flags.rs.html#143-160"><span class="kw">crate</span>::IOCondition</a>;
-<span class="kw">use crate</span>::{<a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#14-17">ControlFlow</a>, <a href="auto/main_context.rs.html#10-19">MainContext</a>, <a href="auto/source.rs.html#7-16">Source</a>};
+</span><span class="kw">use </span><a href="auto/flags.rs.html#186-212"><span class="kw">crate</span>::IOCondition</a>;
+<span class="kw">use crate</span>::{<a href="thread_guard.rs.html#24-27">thread_guard::ThreadGuard</a>, <a href="lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="control_flow.rs.html#14-17">ControlFlow</a>, <a href="auto/main_context.rs.html#10-21">MainContext</a>, <a href="auto/source.rs.html#7-18">Source</a>};
 
 <span class="comment">// rustdoc-stripper-ignore-next
 </span><span class="doccomment">/// The id of a source that is returned by `idle_add` and `timeout_add`.
@@ -1184,7 +1184,7 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_source_remove&quot;</span>)]
     </span><span class="kw">pub fn </span>remove(<span class="self">self</span>) {
         <span class="kw">unsafe </span>{
-            <a class="macro" href="error.rs.html#177-199">result_from_gboolean!</a>(
+            <a class="macro" href="error.rs.html#212-234">result_from_gboolean!</a>(
                 ffi::g_source_remove(<span class="self">self</span>.as_raw()),
                 <span class="string">&quot;Failed to remove source&quot;
             </span>)
@@ -1304,7 +1304,7 @@
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>trampoline_unix_fd&lt;
-    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 &gt;(
     fd: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     condition: ffi::GIOCondition,
@@ -1317,7 +1317,7 @@
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>trampoline_unix_fd_local&lt;
-    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
+    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
 &gt;(
     fd: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
     condition: ffi::GIOCondition,
@@ -1330,7 +1330,7 @@
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>destroy_closure_unix_fd&lt;
-    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 &gt;(
     ptr: gpointer,
 ) {
@@ -1340,7 +1340,7 @@
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
 </span><span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>destroy_closure_unix_fd_local&lt;
-    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
+    F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
 &gt;(
     ptr: gpointer,
 ) {
@@ -1349,7 +1349,7 @@
 
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
-</span><span class="kw">fn </span>into_raw_unix_fd&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
+</span><span class="kw">fn </span>into_raw_unix_fd&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>&gt;(
     func: F,
 ) -&gt; gpointer {
     <span class="kw">let </span>func: Box&lt;RefCell&lt;F&gt;&gt; = Box::new(RefCell::new(<a href="#203">func</a>));
@@ -1358,7 +1358,7 @@
 
 <span class="attr">#[cfg(any(unix, docsrs))]
 #[cfg_attr(docsrs, doc(cfg(unix)))]
-</span><span class="kw">fn </span>into_raw_unix_fd_local&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(
+</span><span class="kw">fn </span>into_raw_unix_fd_local&lt;F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>&gt;(
     func: F,
 ) -&gt; gpointer {
     <span class="kw">let </span>func: Box&lt;ThreadGuard&lt;RefCell&lt;F&gt;&gt;&gt; = Box::new(ThreadGuard::new(RefCell::new(<a href="#212">func</a>)));
@@ -1468,7 +1468,7 @@
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#319">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_idle_add_full(
             ffi::G_PRIORITY_DEFAULT_IDLE,
@@ -1578,7 +1578,7 @@
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#429">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_timeout_add_full(
             ffi::G_PRIORITY_DEFAULT,
@@ -1689,7 +1689,7 @@
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#540">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_timeout_add_seconds_full(
             ffi::G_PRIORITY_DEFAULT,
@@ -1768,7 +1768,7 @@
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#619">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_child_watch_add_full(
             ffi::G_PRIORITY_DEFAULT,
@@ -1851,7 +1851,7 @@
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#702">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_unix_signal_add_full(
             ffi::G_PRIORITY_DEFAULT,
@@ -1902,9 +1902,9 @@
 /// The default main loop almost always is the main loop of the main thread.
 /// Thus, the closure is called on the main thread.
 </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_add_full&quot;</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/source/fn.unix_fd_add.html">unix_fd_add</a>&lt;F&gt;(fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, condition: <a href="auto/flags.rs.html#143-160">IOCondition</a>, func: F) -&gt; <a href="#21">SourceId</a>
+</span><span class="kw">pub fn </span><a href="../../glib/source/fn.unix_fd_add.html">unix_fd_add</a>&lt;F&gt;(fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, condition: <a href="auto/flags.rs.html#186-212">IOCondition</a>, func: F) -&gt; <a href="#21">SourceId</a>
 <span class="kw">where
-    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">unsafe </span>{
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_unix_fd_add_full(
@@ -1936,14 +1936,14 @@
 /// This function panics if called from a different thread than the one that
 /// owns the main context.
 </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_add_full&quot;</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/source/fn.unix_fd_add_local.html">unix_fd_add_local</a>&lt;F&gt;(fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, condition: <a href="auto/flags.rs.html#143-160">IOCondition</a>, func: F) -&gt; <a href="#21">SourceId</a>
+</span><span class="kw">pub fn </span><a href="../../glib/source/fn.unix_fd_add_local.html">unix_fd_add_local</a>&lt;F&gt;(fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, condition: <a href="auto/flags.rs.html#186-212">IOCondition</a>, func: F) -&gt; <a href="#21">SourceId</a>
 <span class="kw">where
-    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
+    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>context = MainContext::default();
         <span class="kw">let </span>_acquire = <a href="#794">context</a>
-            .<a href="main_context.rs.html#164-173">acquire</a>()
+            .<a href="main_context.rs.html#239-248">acquire</a>()
             .expect(<span class="string">&quot;default main context already acquired by another thread&quot;</span>);
         <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_unix_fd_add_full(
             ffi::G_PRIORITY_DEFAULT,
@@ -2009,7 +2009,7 @@
 ///
 /// `func` will be called repeatedly until it returns `ControlFlow::Break`.
 </span><span class="attr">#[doc(alias = <span class="string">&quot;g_idle_source_new&quot;</span>)]
-</span><span class="kw">pub fn </span><a href="../../glib/source/fn.idle_source_new.html">idle_source_new</a>&lt;F&gt;(name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, priority: <a href="#812">Priority</a>, func: F) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+</span><span class="kw">pub fn </span><a href="../../glib/source/fn.idle_source_new.html">idle_source_new</a>&lt;F&gt;(name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;, priority: <a href="#812">Priority</a>, func: F) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
@@ -2045,7 +2045,7 @@
     name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#812">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
@@ -2080,7 +2080,7 @@
     name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#812">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
@@ -2113,7 +2113,7 @@
     name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#812">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: FnMut(<a href="#59">Pid</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>) + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
@@ -2152,7 +2152,7 @@
     name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#812">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
     </span>F: FnMut() -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
@@ -2185,13 +2185,13 @@
 </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_fd_source_new&quot;</span>)]
 </span><span class="kw">pub fn </span><a href="../../glib/source/fn.unix_fd_source_new.html">unix_fd_source_new</a>&lt;F&gt;(
     fd: <a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>,
-    condition: <a href="auto/flags.rs.html#143-160">IOCondition</a>,
+    condition: <a href="auto/flags.rs.html#186-212">IOCondition</a>,
     name: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
     priority: <a href="#812">Priority</a>,
     func: F,
-) -&gt; <a href="auto/source.rs.html#7-16">Source</a>
+) -&gt; <a href="auto/source.rs.html#7-18">Source</a>
 <span class="kw">where
-    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#143-160">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
+    </span>F: FnMut(<a href="https://doc.rust-lang.org/nightly/std/os/fd/raw/type.RawFd.html">RawFd</a>, <a href="auto/flags.rs.html#186-212">IOCondition</a>) -&gt; <a href="control_flow.rs.html#14-17">ControlFlow</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <span class="lifetime">&#39;static</span>,
 {
     <span class="kw">unsafe </span>{
         <span class="kw">let </span>source = ffi::g_unix_fd_source_new(<a href="#1037">fd</a>, <a href="#1038">condition</a>.<a href="translate.rs.html#330">into_glib</a>());
@@ -2214,9 +2214,9 @@
     }
 }
 
-<span class="kw">impl </span><a href="auto/source.rs.html#7-16">Source</a> {
+<span class="kw">impl </span><a href="auto/source.rs.html#7-18">Source</a> {
     <span class="attr">#[doc(alias = <span class="string">&quot;g_source_attach&quot;</span>)]
-    </span><span class="kw">pub fn </span>attach(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-19">MainContext</a>&gt;) -&gt; <a href="#21">SourceId</a> {
+    </span><span class="kw">pub fn </span>attach(<span class="kw-2">&amp;</span><span class="self">self</span>, context: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="auto/main_context.rs.html#10-21">MainContext</a>&gt;) -&gt; <a href="#21">SourceId</a> {
         <span class="kw">unsafe </span>{
             <a href="translate.rs.html#1413-1415">from_glib</a>(ffi::g_source_attach(
                 <a class="self" href="#1069">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
