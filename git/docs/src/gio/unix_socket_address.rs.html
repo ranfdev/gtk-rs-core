@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/unix_socket_address.rs`."><title>unix_socket_address.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/unix_socket_address.rs`."><title>unix_socket_address.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (aa1a71e9e 2023-10-26)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f34af1a0ee6bacd.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../gio/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -240,7 +240,7 @@
 
 <span class="kw">use </span><a href="../../glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
 
-<span class="kw">use crate</span>::{<a href="lib.rs.html#112">prelude</a>::<span class="kw-2">*</span>, <a href="auto/socket_address.rs.html#13-35">SocketAddress</a>, <a href="auto/unix_socket_address.rs.html#9-64">UnixSocketAddress</a>, <a href="auto/enums.rs.html#5267-5286">UnixSocketAddressType</a>};
+<span class="kw">use crate</span>::{<a href="lib.rs.html#117">prelude</a>::<span class="kw-2">*</span>, <a href="auto/socket_address.rs.html#13-35">SocketAddress</a>, <a href="auto/unix_socket_address.rs.html#8-63">UnixSocketAddress</a>, <a href="auto/enums.rs.html#4630-4649">UnixSocketAddressType</a>};
 
 <span class="attr">#[derive(Debug)]
 </span><span class="kw">pub enum </span><a href="../../gio/prelude/enum.UnixSocketAddressPath.html">UnixSocketAddressPath</a>&lt;<span class="lifetime">&#39;a</span>&gt; {
@@ -251,19 +251,19 @@
 }
 
 <span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>&gt; UnixSocketAddressPath&lt;<span class="lifetime">&#39;a</span>&gt; {
-    <span class="kw">fn </span>to_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#5267-5286">UnixSocketAddressType</a> {
+    <span class="kw">fn </span>to_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="auto/enums.rs.html#4630-4649">UnixSocketAddressType</a> {
         <span class="kw">use </span><a href="#15-20"><span class="self">self</span>::UnixSocketAddressPath</a>::<span class="kw-2">*</span>;
 
         <span class="kw">match </span><span class="kw-2">*</span><span class="self"><a href="#23">self</a> </span>{
-            <a href="#16">Path</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#5276">UnixSocketAddressType::Path</a>,
-            <a href="#17">Anonymous</a> =&gt; <a href="auto/enums.rs.html#5273">UnixSocketAddressType::Anonymous</a>,
-            <a href="#18">Abstract</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#5279">UnixSocketAddressType::Abstract</a>,
-            <a href="#19">AbstractPadded</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#5283">UnixSocketAddressType::AbstractPadded</a>,
+            <a href="#16">Path</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4639">UnixSocketAddressType::Path</a>,
+            <a href="#17">Anonymous</a> =&gt; <a href="auto/enums.rs.html#4636">UnixSocketAddressType::Anonymous</a>,
+            <a href="#18">Abstract</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4642">UnixSocketAddressType::Abstract</a>,
+            <a href="#19">AbstractPadded</a>(<span class="kw">_</span>) =&gt; <a href="auto/enums.rs.html#4646">UnixSocketAddressType::AbstractPadded</a>,
         }
     }
 }
 
-<span class="kw">impl </span><a href="auto/unix_socket_address.rs.html#9-64">UnixSocketAddress</a> {
+<span class="kw">impl </span><a href="auto/unix_socket_address.rs.html#8-63">UnixSocketAddress</a> {
     <span class="doccomment">/// Creates a new [`UnixSocketAddress`][crate::UnixSocketAddress] for `path`.
     ///
     /// To create abstract socket addresses, on systems that support that,
@@ -275,7 +275,7 @@
     ///
     /// a new [`UnixSocketAddress`][crate::UnixSocketAddress]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_unix_socket_address_new&quot;</span>)]
-    </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">path::Path</a>) -&gt; <a href="auto/unix_socket_address.rs.html#9-64">UnixSocketAddress</a> {
+    </span><span class="kw">pub fn </span>new(path: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">path::Path</a>) -&gt; <a href="auto/unix_socket_address.rs.html#8-63">UnixSocketAddress</a> {
         <span class="kw">unsafe </span>{
             SocketAddress::from_glib_full(ffi::g_unix_socket_address_new(<a href="#47">path</a>.<a href="../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>))
                 .<a href="../../glib/object/trait.Cast.html">unsafe_cast</a>()
@@ -346,10 +346,10 @@
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/unix_socket_address.rs.html#9-64"><span class="kw">super</span>::UnixSocketAddress</a>&gt;&gt; <a href="#117">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="auto/unix_socket_address.rs.html#8-63"><span class="kw">super</span>::UnixSocketAddress</a>&gt;&gt; <a href="#117">Sealed</a> <span class="kw">for </span>T {}
 }
 
-<span class="kw">pub trait </span><a href="../../gio/prelude/trait.UnixSocketAddressExtManual.html">UnixSocketAddressExtManual</a>: <a href="#117">sealed::Sealed</a> + IsA&lt;<a href="auto/unix_socket_address.rs.html#9-64">UnixSocketAddress</a>&gt; + <span class="lifetime">&#39;static </span>{
+<span class="kw">pub trait </span><a href="../../gio/prelude/trait.UnixSocketAddressExtManual.html">UnixSocketAddressExtManual</a>: <a href="#117">sealed::Sealed</a> + IsA&lt;<a href="auto/unix_socket_address.rs.html#8-63">UnixSocketAddress</a>&gt; + <span class="lifetime">&#39;static </span>{
     <span class="doccomment">/// Gets `self`&#39;s path, or for abstract sockets the &quot;name&quot;.
     ///
     /// Guaranteed to be zero-terminated, but an abstract socket
@@ -370,21 +370,21 @@
             <span class="kw">if </span>path.is_null() || <span class="self">self</span>.path_len() == <span class="number">0 </span>{
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                slice::from_raw_parts(<a href="#138">path</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="self" href="#134">self</a>.<a href="auto/unix_socket_address.rs.html#148-150">path_len</a>())
+                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#138">path</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a class="self" href="#134">self</a>.<a href="auto/unix_socket_address.rs.html#147-149">path_len</a>())
             }
         };
-        <span class="kw">match </span><a class="self" href="#134">self</a>.<a href="auto/unix_socket_address.rs.html#112-118">address_type</a>() {
-            <a href="auto/enums.rs.html#5273">UnixSocketAddressType::Anonymous</a> =&gt; <span class="prelude-val">Some</span>(<a href="#17">Anonymous</a>),
+        <span class="kw">match </span><a class="self" href="#134">self</a>.<a href="auto/unix_socket_address.rs.html#111-117">address_type</a>() {
+            <a href="auto/enums.rs.html#4636">UnixSocketAddressType::Anonymous</a> =&gt; <span class="prelude-val">Some</span>(<a href="#17">Anonymous</a>),
             <span class="attr">#[cfg(not(docsrs))]
             </span>UnixSocketAddressType::Path =&gt; <span class="prelude-val">Some</span>(Path(path::Path::new(OsStr::from_bytes(path)))),
             <span class="attr">#[cfg(docsrs)]
-            </span><a href="auto/enums.rs.html#5276">UnixSocketAddressType::Path</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
-            <a href="auto/enums.rs.html#5279">UnixSocketAddressType::Abstract</a> =&gt; <span class="prelude-val">Some</span>(<a href="#18">Abstract</a>(<a href="#137">path</a>)),
-            <a href="auto/enums.rs.html#5283">UnixSocketAddressType::AbstractPadded</a> =&gt; <span class="prelude-val">Some</span>(<a href="#19">AbstractPadded</a>(<a href="#137">path</a>)),
-            <a href="auto/enums.rs.html#5270">UnixSocketAddressType::Invalid</a> | <a href="auto/enums.rs.html#5285">UnixSocketAddressType::__Unknown</a>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
+            </span><a href="auto/enums.rs.html#4639">UnixSocketAddressType::Path</a> =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
+            <a href="auto/enums.rs.html#4642">UnixSocketAddressType::Abstract</a> =&gt; <span class="prelude-val">Some</span>(<a href="#18">Abstract</a>(<a href="#137">path</a>)),
+            <a href="auto/enums.rs.html#4646">UnixSocketAddressType::AbstractPadded</a> =&gt; <span class="prelude-val">Some</span>(<a href="#19">AbstractPadded</a>(<a href="#137">path</a>)),
+            <a href="auto/enums.rs.html#4633">UnixSocketAddressType::Invalid</a> | <a href="auto/enums.rs.html#4648">UnixSocketAddressType::__Unknown</a>(<span class="kw">_</span>) =&gt; <span class="prelude-val">None</span>,
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/unix_socket_address.rs.html#9-64">UnixSocketAddress</a>&gt;&gt; <a href="#121-156">UnixSocketAddressExtManual</a> <span class="kw">for </span>O {}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="auto/unix_socket_address.rs.html#8-63">UnixSocketAddress</a>&gt;&gt; <a href="#121-156">UnixSocketAddressExtManual</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

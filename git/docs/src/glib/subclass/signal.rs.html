@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/signal.rs`."><title>signal.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/subclass/signal.rs`."><title>signal.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (aa1a71e9e 2023-10-26)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f34af1a0ee6bacd.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../glib/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -776,23 +776,13 @@
 <a href="#703" id="703">703</a>
 <a href="#704" id="704">704</a>
 <a href="#705" id="705">705</a>
-<a href="#706" id="706">706</a>
-<a href="#707" id="707">707</a>
-<a href="#708" id="708">708</a>
-<a href="#709" id="709">709</a>
-<a href="#710" id="710">710</a>
-<a href="#711" id="711">711</a>
-<a href="#712" id="712">712</a>
-<a href="#713" id="713">713</a>
-<a href="#714" id="714">714</a>
-<a href="#715" id="715">715</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 </span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/num/nonzero/struct.NonZeroU32.html">num::NonZeroU32</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>, <a href="https://doc.rust-lang.org/nightly/std/sync/mutex/struct.Mutex.html">sync::Mutex</a>};
 
 <span class="kw">use crate</span>::{
-    <a href="../lib.rs.html#137">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#142">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#127-133">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>, <a href="../gstring.rs.html#2280-2282">IntoGStr</a>, <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>,
-    <a href="../value.rs.html#476-521">Value</a>,
+    <a href="../lib.rs.html#135">prelude</a>::<span class="kw-2">*</span>, <a href="../lib.rs.html#140">translate</a>::<span class="kw-2">*</span>, <a href="../utils.rs.html#127-133">utils::is_canonical_pspec_name</a>, <a href="../closure.rs.html#11-24">Closure</a>, <a href="../gstring.rs.html#2301-2303">IntoGStr</a>, <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>, <a href="../types.rs.html#22">Type</a>,
+    <a href="../value.rs.html#476-510">Value</a>,
 };
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -801,14 +791,14 @@
 #[must_use = <span class="string">&quot;The builder must be built to be used&quot;</span>]
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.SignalBuilder.html">SignalBuilder</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
     class_handler: <span class="prelude-ty">Option</span>&lt;
-        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-521">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-521">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
     &gt;,
     accumulator: <span class="prelude-ty">Option</span>&lt;
-        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-521">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-521">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+        Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
     &gt;,
 }
 
@@ -816,10 +806,10 @@
 </span><span class="doccomment">/// Signal metadata.
 </span><span class="kw">pub struct </span><a href="../../../glib/subclass/signal/struct.Signal.html">Signal</a> {
     name: <a href="https://doc.rust-lang.org/nightly/alloc/string/struct.String.html">String</a>,
-    flags: <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a>,
+    flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>,
     param_types: Vec&lt;<a href="#281">SignalType</a>&gt;,
     return_type: <a href="#281">SignalType</a>,
-    registration: Mutex&lt;<a href="#363-378">SignalRegistration</a>&gt;,
+    registration: Mutex&lt;<a href="#353-368">SignalRegistration</a>&gt;,
 }
 
 <span class="comment">// rustdoc-stripper-ignore-next
@@ -833,7 +823,7 @@
     </span><span class="kw">pub</span>(<span class="kw">super</span>) <a href="../types.rs.html#22">Type</a>,
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Arguments value array.
-    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*const </span><a href="../value.rs.html#476-521">Value</a>,
+    </span><span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw-2">*const </span><a href="../value.rs.html#476-510">Value</a>,
 );
 
 <span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#39-49">SignalClassHandlerToken</a> {
@@ -858,7 +848,7 @@
     }
 
     <span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>run_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#73">self</a>.<span class="number">0</span>.run_type) }
     }
 }
@@ -907,7 +897,7 @@
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal flags.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a> {
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1413-1415">from_glib</a>(<a class="self" href="#122">self</a>.<span class="number">0</span>.signal_flags) }
     }
 
@@ -934,7 +924,7 @@
         }
 
         <span class="kw">unsafe </span>{
-            std::slice::from_raw_parts(
+            <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">std::slice::from_raw_parts</a>(
                 <a class="self" href="#143">self</a>.<span class="number">0</span>.param_types <span class="kw">as </span><span class="kw-2">*const </span><a href="#281">SignalType</a>,
                 <a class="self" href="#143">self</a>.<span class="number">0</span>.n_params <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>,
             )
@@ -981,7 +971,7 @@
         <span class="kw">let </span><span class="kw-2">mut </span>signal_id = std::mem::MaybeUninit::uninit();
         <span class="kw">let </span><span class="kw-2">mut </span>detail_quark = std::mem::MaybeUninit::uninit();
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>found: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="#189">name</a>.<a href="../gstring.rs.html#2281">run_with_gstr</a>(|name| {
+            <span class="kw">let </span>found: <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> = <a href="#189">name</a>.<a href="../gstring.rs.html#2302">run_with_gstr</a>(|name| {
                 <a href="../translate.rs.html#1413-1415">from_glib</a>(gobject_ffi::g_signal_parse_name(
                     <a href="#196">name</a>.<a href="../gstring.rs.html#207-209">as_ptr</a>(),
                     <a href="#190">type_</a>.<a href="../translate.rs.html#330">into_glib</a>(),
@@ -1008,7 +998,7 @@
     #[inline]
     </span><span class="kw">pub fn </span>lookup(name: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, type_: <a href="../types.rs.html#22">Type</a>) -&gt; <span class="prelude-ty">Option</span>&lt;<span class="self">Self</span>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>signal_id = <a href="#221">name</a>.<a href="../gstring.rs.html#2281">run_with_gstr</a>(|name| {
+            <span class="kw">let </span>signal_id = <a href="#221">name</a>.<a href="../gstring.rs.html#2302">run_with_gstr</a>(|name| {
                 gobject_ffi::g_signal_lookup(<a href="#223">name</a>.<a href="../gstring.rs.html#207-209">as_ptr</a>(), <a href="#221">type_</a>.<a href="../translate.rs.html#330">into_glib</a>())
             });
             <span class="kw">if </span>signal_id == <span class="number">0 </span>{
@@ -1119,21 +1109,11 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">std::fmt::Display</a> <span class="kw">for </span><a href="#281">SignalType</a> {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">std::fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">std::fmt::Result</a> {
-        <span class="kw">let </span>type_: <a href="../types.rs.html#22">Type</a> = (<span class="kw-2">*</span><a class="self" href="#335">self</a>).<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
-        <a href="#335">f</a>.debug_struct(<span class="string">&quot;SignalType&quot;</span>)
-            .field(<span class="string">&quot;name&quot;</span>, <span class="kw-2">&amp;</span><a href="#336">type_</a>.<a href="../types.rs.html#140-148">name</a>())
-            .field(<span class="string">&quot;static_scope&quot;</span>, <span class="kw-2">&amp;</span><a class="self" href="#335">self</a>.<a href="#290-292">static_scope</a>())
-            .finish()
-    }
-}
-
 <span class="attr">#[doc(hidden)]
 </span><span class="kw">impl </span>FromGlib&lt;ffi::GType&gt; <span class="kw">for </span><a href="#281">SignalType</a> {
     <span class="attr">#[inline]
     </span><span class="kw">unsafe fn </span>from_glib(type_: ffi::GType) -&gt; <span class="self">Self </span>{
-        <span class="self">Self</span>(<a href="#347">type_</a>)
+        <span class="self">Self</span>(<a href="#337">type_</a>)
     }
 }
 
@@ -1143,7 +1123,7 @@
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>into_glib(<span class="self">self</span>) -&gt; ffi::GType {
-        <a class="self" href="#357">self</a>.<span class="number">0
+        <a class="self" href="#347">self</a>.<span class="number">0
     </span>}
 }
 
@@ -1152,11 +1132,11 @@
     Unregistered {
         class_handler: <span class="prelude-ty">Option</span>&lt;
             Box&lt;
-                <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-521">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-521">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+                <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
             &gt;,
         &gt;,
         accumulator: <span class="prelude-ty">Option</span>&lt;
-            Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-521">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-521">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
+            Box&lt;<span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>&gt;,
         &gt;,
     },
     Registered {
@@ -1172,112 +1152,112 @@
         <span class="kw-2">mut </span><span class="self">self</span>,
         param_types: <span class="kw">impl </span>IntoIterator&lt;Item = <span class="kw">impl </span>Into&lt;<a href="#281">SignalType</a>&gt;&gt;,
     ) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#384">self</a>.param_types = <a href="#385">param_types</a>
+        <a class="self" href="#374">self</a>.param_types = <a href="#375">param_types</a>
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/collect/trait.IntoIterator.html">into_iter</a>()
-            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|t| <a href="#389">t</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())
+            .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">map</a>(|t| <a href="#379">t</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>())
             .<a href="https://doc.rust-lang.org/nightly/core/iter/traits/iterator/trait.Iterator.html">collect</a>::&lt;Vec&lt;<span class="kw">_</span>&gt;&gt;();
-        <span class="self"><a href="#384">self</a>
+        <span class="self"><a href="#374">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal&#39;s returned value type.
     </span><span class="kw">pub fn </span>return_type&lt;T: <a href="../types.rs.html#248-252">StaticType</a>&gt;(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#396">self</a>.return_type = T::static_type().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
-        <span class="self"><a href="#396">self</a>
+        <a class="self" href="#386">self</a>.return_type = T::static_type().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
+        <span class="self"><a href="#386">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal&#39;s returned value type.
     </span><span class="kw">pub fn </span>return_type_from(<span class="kw-2">mut </span><span class="self">self</span>, type_: <span class="kw">impl </span>Into&lt;<a href="#281">SignalType</a>&gt;) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#403">self</a>.return_type = <a href="#403">type_</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
-        <span class="self"><a href="#403">self</a>
+        <a class="self" href="#393">self</a>.return_type = <a href="#393">type_</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>();
+        <span class="self"><a href="#393">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Run the signal class handler in the first emission stage.
     </span><span class="kw">pub fn </span>run_first(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#410">self</a>.flags |= SignalFlags::RUN_FIRST;
-        <span class="self"><a href="#410">self</a>
+        <a class="self" href="#400">self</a>.flags |= SignalFlags::RUN_FIRST;
+        <span class="self"><a href="#400">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Run the signal class handler in the third emission stage.
     </span><span class="kw">pub fn </span>run_last(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#417">self</a>.flags |= SignalFlags::RUN_LAST;
-        <span class="self"><a href="#417">self</a>
+        <a class="self" href="#407">self</a>.flags |= SignalFlags::RUN_LAST;
+        <span class="self"><a href="#407">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Run the signal class handler in the last emission stage.
     </span><span class="kw">pub fn </span>run_cleanup(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#424">self</a>.flags |= SignalFlags::RUN_CLEANUP;
-        <span class="self"><a href="#424">self</a>
+        <a class="self" href="#414">self</a>.flags |= SignalFlags::RUN_CLEANUP;
+        <span class="self"><a href="#414">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Signals being emitted for an object while currently being in emission for this very object
     /// will not be emitted recursively, but instead cause the first emission to be restarted.
     </span><span class="kw">pub fn </span>no_recurse(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#432">self</a>.flags |= SignalFlags::NO_RECURSE;
-        <span class="self"><a href="#432">self</a>
+        <a class="self" href="#422">self</a>.flags |= SignalFlags::NO_RECURSE;
+        <span class="self"><a href="#422">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// This signal supports &quot;::detail&quot; appendices to the signal name upon handler connections and
     /// emissions.
     </span><span class="kw">pub fn </span>detailed(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#440">self</a>.flags |= SignalFlags::DETAILED;
-        <span class="self"><a href="#440">self</a>
+        <a class="self" href="#430">self</a>.flags |= SignalFlags::DETAILED;
+        <span class="self"><a href="#430">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Action signals are signals that may freely be emitted on alive objects from user code.
     </span><span class="kw">pub fn </span>action(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#447">self</a>.flags |= SignalFlags::ACTION;
-        <span class="self"><a href="#447">self</a>
+        <a class="self" href="#437">self</a>.flags |= SignalFlags::ACTION;
+        <span class="self"><a href="#437">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// No emissions hooks are supported for this signal.
     </span><span class="kw">pub fn </span>no_hooks(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#454">self</a>.flags |= SignalFlags::NO_HOOKS;
-        <span class="self"><a href="#454">self</a>
+        <a class="self" href="#444">self</a>.flags |= SignalFlags::NO_HOOKS;
+        <span class="self"><a href="#444">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Varargs signal emission will always collect the arguments, even if there are no signal
     /// handlers connected.
     </span><span class="kw">pub fn </span>must_collect(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#462">self</a>.flags |= SignalFlags::MUST_COLLECT;
-        <span class="self"><a href="#462">self</a>
+        <a class="self" href="#452">self</a>.flags |= SignalFlags::MUST_COLLECT;
+        <span class="self"><a href="#452">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// The signal is deprecated and will be removed in a future version.
     </span><span class="kw">pub fn </span>deprecated(<span class="kw-2">mut </span><span class="self">self</span>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#469">self</a>.flags |= SignalFlags::DEPRECATED;
-        <span class="self"><a href="#469">self</a>
+        <a class="self" href="#459">self</a>.flags |= SignalFlags::DEPRECATED;
+        <span class="self"><a href="#459">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Explicitly set all flags.
     ///
     /// This overrides previously set flags on this builder.
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a>) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#478">self</a>.flags = <a href="#478">flags</a>;
-        <span class="self"><a href="#478">self</a>
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">mut </span><span class="self">self</span>, flags: <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a>) -&gt; <span class="self">Self </span>{
+        <a class="self" href="#468">self</a>.flags = <a href="#468">flags</a>;
+        <span class="self"><a href="#468">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Class handler for this signal.
     </span><span class="kw">pub fn </span>class_handler&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-521">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-521">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>, <span class="kw-2">&amp;</span>[<a href="../value.rs.html#476-510">Value</a>]) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../value.rs.html#476-510">Value</a>&gt; + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#488">self</a>.class_handler = <span class="prelude-val">Some</span>(Box::new(<a href="#489">func</a>));
-        <span class="self"><a href="#488">self</a>
+        <a class="self" href="#478">self</a>.class_handler = <span class="prelude-val">Some</span>(Box::new(<a href="#479">func</a>));
+        <span class="self"><a href="#478">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1286,13 +1266,13 @@
     /// This is called if multiple signal handlers are connected to the signal for accumulating the
     /// return values into a single value.
     </span><span class="kw">pub fn </span>accumulator&lt;
-        F: Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-521">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-521">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
+        F: Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a> + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a> + <span class="lifetime">&#39;static</span>,
     &gt;(
         <span class="kw-2">mut </span><span class="self">self</span>,
         func: F,
     ) -&gt; <span class="self">Self </span>{
-        <a class="self" href="#503">self</a>.accumulator = <span class="prelude-val">Some</span>(Box::new(<a href="#504">func</a>));
-        <span class="self"><a href="#503">self</a>
+        <a class="self" href="#493">self</a>.accumulator = <span class="prelude-val">Some</span>(Box::new(<a href="#494">func</a>));
+        <span class="self"><a href="#493">self</a>
     </span>}
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1306,19 +1286,19 @@
             &amp; (SignalFlags::RUN_FIRST | SignalFlags::RUN_LAST | SignalFlags::RUN_CLEANUP)
             == SignalFlags::empty()
         {
-            <a class="self" href="#516">self</a>.flags | SignalFlags::RUN_LAST
+            <a class="self" href="#506">self</a>.flags | SignalFlags::RUN_LAST
         } <span class="kw">else </span>{
-            <a class="self" href="#516">self</a>.flags
+            <a class="self" href="#506">self</a>.flags
         };
 
         <a href="#29-35">Signal</a> {
-            name: <a class="self" href="#516">self</a>.name,
-            <a href="#517">flags</a>,
-            param_types: <a class="self" href="#516">self</a>.param_types.to_vec(),
-            return_type: <a class="self" href="#516">self</a>.return_type,
-            registration: Mutex::new(<a href="#364-373">SignalRegistration::Unregistered</a> {
-                class_handler: <a class="self" href="#516">self</a>.class_handler,
-                accumulator: <a class="self" href="#516">self</a>.accumulator,
+            name: <a class="self" href="#506">self</a>.name,
+            <a href="#507">flags</a>,
+            param_types: <a class="self" href="#506">self</a>.param_types.to_vec(),
+            return_type: <a class="self" href="#506">self</a>.return_type,
+            registration: Mutex::new(<a href="#354-363">SignalRegistration::Unregistered</a> {
+                class_handler: <a class="self" href="#506">self</a>.class_handler,
+                accumulator: <a class="self" href="#506">self</a>.accumulator,
             }),
         }
     }
@@ -1333,7 +1313,7 @@
             <span class="string">&quot;{name} is not a valid canonical signal name&quot;</span>,
         );
         <a href="#14-25">SignalBuilder</a> {
-            name: <a href="#542">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>(),
+            name: <a href="#532">name</a>.<a href="https://doc.rust-lang.org/nightly/alloc/borrow/trait.ToOwned.html">to_owned</a>(),
             param_types: Vec::default(),
             return_type: &lt;()&gt;::static_type().<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(),
             flags: SignalFlags::empty(),
@@ -1346,28 +1326,28 @@
     </span><span class="doccomment">/// Name of the signal.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a> {
-        <span class="kw-2">&amp;</span><a class="self" href="#560">self</a>.name
+        <span class="kw-2">&amp;</span><a class="self" href="#550">self</a>.name
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Flags of the signal.
     </span><span class="attr">#[inline]
-    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#141-225">SignalFlags</a> {
-        <a class="self" href="#567">self</a>.flags
+    </span><span class="kw">pub fn </span>flags(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../gobject/auto/flags.rs.html#113-162">SignalFlags</a> {
+        <a class="self" href="#557">self</a>.flags
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Parameter types of the signal.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>param_types(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="#281">SignalType</a>] {
-        <span class="kw-2">&amp;</span><a class="self" href="#574">self</a>.param_types
+        <span class="kw-2">&amp;</span><a class="self" href="#564">self</a>.param_types
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
     </span><span class="doccomment">/// Return type of the signal.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>return_type(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#281">SignalType</a> {
-        <a class="self" href="#581">self</a>.return_type
+        <a class="self" href="#571">self</a>.return_type
     }
 
     <span class="comment">// rustdoc-stripper-ignore-next
@@ -1376,9 +1356,9 @@
     /// This will panic if called before the signal was registered.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>signal_id(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#172">SignalId</a> {
-        <span class="kw">match </span><span class="kw-2">&amp;*</span><a class="self" href="#590">self</a>.registration.lock().unwrap() {
-            <a href="#364-373">SignalRegistration::Unregistered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal not registered yet&quot;</span>),
-            <a href="#374-377">SignalRegistration::Registered</a> { signal_id, .. } =&gt; <span class="kw-2">*</span><a href="#593">signal_id</a>,
+        <span class="kw">match </span><span class="kw-2">&amp;*</span><a class="self" href="#580">self</a>.registration.lock().unwrap() {
+            <a href="#354-363">SignalRegistration::Unregistered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal not registered yet&quot;</span>),
+            <a href="#364-367">SignalRegistration::Registered</a> { signal_id, .. } =&gt; <span class="kw-2">*</span><a href="#583">signal_id</a>,
         }
     }
 
@@ -1388,36 +1368,36 @@
     /// This will panic if called before the signal was registered.
     </span><span class="attr">#[inline]
     </span><span class="kw">pub fn </span>type_(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="../types.rs.html#22">Type</a> {
-        <span class="kw">match </span><span class="kw-2">&amp;*</span><a class="self" href="#602">self</a>.registration.lock().unwrap() {
-            <a href="#364-373">SignalRegistration::Unregistered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal not registered yet&quot;</span>),
-            <a href="#374-377">SignalRegistration::Registered</a> { type_, .. } =&gt; <span class="kw-2">*</span><a href="#605">type_</a>,
+        <span class="kw">match </span><span class="kw-2">&amp;*</span><a class="self" href="#592">self</a>.registration.lock().unwrap() {
+            <a href="#354-363">SignalRegistration::Unregistered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal not registered yet&quot;</span>),
+            <a href="#364-367">SignalRegistration::Registered</a> { type_, .. } =&gt; <span class="kw-2">*</span><a href="#595">type_</a>,
         }
     }
 
     <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn </span>register(<span class="kw-2">&amp;</span><span class="self">self</span>, type_: <a href="../types.rs.html#22">Type</a>) {
-        <span class="kw">let </span><span class="kw-2">mut </span>registration = <a class="self" href="#609">self</a>.registration.lock().unwrap();
+        <span class="kw">let </span><span class="kw-2">mut </span>registration = <a class="self" href="#599">self</a>.registration.lock().unwrap();
 
-        <span class="kw">let </span>(class_handler, accumulator) = <span class="kw">match </span><span class="kw-2">&amp;mut *</span><a href="#610">registration</a> {
-            <a href="#364-373">SignalRegistration::Unregistered</a> {
+        <span class="kw">let </span>(class_handler, accumulator) = <span class="kw">match </span><span class="kw-2">&amp;mut *</span><a href="#600">registration</a> {
+            <a href="#354-363">SignalRegistration::Unregistered</a> {
                 class_handler,
                 accumulator,
-            } =&gt; (<a href="#614">class_handler</a>.take(), <a href="#615">accumulator</a>.take()),
-            <a href="#374-377">SignalRegistration::Registered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
+            } =&gt; (<a href="#604">class_handler</a>.take(), <a href="#605">accumulator</a>.take()),
+            <a href="#364-367">SignalRegistration::Registered</a> { .. } =&gt; <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.unreachable.html">unreachable!</a>(),
         };
 
-        <span class="kw">let </span>return_type = <a class="self" href="#609">self</a>.return_type;
+        <span class="kw">let </span>return_type = <a class="self" href="#599">self</a>.return_type;
 
-        <span class="kw">let </span>class_handler = <a href="#612">class_handler</a>.map(|class_handler| {
+        <span class="kw">let </span>class_handler = <a href="#602">class_handler</a>.map(|class_handler| {
             Closure::new(<span class="kw">move </span>|values| <span class="kw">unsafe </span>{
-                <span class="kw">let </span>instance = gobject_ffi::g_value_get_object(<a href="#623">values</a>[<span class="number">0</span>].<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
-                <span class="kw">let </span>res = <a href="#622">class_handler</a>(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>(<a href="#624">instance</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#620">return_type</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(), <a href="#623">values</a>.as_ptr()), <a href="#623">values</a>);
+                <span class="kw">let </span>instance = gobject_ffi::g_value_get_object(<a href="#613">values</a>[<span class="number">0</span>].<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>);
+                <span class="kw">let </span>res = <a href="#612">class_handler</a>(<span class="kw-2">&amp;</span><a href="#39-49">SignalClassHandlerToken</a>(<a href="#614">instance</a> <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>, <a href="#610">return_type</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.Into.html">into</a>(), <a href="#613">values</a>.as_ptr()), <a href="#613">values</a>);
 
                 <span class="kw">if </span>return_type == Type::UNIT {
-                    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>v) = <a href="#625">res</a> {
+                    <span class="kw">if let </span><span class="prelude-val">Some</span>(<span class="kw-2">ref </span>v) = <a href="#615">res</a> {
                         <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal has no return value but class handler returned a value of type {}&quot;</span>, v.type_());
                     }
                 } <span class="kw">else </span>{
-                    <span class="kw">match </span><a href="#625">res</a> {
+                    <span class="kw">match </span><a href="#615">res</a> {
                         <span class="prelude-val">None </span>=&gt; {
                             <a class="macro" href="https://doc.rust-lang.org/nightly/std/macro.panic.html">panic!</a>(<span class="string">&quot;Signal has a return value but class handler returned none&quot;</span>);
                         }
@@ -1427,7 +1407,7 @@
                     }
                 }
 
-                <a href="#625">res</a>
+                <a href="#615">res</a>
             })
         });
 
@@ -1437,19 +1417,19 @@
             handler_return: <span class="kw-2">*const </span>gobject_ffi::GValue,
             data: ffi::gpointer,
         ) -&gt; ffi::gboolean {
-            <span class="kw">let </span>accumulator = <span class="kw-2">&amp;*</span>(<a href="#650">data</a> <span class="kw">as </span><span class="kw-2">*const </span>(
+            <span class="kw">let </span>accumulator = <span class="kw-2">&amp;*</span>(<a href="#640">data</a> <span class="kw">as </span><span class="kw-2">*const </span>(
                 <a href="#281">SignalType</a>,
                 Box&lt;
-                    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-521">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-521">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>
+                    <span class="kw">dyn </span>Fn(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>, <span class="kw-2">&amp;mut </span><a href="../value.rs.html#476-510">Value</a>, <span class="kw-2">&amp;</span><a href="../value.rs.html#476-510">Value</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a>
                         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Send.html">Send</a>
                         + <a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sync.html">Sync</a>
                         + <span class="lifetime">&#39;static</span>,
                 &gt;,
             ));
 
-            <span class="kw">let </span>return_accu = <span class="kw-2">&amp;mut *</span>(<a href="#648">return_accu</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#476-521">Value</a>);
-            <span class="kw">let </span>handler_return = <span class="kw-2">&amp;*</span>(<a href="#649">handler_return</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#476-521">Value</a>);
-            <span class="kw">let </span>return_type = <a href="#652">accumulator</a>.<span class="number">0</span>;
+            <span class="kw">let </span>return_accu = <span class="kw-2">&amp;mut *</span>(<a href="#638">return_accu</a> <span class="kw">as </span><span class="kw-2">*mut </span><a href="../value.rs.html#476-510">Value</a>);
+            <span class="kw">let </span>handler_return = <span class="kw-2">&amp;*</span>(<a href="#639">handler_return</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="../value.rs.html#476-510">Value</a>);
+            <span class="kw">let </span>return_type = <a href="#642">accumulator</a>.<span class="number">0</span>;
 
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
                 handler_return.type_().is_a(return_type.into()),
@@ -1458,7 +1438,7 @@
                 handler_return.type_()
             );
 
-            <span class="kw">let </span>res = (<a href="#652">accumulator</a>.<span class="number">1</span>)(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>(<span class="kw-2">*</span><a href="#647">ihint</a>), <a href="#662">return_accu</a>, <a href="#663">handler_return</a>)
+            <span class="kw">let </span>res = (<a href="#642">accumulator</a>.<span class="number">1</span>)(<span class="kw-2">&amp;</span><a href="#64">SignalInvocationHint</a>(<span class="kw-2">*</span><a href="#637">ihint</a>), <a href="#652">return_accu</a>, <a href="#653">handler_return</a>)
                 .<a href="../translate.rs.html#330">into_glib</a>();
 
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.assert.html">assert!</a>(
@@ -1468,14 +1448,14 @@
                 return_accu.type_()
             );
 
-            <a href="#673">res</a>
+            <a href="#663">res</a>
         }
 
         <span class="kw">let </span>(accumulator, accumulator_trampoline) =
-            <span class="kw">if let </span>(<span class="prelude-val">Some</span>(accumulator), <span class="bool-val">true</span>) = (<a href="#612">accumulator</a>, <a href="#620">return_type</a> != Type::UNIT) {
+            <span class="kw">if let </span>(<span class="prelude-val">Some</span>(accumulator), <span class="bool-val">true</span>) = (<a href="#602">accumulator</a>, <a href="#610">return_type</a> != Type::UNIT) {
                 (
-                    Box::into_raw(Box::new((<a href="#620">return_type</a>, <a href="#687">accumulator</a>))),
-                    <span class="prelude-val">Some</span>::&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;(<a href="#646-684">accumulator_trampoline</a>),
+                    Box::into_raw(Box::new((<a href="#610">return_type</a>, <a href="#677">accumulator</a>))),
+                    <span class="prelude-val">Some</span>::&lt;<span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>(<span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>, <span class="kw">_</span>) -&gt; <span class="kw">_</span>&gt;(<a href="#636-674">accumulator_trampoline</a>),
                 )
             } <span class="kw">else </span>{
                 (ptr::null_mut(), <span class="prelude-val">None</span>)
@@ -1483,20 +1463,20 @@
 
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>signal_id = gobject_ffi::g_signal_newv(
-                <a class="self" href="#609">self</a>.name.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#609">type_</a>.<a href="../translate.rs.html#330">into_glib</a>(),
-                <a class="self" href="#609">self</a>.flags.<a href="../translate.rs.html#330">into_glib</a>(),
-                <a href="#622">class_handler</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#686">accumulator_trampoline</a>,
-                <a href="#686">accumulator</a> <span class="kw">as </span>ffi::gpointer,
+                <a class="self" href="#599">self</a>.name.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#599">type_</a>.<a href="../translate.rs.html#330">into_glib</a>(),
+                <a class="self" href="#599">self</a>.flags.<a href="../translate.rs.html#330">into_glib</a>(),
+                <a href="#612">class_handler</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#676">accumulator_trampoline</a>,
+                <a href="#676">accumulator</a> <span class="kw">as </span>ffi::gpointer,
                 <span class="prelude-val">None</span>,
-                <a href="#620">return_type</a>.<a href="../translate.rs.html#330">into_glib</a>(),
-                <a class="self" href="#609">self</a>.param_types.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
-                <a class="self" href="#609">self</a>.param_types.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a href="#610">return_type</a>.<a href="../translate.rs.html#330">into_glib</a>(),
+                <a class="self" href="#599">self</a>.param_types.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>,
+                <a class="self" href="#599">self</a>.param_types.as_ptr() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
             );
-            <span class="kw-2">*</span><a href="#610">registration</a> = <a href="#374-377">SignalRegistration::Registered</a> {
-                <a href="#609">type_</a>,
-                signal_id: SignalId::from_glib(<a href="#697">signal_id</a>),
+            <span class="kw-2">*</span><a href="#600">registration</a> = <a href="#364-367">SignalRegistration::Registered</a> {
+                <a href="#599">type_</a>,
+                signal_id: SignalId::from_glib(<a href="#687">signal_id</a>),
             };
         }
     }

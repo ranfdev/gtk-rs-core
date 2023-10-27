@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/byte_array.rs`."><title>byte_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `glib/src/byte_array.rs`."><title>byte_array.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="glib" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (aa1a71e9e 2023-10-26)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../src-files.js"></script><script defer src="../../static.files/main-5f34af1a0ee6bacd.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../glib/index.html"><img class="rust-logo" src="../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -231,7 +231,6 @@
 <a href="#158" id="158">158</a>
 <a href="#159" id="159">159</a>
 <a href="#160" id="160">160</a>
-<a href="#161" id="161">161</a>
 </pre></div><pre class="rust"><code><span class="comment">// Take a look at the license at the top of the repository in the LICENSE file.
 
 // rustdoc-stripper-ignore-next
@@ -254,11 +253,10 @@
     <a href="https://doc.rust-lang.org/nightly/alloc/slice/index.html">slice</a>,
 };
 
-<span class="kw">use </span><a href="lib.rs.html#142"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
+<span class="kw">use </span><a href="lib.rs.html#140"><span class="kw">crate</span>::translate</a>::<span class="kw-2">*</span>;
 
 <a class="macro" href="wrapper.rs.html#277-445">wrapper! </a>{
-    <span class="doccomment">/// Contains the public fields of a GByteArray.
-    </span><span class="attr">#[doc(alias = <span class="string">&quot;GByteArray&quot;</span>)]
+    <span class="attr">#[doc(alias = <span class="string">&quot;GByteArray&quot;</span>)]
     </span><span class="kw">pub struct </span><a href="../../glib/struct.ByteArray.html">ByteArray</a>(Shared&lt;ffi::GByteArray&gt;);
 
     <span class="kw">match fn </span>{
@@ -268,46 +266,46 @@
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/ops/deref/trait.Deref.html">Deref</a> <span class="kw">for </span><a href="#25-34">ByteArray</a> {
     <span class="kw">type </span>Target = [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>];
 
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>deref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>self_ptr: <span class="kw-2">*const </span>ffi::GByteArray = <a class="self" href="#41">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>;
-            <span class="kw">let </span>ptr = (<span class="kw-2">*</span><a href="#43">self_ptr</a>).data;
-            <span class="kw">let </span>len = (<span class="kw-2">*</span><a href="#43">self_ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
+            <span class="kw">let </span>self_ptr: <span class="kw-2">*const </span>ffi::GByteArray = <a class="self" href="#40">self</a>.<a href="translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>;
+            <span class="kw">let </span>ptr = (<span class="kw-2">*</span><a href="#42">self_ptr</a>).data;
+            <span class="kw">let </span>len = (<span class="kw-2">*</span><a href="#42">self_ptr</a>).len <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.usize.html">usize</a>;
             <a class="macro" href="https://doc.rust-lang.org/nightly/core/macro.debug_assert.html">debug_assert!</a>(!ptr.is_null() || len == <span class="number">0</span>);
             <span class="kw">if </span>ptr.is_null() {
                 <span class="kw-2">&amp;</span>[]
             } <span class="kw">else </span>{
-                slice::from_raw_parts(<a href="#44">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#45">len</a>)
+                <a href="https://doc.rust-lang.org/nightly/core/slice/raw/fn.from_raw_parts.html">slice::from_raw_parts</a>(<a href="#43">ptr</a> <span class="kw">as </span><span class="kw-2">*const </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>, <a href="#44">len</a>)
             }
         }
     }
 }
 
-<span class="kw">impl </span>AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<span class="kw">impl </span>AsRef&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; <span class="kw">for </span><a href="#25-34">ByteArray</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>as_ref(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>] {
-        <span class="self"><a href="#58">self</a>
+        <span class="self"><a href="#57">self</a>
     </span>}
 }
 
-<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + Borrow&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T&gt; <span class="kw">for </span><a href="#25-35">ByteArray</a> {
-    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T) -&gt; <a href="#25-35">ByteArray</a> {
-        <span class="kw">let </span>value = <a href="#64">value</a>.<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">borrow</a>();
+<span class="kw">impl</span>&lt;<span class="lifetime">&#39;a</span>, T: <span class="question-mark">?</span><a href="https://doc.rust-lang.org/nightly/core/marker/trait.Sized.html">Sized</a> + Borrow&lt;[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]&gt; + <span class="lifetime">&#39;a</span>&gt; From&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T&gt; <span class="kw">for </span><a href="#25-34">ByteArray</a> {
+    <span class="kw">fn </span>from(value: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>T) -&gt; <a href="#25-34">ByteArray</a> {
+        <span class="kw">let </span>value = <a href="#63">value</a>.<a href="https://doc.rust-lang.org/nightly/core/borrow/trait.Borrow.html">borrow</a>();
         <span class="kw">unsafe </span>{
             <span class="kw">let </span>ba = ffi::g_byte_array_new();
-            ffi::g_byte_array_append(<a href="#67">ba</a>, <a href="#65">value</a>.as_ptr(), <a href="#65">value</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
-            <a href="translate.rs.html#1630-1632">from_glib_full</a>(<a href="#67">ba</a>)
+            ffi::g_byte_array_append(<a href="#66">ba</a>, <a href="#64">value</a>.as_ptr(), <a href="#64">value</a>.len() <span class="kw">as </span><a href="https://doc.rust-lang.org/nightly/std/primitive.u32.html">u32</a>);
+            <a href="translate.rs.html#1630-1632">from_glib_full</a>(<a href="#66">ba</a>)
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Debug.html">fmt::Debug</a> <span class="kw">for </span><a href="#25-34">ByteArray</a> {
     <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#75">f</a>.debug_list().entries(<a class="self" href="#75">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).finish()
+        <a href="#74">f</a>.debug_list().entries(<a class="self" href="#74">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).finish()
     }
 }
 
@@ -351,23 +349,23 @@
     };
 }
 
-<a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#80-118">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#25-35">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
-<a class="macro" href="#80-118">impl_cmp!</a>(<a href="#25-35">ByteArray</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
-<a class="macro" href="#80-118">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#25-35">ByteArray</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
+<a class="macro" href="#79-117">impl_cmp!</a>(<a href="#25-34">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#79-117">impl_cmp!</a>(<a href="#25-34">ByteArray</a>, <span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#79-117">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#25-34">ByteArray</a>, [<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>]);
+<a class="macro" href="#79-117">impl_cmp!</a>(<a href="#25-34">ByteArray</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
+<a class="macro" href="#79-117">impl_cmp!</a>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a </span><a href="#25-34">ByteArray</a>, Vec&lt;<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>&gt;);
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#25-34">ByteArray</a> {
     <span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#127">self</a>[..] == <a href="#127">other</a>[..]
+        <a class="self" href="#126">self</a>[..] == <a href="#126">other</a>[..]
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#25-34">ByteArray</a> {}
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a> <span class="kw">for </span><a href="#25-35">ByteArray</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash</a> <span class="kw">for </span><a href="#25-34">ByteArray</a> {
     <span class="kw">fn </span>hash&lt;H: <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html">Hasher</a>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, state: <span class="kw-2">&amp;mut </span>H) {
-        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash::hash_slice</a>(<span class="kw-2">&amp;</span><a class="self" href="#135">self</a>[..], <a href="#135">state</a>)
+        <a href="https://doc.rust-lang.org/nightly/core/hash/trait.Hash.html">Hash::hash_slice</a>(<span class="kw-2">&amp;</span><a class="self" href="#134">self</a>[..], <a href="#134">state</a>)
     }
 }
 <span class="attr">#[cfg(test)]

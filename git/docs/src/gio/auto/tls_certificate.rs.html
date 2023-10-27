@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_certificate.rs`."><title>tls_certificate.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `gio/src/auto/tls_certificate.rs`."><title>tls_certificate.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gio" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (aa1a71e9e 2023-10-26)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f34af1a0ee6bacd.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gio/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -1015,13 +1015,6 @@
 <a href="#942" id="942">942</a>
 <a href="#943" id="943">943</a>
 <a href="#944" id="944">944</a>
-<a href="#945" id="945">945</a>
-<a href="#946" id="946">946</a>
-<a href="#947" id="947">947</a>
-<a href="#948" id="948">948</a>
-<a href="#949" id="949">949</a>
-<a href="#950" id="950">950</a>
-<a href="#951" id="951">951</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
@@ -1029,15 +1022,14 @@
 </span><span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
 </span><span class="kw">use </span><a href="inet_address.rs.html#13-114"><span class="kw">crate</span>::InetAddress</a>;
-<span class="kw">use crate</span>::{<a href="socket_connectable.rs.html#9-81">SocketConnectable</a>, <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a>};
+<span class="kw">use crate</span>::{<a href="socket_connectable.rs.html#8-80">SocketConnectable</a>, <a href="flags.rs.html#3017-3064">TlsCertificateFlags</a>};
 <span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
 </span><span class="kw">use </span>glib::signal::{<a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>, <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a>};
 <span class="kw">use </span>glib::{<a href="../../../glib/prelude/index.html">prelude</a>::<span class="kw-2">*</span>, <a href="../../../glib/translate/index.html">translate</a>::<span class="kw-2">*</span>};
 <span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
 #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_70&quot;</span>)))]
-</span><span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">boxed::Box</a> <span class="kw">as </span>Box_, <a href="https://doc.rust-lang.org/nightly/core/intrinsics/fn.transmute.html">mem::transmute</a>};
-<span class="kw">use </span>std::{<a href="https://doc.rust-lang.org/nightly/alloc/fmt/index.html">fmt</a>, <a href="https://doc.rust-lang.org/nightly/core/ptr/index.html">ptr</a>};
+</span><span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/alloc/boxed/struct.Box.html">std::boxed::Box</a> <span class="kw">as </span>Box_;
 
 <a class="macro" href="../../../glib/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A certificate used for TLS authentication and encryption.
@@ -1216,8 +1208,8 @@
     }
 }
 
-<span class="kw">impl </span><a href="#18-193">TlsCertificate</a> {
-    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="#18-193">TlsCertificate</a>&gt; = <span class="prelude-val">None</span>;
+<span class="kw">impl </span><a href="#17-192">TlsCertificate</a> {
+    <span class="kw">pub const </span>NONE: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="lifetime">&#39;static </span><a href="#17-192">TlsCertificate</a>&gt; = <span class="prelude-val">None</span>;
 
     <span class="doccomment">/// Creates a [`TlsCertificate`][crate::TlsCertificate] from the data in `file`.
     ///
@@ -1236,15 +1228,15 @@
     /// the new certificate, or [`None`] on error
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_file&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_file&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_file(file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    </span><span class="kw">pub fn </span>from_file(file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret =
-                ffi::g_tls_certificate_new_from_file(<a href="#215">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#217">error</a>);
+                ffi::g_tls_certificate_new_from_file(<a href="#214">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <span class="kw-2">&amp;mut </span><a href="#216">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#218">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#217">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#217">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#216">error</a>))
             }
         }
     }
@@ -1272,18 +1264,18 @@
     </span><span class="kw">pub fn </span>from_file_with_password(
         file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
         password: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_file_with_password(
-                <a href="#249">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#250">password</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#253">error</a>,
+                <a href="#248">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#249">password</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#252">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#254">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#253">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#253">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#252">error</a>))
             }
         }
     }
@@ -1317,18 +1309,18 @@
     </span><span class="kw">pub fn </span>from_files(
         cert_file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
         key_file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_files(
-                <a href="#294">cert_file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#295">key_file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#298">error</a>,
+                <a href="#293">cert_file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#294">key_file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#297">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#299">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#298">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#298">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#297">error</a>))
             }
         }
     }
@@ -1357,16 +1349,16 @@
     /// the new certificate, or [`None`] if `data` is invalid
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_pem&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_pem&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_pem(data: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
-        <span class="kw">let </span>length = <a href="#336">data</a>.len() <span class="kw">as _</span>;
+    </span><span class="kw">pub fn </span>from_pem(data: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>length = <a href="#335">data</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret =
-                ffi::g_tls_certificate_new_from_pem(<a href="#336">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#337">length</a>, <span class="kw-2">&amp;mut </span><a href="#339">error</a>);
+                ffi::g_tls_certificate_new_from_pem(<a href="#335">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#336">length</a>, <span class="kw-2">&amp;mut </span><a href="#338">error</a>);
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#340">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#339">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#339">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#338">error</a>))
             }
         }
     }
@@ -1411,18 +1403,18 @@
     </span><span class="kw">pub fn </span>from_pkcs11_uris(
         pkcs11_uri: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>,
         private_key_pkcs11_uri: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_pkcs11_uris(
-                <a href="#388">pkcs11_uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#389">private_key_pkcs11_uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#392">error</a>,
+                <a href="#387">pkcs11_uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#388">private_key_pkcs11_uri</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#391">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#393">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#392">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#392">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#391">error</a>))
             }
         }
     }
@@ -1456,20 +1448,20 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_72&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_tls_certificate_new_from_pkcs12&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_pkcs12&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_pkcs12(data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], password: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#18-193">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
-        <span class="kw">let </span>length = <a href="#435">data</a>.len() <span class="kw">as _</span>;
+    </span><span class="kw">pub fn </span>from_pkcs12(data: <span class="kw-2">&amp;</span>[<a href="https://doc.rust-lang.org/nightly/std/primitive.u8.html">u8</a>], password: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#17-192">TlsCertificate</a>, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+        <span class="kw">let </span>length = <a href="#434">data</a>.len() <span class="kw">as _</span>;
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_certificate_new_from_pkcs12(
-                <a href="#435">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#436">length</a>,
-                <a href="#435">password</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#438">error</a>,
+                <a href="#434">data</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#435">length</a>,
+                <a href="#434">password</a>.<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#437">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#439">ret</a>))
+                <span class="prelude-val">Ok</span>(from_glib_full(<a href="#438">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#438">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#437">error</a>))
             }
         }
     }
@@ -1490,17 +1482,17 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_list_new_from_file&quot;</span>)]
     </span><span class="kw">pub fn </span>list_new_from_file(
         file: <span class="kw">impl </span>AsRef&lt;<a href="https://doc.rust-lang.org/nightly/std/path/struct.Path.html">std::path::Path</a>&gt;,
-    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="#18-193">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
+    ) -&gt; <span class="prelude-ty">Result</span>&lt;Vec&lt;<a href="#17-192">TlsCertificate</a>&gt;, <a href="../../../glib/error/struct.Error.html">glib::Error</a>&gt; {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>error = ptr::null_mut();
+            <span class="kw">let </span><span class="kw-2">mut </span>error = std::ptr::null_mut();
             <span class="kw">let </span>ret = ffi::g_tls_certificate_list_new_from_file(
-                <a href="#468">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <span class="kw-2">&amp;mut </span><a href="#471">error</a>,
+                <a href="#467">file</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <span class="kw-2">&amp;mut </span><a href="#470">error</a>,
             );
             <span class="kw">if </span>error.is_null() {
-                <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(<a href="#472">ret</a>))
+                <span class="prelude-val">Ok</span>(<a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_full</a>(<a href="#471">ret</a>))
             } <span class="kw">else </span>{
-                <span class="prelude-val">Err</span>(from_glib_full(<a href="#471">error</a>))
+                <span class="prelude-val">Err</span>(from_glib_full(<a href="#470">error</a>))
             }
         }
     }
@@ -1508,7 +1500,7 @@
 
 <span class="kw">mod </span>sealed {
     <span class="kw">pub trait </span>Sealed {}
-    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#18-193"><span class="kw">super</span>::TlsCertificate</a>&gt;&gt; <a href="#486">Sealed</a> <span class="kw">for </span>T {}
+    <span class="kw">impl</span>&lt;T: <span class="kw">super</span>::IsA&lt;<a href="#17-192"><span class="kw">super</span>::TlsCertificate</a>&gt;&gt; <a href="#485">Sealed</a> <span class="kw">for </span>T {}
 }
 
 <span class="doccomment">/// Trait containing all [`struct@TlsCertificate`] methods.
@@ -1516,7 +1508,7 @@
 /// # Implementors
 ///
 /// [`TlsCertificate`][struct@crate::TlsCertificate]
-</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsCertificateExt.html">TlsCertificateExt</a>: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt; + <a href="#486">sealed::Sealed</a> + <span class="lifetime">&#39;static </span>{
+</span><span class="kw">pub trait </span><a href="../../../gio/prelude/trait.TlsCertificateExt.html">TlsCertificateExt</a>: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt; + <a href="#485">sealed::Sealed</a> + <span class="lifetime">&#39;static </span>{
     <span class="doccomment">/// Gets the value of [`dns-names`][struct@crate::TlsCertificate#dns-names].
     ///
     /// # Returns
@@ -1530,7 +1522,7 @@
     </span><span class="kw">fn </span>dns_names(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="../../../glib/bytes/struct.Bytes.html">glib::Bytes</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_container</a>(ffi::g_tls_certificate_get_dns_names(
-                <a class="self" href="#506">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#505">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1548,7 +1540,7 @@
     </span><span class="kw">fn </span>ip_addresses(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; Vec&lt;<a href="inet_address.rs.html#13-114">InetAddress</a>&gt; {
         <span class="kw">unsafe </span>{
             <a href="../../../glib/translate/trait.FromGlibPtrContainer.html">FromGlibPtrContainer::from_glib_container</a>(ffi::g_tls_certificate_get_ip_addresses(
-                <a class="self" href="#524">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#523">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1563,10 +1555,10 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_get_issuer&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_issuer&quot;</span>)]
     #[must_use]
-    </span><span class="kw">fn </span>issuer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#18-193">TlsCertificate</a>&gt; {
+    </span><span class="kw">fn </span>issuer(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="#17-192">TlsCertificate</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_none(ffi::g_tls_certificate_get_issuer(
-                <a class="self" href="#542">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#541">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1583,7 +1575,7 @@
     </span><span class="kw">fn </span>issuer_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_tls_certificate_get_issuer_name(
-                <a class="self" href="#559">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#558">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1600,7 +1592,7 @@
     </span><span class="kw">fn </span>not_valid_after(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/auto/date_time/struct.DateTime.html">glib::DateTime</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_tls_certificate_get_not_valid_after(
-                <a class="self" href="#576">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#575">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1617,7 +1609,7 @@
     </span><span class="kw">fn </span>not_valid_before(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/auto/date_time/struct.DateTime.html">glib::DateTime</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_tls_certificate_get_not_valid_before(
-                <a class="self" href="#593">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#592">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1634,7 +1626,7 @@
     </span><span class="kw">fn </span>subject_name(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
         <span class="kw">unsafe </span>{
             from_glib_full(ffi::g_tls_certificate_get_subject_name(
-                <a class="self" href="#610">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#609">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1651,11 +1643,11 @@
     ///
     /// whether the same or not
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_is_same&quot;</span>)]
-    </span><span class="kw">fn </span>is_same(<span class="kw-2">&amp;</span><span class="self">self</span>, cert_two: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+    </span><span class="kw">fn </span>is_same(<span class="kw-2">&amp;</span><span class="self">self</span>, cert_two: <span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_certificate_is_same(
-                <a class="self" href="#630">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#630">cert_two</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#629">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#629">cert_two</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1704,14 +1696,14 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_tls_certificate_verify&quot;</span>)]
     </span><span class="kw">fn </span>verify(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
-        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#9-81">SocketConnectable</a>&gt;&gt;,
-        trusted_ca: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;&gt;,
-    ) -&gt; <a href="flags.rs.html#3081-3128">TlsCertificateFlags</a> {
+        identity: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="socket_connectable.rs.html#8-80">SocketConnectable</a>&gt;&gt;,
+        trusted_ca: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><span class="kw">impl </span>IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;&gt;,
+    ) -&gt; <a href="flags.rs.html#3017-3064">TlsCertificateFlags</a> {
         <span class="kw">unsafe </span>{
             from_glib(ffi::g_tls_certificate_verify(
-                <a class="self" href="#682">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#683">identity</a>.map(|p| <a href="#689">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#684">trusted_ca</a>.map(|p| <a href="#690">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a class="self" href="#681">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>().<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#682">identity</a>.map(|p| <a href="#688">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#683">trusted_ca</a>.map(|p| <a href="#689">p</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>()).<a href="../../../glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
             ))
         }
     }
@@ -1720,7 +1712,7 @@
     /// This property and the [`certificate-pem`][struct@crate::TlsCertificate#certificate-pem] property
     /// represent the same data, just in different forms.
     </span><span class="kw">fn </span>certificate(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#698">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;certificate&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#697">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;certificate&quot;</span>)
     }
 
     <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate.
@@ -1728,7 +1720,7 @@
     /// property represent the same data, just in different forms.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;certificate-pem&quot;</span>)]
     </span><span class="kw">fn </span>certificate_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#706">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;certificate-pem&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#705">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;certificate-pem&quot;</span>)
     }
 
     <span class="doccomment">/// A URI referencing the [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
@@ -1740,7 +1732,7 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;pkcs11-uri&quot;</span>)]
     </span><span class="kw">fn </span>pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#718">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;pkcs11-uri&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#717">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;pkcs11-uri&quot;</span>)
     }
 
     <span class="doccomment">/// The DER (binary) encoded representation of the certificate&#39;s
@@ -1762,7 +1754,7 @@
     /// PKCS \`8`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;private-key&quot;</span>)]
     </span><span class="kw">fn </span>private_key(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/byte_array/struct.ByteArray.html">glib::ByteArray</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#740">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#739">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key&quot;</span>)
     }
 
     <span class="doccomment">/// The PEM (ASCII) encoded representation of the certificate&#39;s
@@ -1785,7 +1777,7 @@
     /// PKCS \`8`.
     </span><span class="attr">#[doc(alias = <span class="string">&quot;private-key-pem&quot;</span>)]
     </span><span class="kw">fn </span>private_key_pem(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#763">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key-pem&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#762">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key-pem&quot;</span>)
     }
 
     <span class="doccomment">/// A URI referencing a [PKCS \`11`](https://docs.oasis-open.org/pkcs11/pkcs11-base/v3.0/os/pkcs11-base-v3.0-os.html)
@@ -1794,7 +1786,7 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_68&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)]
     </span><span class="kw">fn </span>private_key_pkcs11_uri(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span>&lt;<a href="../../../glib/gstring/struct.GString.html">glib::GString</a>&gt; {
-        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#772">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)
+        <a href="../../../glib/object/trait.ObjectExt.html">ObjectExt::property</a>(<a class="self" href="#771">self</a>.<a href="https://doc.rust-lang.org/nightly/core/convert/trait.AsRef.html">as_ref</a>(), <span class="string">&quot;private-key-pkcs11-uri&quot;</span>)
     }
 
     <span class="attr">#[cfg(feature = <span class="string">&quot;v2_70&quot;</span>)]
@@ -1802,25 +1794,25 @@
     #[doc(alias = <span class="string">&quot;dns-names&quot;</span>)]
     </span><span class="kw">fn </span>connect_dns_names_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_dns_names_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#786">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#788">f</a>(TlsCertificate::from_glib_borrow(<a href="#784">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#785">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#787">f</a>(TlsCertificate::from_glib_borrow(<a href="#783">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#779">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#778">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#779">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#778">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::dns-names\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_dns_names_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#792">f</a>),
+                Box_::into_raw(<a href="#791">f</a>),
             )
         }
     }
@@ -1830,25 +1822,25 @@
     #[doc(alias = <span class="string">&quot;ip-addresses&quot;</span>)]
     </span><span class="kw">fn </span>connect_ip_addresses_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_ip_addresses_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#814">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#816">f</a>(TlsCertificate::from_glib_borrow(<a href="#812">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#813">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#815">f</a>(TlsCertificate::from_glib_borrow(<a href="#811">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#807">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#806">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#807">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#806">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::ip-addresses\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_ip_addresses_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#820">f</a>),
+                Box_::into_raw(<a href="#819">f</a>),
             )
         }
     }
@@ -1858,25 +1850,25 @@
     #[doc(alias = <span class="string">&quot;issuer-name&quot;</span>)]
     </span><span class="kw">fn </span>connect_issuer_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_issuer_name_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#842">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#844">f</a>(TlsCertificate::from_glib_borrow(<a href="#840">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#841">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#843">f</a>(TlsCertificate::from_glib_borrow(<a href="#839">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#835">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#834">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#835">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#834">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::issuer-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_issuer_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#848">f</a>),
+                Box_::into_raw(<a href="#847">f</a>),
             )
         }
     }
@@ -1886,25 +1878,25 @@
     #[doc(alias = <span class="string">&quot;not-valid-after&quot;</span>)]
     </span><span class="kw">fn </span>connect_not_valid_after_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_not_valid_after_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#870">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#872">f</a>(TlsCertificate::from_glib_borrow(<a href="#868">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#869">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#871">f</a>(TlsCertificate::from_glib_borrow(<a href="#867">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#863">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#862">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#863">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#862">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::not-valid-after\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_not_valid_after_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#876">f</a>),
+                Box_::into_raw(<a href="#875">f</a>),
             )
         }
     }
@@ -1914,25 +1906,25 @@
     #[doc(alias = <span class="string">&quot;not-valid-before&quot;</span>)]
     </span><span class="kw">fn </span>connect_not_valid_before_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_not_valid_before_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#898">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#900">f</a>(TlsCertificate::from_glib_borrow(<a href="#896">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#897">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#899">f</a>(TlsCertificate::from_glib_borrow(<a href="#895">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#891">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#890">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#891">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#890">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::not-valid-before\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_not_valid_before_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#904">f</a>),
+                Box_::into_raw(<a href="#903">f</a>),
             )
         }
     }
@@ -1942,35 +1934,29 @@
     #[doc(alias = <span class="string">&quot;subject-name&quot;</span>)]
     </span><span class="kw">fn </span>connect_subject_name_notify&lt;F: Fn(<span class="kw-2">&amp;</span><span class="self">Self</span>) + <span class="lifetime">&#39;static</span>&gt;(<span class="kw-2">&amp;</span><span class="self">self</span>, f: F) -&gt; <a href="../../../glib/signal/struct.SignalHandlerId.html">SignalHandlerId</a> {
         <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn </span>notify_subject_name_trampoline&lt;
-            P: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;,
+            P: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;,
             F: Fn(<span class="kw-2">&amp;</span>P) + <span class="lifetime">&#39;static</span>,
         &gt;(
             this: <span class="kw-2">*mut </span>ffi::GTlsCertificate,
             _param_spec: glib::ffi::gpointer,
             f: glib::ffi::gpointer,
         ) {
-            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#926">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
-            <a href="#928">f</a>(TlsCertificate::from_glib_borrow(<a href="#924">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
+            <span class="kw">let </span>f: <span class="kw-2">&amp;</span>F = <span class="kw-2">&amp;*</span>(<a href="#925">f</a> <span class="kw">as </span><span class="kw-2">*const </span>F);
+            <a href="#927">f</a>(TlsCertificate::from_glib_borrow(<a href="#923">this</a>).<a href="../../../glib/object/trait.Cast.html">unsafe_cast_ref</a>())
         }
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#919">f</a>);
+            <span class="kw">let </span>f: Box_&lt;F&gt; = Box_::new(<a href="#918">f</a>);
             <a href="../../../glib/signal/fn.connect_raw.html">connect_raw</a>(
-                <a class="self" href="#919">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
+                <a class="self" href="#918">self</a>.<a href="../../../glib/object/trait.ObjectType.html">as_ptr</a>() <span class="kw">as </span><span class="kw-2">*mut </span><span class="kw">_</span>,
                 <span class="string">b&quot;notify::subject-name\0&quot;</span>.as_ptr() <span class="kw">as </span><span class="kw-2">*const </span><span class="kw">_</span>,
-                <span class="prelude-val">Some</span>(transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
+                <span class="prelude-val">Some</span>(std::mem::transmute::&lt;<span class="kw">_</span>, <span class="kw">unsafe extern </span><span class="string">&quot;C&quot; </span><span class="kw">fn</span>()&gt;(
                     notify_subject_name_trampoline::&lt;<span class="self">Self</span>, F&gt; <span class="kw">as </span><span class="kw-2">*const </span>(),
                 )),
-                Box_::into_raw(<a href="#932">f</a>),
+                Box_::into_raw(<a href="#931">f</a>),
             )
         }
     }
 }
 
-<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#18-193">TlsCertificate</a>&gt;&gt; <a href="#495-943">TlsCertificateExt</a> <span class="kw">for </span>O {}
-
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/fmt/trait.Display.html">fmt::Display</a> <span class="kw">for </span><a href="#18-193">TlsCertificate</a> {
-    <span class="kw">fn </span>fmt(<span class="kw-2">&amp;</span><span class="self">self</span>, f: <span class="kw-2">&amp;mut </span><a href="https://doc.rust-lang.org/nightly/core/fmt/struct.Formatter.html">fmt::Formatter</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/core/fmt/type.Result.html">fmt::Result</a> {
-        <a href="#948">f</a>.write_str(<span class="string">&quot;TlsCertificate&quot;</span>)
-    }
-}
+<span class="kw">impl</span>&lt;O: IsA&lt;<a href="#17-192">TlsCertificate</a>&gt;&gt; <a href="#494-942">TlsCertificateExt</a> <span class="kw">for </span>O {}
 </code></pre></div></section></main></body></html>

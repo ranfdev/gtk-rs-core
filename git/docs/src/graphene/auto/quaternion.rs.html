@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/quaternion.rs`."><title>quaternion.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-cb6f1f67f1bcd037.css" id="mainThemeStyle"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.73.0-nightly (31395ec38 2023-07-24)" data-channel="nightly" data-search-js="search-6dfdfced5eff6596.js" data-settings-js="settings-de11bff964e9d4e5.js" data-settings-css="settings-8c76f75bfb6bd192.css" data-theme-light-css="light-6d2c9675f3d09c26.css" data-theme-dark-css="dark-45ceb8f2e522f4d1.css" data-theme-ayu-css="ayu-fd19013d6ce078bf.css" ><script src="../../../static.files/storage-db41da1a38ea3cb8.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-0795b7d26be81095.js"></script><noscript><link rel="stylesheet" media="(prefers-color-scheme:light)" href="../../../static.files/light-6d2c9675f3d09c26.css"><link rel="stylesheet" media="(prefers-color-scheme:dark)" href="../../../static.files/dark-45ceb8f2e522f4d1.css"><link rel="stylesheet" href="../../../static.files/noscript-cffde32267a19fd6.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `graphene/src/auto/quaternion.rs`."><title>quaternion.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-46f98efaafac5295.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-a2c9cd1067f8b328.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-9ee3a5e31a2afa3e.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="graphene" data-themes="" data-resource-suffix="" data-rustdoc-version="1.75.0-nightly (aa1a71e9e 2023-10-26)" data-channel="nightly" data-search-js="search-8fbf244ebcf71464.js" data-settings-js="settings-74424d7eec62a23e.js" ><script src="../../../static.files/storage-fec3eaa3851e447d.js"></script><script defer src="../../../static.files/src-script-3280b574d94e47b4.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-5f34af1a0ee6bacd.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-5d8b3c7633ad77ba.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]-->
 <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", checkDocsLatestStable);
 
@@ -71,7 +71,7 @@
 </script>
 
 
-<nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../graphene/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<nav class="sidebar"></nav><main><nav class="sub"><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-7b819b6101059cd0.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -386,14 +386,12 @@
 <a href="#313" id="313">313</a>
 <a href="#314" id="314">314</a>
 <a href="#315" id="315">315</a>
-<a href="#316" id="316">316</a>
 </pre></div><pre class="rust"><code><span class="comment">// This file was generated by gir (https://github.com/gtk-rs/gir)
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="matrix.rs.html#9-21">Matrix</a>, <a href="vec3.rs.html#8-20">Vec3</a>, <a href="vec4.rs.html#8-20">Vec4</a>};
+</span><span class="kw">use crate</span>::{<a href="matrix.rs.html#8-20">Matrix</a>, <a href="vec3.rs.html#8-20">Vec3</a>, <a href="vec4.rs.html#8-20">Vec4</a>};
 <span class="kw">use </span><a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/index.html">glib::translate</a>::<span class="kw-2">*</span>;
-<span class="kw">use </span><a href="https://doc.rust-lang.org/nightly/core/mem/index.html">std::mem</a>;
 
 <a class="macro" href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/macro.wrapper.html">glib::wrapper! </a>{
     <span class="doccomment">/// A quaternion.
@@ -409,7 +407,7 @@
     }
 }
 
-<span class="kw">impl </span><a href="#9-21">Quaternion</a> {
+<span class="kw">impl </span><a href="#8-20">Quaternion</a> {
     <span class="doccomment">/// Adds two [`Quaternion`][crate::Quaternion] `self` and `b`.
     /// ## `b`
     /// a [`Quaternion`][crate::Quaternion]
@@ -421,15 +419,15 @@
     /// the result of the operation
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_add&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#9-21">Quaternion</a>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>add(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Quaternion</a>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
             ffi::graphene_quaternion_add(
-                <a class="self" href="#35">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#35">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#37">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a class="self" href="#34">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#34">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#36">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            <a href="#37">res</a>
+            <a href="#36">res</a>
         }
     }
 
@@ -441,13 +439,13 @@
     ///
     /// the value of the dot products
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_dot&quot;</span>)]
-    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#9-21">Quaternion</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
-        <span class="kw">unsafe </span>{ ffi::graphene_quaternion_dot(<a class="self" href="#55">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#55">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+    </span><span class="kw">pub fn </span>dot(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Quaternion</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_quaternion_dot(<a class="self" href="#54">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#54">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_equal&quot;</span>)]
-    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#9-21">Quaternion</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <span class="kw">unsafe </span>{ ffi::graphene_quaternion_equal(<a class="self" href="#60">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#60">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
+    </span><span class="kw">fn </span>equal(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Quaternion</a>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
+        <span class="kw">unsafe </span>{ ffi::graphene_quaternion_equal(<a class="self" href="#59">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#59">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>) }
     }
 
     <span class="doccomment">/// Inverts a [`Quaternion`][crate::Quaternion], and returns the conjugate
@@ -461,11 +459,11 @@
     ///  quaternion
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_invert&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>invert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>invert(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
-            ffi::graphene_quaternion_invert(<a class="self" href="#75">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#77">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
-            <a href="#77">res</a>
+            ffi::graphene_quaternion_invert(<a class="self" href="#74">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#76">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#76">res</a>
         }
     }
 
@@ -480,15 +478,15 @@
     /// the result of the operation
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_multiply&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>multiply(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#9-21">Quaternion</a>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>multiply(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Quaternion</a>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
             ffi::graphene_quaternion_multiply(
-                <a class="self" href="#94">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#94">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#96">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a class="self" href="#93">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#93">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#95">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            <a href="#96">res</a>
+            <a href="#95">res</a>
         }
     }
 
@@ -502,11 +500,11 @@
     ///  quaternion
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_normalize&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>normalize(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
-            ffi::graphene_quaternion_normalize(<a class="self" href="#116">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#118">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
-            <a href="#118">res</a>
+            ffi::graphene_quaternion_normalize(<a class="self" href="#115">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#117">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#117">res</a>
         }
     }
 
@@ -522,11 +520,11 @@
     /// the result of the operation
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_scale&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>scale(<span class="kw-2">&amp;</span><span class="self">self</span>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
-            ffi::graphene_quaternion_scale(<a class="self" href="#136">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#136">factor</a>, <a href="#138">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
-            <a href="#138">res</a>
+            ffi::graphene_quaternion_scale(<a class="self" href="#135">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#135">factor</a>, <a href="#137">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#137">res</a>
         }
     }
 
@@ -546,16 +544,16 @@
     ///  quaternion
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_slerp&quot;</span>)]
     #[must_use]
-    </span><span class="kw">pub fn </span>slerp(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#9-21">Quaternion</a>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#9-21">Quaternion</a> {
+    </span><span class="kw">pub fn </span>slerp(<span class="kw-2">&amp;</span><span class="self">self</span>, b: <span class="kw-2">&amp;</span><a href="#8-20">Quaternion</a>, factor: <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) -&gt; <a href="#8-20">Quaternion</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Quaternion::uninitialized();
             ffi::graphene_quaternion_slerp(
-                <a class="self" href="#160">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#160">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#160">factor</a>,
-                <a href="#162">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a class="self" href="#159">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#159">b</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#159">factor</a>,
+                <a href="#161">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            <a href="#162">res</a>
+            <a href="#161">res</a>
         }
     }
 
@@ -572,14 +570,14 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_to_angle_vec3&quot;</span>)]
     </span><span class="kw">pub fn </span>to_angle_vec3(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="vec3.rs.html#8-20">Vec3</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>angle = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>angle = std::mem::MaybeUninit::uninit();
             <span class="kw">let </span><span class="kw-2">mut </span>axis = Vec3::uninitialized();
             ffi::graphene_quaternion_to_angle_vec3(
-                <a class="self" href="#184">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#186">angle</a>.as_mut_ptr(),
-                <a href="#187">axis</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
+                <a class="self" href="#183">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#185">angle</a>.as_mut_ptr(),
+                <a href="#186">axis</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>,
             );
-            (<a href="#186">angle</a>.assume_init(), <a href="#187">axis</a>)
+            (<a href="#185">angle</a>.assume_init(), <a href="#186">axis</a>)
         }
     }
 
@@ -604,19 +602,19 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_to_angles&quot;</span>)]
     </span><span class="kw">pub fn </span>to_angles(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>deg_x = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>deg_y = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>deg_z = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>deg_x = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>deg_y = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>deg_z = std::mem::MaybeUninit::uninit();
             ffi::graphene_quaternion_to_angles(
-                <a class="self" href="#216">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#218">deg_x</a>.as_mut_ptr(),
-                <a href="#219">deg_y</a>.as_mut_ptr(),
-                <a href="#220">deg_z</a>.as_mut_ptr(),
+                <a class="self" href="#215">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#217">deg_x</a>.as_mut_ptr(),
+                <a href="#218">deg_y</a>.as_mut_ptr(),
+                <a href="#219">deg_z</a>.as_mut_ptr(),
             );
             (
-                <a href="#218">deg_x</a>.assume_init(),
-                <a href="#219">deg_y</a>.assume_init(),
-                <a href="#220">deg_z</a>.assume_init(),
+                <a href="#217">deg_x</a>.assume_init(),
+                <a href="#218">deg_y</a>.assume_init(),
+                <a href="#219">deg_z</a>.assume_init(),
             )
         }
     }
@@ -630,11 +628,11 @@
     /// ## `m`
     /// a [`Matrix`][crate::Matrix]
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_to_matrix&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrix.rs.html#9-21">Matrix</a> {
+    </span><span class="kw">pub fn </span>to_matrix(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="matrix.rs.html#8-20">Matrix</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>m = Matrix::uninitialized();
-            ffi::graphene_quaternion_to_matrix(<a class="self" href="#244">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#246">m</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
-            <a href="#246">m</a>
+            ffi::graphene_quaternion_to_matrix(<a class="self" href="#243">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#245">m</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#245">m</a>
         }
     }
 
@@ -659,19 +657,19 @@
     </span><span class="attr">#[doc(alias = <span class="string">&quot;graphene_quaternion_to_radians&quot;</span>)]
     </span><span class="kw">pub fn </span>to_radians(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>, <a href="https://doc.rust-lang.org/nightly/std/primitive.f32.html">f32</a>) {
         <span class="kw">unsafe </span>{
-            <span class="kw">let </span><span class="kw-2">mut </span>rad_x = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>rad_y = mem::MaybeUninit::uninit();
-            <span class="kw">let </span><span class="kw-2">mut </span>rad_z = mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>rad_x = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>rad_y = std::mem::MaybeUninit::uninit();
+            <span class="kw">let </span><span class="kw-2">mut </span>rad_z = std::mem::MaybeUninit::uninit();
             ffi::graphene_quaternion_to_radians(
-                <a class="self" href="#271">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
-                <a href="#273">rad_x</a>.as_mut_ptr(),
-                <a href="#274">rad_y</a>.as_mut_ptr(),
-                <a href="#275">rad_z</a>.as_mut_ptr(),
+                <a class="self" href="#270">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>,
+                <a href="#272">rad_x</a>.as_mut_ptr(),
+                <a href="#273">rad_y</a>.as_mut_ptr(),
+                <a href="#274">rad_z</a>.as_mut_ptr(),
             );
             (
-                <a href="#273">rad_x</a>.assume_init(),
-                <a href="#274">rad_y</a>.assume_init(),
-                <a href="#275">rad_z</a>.assume_init(),
+                <a href="#272">rad_x</a>.assume_init(),
+                <a href="#273">rad_y</a>.assume_init(),
+                <a href="#274">rad_z</a>.assume_init(),
             )
         }
     }
@@ -689,18 +687,18 @@
     </span><span class="kw">pub fn </span>to_vec4(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="vec4.rs.html#8-20">Vec4</a> {
         <span class="kw">unsafe </span>{
             <span class="kw">let </span><span class="kw-2">mut </span>res = Vec4::uninitialized();
-            ffi::graphene_quaternion_to_vec4(<a class="self" href="#300">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#302">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
-            <a href="#302">res</a>
+            ffi::graphene_quaternion_to_vec4(<a class="self" href="#299">self</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtr.html">to_glib_none</a>().<span class="number">0</span>, <a href="#301">res</a>.<a href="https://gtk-rs.org/gtk-rs-core/git/docs/glib/translate/trait.ToGlibPtrMut.html">to_glib_none_mut</a>().<span class="number">0</span>);
+            <a href="#301">res</a>
         }
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#9-21">Quaternion</a> {
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.PartialEq.html">PartialEq</a> <span class="kw">for </span><a href="#8-20">Quaternion</a> {
     <span class="attr">#[inline]
     </span><span class="kw">fn </span>eq(<span class="kw-2">&amp;</span><span class="self">self</span>, other: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <a href="https://doc.rust-lang.org/nightly/std/primitive.bool.html">bool</a> {
-        <a class="self" href="#311">self</a>.<a href="#60-62">equal</a>(<a href="#311">other</a>)
+        <a class="self" href="#310">self</a>.<a href="#59-61">equal</a>(<a href="#310">other</a>)
     }
 }
 
-<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#9-21">Quaternion</a> {}
+<span class="kw">impl </span><a href="https://doc.rust-lang.org/nightly/core/cmp/trait.Eq.html">Eq</a> <span class="kw">for </span><a href="#8-20">Quaternion</a> {}
 </code></pre></div></section></main></body></html>
