@@ -576,7 +576,7 @@
 // from gir-files (https://github.com/gtk-rs/gir-files)
 // DO NOT EDIT
 
-</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#140">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#208-216">BoolError</a>, <a href="../time_span.rs.html#9">TimeSpan</a>, <a href="time_zone.rs.html#7-16">TimeZone</a>};
+</span><span class="kw">use crate</span>::{<a href="../lib.rs.html#140">translate</a>::<span class="kw-2">*</span>, <a href="../error.rs.html#208-216">BoolError</a>, <a href="../time_span.rs.html#9">TimeSpan</a>, <a href="time_zone.rs.html#7-18">TimeZone</a>};
 
 <a class="macro" href="../wrapper.rs.html#277-445">crate::wrapper! </a>{
     <span class="attr">#[derive(Debug)]
@@ -592,7 +592,7 @@
 <span class="kw">impl </span><a href="#7-16">DateTime</a> {
     <span class="attr">#[doc(alias = <span class="string">&quot;g_date_time_new&quot;</span>)]
     </span><span class="kw">pub fn </span>new(
-        tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-16">TimeZone</a>,
+        tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-18">TimeZone</a>,
         year: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         month: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
         day: <a href="https://doc.rust-lang.org/nightly/std/primitive.i32.html">i32</a>,
@@ -616,7 +616,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">&quot;g_date_time_new_from_iso8601&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_from_iso8601&quot;</span>)]
-    </span><span class="kw">pub fn </span>from_iso8601(text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_tz: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-16">TimeZone</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>from_iso8601(text: <span class="kw-2">&amp;</span><a href="https://doc.rust-lang.org/nightly/std/primitive.str.html">str</a>, default_tz: <span class="prelude-ty">Option</span>&lt;<span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-18">TimeZone</a>&gt;) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_new_from_iso8601(
                 <a href="#45">text</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
@@ -680,7 +680,7 @@
 
     <span class="attr">#[doc(alias = <span class="string">&quot;g_date_time_new_now&quot;</span>)]
     #[doc(alias = <span class="string">&quot;new_now&quot;</span>)]
-    </span><span class="kw">pub fn </span>now(tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-16">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>now(tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-18">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_new_now(<a href="#109">tz</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>))
                 .ok_or_else(|| <a class="macro" href="../error.rs.html#154-176">crate::bool_error!</a>(<span class="string">&quot;Invalid date&quot;</span>))
@@ -929,7 +929,7 @@
     #[cfg_attr(docsrs, doc(cfg(feature = <span class="string">&quot;v2_58&quot;</span>)))]
     #[doc(alias = <span class="string">&quot;g_date_time_get_timezone&quot;</span>)]
     #[doc(alias = <span class="string">&quot;get_timezone&quot;</span>)]
-    </span><span class="kw">pub fn </span>timezone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="time_zone.rs.html#7-16">TimeZone</a> {
+    </span><span class="kw">pub fn </span>timezone(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <a href="time_zone.rs.html#7-18">TimeZone</a> {
         <span class="kw">unsafe </span>{ <a href="../translate.rs.html#1621-1623">from_glib_none</a>(ffi::g_date_time_get_timezone(<a class="self" href="#358">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>)) }
     }
 
@@ -1014,7 +1014,7 @@
     //}
 
     </span><span class="attr">#[doc(alias = <span class="string">&quot;g_date_time_to_timezone&quot;</span>)]
-    </span><span class="kw">pub fn </span>to_timezone(<span class="kw-2">&amp;</span><span class="self">self</span>, tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-16">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
+    </span><span class="kw">pub fn </span>to_timezone(<span class="kw-2">&amp;</span><span class="self">self</span>, tz: <span class="kw-2">&amp;</span><a href="time_zone.rs.html#7-18">TimeZone</a>) -&gt; <span class="prelude-ty">Result</span>&lt;<a href="#7-16">DateTime</a>, <a href="../error.rs.html#208-216">BoolError</a>&gt; {
         <span class="kw">unsafe </span>{
             <span class="prelude-ty">Option</span>::&lt;<span class="kw">_</span>&gt;::from_glib_full(ffi::g_date_time_to_timezone(
                 <a class="self" href="#443">self</a>.<a href="../translate.rs.html#437">to_glib_none</a>().<span class="number">0</span>,
